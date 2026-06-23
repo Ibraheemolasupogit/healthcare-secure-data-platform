@@ -1,0 +1,26 @@
+{
+  "id": "LOC-000000001",
+  "identifier": [
+    {
+      "system": "urn:hedp:synthetic:location",
+      "value": "LOC-000000001"
+    }
+  ],
+  "managingOrganization": {
+    "reference": "Organization/ORG-000000001"
+  },
+  "meta": {
+    "profile": [
+      "urn:hedp:fhir-inspired:1.0.0"
+    ],
+    "source": "SYN-EPR-FHIR",
+    "tag": [
+      {
+        "code": "SYNTHETIC-FHIR-INSPIRED",
+        "system": "urn:hedp:provenance"
+      }
+    ]
+  },
+  "resourceType": "Location",
+  "status": "active"
+}

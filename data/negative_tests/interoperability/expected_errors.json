@@ -1,0 +1,32 @@
+{
+  "fhir": {
+    "malformed-date.json": [
+      "MALFORMED_DATE"
+    ],
+    "missing-resource-type.json": [
+      "MISSING_RESOURCE_TYPE",
+      "MISSING_REQUIRED_FIELD"
+    ],
+    "unresolved-reference.json": [
+      "UNRESOLVED_REFERENCE"
+    ],
+    "unsupported-resource.json": [
+      "UNSUPPORTED_RESOURCE"
+    ]
+  },
+  "hl7": {
+    "malformed-timestamp.hl7": [
+      "MALFORMED_TIMESTAMP"
+    ],
+    "missing-msh.hl7": [
+      "MISSING_MSH"
+    ],
+    "missing-pid.hl7": [
+      "MISSING_REQUIRED_SEGMENT",
+      "MISSING_PATIENT_IDENTIFIER"
+    ],
+    "unsupported-message.hl7": [
+      "UNSUPPORTED_MESSAGE"
+    ]
+  }
+}

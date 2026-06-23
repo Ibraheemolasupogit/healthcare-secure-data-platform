@@ -14,3 +14,4 @@ ADRs use: status/date, context, decision, consequences, alternatives, and valida
 | 0008 | Least-privilege RBAC |
 | 0009 | Expand to a healthcare enterprise data platform |
 | 0010 | Terraform ownership of the Snowflake foundation |
+| 0011 | Separate source formats from the canonical healthcare model |

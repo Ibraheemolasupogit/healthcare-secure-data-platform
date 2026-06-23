@@ -1,0 +1,152 @@
+[
+  {
+    "detected_at": "2025-01-01T12:00:00Z",
+    "disposition": "REJECTED",
+    "parser_version": "1.0.0",
+    "payload_checksum": "7d721bfc2d332c06d3ae7b11b9c277ecb14cbbf6cd07e1fb474f4a0babd52b1f",
+    "quarantine_id": "QUA-f9834fadd5c8167674947996",
+    "raw_payload_path": "fhir/malformed-date.json",
+    "retry_eligible": false,
+    "schema_version": "1.0.0",
+    "source_format": "FHIR",
+    "source_message_type": "Patient",
+    "source_record_id": "PAT-000000001",
+    "synthetic_flag": true,
+    "validation_errors": [
+      "MALFORMED_DATE"
+    ],
+    "warning_details": []
+  },
+  {
+    "detected_at": "2025-01-01T12:00:00Z",
+    "disposition": "REJECTED",
+    "parser_version": "1.0.0",
+    "payload_checksum": "8a6f8638e416c468c1f3c0a36161b1bb2f3f4b9e0db9e48be82c3d226ce5ef9a",
+    "quarantine_id": "QUA-f16c9cd01af40814b9caa97b",
+    "raw_payload_path": "fhir/missing-resource-type.json",
+    "retry_eligible": false,
+    "schema_version": "1.0.0",
+    "source_format": "FHIR",
+    "source_message_type": "UNKNOWN",
+    "source_record_id": "PAT-NEG-001",
+    "synthetic_flag": true,
+    "validation_errors": [
+      "MISSING_RESOURCE_TYPE",
+      "MISSING_REQUIRED_FIELD"
+    ],
+    "warning_details": []
+  },
+  {
+    "detected_at": "2025-01-01T12:00:00Z",
+    "disposition": "REJECTED",
+    "parser_version": "1.0.0",
+    "payload_checksum": "9b08502b9e685f5e219b6921824119dda72b3b6af64766b0c7d34b9983f3a943",
+    "quarantine_id": "QUA-c9f6c534bfe319f452144549",
+    "raw_payload_path": "fhir/unresolved-reference.json",
+    "retry_eligible": true,
+    "schema_version": "1.0.0",
+    "source_format": "FHIR",
+    "source_message_type": "Encounter",
+    "source_record_id": "ENC-000000001",
+    "synthetic_flag": true,
+    "validation_errors": [
+      "UNRESOLVED_REFERENCE"
+    ],
+    "warning_details": []
+  },
+  {
+    "detected_at": "2025-01-01T12:00:00Z",
+    "disposition": "UNSUPPORTED",
+    "parser_version": "1.0.0",
+    "payload_checksum": "d885cc60dc62588d47659521b69ad8dcd0edc8b21b57876f049b2db75a4a4f0d",
+    "quarantine_id": "QUA-a85f091480029ca64c6a77b6",
+    "raw_payload_path": "fhir/unsupported-resource.json",
+    "retry_eligible": false,
+    "schema_version": "1.0.0",
+    "source_format": "FHIR",
+    "source_message_type": "ImagingStudy",
+    "source_record_id": "IMG-NEG-001",
+    "synthetic_flag": true,
+    "validation_errors": [
+      "UNSUPPORTED_RESOURCE",
+      "NON_SYNTHETIC_IDENTIFIER"
+    ],
+    "warning_details": []
+  },
+  {
+    "detected_at": "2025-01-01T12:00:00Z",
+    "disposition": "REJECTED",
+    "parser_version": "1.0.0",
+    "payload_checksum": "cc2102f611b4fd9ba0f55247767c7d25fbeecd075fc4e7d81aa137528135b545",
+    "quarantine_id": "QUA-406746d3ec8e29ae337ee342",
+    "raw_payload_path": "hl7/malformed-timestamp.hl7",
+    "retry_eligible": true,
+    "schema_version": "1.0.0",
+    "source_format": "HL7V2",
+    "source_message_type": "ADT^A08",
+    "source_record_id": "HL7-NEG-003",
+    "synthetic_flag": true,
+    "validation_errors": [
+      "MALFORMED_TIMESTAMP"
+    ],
+    "warning_details": []
+  },
+  {
+    "detected_at": "2025-01-01T12:00:00Z",
+    "disposition": "REJECTED",
+    "parser_version": "1.0.0",
+    "payload_checksum": "4cd2ffa765a9a13e748c7afedacd8e447944bd655f394dd8ac457253f25a9095",
+    "quarantine_id": "QUA-97e332260671619c0cb0f3b1",
+    "raw_payload_path": "hl7/missing-msh.hl7",
+    "retry_eligible": true,
+    "schema_version": "1.0.0",
+    "source_format": "HL7V2",
+    "source_message_type": "UNKNOWN",
+    "source_record_id": "UNKNOWN",
+    "synthetic_flag": true,
+    "validation_errors": [
+      "MISSING_MSH",
+      "MISSING_CONTROL_ID",
+      "MALFORMED_TIMESTAMP",
+      "MISSING_SYNTHETIC_MARKER"
+    ],
+    "warning_details": []
+  },
+  {
+    "detected_at": "2025-01-01T12:00:00Z",
+    "disposition": "REJECTED",
+    "parser_version": "1.0.0",
+    "payload_checksum": "adac982cd0dbe4ad3cd48c1708ba80d6fd1e7ecb0c63252e5b65a114f14f42c3",
+    "quarantine_id": "QUA-3af29eab48ee36e95735dde7",
+    "raw_payload_path": "hl7/missing-pid.hl7",
+    "retry_eligible": false,
+    "schema_version": "1.0.0",
+    "source_format": "HL7V2",
+    "source_message_type": "ADT^A01",
+    "source_record_id": "HL7-NEG-002",
+    "synthetic_flag": true,
+    "validation_errors": [
+      "MISSING_REQUIRED_SEGMENT",
+      "MISSING_PATIENT_IDENTIFIER"
+    ],
+    "warning_details": []
+  },
+  {
+    "detected_at": "2025-01-01T12:00:00Z",
+    "disposition": "UNSUPPORTED",
+    "parser_version": "1.0.0",
+    "payload_checksum": "d9107b24194e54028cbb257af5a3a4a004233d5037998bde599cdc794d30eafc",
+    "quarantine_id": "QUA-605ed612ad9b2ed1c1d7deb4",
+    "raw_payload_path": "hl7/unsupported-message.hl7",
+    "retry_eligible": false,
+    "schema_version": "1.0.0",
+    "source_format": "HL7V2",
+    "source_message_type": "MDM^T02",
+    "source_record_id": "HL7-NEG-001",
+    "synthetic_flag": true,
+    "validation_errors": [
+      "UNSUPPORTED_MESSAGE"
+    ],
+    "warning_details": []
+  }
+]

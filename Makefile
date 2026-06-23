@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: install info generate-sample validate-sample snowflake-inventory snowflake-render snowflake-validate format lint type test yaml sql dbt-parse terraform-fmt terraform-validate secrets validate
+.PHONY: install info generate-sample validate-sample interoperability-sample interoperability-validate snowflake-inventory snowflake-render snowflake-validate format lint type test yaml sql dbt-parse terraform-fmt terraform-validate secrets validate
 
 install:
 	$(PYTHON) -m pip install -r requirements-dev.txt
@@ -14,6 +14,15 @@ generate-sample:
 
 validate-sample:
 	$(PYTHON) -m healthcare_platform.cli validate-data --input-dir data/samples/small
+
+interoperability-sample:
+	$(PYTHON) -m healthcare_platform.cli interoperability process-batch --input-dir data/samples/small/relational --output-dir data/samples/interoperability --seed 42 --overwrite
+
+interoperability-validate:
+	$(PYTHON) -m healthcare_platform.cli interoperability validate-fhir --input-dir data/samples/interoperability/fhir
+	$(PYTHON) -m healthcare_platform.cli interoperability validate-hl7 --input-dir data/samples/interoperability/hl7
+	@! $(PYTHON) -m healthcare_platform.cli interoperability validate-fhir --input-dir data/negative_tests/interoperability/fhir
+	@! $(PYTHON) -m healthcare_platform.cli interoperability validate-hl7 --input-dir data/negative_tests/interoperability/hl7
 
 snowflake-inventory:
 	$(PYTHON) -m healthcare_platform.cli snowflake-inventory
@@ -61,5 +70,5 @@ terraform-validate:
 secrets:
 	@if command -v gitleaks >/dev/null; then gitleaks detect --no-git --redact; else echo "gitleaks not installed; CI performs the authoritative scan"; fi
 
-validate: lint type test yaml sql dbt-parse snowflake-validate secrets
+validate: lint type test yaml sql dbt-parse snowflake-validate interoperability-validate secrets
 	@echo "Core credential-free validation complete. Run terraform-fmt/validate when Terraform is installed."

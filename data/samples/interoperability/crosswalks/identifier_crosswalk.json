@@ -1,0 +1,202 @@
+[
+  {
+    "canonical_identifier": "APT-000000001",
+    "identifier_type": "APPOINTMENT",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "FHIR",
+    "source_identifier": "APT-000000001",
+    "source_system": "SYN-EPR-FHIR",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "ENC-000000001",
+    "identifier_type": "ENCOUNTER",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "FHIR",
+    "source_identifier": "ENC-000000001",
+    "source_system": "SYN-EPR-FHIR",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "ENC-000000002",
+    "identifier_type": "ENCOUNTER",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "FHIR",
+    "source_identifier": "ENC-000000002",
+    "source_system": "SYN-EPR-FHIR",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "ENC-000000003",
+    "identifier_type": "ENCOUNTER",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "FHIR",
+    "source_identifier": "ENC-000000003",
+    "source_system": "SYN-EPR-FHIR",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "ORG-000000001",
+    "identifier_type": "ORGANISATION",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "FHIR",
+    "source_identifier": "ORG-000000001",
+    "source_system": "SYN-EPR-FHIR",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "ORG-000000004",
+    "identifier_type": "ORGANISATION",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "FHIR",
+    "source_identifier": "ORG-000000004",
+    "source_system": "SYN-EPR-FHIR",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "ORG-000000007",
+    "identifier_type": "ORGANISATION",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "FHIR",
+    "source_identifier": "ORG-000000007",
+    "source_system": "SYN-EPR-FHIR",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "ORG-000000010",
+    "identifier_type": "ORGANISATION",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "FHIR",
+    "source_identifier": "ORG-000000010",
+    "source_system": "SYN-EPR-FHIR",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "LAB-000000001",
+    "identifier_type": "PATHOLOGY_RESULT",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "FHIR",
+    "source_identifier": "LAB-000000001",
+    "source_system": "SYN-EPR-FHIR",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "PAT-000000001",
+    "identifier_type": "PATIENT",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "FHIR",
+    "source_identifier": "PAT-000000001",
+    "source_system": "SYN-EPR-FHIR",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "PAT-000000002",
+    "identifier_type": "PATIENT",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "FHIR",
+    "source_identifier": "PAT-000000002",
+    "source_system": "SYN-EPR-FHIR",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "PAT-000000003",
+    "identifier_type": "PATIENT",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "FHIR",
+    "source_identifier": "PAT-000000003",
+    "source_system": "SYN-EPR-FHIR",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "PRV-000000001",
+    "identifier_type": "PROVIDER",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "FHIR",
+    "source_identifier": "PRV-000000001",
+    "source_system": "SYN-EPR-FHIR",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "PRV-000000006",
+    "identifier_type": "PROVIDER",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "FHIR",
+    "source_identifier": "PRV-000000006",
+    "source_system": "SYN-EPR-FHIR",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "APT-000000001",
+    "identifier_type": "APPOINTMENT",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "HL7V2",
+    "source_identifier": "APT-000000001",
+    "source_system": "SYN-INTEGRATION-HL7",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "ENC-000000001",
+    "identifier_type": "ENCOUNTER",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "HL7V2",
+    "source_identifier": "ENC-000000001",
+    "source_system": "SYN-INTEGRATION-HL7",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "LAB-000000001",
+    "identifier_type": "PATHOLOGY_RESULT",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "HL7V2",
+    "source_identifier": "LAB-000000001",
+    "source_system": "SYN-INTEGRATION-HL7",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "PAT-000000001",
+    "identifier_type": "PATIENT",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "HL7V2",
+    "source_identifier": "PAT-000000001",
+    "source_system": "SYN-INTEGRATION-HL7",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "PRV-000000003",
+    "identifier_type": "PROVIDER",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "HL7V2",
+    "source_identifier": "PRV-000000003",
+    "source_system": "SYN-INTEGRATION-HL7",
+    "synthetic_flag": true
+  },
+  {
+    "canonical_identifier": "PRV-000000006",
+    "identifier_type": "PROVIDER",
+    "mapping_rule_version": "1.0.0",
+    "mapping_status": "MAPPED",
+    "source_format": "HL7V2",
+    "source_identifier": "PRV-000000006",
+    "source_system": "SYN-INTEGRATION-HL7",
+    "synthetic_flag": true
+  }
+]

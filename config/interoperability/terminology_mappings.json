@@ -1,0 +1,39 @@
+{
+  "mapping_version": "1.0.0",
+  "authority": "synthetic portfolio mapping only",
+  "mappings": {
+    "sex": {
+      "FEMALE": "female",
+      "MALE": "male",
+      "INTERSEX": "other",
+      "NOT_KNOWN": "unknown"
+    },
+    "encounter_type": {
+      "EMERGENCY": "EMER",
+      "INPATIENT": "IMP",
+      "OUTPATIENT": "AMB",
+      "COMMUNITY": "AMB",
+      "VIRTUAL": "VR"
+    },
+    "appointment_status": {
+      "ATTENDED": "fulfilled",
+      "DID_NOT_ATTEND": "noshow",
+      "CANCELLED": "cancelled",
+      "BOOKED": "booked"
+    },
+    "consent_status": {
+      "ACTIVE": "active",
+      "WITHDRAWN": "inactive",
+      "EXPIRED": "inactive",
+      "DECLINED": "rejected"
+    }
+  },
+  "pass_through_portfolio_code_sets": [
+    "ethnicity",
+    "organisation_type",
+    "provider_role",
+    "pathology_test_code",
+    "medication_code"
+  ],
+  "disclaimer": "No SNOMED CT, ICD-10, OPCS, LOINC, dm+d, NHS Data Dictionary, or formal FHIR terminology conformance is claimed."
+}

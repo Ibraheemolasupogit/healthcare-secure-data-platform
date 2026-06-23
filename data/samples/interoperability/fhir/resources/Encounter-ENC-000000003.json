@@ -1,0 +1,36 @@
+{
+  "class": {
+    "code": "VR"
+  },
+  "id": "ENC-000000003",
+  "identifier": [
+    {
+      "system": "urn:hedp:synthetic:encounter",
+      "value": "ENC-000000003"
+    }
+  ],
+  "meta": {
+    "profile": [
+      "urn:hedp:fhir-inspired:1.0.0"
+    ],
+    "source": "SYN-EPR-FHIR",
+    "tag": [
+      {
+        "code": "SYNTHETIC-FHIR-INSPIRED",
+        "system": "urn:hedp:provenance"
+      }
+    ]
+  },
+  "period": {
+    "end": "2024-11-30T20:00:00Z",
+    "start": "2024-11-30T12:00:00Z"
+  },
+  "resourceType": "Encounter",
+  "serviceProvider": {
+    "reference": "Organization/ORG-000000007"
+  },
+  "status": "finished",
+  "subject": {
+    "reference": "Patient/PAT-000000003"
+  }
+}

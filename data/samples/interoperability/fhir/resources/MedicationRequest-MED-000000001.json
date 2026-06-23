@@ -1,0 +1,39 @@
+{
+  "authoredOn": "2022-01-11T02:45:00Z",
+  "encounter": {
+    "reference": "Encounter/ENC-000000001"
+  },
+  "id": "MED-000000001",
+  "identifier": [
+    {
+      "system": "urn:hedp:synthetic:medication-event",
+      "value": "MED-000000001"
+    }
+  ],
+  "intent": "order",
+  "medicationCodeableConcept": {
+    "coding": [
+      {
+        "code": "SYN-MED-02",
+        "system": "urn:hedp:synthetic:medication"
+      }
+    ]
+  },
+  "meta": {
+    "profile": [
+      "urn:hedp:fhir-inspired:1.0.0"
+    ],
+    "source": "SYN-EPR-FHIR",
+    "tag": [
+      {
+        "code": "SYNTHETIC-FHIR-INSPIRED",
+        "system": "urn:hedp:provenance"
+      }
+    ]
+  },
+  "resourceType": "MedicationRequest",
+  "status": "completed",
+  "subject": {
+    "reference": "Patient/PAT-000000001"
+  }
+}

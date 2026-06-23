@@ -1,0 +1,27 @@
+{
+  "birthDate": "1979-01-02",
+  "gender": "female",
+  "id": "PAT-000000003",
+  "identifier": [
+    {
+      "system": "urn:hedp:synthetic:patient",
+      "value": "PAT-000000003"
+    }
+  ],
+  "managingOrganization": {
+    "reference": "Organization/ORG-000000010"
+  },
+  "meta": {
+    "profile": [
+      "urn:hedp:fhir-inspired:1.0.0"
+    ],
+    "source": "SYN-EPR-FHIR",
+    "tag": [
+      {
+        "code": "SYNTHETIC-FHIR-INSPIRED",
+        "system": "urn:hedp:provenance"
+      }
+    ]
+  },
+  "resourceType": "Patient"
+}

@@ -1,0 +1,36 @@
+{
+  "id": "APT-000000001",
+  "identifier": [
+    {
+      "system": "urn:hedp:synthetic:appointment",
+      "value": "APT-000000001"
+    }
+  ],
+  "meta": {
+    "profile": [
+      "urn:hedp:fhir-inspired:1.0.0"
+    ],
+    "source": "SYN-EPR-FHIR",
+    "tag": [
+      {
+        "code": "SYNTHETIC-FHIR-INSPIRED",
+        "system": "urn:hedp:provenance"
+      }
+    ]
+  },
+  "participant": [
+    {
+      "actor": {
+        "reference": "Patient/PAT-000000002"
+      }
+    },
+    {
+      "actor": {
+        "reference": "Practitioner/PRV-000000006"
+      }
+    }
+  ],
+  "resourceType": "Appointment",
+  "start": "2022-03-23T13:30:00Z",
+  "status": "cancelled"
+}

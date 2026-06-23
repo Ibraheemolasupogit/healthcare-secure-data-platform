@@ -1,0 +1,42 @@
+{
+  "code": {
+    "coding": [
+      {
+        "code": "SYN-HB",
+        "system": "urn:hedp:synthetic:pathology"
+      }
+    ]
+  },
+  "effectiveDateTime": "2022-01-11T17:45:00Z",
+  "encounter": {
+    "reference": "Encounter/ENC-000000001"
+  },
+  "id": "OBS-LAB-000000001",
+  "identifier": [
+    {
+      "system": "urn:hedp:synthetic:pathology-result",
+      "value": "LAB-000000001"
+    }
+  ],
+  "meta": {
+    "profile": [
+      "urn:hedp:fhir-inspired:1.0.0"
+    ],
+    "source": "SYN-EPR-FHIR",
+    "tag": [
+      {
+        "code": "SYNTHETIC-FHIR-INSPIRED",
+        "system": "urn:hedp:provenance"
+      }
+    ]
+  },
+  "resourceType": "Observation",
+  "status": "amended",
+  "subject": {
+    "reference": "Patient/PAT-000000001"
+  },
+  "valueQuantity": {
+    "unit": "g/L",
+    "value": "110.79"
+  }
+}

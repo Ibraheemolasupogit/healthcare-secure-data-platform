@@ -1,0 +1,10 @@
+{
+  "id": "PAT-NEG-001",
+  "meta": {
+    "tag": [
+      {
+        "code": "SYNTHETIC-FHIR-INSPIRED"
+      }
+    ]
+  }
+}

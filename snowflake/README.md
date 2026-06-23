@@ -24,3 +24,5 @@ terraform -chdir=../infrastructure/terraform/environments/dev validate
 ```
 
 The render command creates deterministic preview SQL and RBAC expectations. It does not connect or apply. The inventory records declared—not deployed—state. See the [deployment](../docs/operations/snowflake-deployment.md), [validation](../docs/operations/snowflake-validation.md) and [teardown](../docs/operations/snowflake-teardown.md) runbooks.
+
+Milestone 4 adds static interoperability load contracts under `contracts/` and an explicitly non-deployed DDL preview at `ingestion/062_interoperability_contract_preview.sql`. They reuse existing RAW and GOVERNANCE schemas and do not alter Terraform container ownership.

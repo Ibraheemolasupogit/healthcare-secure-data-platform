@@ -1,0 +1,29 @@
+{
+  "active": "true",
+  "extension": [
+    {
+      "url": "urn:hedp:provider-role",
+      "valueCode": "AHP"
+    }
+  ],
+  "id": "PRV-000000006",
+  "identifier": [
+    {
+      "system": "urn:hedp:synthetic:provider",
+      "value": "PRV-000000006"
+    }
+  ],
+  "meta": {
+    "profile": [
+      "urn:hedp:fhir-inspired:1.0.0"
+    ],
+    "source": "SYN-EPR-FHIR",
+    "tag": [
+      {
+        "code": "SYNTHETIC-FHIR-INSPIRED",
+        "system": "urn:hedp:provenance"
+      }
+    ]
+  },
+  "resourceType": "Practitioner"
+}

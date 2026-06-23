@@ -1,0 +1,448 @@
+{
+  "counts": {
+    "ACCEPTED": 6,
+    "ACCEPTED_WITH_WARNINGS": 0,
+    "REJECTED": 0,
+    "UNSUPPORTED": 0
+  },
+  "payload_count": 6,
+  "results": [
+    {
+      "issues": [],
+      "mapped_fields": {
+        "appointment_id": null,
+        "encounter_id": "ENC-000000001",
+        "message_control_id": "HL7-ADT-001",
+        "message_type": "ADT^A01",
+        "order_id": "",
+        "patient_id": "PAT-000000001",
+        "provider_id": "PRV-000000003",
+        "result_unit": "",
+        "result_value": ""
+      },
+      "message_type": "ADT^A01",
+      "preserved_fields": {
+        "EVN": [
+          "A01",
+          "20250101120000"
+        ],
+        "MSH": [
+          "^~\\&",
+          "SYN-INTEGRATION-HL7",
+          "SYN-FACILITY",
+          "HEDP-RAW",
+          "HEDP",
+          "20250101120000",
+          "",
+          "ADT^A01",
+          "HL7-ADT-001",
+          "T",
+          "2.5"
+        ],
+        "PID": [
+          "1",
+          "",
+          "PAT-000000001^^^HEDP^PI",
+          "",
+          "SYNTHETIC^PATIENT",
+          "",
+          "19620806",
+          "F"
+        ],
+        "PV1": [
+          "1",
+          "O",
+          "LOC-000000002",
+          "",
+          "",
+          "",
+          "PRV-000000003",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "ENC-000000001"
+        ]
+      },
+      "record_id": "HL7-ADT-001",
+      "references": [],
+      "source_format": "HL7V2",
+      "status": "ACCEPTED",
+      "unmapped_fields": {}
+    },
+    {
+      "issues": [],
+      "mapped_fields": {
+        "appointment_id": null,
+        "encounter_id": "ENC-000000001",
+        "message_control_id": "HL7-ADT-002",
+        "message_type": "ADT^A03",
+        "order_id": "",
+        "patient_id": "PAT-000000001",
+        "provider_id": "PRV-000000003",
+        "result_unit": "",
+        "result_value": ""
+      },
+      "message_type": "ADT^A03",
+      "preserved_fields": {
+        "EVN": [
+          "A03",
+          "20250101120000"
+        ],
+        "MSH": [
+          "^~\\&",
+          "SYN-INTEGRATION-HL7",
+          "SYN-FACILITY",
+          "HEDP-RAW",
+          "HEDP",
+          "20250101120000",
+          "",
+          "ADT^A03",
+          "HL7-ADT-002",
+          "T",
+          "2.5"
+        ],
+        "PID": [
+          "1",
+          "",
+          "PAT-000000001^^^HEDP^PI",
+          "",
+          "SYNTHETIC^PATIENT",
+          "",
+          "19620806",
+          "F"
+        ],
+        "PV1": [
+          "1",
+          "O",
+          "LOC-000000002",
+          "",
+          "",
+          "",
+          "PRV-000000003",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "ENC-000000001"
+        ]
+      },
+      "record_id": "HL7-ADT-002",
+      "references": [],
+      "source_format": "HL7V2",
+      "status": "ACCEPTED",
+      "unmapped_fields": {}
+    },
+    {
+      "issues": [],
+      "mapped_fields": {
+        "appointment_id": null,
+        "encounter_id": "ENC-000000001",
+        "message_control_id": "HL7-ADT-003",
+        "message_type": "ADT^A08",
+        "order_id": "",
+        "patient_id": "PAT-000000001",
+        "provider_id": "PRV-000000003",
+        "result_unit": "",
+        "result_value": ""
+      },
+      "message_type": "ADT^A08",
+      "preserved_fields": {
+        "EVN": [
+          "A08",
+          "20250101120000"
+        ],
+        "MSH": [
+          "^~\\&",
+          "SYN-INTEGRATION-HL7",
+          "SYN-FACILITY",
+          "HEDP-RAW",
+          "HEDP",
+          "20250101120000",
+          "",
+          "ADT^A08",
+          "HL7-ADT-003",
+          "T",
+          "2.5"
+        ],
+        "PID": [
+          "1",
+          "",
+          "PAT-000000001^^^HEDP^PI",
+          "",
+          "SYNTHETIC^PATIENT",
+          "",
+          "19620806",
+          "F"
+        ],
+        "PV1": [
+          "1",
+          "O",
+          "LOC-000000002",
+          "",
+          "",
+          "",
+          "PRV-000000003",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "ENC-000000001"
+        ]
+      },
+      "record_id": "HL7-ADT-003",
+      "references": [],
+      "source_format": "HL7V2",
+      "status": "ACCEPTED",
+      "unmapped_fields": {}
+    },
+    {
+      "issues": [],
+      "mapped_fields": {
+        "appointment_id": null,
+        "encounter_id": "ENC-000000001",
+        "message_control_id": "HL7-ORM-001",
+        "message_type": "ORM^O01",
+        "order_id": "LAB-000000001",
+        "patient_id": "PAT-000000001",
+        "provider_id": "PRV-000000003",
+        "result_unit": "",
+        "result_value": ""
+      },
+      "message_type": "ORM^O01",
+      "preserved_fields": {
+        "MSH": [
+          "^~\\&",
+          "SYN-INTEGRATION-HL7",
+          "SYN-FACILITY",
+          "HEDP-RAW",
+          "HEDP",
+          "20250101120000",
+          "",
+          "ORM^O01",
+          "HL7-ORM-001",
+          "T",
+          "2.5"
+        ],
+        "OBR": [
+          "1",
+          "LAB-000000001",
+          "LAB-000000001",
+          "SYN-HB^Synthetic haemoglobin"
+        ],
+        "ORC": [
+          "NW",
+          "LAB-000000001"
+        ],
+        "PID": [
+          "1",
+          "",
+          "PAT-000000001^^^HEDP^PI",
+          "",
+          "SYNTHETIC^PATIENT",
+          "",
+          "19620806",
+          "F"
+        ],
+        "PV1": [
+          "1",
+          "O",
+          "LOC-000000002",
+          "",
+          "",
+          "",
+          "PRV-000000003",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "ENC-000000001"
+        ]
+      },
+      "record_id": "HL7-ORM-001",
+      "references": [],
+      "source_format": "HL7V2",
+      "status": "ACCEPTED",
+      "unmapped_fields": {}
+    },
+    {
+      "issues": [],
+      "mapped_fields": {
+        "appointment_id": null,
+        "encounter_id": "ENC-000000001",
+        "message_control_id": "HL7-ORU-001",
+        "message_type": "ORU^R01",
+        "order_id": "LAB-000000001",
+        "patient_id": "PAT-000000001",
+        "provider_id": "PRV-000000003",
+        "result_unit": "g/L",
+        "result_value": "110.79"
+      },
+      "message_type": "ORU^R01",
+      "preserved_fields": {
+        "MSH": [
+          "^~\\&",
+          "SYN-INTEGRATION-HL7",
+          "SYN-FACILITY",
+          "HEDP-RAW",
+          "HEDP",
+          "20250101120000",
+          "",
+          "ORU^R01",
+          "HL7-ORU-001",
+          "T",
+          "2.5"
+        ],
+        "OBR": [
+          "1",
+          "LAB-000000001",
+          "LAB-000000001",
+          "SYN-HB^Synthetic haemoglobin"
+        ],
+        "OBX": [
+          "1",
+          "NM",
+          "SYN-HB",
+          "",
+          "110.79",
+          "g/L",
+          "",
+          "",
+          "",
+          "",
+          "CORRECTED"
+        ],
+        "PID": [
+          "1",
+          "",
+          "PAT-000000001^^^HEDP^PI",
+          "",
+          "SYNTHETIC^PATIENT",
+          "",
+          "19620806",
+          "F"
+        ],
+        "PV1": [
+          "1",
+          "O",
+          "LOC-000000002",
+          "",
+          "",
+          "",
+          "PRV-000000003",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "ENC-000000001"
+        ]
+      },
+      "record_id": "HL7-ORU-001",
+      "references": [],
+      "source_format": "HL7V2",
+      "status": "ACCEPTED",
+      "unmapped_fields": {}
+    },
+    {
+      "issues": [],
+      "mapped_fields": {
+        "appointment_id": "APT-000000001",
+        "encounter_id": null,
+        "message_control_id": "HL7-SIU-001",
+        "message_type": "SIU^S12",
+        "order_id": "",
+        "patient_id": "PAT-000000001",
+        "provider_id": "PRV-000000006",
+        "result_unit": "",
+        "result_value": ""
+      },
+      "message_type": "SIU^S12",
+      "preserved_fields": {
+        "AIP": [
+          "1",
+          "",
+          "PRV-000000006^SYNTHETIC PROVIDER"
+        ],
+        "MSH": [
+          "^~\\&",
+          "SYN-INTEGRATION-HL7",
+          "SYN-FACILITY",
+          "HEDP-RAW",
+          "HEDP",
+          "20250101120000",
+          "",
+          "SIU^S12",
+          "HL7-SIU-001",
+          "T",
+          "2.5"
+        ],
+        "PID": [
+          "1",
+          "",
+          "PAT-000000001^^^HEDP^PI",
+          "",
+          "SYNTHETIC^PATIENT",
+          "",
+          "19620806",
+          "F"
+        ],
+        "SCH": [
+          "APT-000000001",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "20220323T13300"
+        ]
+      },
+      "record_id": "HL7-SIU-001",
+      "references": [],
+      "source_format": "HL7V2",
+      "status": "ACCEPTED",
+      "unmapped_fields": {}
+    }
+  ],
+  "schema_version": "1.0.0",
+  "valid": true
+}

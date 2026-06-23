@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "status": "STATIC_CONTRACT_NOT_DEPLOYED",
+  "ownership": "runtime ingestion relations; Terraform retains container ownership; dbt does not own these raw contracts",
+  "contracts": [
+    {
+      "name": "FHIR_RAW_PAYLOADS",
+      "location": "RAW.INTEROPERABILITY",
+      "grain": "one immutable FHIR-inspired source resource per ingestion",
+      "required_fields": ["ingestion_id", "resource_type", "resource_id", "payload", "payload_checksum", "received_at", "synthetic_flag"]
+    },
+    {
+      "name": "HL7_RAW_MESSAGES",
+      "location": "RAW.INTEROPERABILITY",
+      "grain": "one immutable HL7 v2 source message per ingestion",
+      "required_fields": ["ingestion_id", "message_type", "message_control_id", "raw_message", "payload_checksum", "received_at", "synthetic_flag"]
+    },
+    {
+      "name": "INGESTION_ENVELOPES",
+      "location": "RAW.AUDIT",
+      "grain": "one source-neutral audit envelope per parsed payload",
+      "required_fields": ["ingestion_id", "batch_id", "source_format", "source_record_id", "validation_status", "payload_checksum", "raw_payload_path", "synthetic_flag"]
+    },
+    {
+      "name": "IDENTIFIER_CROSSWALKS",
+      "location": "GOVERNANCE.CONTROL",
+      "grain": "one versioned source-to-canonical identifier mapping",
+      "required_fields": ["source_format", "identifier_type", "source_identifier", "canonical_identifier", "mapping_rule_version", "mapping_status"]
+    },
+    {
+      "name": "VALIDATION_RESULTS",
+      "location": "GOVERNANCE.DATA_QUALITY",
+      "grain": "one parser validation result per payload and rule",
+      "required_fields": ["ingestion_id", "rule_code", "level", "message", "parser_version", "schema_version"]
+    },
+    {
+      "name": "QUARANTINE_RECORDS",
+      "location": "RAW.QUARANTINE",
+      "grain": "one retained rejected or unsupported payload disposition",
+      "required_fields": ["quarantine_id", "source_format", "source_record_id", "validation_errors", "payload_checksum", "raw_payload_path", "retry_eligible", "disposition", "synthetic_flag"]
+    },
+    {
+      "name": "TERMINOLOGY_MAPPINGS",
+      "location": "GOVERNANCE.CONTROL",
+      "grain": "one versioned portfolio code mapping",
+      "required_fields": ["code_set", "source_code", "target_code", "mapping_status", "mapping_version"]
+    },
+    {
+      "name": "INGESTION_MANIFESTS",
+      "location": "GOVERNANCE.CONTROL",
+      "grain": "one immutable manifest per ingestion batch",
+      "required_fields": ["batch_id", "source_format", "parser_version", "schema_version", "accepted_count", "rejected_count", "payload_checksums", "synthetic_flag"]
+    }
+  ]
+}

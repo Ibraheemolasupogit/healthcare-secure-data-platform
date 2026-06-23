@@ -9,6 +9,18 @@ from datetime import date
 from pathlib import Path
 
 from healthcare_platform.config import load_settings, snowflake_credentials_present
+from healthcare_platform.interoperability.config import (
+    DEFAULT_CONFIG_PATH as DEFAULT_INTEROPERABILITY_CONFIG_PATH,
+)
+from healthcare_platform.interoperability.service import (
+    DEFAULT_CANONICAL_INPUT,
+    describe_contracts,
+    generate_fhir,
+    generate_hl7,
+    generate_negative_corpus,
+    process_batch,
+    validate_corpus,
+)
 from healthcare_platform.logging_config import configure_logging
 from healthcare_platform.snowflake_foundation import (
     DEFAULT_CONFIG_PATH as DEFAULT_SNOWFLAKE_CONFIG_PATH,
@@ -79,6 +91,44 @@ def build_parser() -> argparse.ArgumentParser:
     snowflake_render.add_argument("--config", type=Path, default=DEFAULT_SNOWFLAKE_CONFIG_PATH)
     snowflake_render.add_argument("--output-dir", type=Path, default=Path("outputs/snowflake/dev"))
     snowflake_render.add_argument("--overwrite", action="store_true")
+    interoperability = subparsers.add_parser(
+        "interoperability", help="generate and validate synthetic interoperability payloads"
+    )
+    interop_commands = interoperability.add_subparsers(dest="interop_command", required=True)
+    for name, help_text in (
+        ("generate-fhir", "generate deterministic FHIR-inspired resources and bundles"),
+        ("generate-hl7", "generate deterministic synthetic HL7 v2 messages"),
+    ):
+        command = interop_commands.add_parser(name, help=help_text)
+        command.add_argument("--input-dir", type=Path, default=DEFAULT_CANONICAL_INPUT)
+        command.add_argument("--output-dir", type=Path, required=True)
+        command.add_argument("--config", type=Path, default=DEFAULT_INTEROPERABILITY_CONFIG_PATH)
+        command.add_argument("--overwrite", action="store_true")
+    for name, source_format in (("validate-fhir", "FHIR"), ("validate-hl7", "HL7V2")):
+        command = interop_commands.add_parser(name, help=f"validate {source_format} payloads")
+        command.add_argument("--input-dir", type=Path, required=True)
+        command.add_argument("--report-dir", type=Path)
+        command.add_argument("--config", type=Path, default=DEFAULT_INTEROPERABILITY_CONFIG_PATH)
+    batch = interop_commands.add_parser(
+        "process-batch", help="build deterministic local ingestion artefacts"
+    )
+    batch.add_argument("--input-dir", type=Path, default=DEFAULT_CANONICAL_INPUT)
+    batch.add_argument("--output-dir", type=Path, default=Path("data/generated/interoperability"))
+    batch.add_argument("--config", type=Path, default=DEFAULT_INTEROPERABILITY_CONFIG_PATH)
+    batch.add_argument("--seed", type=int, default=42)
+    batch.add_argument("--overwrite", action="store_true")
+    negative = interop_commands.add_parser(
+        "generate-negative", help="generate deterministic rejected-payload fixtures"
+    )
+    negative.add_argument("--output-dir", type=Path, required=True)
+    negative.add_argument("--overwrite", action="store_true")
+    inspect_quarantine = interop_commands.add_parser(
+        "inspect-quarantine", help="summarise local quarantine records"
+    )
+    inspect_quarantine.add_argument("--input-dir", type=Path, required=True)
+    interop_commands.add_parser(
+        "describe-contracts", help="print Snowflake raw-layer load contracts"
+    )
     return parser
 
 
@@ -175,6 +225,48 @@ def _snowflake_render(args: argparse.Namespace) -> int:
     return 0
 
 
+def _interoperability(args: argparse.Namespace) -> int:
+    if args.interop_command == "generate-fhir":
+        paths = generate_fhir(args.input_dir, args.output_dir, args.config, args.overwrite)
+        print(f"generated_fhir_files: {len(paths)}")
+        return 0
+    if args.interop_command == "generate-hl7":
+        paths = generate_hl7(args.input_dir, args.output_dir, args.config, args.overwrite)
+        print(f"generated_hl7_messages: {len(paths)}")
+        return 0
+    if args.interop_command in {"validate-fhir", "validate-hl7"}:
+        source_format = "FHIR" if args.interop_command == "validate-fhir" else "HL7V2"
+        report = validate_corpus(args.input_dir, source_format, args.config, args.report_dir)
+        print(f"validation: {'PASS' if report['valid'] else 'FAIL'}")
+        print(f"payloads: {report['payload_count']}")
+        return 0 if report["valid"] else 1
+    if args.interop_command == "process-batch":
+        manifest = process_batch(
+            args.input_dir, args.output_dir, args.config, args.seed, args.overwrite
+        )
+        print(f"batch_id: {manifest['batch_id']}")
+        print(f"accepted: {manifest['accepted_count']}")
+        print(f"rejected: {manifest['rejected_count']}")
+        return 0 if manifest["rejected_count"] == 0 else 1
+    if args.interop_command == "generate-negative":
+        generate_negative_corpus(args.output_dir, args.overwrite)
+        print(f"negative_corpus: {args.output_dir}")
+        return 0
+    if args.interop_command == "inspect-quarantine":
+        path = args.input_dir / "quarantine_records.json"
+        records = json.loads(path.read_text(encoding="utf-8"))
+        print(f"quarantine_records: {len(records)}")
+        for disposition in sorted({record["disposition"] for record in records}):
+            print(
+                f"{disposition}: {sum(record['disposition'] == disposition for record in records)}"
+            )
+        return 0
+    if args.interop_command == "describe-contracts":
+        print(json.dumps(describe_contracts(), indent=2, sort_keys=True))
+        return 0
+    return 2
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the CLI."""
     args = build_parser().parse_args(argv)
@@ -195,6 +287,8 @@ def main(argv: list[str] | None = None) -> int:
             return _snowflake_inventory(args)
         if args.command == "snowflake-render":
             return _snowflake_render(args)
+        if args.command == "interoperability":
+            return _interoperability(args)
     except (ValueError, OSError, json.JSONDecodeError) as error:
         print(f"error: {error}")
         return 2

@@ -23,3 +23,17 @@ jobs:
       - run: ruff check src tests
       - run: mypy src tests
       - run: pytest --cov --cov-report=term-missing
+      - run: healthcare-platform interoperability validate-fhir --input-dir data/samples/interoperability/fhir
+      - run: healthcare-platform interoperability validate-hl7 --input-dir data/samples/interoperability/hl7
+      - name: Expected FHIR failures
+        run: |
+          if healthcare-platform interoperability validate-fhir \
+            --input-dir data/negative_tests/interoperability/fhir; then
+            exit 1
+          fi
+      - name: Expected HL7 failures
+        run: |
+          if healthcare-platform interoperability validate-hl7 \
+            --input-dir data/negative_tests/interoperability/hl7; then
+            exit 1
+          fi

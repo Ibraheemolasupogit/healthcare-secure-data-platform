@@ -4,7 +4,7 @@
 |---|---|---|---|
 | Snowflake | Persisted layers, warehouses, ingestion primitives, RBAC, policies, sharing, recovery, usage/cost telemetry | Transformation semantics or cross-platform orchestration | Foundation declared and statically validated; not deployed |
 | dbt | SQL transformations, source declarations/freshness, tests, contracts, snapshots, docs, lineage, exposures | File transport, BI visuals, user provisioning | Valid project skeleton and conventions |
-| Python | Synthetic generation, boundary validation, ingestion helpers, local diagnostics | Warehouse-scale transformations | Generator, schemas, writers, validation and CLI implemented; ingestion helpers planned |
+| Python | Synthetic generation, interoperability parsing/mapping, boundary validation and local diagnostics | Warehouse-scale transformations | Generator plus bounded FHIR-inspired/HL7 ingestion foundation implemented |
 | Airflow | Cross-system dependency coordination and recovery | Reimplementing dbt DAGs or Snowflake-local task graphs | Documented placeholder |
 | Dataiku | Governed research analysis against approved products | Master transformation layer or uncontrolled export | Workflow/design placeholder |
 | Fabric/Power BI | Semantic consumption, measures, operational/executive presentation | Rebuilding curated entities | Consumption placeholder |

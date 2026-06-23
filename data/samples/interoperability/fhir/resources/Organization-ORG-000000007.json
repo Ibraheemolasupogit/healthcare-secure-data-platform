@@ -1,0 +1,24 @@
+{
+  "active": "true",
+  "id": "ORG-000000007",
+  "identifier": [
+    {
+      "system": "urn:hedp:synthetic:organisation",
+      "value": "ORG-000000007"
+    }
+  ],
+  "meta": {
+    "profile": [
+      "urn:hedp:fhir-inspired:1.0.0"
+    ],
+    "source": "SYN-EPR-FHIR",
+    "tag": [
+      {
+        "code": "SYNTHETIC-FHIR-INSPIRED",
+        "system": "urn:hedp:provenance"
+      }
+    ]
+  },
+  "name": "Synthetic Trust 007",
+  "resourceType": "Organization"
+}

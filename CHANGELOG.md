@@ -11,3 +11,5 @@ All notable changes will follow Keep a Changelog conventions. The project does n
   provenance, sample datasets, FHIR-inspired examples, CLI commands and tests.
 - Milestone 3 credential-free Snowflake foundation contract, Terraform resources for DEV/TEST/PROD,
   deterministic inventory, RBAC expectations, validation SQL, runbooks and static checks.
+- Milestone 4 deterministic FHIR-inspired and HL7 v2 ingestion foundation, canonical envelopes,
+  identifier crosswalks, quarantine, raw contracts, samples, CLI, tests and evidence.

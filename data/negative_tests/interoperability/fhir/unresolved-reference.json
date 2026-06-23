@@ -1,0 +1,15 @@
+{
+  "id": "ENC-000000001",
+  "meta": {
+    "tag": [
+      {
+        "code": "SYNTHETIC-FHIR-INSPIRED"
+      }
+    ]
+  },
+  "resourceType": "Encounter",
+  "status": "finished",
+  "subject": {
+    "reference": "Patient/PAT-999999999"
+  }
+}

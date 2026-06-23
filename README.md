@@ -2,7 +2,7 @@
 
 A production-style, synthetic-only Healthcare Enterprise Data Platform portfolio for clinical, operational, research and financial data engineering. Snowflake remains the target governed data platform and dbt remains the transformation, testing, documentation, lineage and business-logic centre of gravity.
 
-> **Status — Milestone 3 implemented locally, deployment pending:** the repository now declares and statically validates a credential-free Snowflake foundation for DEV, TEST and PROD. No Snowflake account was changed. The large synthetic profile remains configuration-only; source loading, dbt models, interoperability parsers, billing/finance domains and downstream integrations remain planned.
+> **Status — Milestone 4 complete locally:** deterministic FHIR-inspired resources and synthetic HL7 v2.5 messages are generated, parsed, validated, mapped and quarantined without credentials. Snowflake loading and formal standards conformance are not claimed. dbt models and later platform integrations remain planned.
 
 ## Why this project exists
 
@@ -21,6 +21,7 @@ Detailed boundaries are documented in [component responsibilities](docs/architec
 | Capability | Responsibility | Current status |
 |---|---|---|
 | Python synthetic platform | Deterministic source data, schemas, validation and provenance | **Implemented locally** for M2 domains |
+| Interoperability | Synthetic FHIR-inspired/HL7 generation, parsing, envelopes and quarantine | **Implemented locally for the bounded M4 subset** |
 | Snowflake | Governed central storage/compute, RAW-to-serving layers and access enforcement | **M3 foundation declared and statically validated; not deployed** |
 | dbt | Transformation, testing, documentation, lineage, dimensional models, contracts and business logic | **Parseable skeleton only; planned** |
 | FHIR and HL7 | Source interoperability, validation, canonical mapping and quarantine | **FHIR-inspired fixture only; parsers planned** |
@@ -54,8 +55,9 @@ The design follows least privilege, workload isolation, encryption in transit/at
 - **Complete:** Milestone 1 repository foundation.
 - **Complete with documented limitations:** Milestone 2 deterministic synthetic healthcare generation.
 - **Complete locally; live evidence pending:** Milestone 3 Snowflake foundation.
-- **Recommended next:** Milestone 4 FHIR and HL7 ingestion.
-- **Planned:** Milestones 4–17 add interoperability, dbt healthcare core, billing/finance and reconciliation, Airflow, Dataiku, feature store, Fabric/Power BI, executable governance, broader Terraform, multi-region recovery and portfolio evidence.
+- **Complete locally:** Milestone 4 FHIR and HL7 ingestion foundation.
+- **Recommended next:** Milestone 5 dbt staging layer.
+- **Planned:** Milestones 5–17 add dbt healthcare core, billing/finance and reconciliation, Airflow, Dataiku, feature store, Fabric/Power BI, executable governance, broader Terraform, multi-region recovery and portfolio evidence.
 
 The original 15-milestone plan has been transparently realigned into a 17-milestone dependency-led [roadmap](docs/roadmap/milestones.md). [ADR 0009](docs/decisions/0009-expand-to-healthcare-enterprise-platform.md) records why.
 
@@ -64,6 +66,7 @@ The original 15-milestone plan has been transparently realigned into a 17-milest
 | Path | Responsibility |
 |---|---|
 | `src/healthcare_platform` | Python CLI, generator, schemas, writers and validation |
+| `data/samples/interoperability` | Reviewed FHIR-inspired, HL7, envelope, crosswalk and manifest samples |
 | `config/synthetic` | Small, medium and large generation profiles |
 | `data/samples/small` | Reviewed 100-patient synthetic sample and evidence |
 | `dbt` | Transformation project conventions and future models |
@@ -104,6 +107,16 @@ terraform -chdir=infrastructure/terraform/environments/dev validate
 ```
 
 Rendering is a deterministic review artifact, not an apply. See the [deployment runbook](docs/operations/snowflake-deployment.md) before any connected execution.
+
+Run the interoperability sample locally:
+
+```bash
+healthcare-platform interoperability process-batch \
+  --input-dir data/samples/small/relational \
+  --output-dir /tmp/interoperability --seed 42
+healthcare-platform interoperability validate-fhir --input-dir /tmp/interoperability/fhir
+healthcare-platform interoperability validate-hl7 --input-dir /tmp/interoperability/hl7
+```
 
 ## Limitations
 

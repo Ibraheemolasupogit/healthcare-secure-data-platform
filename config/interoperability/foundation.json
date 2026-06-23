@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "parser_version": "1.0.0",
+  "reference_date": "2025-01-01",
+  "source_systems": {
+    "fhir": "SYN-EPR-FHIR",
+    "hl7": "SYN-INTEGRATION-HL7"
+  },
+  "supported_fhir_resources": [
+    "Patient",
+    "Organization",
+    "Location",
+    "Practitioner",
+    "Encounter",
+    "Appointment",
+    "Observation",
+    "DiagnosticReport",
+    "MedicationRequest",
+    "Consent"
+  ],
+  "supported_hl7_messages": ["ADT^A01", "ADT^A03", "ADT^A08", "ORM^O01", "ORU^R01", "SIU^S12"],
+  "supported_hl7_version": "2.5",
+  "accepted_status_codes": {
+    "Encounter": ["planned", "in-progress", "finished", "cancelled"],
+    "Appointment": ["booked", "fulfilled", "cancelled", "noshow"],
+    "Observation": ["registered", "preliminary", "final", "amended"],
+    "DiagnosticReport": ["registered", "preliminary", "final", "amended"],
+    "MedicationRequest": ["active", "completed", "cancelled"],
+    "Consent": ["active", "inactive", "rejected"]
+  },
+  "terminology_mapping_version": "1.0.0",
+  "identifier_namespaces": {
+    "patient": "urn:hedp:synthetic:patient",
+    "encounter": "urn:hedp:synthetic:encounter",
+    "organisation": "urn:hedp:synthetic:organisation",
+    "provider": "urn:hedp:synthetic:provider",
+    "appointment": "urn:hedp:synthetic:appointment",
+    "pathology_result": "urn:hedp:synthetic:pathology-result"
+  },
+  "environment": "DEV",
+  "synthetic_flag": true,
+  "warning_threshold": 0,
+  "default_output_location": "data/generated/interoperability",
+  "overwrite_default": false,
+  "quarantine_retry_error_codes": ["MALFORMED_JSON", "MALFORMED_TIMESTAMP", "UNRESOLVED_REFERENCE"]
+}

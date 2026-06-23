@@ -1,0 +1,30 @@
+{
+  "dateTime": "2025-01-01T09:00:00Z",
+  "id": "CON-000000001",
+  "identifier": [
+    {
+      "system": "urn:hedp:synthetic:consent",
+      "value": "CON-000000001"
+    }
+  ],
+  "meta": {
+    "profile": [
+      "urn:hedp:fhir-inspired:1.0.0"
+    ],
+    "source": "SYN-EPR-FHIR",
+    "tag": [
+      {
+        "code": "SYNTHETIC-FHIR-INSPIRED",
+        "system": "urn:hedp:provenance"
+      }
+    ]
+  },
+  "patient": {
+    "reference": "Patient/PAT-000000001"
+  },
+  "resourceType": "Consent",
+  "scope": {
+    "text": "Synthetic research consent"
+  },
+  "status": "active"
+}

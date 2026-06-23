@@ -1,0 +1,37 @@
+name: healthcare_secure_data_platform
+version: 0.1.0
+config-version: 2
+
+profile: healthcare_secure_data_platform
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  healthcare_secure_data_platform:
+    +persist_docs:
+      relation: true
+      columns: true
+    staging:
+      +materialized: view
+      +schema: staging
+    intermediate:
+      +materialized: ephemeral
+      +schema: intermediate
+    curated:
+      +materialized: table
+      +schema: curated
+    marts:
+      +materialized: table
+      +schema: mart
+    semantic:
+      +materialized: view
+      +schema: semantic
+
+vars:
+  healthcare_platform_execution_mode: local

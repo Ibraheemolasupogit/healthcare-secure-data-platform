@@ -1,0 +1,2 @@
+-- MILESTONE 9+ SCAFFOLD: secure views/shares for explicitly approved products only.
+-- Record recipient, purpose, expiry, revocation and row/masking policy behaviour.

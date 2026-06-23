@@ -1,0 +1,3 @@
+-- MILESTONE 3 SCAFFOLD: parameterise names before execution.
+-- Target databases: HSDP_<ENV>_RAW and HSDP_<ENV>_ANALYTICS.
+-- Define retention, ownership, comments and tags explicitly in deployment code.

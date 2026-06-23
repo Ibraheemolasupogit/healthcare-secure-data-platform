@@ -1,0 +1,2 @@
+-- MILESTONE 3 SCAFFOLD: managed-access schemas by logical layer.
+-- RAW, STAGING, INTERMEDIATE, CURATED, MART, SEMANTIC, GOVERNANCE and AUDIT.

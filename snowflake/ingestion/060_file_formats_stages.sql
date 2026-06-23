@@ -1,0 +1,2 @@
+-- MILESTONE 4 SCAFFOLD: controlled CSV/JSON formats and external/internal stages.
+-- Validate file type, size, provenance and malformed input before promotion.

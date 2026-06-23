@@ -1,0 +1,2 @@
+-- MILESTONE 9 SCAFFOLD: project/cohort/purpose mapping for approved research rows.
+-- Keep policy mapping tables under separate administrative ownership.

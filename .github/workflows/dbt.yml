@@ -1,0 +1,27 @@
+name: dbt structure
+
+on:
+  pull_request:
+    paths: ["dbt/**", "requirements-dev.txt", ".github/workflows/dbt.yml"]
+  push:
+    branches: [main]
+    paths: ["dbt/**", "requirements-dev.txt", ".github/workflows/dbt.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  parse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: python -m pip install "dbt-core>=1.8,<1.9" "dbt-snowflake>=1.8,<1.9"
+      - working-directory: dbt
+        run: dbt parse --profiles-dir . --no-partial-parse
+      # Future integration job (protected environment only) will read:
+      # SNOWFLAKE_ACCOUNT, SNOWFLAKE_USER, SNOWFLAKE_PRIVATE_KEY,
+      # SNOWFLAKE_ROLE, SNOWFLAKE_WAREHOUSE and SNOWFLAKE_DATABASE.

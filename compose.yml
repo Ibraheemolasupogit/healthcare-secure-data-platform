@@ -1,0 +1,12 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/Dockerfile
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    environment:
+      HEALTHCARE_PLATFORM_ENV: local
+      HEALTHCARE_PLATFORM_EXECUTION_MODE: docker
+    command: make validate

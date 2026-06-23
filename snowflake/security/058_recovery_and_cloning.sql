@@ -1,0 +1,2 @@
+-- MILESTONE 3/10 SCAFFOLD: layer-specific Time Travel and temporary clone controls.
+-- Every clone requires owner, purpose, expiry, access review and cleanup evidence.

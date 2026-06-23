@@ -1,0 +1,30 @@
+name: Milestone feature
+description: Propose work within a defined milestone.
+title: "[Milestone N] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance and evidence
+    validations:
+      required: true
+  - type: textarea
+    id: exclusions
+    attributes:
+      label: Explicit exclusions
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety
+      options:
+        - label: Uses synthetic data only and contains no credentials.
+          required: true

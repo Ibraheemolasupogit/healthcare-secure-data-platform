@@ -1,0 +1,2 @@
+-- MILESTONE 9 SCAFFOLD: type-specific masking policies driven by authorised roles.
+-- Masking is not anonymisation and must be tested under each consumer role.

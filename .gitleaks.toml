@@ -1,0 +1,9 @@
+title = "Healthcare Secure Data Platform gitleaks configuration"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Documented non-secret placeholder used only for dbt parse"
+paths = ['''dbt/profiles(\.example)?\.yml''']
+regexes = ['''placeholder-not-a-secret''']

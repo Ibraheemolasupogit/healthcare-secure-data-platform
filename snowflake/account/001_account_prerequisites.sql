@@ -1,0 +1,2 @@
+-- MILESTONE 3 SCAFFOLD: document edition/region/network/SSO prerequisites.
+-- Account-level changes require security approval and are not automated here yet.

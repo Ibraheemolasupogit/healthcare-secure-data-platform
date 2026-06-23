@@ -1,0 +1,2 @@
+-- MILESTONE 8 SCAFFOLD: notification-backed pipes with load/error monitoring.
+-- Design for duplicate delivery and replay; do not embed storage credentials.

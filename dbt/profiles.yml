@@ -1,0 +1,14 @@
+healthcare_secure_data_platform:
+  target: local_parse
+  outputs:
+    local_parse:
+      type: snowflake
+      account: placeholder.invalid
+      user: placeholder
+      password: placeholder-not-a-secret
+      role: placeholder
+      database: placeholder
+      warehouse: placeholder
+      schema: dbt_parse
+      threads: 1
+      connect_retries: 0

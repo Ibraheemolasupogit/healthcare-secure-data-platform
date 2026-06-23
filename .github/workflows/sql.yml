@@ -1,0 +1,22 @@
+name: SQL lint
+
+on:
+  pull_request:
+    paths: ["snowflake/**", ".sqlfluff", ".github/workflows/sql.yml"]
+  push:
+    branches: [main]
+    paths: ["snowflake/**", ".sqlfluff", ".github/workflows/sql.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install "sqlfluff>=3.1,<4"
+      - run: sqlfluff lint snowflake --dialect snowflake

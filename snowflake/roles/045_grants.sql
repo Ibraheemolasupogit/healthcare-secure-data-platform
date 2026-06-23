@@ -1,0 +1,2 @@
+-- MILESTONE 3 SCAFFOLD: explicit current/future grants with negative-access tests.
+-- Use least privilege and managed-access schema grant ownership.

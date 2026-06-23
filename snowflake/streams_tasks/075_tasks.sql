@@ -1,0 +1,2 @@
+-- MILESTONE 8 SCAFFOLD: Snowflake-local task graph, retry, timeout and suspend policy.
+-- Airflow must not duplicate these triggers.

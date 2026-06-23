@@ -1,0 +1,2 @@
+-- MILESTONE 3 SCAFFOLD: isolated INGEST, TRANSFORM, BI and RESEARCH warehouses.
+-- Require auto-suspend/resume, statement timeout, tags and resource monitors.

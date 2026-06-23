@@ -1,0 +1,1 @@
+-- MILESTONE 8 SCAFFOLD: append/standard streams with documented consumption owner.

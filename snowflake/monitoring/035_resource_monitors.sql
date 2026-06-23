@@ -1,0 +1,2 @@
+-- MILESTONE 3 SCAFFOLD: environment budgets and notify/suspend thresholds.
+-- Account-level emergency protection must not replace workload-level attribution.

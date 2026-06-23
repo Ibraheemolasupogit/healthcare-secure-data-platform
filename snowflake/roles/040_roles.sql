@@ -1,0 +1,2 @@
+-- MILESTONE 3 SCAFFOLD: ownership roles and functional role hierarchy.
+-- Never grant object privileges directly to users or service identities.

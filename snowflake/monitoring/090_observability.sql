@@ -1,0 +1,2 @@
+-- MILESTONE 7+ SCAFFOLD: query/access/load/task history and cost attribution views.
+-- Protect audit evidence from workload administrators and define retention.

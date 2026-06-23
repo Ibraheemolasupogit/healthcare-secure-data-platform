@@ -1,0 +1,278 @@
+{
+  "configuration_hash": "9929a89c3c315c29bcafa5f5eedc14838d4594b5c140b2765bbd8ddef6c54f3c",
+  "datasets": [
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/organisations.jsonl",
+          "sha256": "dfbeabb93e84dbed4d08040a61866d06045efb5a40bdd2dc25fe4e1b0c69c11a"
+        },
+        {
+          "format": "csv",
+          "path": "relational/organisations.csv",
+          "sha256": "0687c37ee26b99fef741e00c7bdc15e8bd6d2e8c80ef195e6f41aa02ba6f761c"
+        }
+      ],
+      "name": "organisations",
+      "row_count": 12,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/locations.jsonl",
+          "sha256": "cb778bb253892ddca2d3e0a3ea30b05a5995801fdf2edaa7fd716ed263dcf053"
+        },
+        {
+          "format": "csv",
+          "path": "relational/locations.csv",
+          "sha256": "d9a861971e09c0b9dd6daaf49be84b7dc5f9c2029997a2537c5e0b620ebd0840"
+        }
+      ],
+      "name": "locations",
+      "row_count": 24,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/providers.jsonl",
+          "sha256": "1256a188c0073244fc85bf5ba621dc8e295c1568992662d873071114cd2fddcc"
+        },
+        {
+          "format": "csv",
+          "path": "relational/providers.csv",
+          "sha256": "8030b29fdc04de2c7a37c63263cf41fa6d4e33c6edb9f7dd239bb51499b3e1a6"
+        }
+      ],
+      "name": "providers",
+      "row_count": 48,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/patients.jsonl",
+          "sha256": "605701a0e80a83bc1ab61c16146d14caa46a79118f767b7e16b69bb23925db85"
+        },
+        {
+          "format": "csv",
+          "path": "relational/patients.csv",
+          "sha256": "5e4942fac025fe1d342696585298a59a26daf6bf282271bce17136bf85207678"
+        }
+      ],
+      "name": "patients",
+      "row_count": 100,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/encounters.jsonl",
+          "sha256": "7e82433b7fa8771822a8540dbb81a869eab8a2530a568e47332281ce24ee8c98"
+        },
+        {
+          "format": "csv",
+          "path": "relational/encounters.csv",
+          "sha256": "a1725c2d8acc851fb88b0a61c40a945059635e4aed0aee54d364915c1f4314be"
+        }
+      ],
+      "name": "encounters",
+      "row_count": 200,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/admissions.jsonl",
+          "sha256": "bc4d96a481f6ec6c60d1d77371f86f6f960ed8fc53125afef76095ed9dbd6613"
+        },
+        {
+          "format": "csv",
+          "path": "relational/admissions.csv",
+          "sha256": "147ef5c5864beb7d77ff4f7881a27ba863744d128ab39d23e9896ad6afbfe17f"
+        }
+      ],
+      "name": "admissions",
+      "row_count": 36,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/appointments.jsonl",
+          "sha256": "569d08b712eeaced1b547f507dd8a24a2eceb7dc8ca3746e273536080e17237e"
+        },
+        {
+          "format": "csv",
+          "path": "relational/appointments.csv",
+          "sha256": "e9569c5c5104e33642d92db415caf56a0f2090f2a35b72f8fa3c26f30c5164c6"
+        }
+      ],
+      "name": "appointments",
+      "row_count": 80,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/pathways.jsonl",
+          "sha256": "835059f66ac50b29fce78ec72c74974a4d443c2dba01e26c05a180e355bfae61"
+        },
+        {
+          "format": "csv",
+          "path": "relational/pathways.csv",
+          "sha256": "a0990d8d1fa7f4d053fc95ae6146d8fb297c1958fb070bb34f3f85112441be94"
+        }
+      ],
+      "name": "pathways",
+      "row_count": 50,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/clinical_events.jsonl",
+          "sha256": "b70321b63696bcb53014e024e086642b5426d3d73ae4f16fd08c620294138143"
+        },
+        {
+          "format": "csv",
+          "path": "relational/clinical_events.csv",
+          "sha256": "ee30cb8d7ee582826ac5f51c5acc17efd4a1312dfe20de0448a1705159509b27"
+        }
+      ],
+      "name": "clinical_events",
+      "row_count": 250,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/pathology_results.jsonl",
+          "sha256": "1c56576b75d85ca311c0395b392f772b3953a1d5233313feb50506bef0df8cae"
+        },
+        {
+          "format": "csv",
+          "path": "relational/pathology_results.csv",
+          "sha256": "c286a1a0713de316fcbb03d164101f7a3f57c1abfdc4aaea765ce8ec576527d7"
+        }
+      ],
+      "name": "pathology_results",
+      "row_count": 70,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/medication_events.jsonl",
+          "sha256": "0dddcbe744330457c2327e6e7900e71acb8f82fccefe53ebd934753ae6acbe04"
+        },
+        {
+          "format": "csv",
+          "path": "relational/medication_events.csv",
+          "sha256": "a1a150c74b23800e6d44695bf6c23ea81d169370dee594080d276c72a12f8d92"
+        }
+      ],
+      "name": "medication_events",
+      "row_count": 80,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/research_consent.jsonl",
+          "sha256": "f5ab637edc5affe565698f15c6bf56331b8ff747d613f57fe4c0e0adc2f4faaf"
+        },
+        {
+          "format": "csv",
+          "path": "relational/research_consent.csv",
+          "sha256": "ce1ff19af855bfd14c30896fb935cb56458950a083fd57c58874bc086d66f1de"
+        }
+      ],
+      "name": "research_consent",
+      "row_count": 80,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/research_cohorts.jsonl",
+          "sha256": "8c65f6ac3bb49e1e5a5a2215f816c06e241ffb60a6ce97618066e365d8ecbf96"
+        },
+        {
+          "format": "csv",
+          "path": "relational/research_cohorts.csv",
+          "sha256": "d20e5d8a57706816a22eccc976cc41326520772ada75a947590e8068e5305c1d"
+        }
+      ],
+      "name": "research_cohorts",
+      "row_count": 20,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/audit_events.jsonl",
+          "sha256": "543665d6b631e90a7841215240c4b829f1869dd27b28d306a3b626d6cb129dad"
+        },
+        {
+          "format": "csv",
+          "path": "relational/audit_events.csv",
+          "sha256": "29f60cd87b3acfcfe3824306f31df7224f1fbe3b763eaa20fa7ee9a3725c0035"
+        }
+      ],
+      "name": "audit_events",
+      "row_count": 40,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/data_quality_events.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "format": "csv",
+          "path": "relational/data_quality_events.csv",
+          "sha256": "0c26ee047fcd412f9aeebfe0b6bbd2ca348c5389ef1442daf548c94f87e8e7b2"
+        }
+      ],
+      "name": "data_quality_events",
+      "row_count": 0,
+      "schema_version": "1.0.0"
+    }
+  ],
+  "defect_injection_enabled": false,
+  "generation_timestamp": "2026-06-23T02:06:53+00:00",
+  "generator_version": "0.2.0",
+  "output_formats": [
+    "csv",
+    "jsonl"
+  ],
+  "profile": "small",
+  "project_name": "Healthcare Secure Data Platform",
+  "reference_date": "2025-01-01",
+  "runtime_duration_seconds": 0.025595,
+  "seed": 42,
+  "source_code_identifier": "a43a808302de832c76be86b9053bb149cadfc670-dirty",
+  "synthetic_data_statement": "All records are deterministic synthetic portfolio data.",
+  "validation_passed": true,
+  "warnings": [
+    "FHIR-inspired resources are not formally conformant."
+  ]
+}

@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: install info format lint type test yaml sql dbt-parse terraform-fmt terraform-validate secrets validate
+.PHONY: install info generate-sample validate-sample format lint type test yaml sql dbt-parse terraform-fmt terraform-validate secrets validate
 
 install:
 	$(PYTHON) -m pip install -r requirements-dev.txt
@@ -8,6 +8,12 @@ install:
 
 info:
 	$(PYTHON) -m healthcare_platform.cli info
+
+generate-sample:
+	$(PYTHON) -m healthcare_platform.cli generate --profile small --seed 42 --reference-date 2025-01-01 --output-dir data/samples/small --overwrite
+
+validate-sample:
+	$(PYTHON) -m healthcare_platform.cli validate-data --input-dir data/samples/small
 
 format:
 	ruff format src tests

@@ -16,4 +16,4 @@ Research access is project-, purpose-, cohort- and time-bound. Dataiku operates 
 
 Terraform manages durable infrastructure. Promotion uses reviewed plans and protected environments. dbt artifacts, tests, freshness, Snowflake access/query history, load errors, task history and cost telemetry flow to monitoring. Recovery uses replayable RAW data, Time Travel, clones and documented restoration tests.
 
-None of this production topology is deployed in Milestone 1.
+None of this production topology is deployed in Milestones 1–2.

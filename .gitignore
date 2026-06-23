@@ -24,3 +24,9 @@ data/raw/*
 data/synthetic/*
 !data/raw/.gitkeep
 !data/synthetic/.gitkeep
+data/generated/
+data/negative_tests/
+data/**/*.tmp
+data/**/*.partial
+data/**/*.gz
+validation-scratch/

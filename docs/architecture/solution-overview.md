@@ -2,7 +2,7 @@
 
 ## Current state
 
-Milestone 1 implements repository structure, decision records, standards, a diagnostic Python CLI, and non-production scaffolding. It creates no data platform resources and processes no health records.
+Milestones 1–2 implement repository standards plus deterministic generation and validation of synthetic-only healthcare records. They create no Snowflake resources, perform no ingestion, and process no real health records.
 
 ## Target flow
 

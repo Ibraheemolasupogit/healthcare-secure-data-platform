@@ -1,0 +1,1953 @@
+{
+  "admissions": {
+    "description": "Synthetic inpatient admission and discharge episodes.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable admission identifier.",
+        "example": "ADM-000000001",
+        "name": "admission_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Related inpatient encounter.",
+        "example": "ENC-000000001",
+        "name": "encounter_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Admitted patient.",
+        "example": "PAT-000000001",
+        "name": "patient_id",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Admission time.",
+        "example": "2024-01-01T09:00:00Z",
+        "name": "admission_datetime",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Discharge time; null when open.",
+        "example": "2024-01-03T09:00:00Z",
+        "name": "discharge_datetime",
+        "nullable": true
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic admission route.",
+        "example": "ELECTIVE",
+        "name": "admission_method",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic discharge outcome.",
+        "example": "CLINICAL_DISCHARGE",
+        "name": "discharge_method",
+        "nullable": true
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Ward/location identifier.",
+        "example": "LOC-000000001",
+        "name": "ward_id",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "integer",
+        "description": "Calendar-day interval when discharged.",
+        "example": 2,
+        "name": "length_of_stay_days",
+        "nullable": true
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "boolean",
+        "description": "Whether a prior eligible admission exists.",
+        "example": false,
+        "name": "readmission_flag",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Prior admission supporting readmission flag.",
+        "example": null,
+        "name": "prior_admission_id",
+        "nullable": true
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Synthetic last update.",
+        "example": "2024-01-03T10:00:00Z",
+        "name": "updated_at",
+        "nullable": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "fields": [
+          "encounter_id"
+        ],
+        "reference_dataset": "encounters",
+        "reference_fields": [
+          "encounter_id"
+        ]
+      },
+      {
+        "fields": [
+          "patient_id"
+        ],
+        "reference_dataset": "patients",
+        "reference_fields": [
+          "patient_id"
+        ]
+      },
+      {
+        "fields": [
+          "ward_id"
+        ],
+        "reference_dataset": "locations",
+        "reference_fields": [
+          "location_id"
+        ]
+      },
+      {
+        "fields": [
+          "prior_admission_id"
+        ],
+        "reference_dataset": "admissions",
+        "reference_fields": [
+          "admission_id"
+        ]
+      }
+    ],
+    "name": "admissions",
+    "primary_key": [
+      "admission_id"
+    ],
+    "schema_version": "1.0.0"
+  },
+  "appointments": {
+    "description": "Synthetic outpatient appointments.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable appointment identifier.",
+        "example": "APT-000000001",
+        "name": "appointment_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Appointment patient.",
+        "example": "PAT-000000001",
+        "name": "patient_id",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Booking organisation.",
+        "example": "ORG-000000001",
+        "name": "organisation_id",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Appointment location.",
+        "example": "LOC-000000001",
+        "name": "location_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Appointment provider.",
+        "example": "PRV-000000001",
+        "name": "provider_id",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Scheduled time.",
+        "example": "2025-01-10T09:00:00Z",
+        "name": "appointment_datetime",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Booking time.",
+        "example": "2024-12-01T09:00:00Z",
+        "name": "booking_datetime",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic appointment category.",
+        "example": "NEW",
+        "name": "appointment_type",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": "attendance_status",
+        "data_type": "string",
+        "description": "Controlled attendance state.",
+        "example": "ATTENDED",
+        "name": "attendance_status",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Required only for cancellation.",
+        "example": null,
+        "name": "cancellation_reason",
+        "nullable": true
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Related referral clinical event.",
+        "example": "CLE-000000001",
+        "name": "referral_id",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Synthetic last update.",
+        "example": "2025-01-10T10:00:00Z",
+        "name": "updated_at",
+        "nullable": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "fields": [
+          "patient_id"
+        ],
+        "reference_dataset": "patients",
+        "reference_fields": [
+          "patient_id"
+        ]
+      },
+      {
+        "fields": [
+          "organisation_id"
+        ],
+        "reference_dataset": "organisations",
+        "reference_fields": [
+          "organisation_id"
+        ]
+      },
+      {
+        "fields": [
+          "location_id"
+        ],
+        "reference_dataset": "locations",
+        "reference_fields": [
+          "location_id"
+        ]
+      },
+      {
+        "fields": [
+          "provider_id"
+        ],
+        "reference_dataset": "providers",
+        "reference_fields": [
+          "provider_id"
+        ]
+      },
+      {
+        "fields": [
+          "referral_id"
+        ],
+        "reference_dataset": "clinical_events",
+        "reference_fields": [
+          "clinical_event_id"
+        ]
+      }
+    ],
+    "name": "appointments",
+    "primary_key": [
+      "appointment_id"
+    ],
+    "schema_version": "1.0.0"
+  },
+  "audit_events": {
+    "description": "Synthetic platform audit activity.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable audit event identifier.",
+        "example": "AUD-000000001",
+        "name": "audit_event_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic user/service actor.",
+        "example": "SVC-SYNTHETIC-01",
+        "name": "actor_id",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic platform role.",
+        "example": "DATA_ENGINEER",
+        "name": "actor_role",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": "audit_action",
+        "data_type": "string",
+        "description": "Controlled audit action.",
+        "example": "READ",
+        "name": "action",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Audited object category.",
+        "example": "DATASET",
+        "name": "object_type",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic object reference.",
+        "example": "patients",
+        "name": "object_id",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Audit event time.",
+        "example": "2024-01-01T00:00:00Z",
+        "name": "event_datetime",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic outcome.",
+        "example": "SUCCESS",
+        "name": "outcome",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic component label.",
+        "example": "GENERATOR",
+        "name": "source_component",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Non-secret environment label.",
+        "example": "local",
+        "name": "environment",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable synthetic correlation identifier.",
+        "example": "COR-000000001",
+        "name": "correlation_id",
+        "nullable": false
+      }
+    ],
+    "foreign_keys": [],
+    "name": "audit_events",
+    "primary_key": [
+      "audit_event_id"
+    ],
+    "schema_version": "1.0.0"
+  },
+  "clinical_events": {
+    "description": "Synthetic observations, diagnoses, procedures and referrals.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable clinical event identifier.",
+        "example": "CLE-000000001",
+        "name": "clinical_event_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Event patient.",
+        "example": "PAT-000000001",
+        "name": "patient_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Related encounter.",
+        "example": "ENC-000000001",
+        "name": "encounter_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Recording provider.",
+        "example": "PRV-000000001",
+        "name": "provider_id",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": "clinical_event_type",
+        "data_type": "string",
+        "description": "Controlled event category.",
+        "example": "OBSERVATION",
+        "name": "event_type",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic event code.",
+        "example": "SYN-OBS-01",
+        "name": "event_code",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic coded or numeric value.",
+        "example": "72",
+        "name": "event_value",
+        "nullable": true
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic unit when relevant.",
+        "example": "bpm",
+        "name": "event_unit",
+        "nullable": true
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Event time within encounter.",
+        "example": "2024-01-01T09:30:00Z",
+        "name": "event_datetime",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic source label.",
+        "example": "SYN-EPR",
+        "name": "source_system",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Synthetic last update.",
+        "example": "2024-01-01T10:00:00Z",
+        "name": "updated_at",
+        "nullable": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "fields": [
+          "patient_id"
+        ],
+        "reference_dataset": "patients",
+        "reference_fields": [
+          "patient_id"
+        ]
+      },
+      {
+        "fields": [
+          "encounter_id"
+        ],
+        "reference_dataset": "encounters",
+        "reference_fields": [
+          "encounter_id"
+        ]
+      },
+      {
+        "fields": [
+          "provider_id"
+        ],
+        "reference_dataset": "providers",
+        "reference_fields": [
+          "provider_id"
+        ]
+      }
+    ],
+    "name": "clinical_events",
+    "primary_key": [
+      "clinical_event_id"
+    ],
+    "schema_version": "1.0.0"
+  },
+  "data_quality_events": {
+    "description": "Deterministic register of intentionally injected defects.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable quality event identifier.",
+        "example": "DQE-000000001",
+        "name": "quality_event_id",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Affected canonical dataset.",
+        "example": "appointments",
+        "name": "dataset_name",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable validation rule identifier.",
+        "example": "BR-APT-001",
+        "name": "rule_id",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Human-readable rule.",
+        "example": "Cancelled appointment reason required",
+        "name": "rule_name",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": "quality_severity",
+        "data_type": "string",
+        "description": "Controlled quality severity.",
+        "example": "ERROR",
+        "name": "severity",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Affected synthetic record identifier.",
+        "example": "APT-000000001",
+        "name": "record_identifier",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Deterministic detection timestamp.",
+        "example": "2025-01-01T00:00:00Z",
+        "name": "detected_at",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Quality workflow state.",
+        "example": "OPEN",
+        "name": "status",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Expected remediation or test intent.",
+        "example": "NEGATIVE_TEST_ONLY",
+        "name": "resolution_action",
+        "nullable": false
+      }
+    ],
+    "foreign_keys": [],
+    "name": "data_quality_events",
+    "primary_key": [
+      "quality_event_id"
+    ],
+    "schema_version": "1.0.0"
+  },
+  "encounters": {
+    "description": "Synthetic care encounters.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable encounter identifier.",
+        "example": "ENC-000000001",
+        "name": "encounter_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Encounter patient.",
+        "example": "PAT-000000001",
+        "name": "patient_id",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Delivering organisation.",
+        "example": "ORG-000000001",
+        "name": "organisation_id",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Delivery location.",
+        "example": "LOC-000000001",
+        "name": "location_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Responsible provider.",
+        "example": "PRV-000000001",
+        "name": "provider_id",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": "encounter_type",
+        "data_type": "string",
+        "description": "Encounter category.",
+        "example": "OUTPATIENT",
+        "name": "encounter_type",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Admission route for inpatient care.",
+        "example": null,
+        "name": "admission_method",
+        "nullable": true
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Encounter start.",
+        "example": "2024-01-01T09:00:00Z",
+        "name": "start_datetime",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Encounter end; null when open.",
+        "example": "2024-01-01T10:00:00Z",
+        "name": "end_datetime",
+        "nullable": true
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": "encounter_status",
+        "data_type": "string",
+        "description": "Encounter status.",
+        "example": "COMPLETED",
+        "name": "status",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic discharge destination.",
+        "example": null,
+        "name": "discharge_destination",
+        "nullable": true
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic diagnosis code.",
+        "example": "SYN-DX-01",
+        "name": "primary_diagnosis_code",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic source label.",
+        "example": "SYN-EPR",
+        "name": "source_system",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Synthetic last update.",
+        "example": "2024-01-01T10:05:00Z",
+        "name": "updated_at",
+        "nullable": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "fields": [
+          "patient_id"
+        ],
+        "reference_dataset": "patients",
+        "reference_fields": [
+          "patient_id"
+        ]
+      },
+      {
+        "fields": [
+          "organisation_id"
+        ],
+        "reference_dataset": "organisations",
+        "reference_fields": [
+          "organisation_id"
+        ]
+      },
+      {
+        "fields": [
+          "location_id"
+        ],
+        "reference_dataset": "locations",
+        "reference_fields": [
+          "location_id"
+        ]
+      },
+      {
+        "fields": [
+          "provider_id"
+        ],
+        "reference_dataset": "providers",
+        "reference_fields": [
+          "provider_id"
+        ]
+      }
+    ],
+    "name": "encounters",
+    "primary_key": [
+      "encounter_id"
+    ],
+    "schema_version": "1.0.0"
+  },
+  "locations": {
+    "description": "Synthetic healthcare delivery locations.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable location identifier.",
+        "example": "LOC-000000001",
+        "name": "location_id",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Owning organisation.",
+        "example": "ORG-000000001",
+        "name": "organisation_id",
+        "nullable": false
+      },
+      {
+        "classification": "public metadata",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic location code.",
+        "example": "SYN-LOC-001",
+        "name": "location_code",
+        "nullable": false
+      },
+      {
+        "classification": "public metadata",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Fictional location label.",
+        "example": "Synthetic Clinic 001",
+        "name": "location_name",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": "location_type",
+        "data_type": "string",
+        "description": "Portfolio location category.",
+        "example": "CLINIC",
+        "name": "location_type",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": "specialty",
+        "data_type": "string",
+        "description": "Synthetic service specialty.",
+        "example": "CARDIOLOGY",
+        "name": "specialty",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "boolean",
+        "description": "Whether location is active.",
+        "example": true,
+        "name": "active_flag",
+        "nullable": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "fields": [
+          "organisation_id"
+        ],
+        "reference_dataset": "organisations",
+        "reference_fields": [
+          "organisation_id"
+        ]
+      }
+    ],
+    "name": "locations",
+    "primary_key": [
+      "location_id"
+    ],
+    "schema_version": "1.0.0"
+  },
+  "medication_events": {
+    "description": "Synthetic medication lifecycle events.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable medication event identifier.",
+        "example": "MED-000000001",
+        "name": "medication_event_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Medication patient.",
+        "example": "PAT-000000001",
+        "name": "patient_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Related encounter.",
+        "example": "ENC-000000001",
+        "name": "encounter_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Responsible provider.",
+        "example": "PRV-000000001",
+        "name": "provider_id",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic medication code.",
+        "example": "SYN-MED-01",
+        "name": "medication_code",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Fictional medication label.",
+        "example": "Synthetic Medicine 01",
+        "name": "medication_name",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": "medication_event_type",
+        "data_type": "string",
+        "description": "Medication lifecycle event.",
+        "example": "PRESCRIPTION",
+        "name": "event_type",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "number",
+        "description": "Synthetic dose amount.",
+        "example": 5.0,
+        "name": "dose",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Dose unit.",
+        "example": "mg",
+        "name": "dose_unit",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Administration route.",
+        "example": "ORAL",
+        "name": "route",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Medication event time.",
+        "example": "2024-01-01T10:00:00Z",
+        "name": "event_datetime",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic event status.",
+        "example": "COMPLETED",
+        "name": "status",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Synthetic last update.",
+        "example": "2024-01-01T10:05:00Z",
+        "name": "updated_at",
+        "nullable": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "fields": [
+          "patient_id"
+        ],
+        "reference_dataset": "patients",
+        "reference_fields": [
+          "patient_id"
+        ]
+      },
+      {
+        "fields": [
+          "encounter_id"
+        ],
+        "reference_dataset": "encounters",
+        "reference_fields": [
+          "encounter_id"
+        ]
+      },
+      {
+        "fields": [
+          "provider_id"
+        ],
+        "reference_dataset": "providers",
+        "reference_fields": [
+          "provider_id"
+        ]
+      }
+    ],
+    "name": "medication_events",
+    "primary_key": [
+      "medication_event_id"
+    ],
+    "schema_version": "1.0.0"
+  },
+  "organisations": {
+    "description": "Synthetic healthcare organisations and hierarchy.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable synthetic organisation identifier.",
+        "example": "ORG-000000001",
+        "name": "organisation_id",
+        "nullable": false
+      },
+      {
+        "classification": "public metadata",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic business code.",
+        "example": "SYN-ORG-001",
+        "name": "organisation_code",
+        "nullable": false
+      },
+      {
+        "classification": "public metadata",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Obviously fictional label.",
+        "example": "Synthetic Trust 001",
+        "name": "organisation_name",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": "organisation_type",
+        "data_type": "string",
+        "description": "Portfolio organisation category.",
+        "example": "TRUST",
+        "name": "organisation_type",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Optional parent identifier.",
+        "example": null,
+        "name": "parent_organisation_id",
+        "nullable": true
+      },
+      {
+        "classification": "public metadata",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic broad region.",
+        "example": "SYNTHETIC_NORTH",
+        "name": "region",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "boolean",
+        "description": "Whether the record is active.",
+        "example": true,
+        "name": "active_flag",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Effective start date.",
+        "example": "2015-01-01",
+        "name": "valid_from",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Effective end date.",
+        "example": null,
+        "name": "valid_to",
+        "nullable": true
+      }
+    ],
+    "foreign_keys": [
+      {
+        "fields": [
+          "parent_organisation_id"
+        ],
+        "reference_dataset": "organisations",
+        "reference_fields": [
+          "organisation_id"
+        ]
+      }
+    ],
+    "name": "organisations",
+    "primary_key": [
+      "organisation_id"
+    ],
+    "schema_version": "1.0.0"
+  },
+  "pathology_results": {
+    "description": "Synthetic laboratory results with derived abnormal flags.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable result identifier.",
+        "example": "LAB-000000001",
+        "name": "pathology_result_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Result patient.",
+        "example": "PAT-000000001",
+        "name": "patient_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Related encounter.",
+        "example": "ENC-000000001",
+        "name": "encounter_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Requesting provider.",
+        "example": "PRV-000000001",
+        "name": "requesting_provider_id",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Processing laboratory.",
+        "example": "ORG-000000005",
+        "name": "laboratory_organisation_id",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Controlled synthetic test code.",
+        "example": "SYN-HB",
+        "name": "test_code",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic test display name.",
+        "example": "Synthetic haemoglobin",
+        "name": "test_name",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "number",
+        "description": "Synthetic numeric result.",
+        "example": 140.0,
+        "name": "result_value",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Result unit.",
+        "example": "g/L",
+        "name": "result_unit",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "number",
+        "description": "Synthetic lower reference bound.",
+        "example": 120.0,
+        "name": "reference_low",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "number",
+        "description": "Synthetic upper reference bound.",
+        "example": 170.0,
+        "name": "reference_high",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "boolean",
+        "description": "Derived outside-range indicator.",
+        "example": false,
+        "name": "abnormal_flag",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Specimen collection time.",
+        "example": "2024-01-01T09:00:00Z",
+        "name": "specimen_datetime",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Result availability time.",
+        "example": "2024-01-01T14:00:00Z",
+        "name": "result_datetime",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": "pathology_status",
+        "data_type": "string",
+        "description": "Controlled result status.",
+        "example": "FINAL",
+        "name": "status",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Synthetic last update.",
+        "example": "2024-01-01T14:05:00Z",
+        "name": "updated_at",
+        "nullable": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "fields": [
+          "patient_id"
+        ],
+        "reference_dataset": "patients",
+        "reference_fields": [
+          "patient_id"
+        ]
+      },
+      {
+        "fields": [
+          "encounter_id"
+        ],
+        "reference_dataset": "encounters",
+        "reference_fields": [
+          "encounter_id"
+        ]
+      },
+      {
+        "fields": [
+          "requesting_provider_id"
+        ],
+        "reference_dataset": "providers",
+        "reference_fields": [
+          "provider_id"
+        ]
+      },
+      {
+        "fields": [
+          "laboratory_organisation_id"
+        ],
+        "reference_dataset": "organisations",
+        "reference_fields": [
+          "organisation_id"
+        ]
+      }
+    ],
+    "name": "pathology_results",
+    "primary_key": [
+      "pathology_result_id"
+    ],
+    "schema_version": "1.0.0"
+  },
+  "pathways": {
+    "description": "Synthetic referral-to-treatment pathways.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable pathway identifier.",
+        "example": "PTH-000000001",
+        "name": "pathway_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Pathway patient.",
+        "example": "PAT-000000001",
+        "name": "patient_id",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Referral received date.",
+        "example": "2024-01-01",
+        "name": "referral_date",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic pathway category.",
+        "example": "RTT",
+        "name": "pathway_type",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": "specialty",
+        "data_type": "string",
+        "description": "Pathway specialty.",
+        "example": "CARDIOLOGY",
+        "name": "specialty",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Responsible organisation.",
+        "example": "ORG-000000001",
+        "name": "organisation_id",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Waiting-time clock start.",
+        "example": "2024-01-01",
+        "name": "clock_start_date",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": "pathway_status",
+        "data_type": "string",
+        "description": "Current pathway status.",
+        "example": "ACTIVE",
+        "name": "current_status",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": "pathway_stage",
+        "data_type": "string",
+        "description": "Current pathway stage.",
+        "example": "TRIAGED",
+        "name": "current_stage",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Deterministic 126-day target.",
+        "example": "2024-05-06",
+        "name": "target_date",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Completion/cancellation date.",
+        "example": null,
+        "name": "completion_date",
+        "nullable": true
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "integer",
+        "description": "Days from clock start to completion/reference date.",
+        "example": 45,
+        "name": "waiting_days",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "boolean",
+        "description": "Whether waiting_days exceeds 126.",
+        "example": false,
+        "name": "breach_flag",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Synthetic last update.",
+        "example": "2024-02-15T00:00:00Z",
+        "name": "updated_at",
+        "nullable": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "fields": [
+          "patient_id"
+        ],
+        "reference_dataset": "patients",
+        "reference_fields": [
+          "patient_id"
+        ]
+      },
+      {
+        "fields": [
+          "organisation_id"
+        ],
+        "reference_dataset": "organisations",
+        "reference_fields": [
+          "organisation_id"
+        ]
+      }
+    ],
+    "name": "pathways",
+    "primary_key": [
+      "pathway_id"
+    ],
+    "schema_version": "1.0.0"
+  },
+  "patients": {
+    "description": "Synthetic pseudonymised patient records without names or contact details.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable synthetic patient identifier.",
+        "example": "PAT-000000001",
+        "name": "patient_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Deterministic one-way synthetic pseudonym.",
+        "example": "SYN-PSEUDO-ab12",
+        "name": "patient_pseudonym",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Visibly synthetic non-production identifier.",
+        "example": "SYN-NHS-000000001",
+        "name": "synthetic_nhs_number",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic quasi-identifier",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Synthetic date of birth; sensitive if real.",
+        "example": "1980-01-01",
+        "name": "birth_date",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic quasi-identifier",
+        "controlled_code_set": "sex",
+        "data_type": "string",
+        "description": "Synthetic administrative sex code.",
+        "example": "FEMALE",
+        "name": "sex",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic quasi-identifier",
+        "controlled_code_set": "ethnicity",
+        "data_type": "string",
+        "description": "Synthetic broad ethnicity code.",
+        "example": "NOT_STATED",
+        "name": "ethnicity",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic quasi-identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Non-real synthetic sector marker.",
+        "example": "SYN-01",
+        "name": "postcode_sector",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic registered organisation.",
+        "example": "ORG-000000001",
+        "name": "registered_gp_organisation_id",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "boolean",
+        "description": "Whether death_date is populated.",
+        "example": false,
+        "name": "deceased_flag",
+        "nullable": false
+      },
+      {
+        "classification": "clinical",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Synthetic date of death; sensitive if real.",
+        "example": null,
+        "name": "death_date",
+        "nullable": true
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Synthetic source creation time.",
+        "example": "2023-01-01T00:00:00Z",
+        "name": "record_created_at",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Synthetic last update time.",
+        "example": "2024-01-01T00:00:00Z",
+        "name": "record_updated_at",
+        "nullable": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "fields": [
+          "registered_gp_organisation_id"
+        ],
+        "reference_dataset": "organisations",
+        "reference_fields": [
+          "organisation_id"
+        ]
+      }
+    ],
+    "name": "patients",
+    "primary_key": [
+      "patient_id"
+    ],
+    "schema_version": "1.0.0"
+  },
+  "providers": {
+    "description": "Synthetic providers without personal names.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable provider identifier.",
+        "example": "PRV-000000001",
+        "name": "provider_id",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Employing organisation.",
+        "example": "ORG-000000001",
+        "name": "organisation_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Obviously synthetic display label.",
+        "example": "Provider-000001",
+        "name": "provider_label",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": "provider_role",
+        "data_type": "string",
+        "description": "Portfolio workforce role.",
+        "example": "CONSULTANT",
+        "name": "provider_role",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": "specialty",
+        "data_type": "string",
+        "description": "Synthetic specialty.",
+        "example": "GENERAL_MEDICINE",
+        "name": "specialty",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "boolean",
+        "description": "Whether provider is active.",
+        "example": true,
+        "name": "active_flag",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Effective start date.",
+        "example": "2018-01-01",
+        "name": "valid_from",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Effective end date.",
+        "example": null,
+        "name": "valid_to",
+        "nullable": true
+      }
+    ],
+    "foreign_keys": [
+      {
+        "fields": [
+          "organisation_id"
+        ],
+        "reference_dataset": "organisations",
+        "reference_fields": [
+          "organisation_id"
+        ]
+      }
+    ],
+    "name": "providers",
+    "primary_key": [
+      "provider_id"
+    ],
+    "schema_version": "1.0.0"
+  },
+  "research_cohorts": {
+    "description": "Synthetic approved cohort membership.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable membership identifier.",
+        "example": "COH-000000001",
+        "name": "cohort_membership_id",
+        "nullable": false
+      },
+      {
+        "classification": "research",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic cohort identifier.",
+        "example": "SYN-COHORT-01",
+        "name": "cohort_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Eligible synthetic patient.",
+        "example": "PAT-000000001",
+        "name": "patient_id",
+        "nullable": false
+      },
+      {
+        "classification": "research",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Fictional cohort label.",
+        "example": "Synthetic Cardiology Study",
+        "name": "cohort_name",
+        "nullable": false
+      },
+      {
+        "classification": "research",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Membership start date.",
+        "example": "2024-01-01",
+        "name": "inclusion_date",
+        "nullable": false
+      },
+      {
+        "classification": "research",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Membership exclusion date.",
+        "example": null,
+        "name": "exclusion_date",
+        "nullable": true
+      },
+      {
+        "classification": "research",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Controlled inclusion rationale.",
+        "example": "VALID_ACTIVE_CONSENT",
+        "name": "inclusion_reason",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "boolean",
+        "description": "Derived eligibility at inclusion.",
+        "example": true,
+        "name": "eligible_flag",
+        "nullable": false
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": "consent_status",
+        "data_type": "string",
+        "description": "Consent state at inclusion.",
+        "example": "ACTIVE",
+        "name": "consent_status_at_inclusion",
+        "nullable": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "fields": [
+          "patient_id"
+        ],
+        "reference_dataset": "patients",
+        "reference_fields": [
+          "patient_id"
+        ]
+      }
+    ],
+    "name": "research_cohorts",
+    "primary_key": [
+      "cohort_membership_id"
+    ],
+    "schema_version": "1.0.0"
+  },
+  "research_consent": {
+    "description": "Synthetic research consent status.",
+    "fields": [
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Stable consent identifier.",
+        "example": "CON-000000001",
+        "name": "consent_id",
+        "nullable": false
+      },
+      {
+        "classification": "synthetic direct identifier",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Consent patient.",
+        "example": "PAT-000000001",
+        "name": "patient_id",
+        "nullable": false
+      },
+      {
+        "classification": "research",
+        "controlled_code_set": null,
+        "data_type": "string",
+        "description": "Synthetic consent purpose.",
+        "example": "GENERAL_RESEARCH",
+        "name": "consent_type",
+        "nullable": false
+      },
+      {
+        "classification": "research",
+        "controlled_code_set": "consent_status",
+        "data_type": "string",
+        "description": "Controlled consent state.",
+        "example": "ACTIVE",
+        "name": "consent_status",
+        "nullable": false
+      },
+      {
+        "classification": "research",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Consent validity start.",
+        "example": "2023-01-01",
+        "name": "valid_from",
+        "nullable": false
+      },
+      {
+        "classification": "research",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Consent expiry date.",
+        "example": null,
+        "name": "valid_to",
+        "nullable": true
+      },
+      {
+        "classification": "research",
+        "controlled_code_set": null,
+        "data_type": "date",
+        "description": "Withdrawal date when withdrawn.",
+        "example": null,
+        "name": "withdrawal_date",
+        "nullable": true
+      },
+      {
+        "classification": "governance",
+        "controlled_code_set": null,
+        "data_type": "boolean",
+        "description": "Derived active validity indicator.",
+        "example": true,
+        "name": "research_use_allowed",
+        "nullable": false
+      },
+      {
+        "classification": "operational",
+        "controlled_code_set": null,
+        "data_type": "datetime",
+        "description": "Synthetic last update.",
+        "example": "2024-01-01T00:00:00Z",
+        "name": "updated_at",
+        "nullable": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "fields": [
+          "patient_id"
+        ],
+        "reference_dataset": "patients",
+        "reference_fields": [
+          "patient_id"
+        ]
+      }
+    ],
+    "name": "research_consent",
+    "primary_key": [
+      "consent_id"
+    ],
+    "schema_version": "1.0.0"
+  }
+}

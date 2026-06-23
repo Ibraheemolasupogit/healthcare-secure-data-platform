@@ -2,10 +2,17 @@
 
 import argparse
 import importlib.util
+import json
 import platform
+from dataclasses import replace
+from datetime import date
+from pathlib import Path
 
 from healthcare_platform.config import load_settings, snowflake_credentials_present
 from healthcare_platform.logging_config import configure_logging
+from healthcare_platform.synthetic.profiles import DEFAULT_PROFILE_PATH, load_profile
+from healthcare_platform.synthetic.schemas import DATASET_ORDER, SCHEMAS
+from healthcare_platform.synthetic.service import generate_to_directory, validate_directory
 
 PROJECT_NAME = "Healthcare Secure Data Platform"
 
@@ -20,6 +27,25 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="healthcare-platform")
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("info", help="show safe local environment diagnostics")
+    generate = subparsers.add_parser("generate", help="generate deterministic synthetic datasets")
+    generate.add_argument("--profile", choices=("small", "medium", "large"), default="small")
+    generate.add_argument("--seed", type=int, default=42)
+    generate.add_argument("--reference-date", type=date.fromisoformat, default=date(2025, 1, 1))
+    generate.add_argument("--output-dir", type=Path)
+    generate.add_argument("--format", choices=("all", "csv", "jsonl"), default="all")
+    generate.add_argument("--patient-count", type=int)
+    generate.add_argument("--inject-defects", action="store_true")
+    generate.add_argument("--negative-test-mode", action="store_true")
+    generate.add_argument("--overwrite", action="store_true")
+    generate.add_argument("--config", type=Path, default=DEFAULT_PROFILE_PATH)
+    validate_parser = subparsers.add_parser("validate-data", help="validate a generated output")
+    validate_parser.add_argument("--input-dir", type=Path, required=True)
+    describe = subparsers.add_parser(
+        "describe-profile", help="show profile configuration and estimates"
+    )
+    describe.add_argument("profile", choices=("small", "medium", "large"))
+    describe.add_argument("--config", type=Path, default=DEFAULT_PROFILE_PATH)
+    subparsers.add_parser("list-datasets", help="list canonical datasets and schema versions")
     return parser
 
 
@@ -40,11 +66,71 @@ def info() -> int:
     return 0
 
 
+def _generate(args: argparse.Namespace) -> int:
+    profile = load_profile(args.profile, args.config).with_patient_count(args.patient_count)
+    if args.format != "all":
+        profile = replace(profile, output_formats=(args.format,))
+    default_root = Path("data/negative_tests" if args.negative_test_mode else "data/generated")
+    output_dir = args.output_dir or default_root / profile.name
+    result = generate_to_directory(
+        profile=profile,
+        seed=args.seed,
+        reference_date=args.reference_date,
+        output_dir=output_dir,
+        overwrite=args.overwrite,
+        inject_defects=args.inject_defects,
+        negative_test_mode=args.negative_test_mode,
+    )
+    print(f"output_dir: {result.output_dir}")
+    for dataset, count in result.row_counts.items():
+        print(f"{dataset}: {count}")
+    print(f"validation: {'PASS' if result.validation.valid else 'FAIL'}")
+    return 0 if result.validation.valid or args.negative_test_mode else 1
+
+
+def _describe(args: argparse.Namespace) -> int:
+    profile = load_profile(args.profile, args.config)
+    print(
+        json.dumps(
+            {"configuration": profile.as_dict(), "estimated_rows": profile.estimated_rows()},
+            indent=2,
+        )
+    )
+    return 0
+
+
+def _list_datasets() -> int:
+    for name in DATASET_ORDER:
+        print(f"{name}: schema {SCHEMAS[name].schema_version} — {SCHEMAS[name].description}")
+    return 0
+
+
+def _validate_data(args: argparse.Namespace) -> int:
+    report = validate_directory(args.input_dir)
+    report.write(args.input_dir)
+    print(f"validation: {'PASS' if report.valid else 'FAIL'}")
+    print(f"rows_validated: {report.rows_validated}")
+    print(f"issues: {len(report.issues)}")
+    return 0 if report.valid else 1
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the CLI."""
     args = build_parser().parse_args(argv)
-    if args.command == "info":
-        return info()
+    try:
+        if args.command == "info":
+            return info()
+        if args.command == "generate":
+            return _generate(args)
+        if args.command == "validate-data":
+            return _validate_data(args)
+        if args.command == "describe-profile":
+            return _describe(args)
+        if args.command == "list-datasets":
+            return _list_datasets()
+    except (ValueError, OSError, json.JSONDecodeError) as error:
+        print(f"error: {error}")
+        return 2
     return 2
 
 

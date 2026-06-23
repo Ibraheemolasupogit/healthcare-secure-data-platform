@@ -10,6 +10,18 @@ from pathlib import Path
 
 from healthcare_platform.config import load_settings, snowflake_credentials_present
 from healthcare_platform.logging_config import configure_logging
+from healthcare_platform.snowflake_foundation import (
+    DEFAULT_CONFIG_PATH as DEFAULT_SNOWFLAKE_CONFIG_PATH,
+)
+from healthcare_platform.snowflake_foundation import (
+    DEFAULT_INVENTORY_PATH as DEFAULT_SNOWFLAKE_INVENTORY_PATH,
+)
+from healthcare_platform.snowflake_foundation import (
+    load_foundation,
+    render_preview,
+    validate_foundation,
+    write_inventory,
+)
 from healthcare_platform.synthetic.profiles import DEFAULT_PROFILE_PATH, load_profile
 from healthcare_platform.synthetic.schemas import DATASET_ORDER, SCHEMAS
 from healthcare_platform.synthetic.service import generate_to_directory, validate_directory
@@ -46,6 +58,27 @@ def build_parser() -> argparse.ArgumentParser:
     describe.add_argument("profile", choices=("small", "medium", "large"))
     describe.add_argument("--config", type=Path, default=DEFAULT_PROFILE_PATH)
     subparsers.add_parser("list-datasets", help="list canonical datasets and schema versions")
+    snowflake_validate = subparsers.add_parser(
+        "snowflake-validate", help="statically validate the credential-free Snowflake foundation"
+    )
+    snowflake_validate.add_argument("--config", type=Path, default=DEFAULT_SNOWFLAKE_CONFIG_PATH)
+    snowflake_validate.add_argument(
+        "--inventory", type=Path, default=DEFAULT_SNOWFLAKE_INVENTORY_PATH
+    )
+    snowflake_inventory = subparsers.add_parser(
+        "snowflake-inventory", help="write deterministic declared-object inventory"
+    )
+    snowflake_inventory.add_argument("--config", type=Path, default=DEFAULT_SNOWFLAKE_CONFIG_PATH)
+    snowflake_inventory.add_argument(
+        "--output", type=Path, default=DEFAULT_SNOWFLAKE_INVENTORY_PATH
+    )
+    snowflake_render = subparsers.add_parser(
+        "snowflake-render", help="render non-deploying Snowflake validation previews"
+    )
+    snowflake_render.add_argument("--environment", choices=("DEV", "TEST", "PROD"), default="DEV")
+    snowflake_render.add_argument("--config", type=Path, default=DEFAULT_SNOWFLAKE_CONFIG_PATH)
+    snowflake_render.add_argument("--output-dir", type=Path, default=Path("outputs/snowflake/dev"))
+    snowflake_render.add_argument("--overwrite", action="store_true")
     return parser
 
 
@@ -114,6 +147,34 @@ def _validate_data(args: argparse.Namespace) -> int:
     return 0 if report.valid else 1
 
 
+def _snowflake_validate(args: argparse.Namespace) -> int:
+    result = validate_foundation(args.config, args.inventory)
+    print(f"validation: {'PASS' if result.valid else 'FAIL'}")
+    print(f"declared_objects: {result.inventory_count}")
+    print(f"configuration_sha256: {result.configuration_sha256}")
+    for warning in result.warnings:
+        print(f"warning: {warning}")
+    for error in result.errors:
+        print(f"error: {error}")
+    return 0 if result.valid else 1
+
+
+def _snowflake_inventory(args: argparse.Namespace) -> int:
+    path = write_inventory(load_foundation(args.config), args.output)
+    print(f"inventory: {path}")
+    return 0
+
+
+def _snowflake_render(args: argparse.Namespace) -> int:
+    files = render_preview(
+        load_foundation(args.config), args.environment, args.output_dir, args.overwrite
+    )
+    print(f"output_dir: {args.output_dir}")
+    for path in files:
+        print(f"rendered: {path}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the CLI."""
     args = build_parser().parse_args(argv)
@@ -128,6 +189,12 @@ def main(argv: list[str] | None = None) -> int:
             return _describe(args)
         if args.command == "list-datasets":
             return _list_datasets()
+        if args.command == "snowflake-validate":
+            return _snowflake_validate(args)
+        if args.command == "snowflake-inventory":
+            return _snowflake_inventory(args)
+        if args.command == "snowflake-render":
+            return _snowflake_render(args)
     except (ValueError, OSError, json.JSONDecodeError) as error:
         print(f"error: {error}")
         return 2

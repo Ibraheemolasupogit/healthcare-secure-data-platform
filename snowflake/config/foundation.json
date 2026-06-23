@@ -1,0 +1,281 @@
+{
+  "schema_version": "1.0.0",
+  "name_prefix": "HEDP",
+  "supported_environments": ["DEV", "TEST", "PROD"],
+  "status": "DECLARED_NOT_DEPLOYED",
+  "databases": {
+    "RAW": {
+      "purpose": "Immutable source-aligned clinical, operational, interoperability and finance landing zones.",
+      "owner_role": "RAW_OWNER",
+      "classification": "RESTRICTED",
+      "retention_days": {"DEV": 1, "TEST": 1, "PROD": 7},
+      "schemas": {
+        "CLINICAL": "Future clinical extracts; direct identifiers remain restricted.",
+        "OPERATIONAL": "Future scheduling, pathway and service-operation extracts.",
+        "BILLING": "Future claims, invoice and payment source extracts.",
+        "FINANCE": "Future finance ledger and reconciliation source extracts.",
+        "INTEROPERABILITY": "Future canonical FHIR and HL7-like source payloads.",
+        "REFERENCE": "Future controlled reference and crosswalk inputs.",
+        "QUARANTINE": "Future rejected or malformed records awaiting disposition.",
+        "AUDIT": "Future source and platform audit feeds."
+      }
+    },
+    "CURATED": {
+      "purpose": "Future governed reusable healthcare and finance entities owned by dbt.",
+      "owner_role": "CURATED_OWNER",
+      "classification": "RESTRICTED",
+      "retention_days": {"DEV": 1, "TEST": 1, "PROD": 7},
+      "schemas": {
+        "CORE": "Future conformed patient, organisation, provider and location entities.",
+        "CLINICAL": "Future conformed encounter, treatment and clinical facts.",
+        "OPERATIONAL": "Future conformed appointments, pathways and service operations.",
+        "BILLING": "Future billable activity, tariff, claim and invoice entities.",
+        "FINANCE": "Future payment, balance and revenue entities.",
+        "RESEARCH": "Future consent-governed pseudonymised research entities.",
+        "FEATURES": "Future governed offline analytical feature views.",
+        "QUALITY": "Future dbt quality results and exceptions."
+      }
+    },
+    "SERVING": {
+      "purpose": "Future approved marts, semantic interfaces, research products and feature views.",
+      "owner_role": "SERVING_OWNER",
+      "classification": "GOVERNED",
+      "retention_days": {"DEV": 1, "TEST": 1, "PROD": 7},
+      "schemas": {
+        "CLINICAL_MARTS": "Future certified clinical marts.",
+        "OPERATIONAL_MARTS": "Future certified operational marts.",
+        "BILLING_MARTS": "Future certified billing marts.",
+        "FINANCE_MARTS": "Future certified finance and revenue-assurance marts.",
+        "RESEARCH_PRODUCTS": "Future approved research outputs.",
+        "BI": "Future certified Fabric and Power BI interfaces.",
+        "ML_OUTPUTS": "Future governed Dataiku model outputs."
+      }
+    },
+    "GOVERNANCE": {
+      "purpose": "Future platform controls, security metadata, quality, lineage and evidence.",
+      "owner_role": "GOVERNANCE_OWNER",
+      "classification": "GOVERNANCE",
+      "retention_days": {"DEV": 1, "TEST": 1, "PROD": 30},
+      "schemas": {
+        "CONTROL": "Future deployment and reconciliation control metadata.",
+        "MONITORING": "Future query, warehouse and pipeline monitoring products.",
+        "SECURITY": "Tags and future masking or row-policy attachment points.",
+        "DATA_QUALITY": "Future enterprise data-quality events and scorecards.",
+        "LINEAGE": "Future dbt and cross-platform lineage metadata.",
+        "EVIDENCE": "Future redacted validation and operational evidence metadata."
+      }
+    }
+  },
+  "resource_monitors": {
+    "ENVIRONMENT": {
+      "purpose": "Environment-wide monthly cost guardrail assigned to every HEDP warehouse.",
+      "owner_role": "PLATFORM_OWNER",
+      "frequency": "MONTHLY",
+      "start_timestamp": "IMMEDIATELY",
+      "credit_quota": {"DEV": 100, "TEST": 250, "PROD": 1000},
+      "notify_triggers": [50, 75],
+      "suspend_trigger": 90,
+      "suspend_immediate_trigger": 100,
+      "escalation": "Platform owner reviews usage; production suspension requires incident handling."
+    }
+  },
+  "warehouses": {
+    "INGEST_WH": {
+      "purpose": "Future batch and interoperability ingestion workloads.",
+      "owner_role": "PLATFORM_OWNER",
+      "sizes": {"DEV": "XSMALL", "TEST": "XSMALL", "PROD": "SMALL"},
+      "auto_suspend_seconds": 60,
+      "auto_resume": true,
+      "min_cluster_count": 1,
+      "max_cluster_count": 1,
+      "scaling_policy": "ECONOMY",
+      "statement_timeout_seconds": 1800,
+      "resource_monitor": "ENVIRONMENT",
+      "expected_workload": "Short bounded load and validation statements.",
+      "future_consumers": ["SERVICE_INGEST", "DATA_ENGINEER"]
+    },
+    "TRANSFORM_WH": {
+      "purpose": "Future dbt transformation and controlled engineering workloads.",
+      "owner_role": "PLATFORM_OWNER",
+      "sizes": {"DEV": "XSMALL", "TEST": "SMALL", "PROD": "MEDIUM"},
+      "auto_suspend_seconds": 120,
+      "auto_resume": true,
+      "min_cluster_count": 1,
+      "max_cluster_count": 2,
+      "scaling_policy": "ECONOMY",
+      "statement_timeout_seconds": 3600,
+      "resource_monitor": "ENVIRONMENT",
+      "expected_workload": "dbt builds, snapshots and incremental transformations.",
+      "future_consumers": ["SERVICE_TRANSFORM", "ANALYTICS_ENGINEER"]
+    },
+    "QUALITY_WH": {
+      "purpose": "Future data-quality, reconciliation and observability checks.",
+      "owner_role": "PLATFORM_OWNER",
+      "sizes": {"DEV": "XSMALL", "TEST": "XSMALL", "PROD": "SMALL"},
+      "auto_suspend_seconds": 60,
+      "auto_resume": true,
+      "min_cluster_count": 1,
+      "max_cluster_count": 1,
+      "scaling_policy": "ECONOMY",
+      "statement_timeout_seconds": 1800,
+      "resource_monitor": "ENVIRONMENT",
+      "expected_workload": "Quality rules, control totals and monitoring queries.",
+      "future_consumers": ["DATA_QUALITY_ANALYST", "AUDITOR"]
+    },
+    "RESEARCH_WH": {
+      "purpose": "Future isolated approved research and Dataiku analytical workloads.",
+      "owner_role": "PLATFORM_OWNER",
+      "sizes": {"DEV": "XSMALL", "TEST": "XSMALL", "PROD": "SMALL"},
+      "auto_suspend_seconds": 60,
+      "auto_resume": true,
+      "min_cluster_count": 1,
+      "max_cluster_count": 1,
+      "scaling_policy": "ECONOMY",
+      "statement_timeout_seconds": 1800,
+      "resource_monitor": "ENVIRONMENT",
+      "expected_workload": "Approved cohort analysis and future offline feature access.",
+      "future_consumers": ["RESEARCHER", "DATA_SCIENTIST"]
+    },
+    "BI_WH": {
+      "purpose": "Future read-only Fabric, Power BI and certified reporting queries.",
+      "owner_role": "PLATFORM_OWNER",
+      "sizes": {"DEV": "XSMALL", "TEST": "XSMALL", "PROD": "SMALL"},
+      "auto_suspend_seconds": 60,
+      "auto_resume": true,
+      "min_cluster_count": 1,
+      "max_cluster_count": 2,
+      "scaling_policy": "ECONOMY",
+      "statement_timeout_seconds": 900,
+      "resource_monitor": "ENVIRONMENT",
+      "expected_workload": "Read-only semantic and dashboard consumption.",
+      "future_consumers": ["BI_CONSUMER", "SERVICE_REPORTING"]
+    },
+    "ADMIN_WH": {
+      "purpose": "Bounded platform administration, inventory and evidence queries.",
+      "owner_role": "PLATFORM_OWNER",
+      "sizes": {"DEV": "XSMALL", "TEST": "XSMALL", "PROD": "XSMALL"},
+      "auto_suspend_seconds": 60,
+      "auto_resume": true,
+      "min_cluster_count": 1,
+      "max_cluster_count": 1,
+      "scaling_policy": "ECONOMY",
+      "statement_timeout_seconds": 900,
+      "resource_monitor": "ENVIRONMENT",
+      "expected_workload": "Deployment verification and metadata inspection only.",
+      "future_consumers": ["PLATFORM_OWNER", "AUDITOR"]
+    }
+  },
+  "roles": {
+    "ownership": ["PLATFORM_OWNER", "RAW_OWNER", "CURATED_OWNER", "SERVING_OWNER", "GOVERNANCE_OWNER"],
+    "functional": [
+      "DATA_ENGINEER",
+      "ANALYTICS_ENGINEER",
+      "DATA_QUALITY_ANALYST",
+      "CLINICAL_ANALYST",
+      "FINANCE_ANALYST",
+      "DATA_SCIENTIST",
+      "RESEARCHER",
+      "BI_CONSUMER",
+      "AUDITOR",
+      "SERVICE_INGEST",
+      "SERVICE_TRANSFORM",
+      "SERVICE_REPORTING"
+    ],
+    "external_parents": ["SYSADMIN"],
+    "hierarchy": {
+      "RAW_OWNER": "PLATFORM_OWNER",
+      "CURATED_OWNER": "PLATFORM_OWNER",
+      "SERVING_OWNER": "PLATFORM_OWNER",
+      "GOVERNANCE_OWNER": "PLATFORM_OWNER",
+      "PLATFORM_OWNER": "SYSADMIN",
+      "DATA_ENGINEER": "SYSADMIN",
+      "ANALYTICS_ENGINEER": "SYSADMIN",
+      "DATA_QUALITY_ANALYST": "SYSADMIN",
+      "CLINICAL_ANALYST": "SYSADMIN",
+      "FINANCE_ANALYST": "SYSADMIN",
+      "DATA_SCIENTIST": "SYSADMIN",
+      "RESEARCHER": "SYSADMIN",
+      "BI_CONSUMER": "SYSADMIN",
+      "AUDITOR": "SYSADMIN",
+      "SERVICE_INGEST": "SYSADMIN",
+      "SERVICE_TRANSFORM": "SYSADMIN",
+      "SERVICE_REPORTING": "SYSADMIN"
+    }
+  },
+  "grants": {
+    "warehouse_usage": {
+      "DATA_ENGINEER": ["INGEST_WH", "TRANSFORM_WH"],
+      "ANALYTICS_ENGINEER": ["TRANSFORM_WH"],
+      "DATA_QUALITY_ANALYST": ["QUALITY_WH"],
+      "CLINICAL_ANALYST": ["BI_WH"],
+      "FINANCE_ANALYST": ["BI_WH"],
+      "DATA_SCIENTIST": ["RESEARCH_WH"],
+      "RESEARCHER": ["RESEARCH_WH"],
+      "BI_CONSUMER": ["BI_WH"],
+      "AUDITOR": ["ADMIN_WH", "QUALITY_WH"],
+      "SERVICE_INGEST": ["INGEST_WH"],
+      "SERVICE_TRANSFORM": ["TRANSFORM_WH"],
+      "SERVICE_REPORTING": ["BI_WH"]
+    },
+    "schema_usage": {
+      "DATA_ENGINEER": ["RAW.CLINICAL", "RAW.OPERATIONAL", "RAW.BILLING", "RAW.FINANCE", "RAW.INTEROPERABILITY", "RAW.REFERENCE", "RAW.QUARANTINE", "RAW.AUDIT"],
+      "ANALYTICS_ENGINEER": ["CURATED.CORE", "CURATED.CLINICAL", "CURATED.OPERATIONAL", "CURATED.BILLING", "CURATED.FINANCE", "CURATED.RESEARCH", "CURATED.FEATURES", "CURATED.QUALITY"],
+      "DATA_QUALITY_ANALYST": ["CURATED.QUALITY", "GOVERNANCE.DATA_QUALITY", "GOVERNANCE.MONITORING"],
+      "CLINICAL_ANALYST": ["SERVING.CLINICAL_MARTS", "SERVING.OPERATIONAL_MARTS"],
+      "FINANCE_ANALYST": ["SERVING.BILLING_MARTS", "SERVING.FINANCE_MARTS"],
+      "DATA_SCIENTIST": ["SERVING.RESEARCH_PRODUCTS", "SERVING.ML_OUTPUTS", "CURATED.FEATURES"],
+      "RESEARCHER": ["SERVING.RESEARCH_PRODUCTS"],
+      "BI_CONSUMER": ["SERVING.BI"],
+      "AUDITOR": ["GOVERNANCE.CONTROL", "GOVERNANCE.MONITORING", "GOVERNANCE.DATA_QUALITY", "GOVERNANCE.EVIDENCE"],
+      "SERVICE_INGEST": ["RAW.CLINICAL", "RAW.OPERATIONAL", "RAW.BILLING", "RAW.FINANCE", "RAW.INTEROPERABILITY", "RAW.REFERENCE", "RAW.QUARANTINE", "RAW.AUDIT"],
+      "SERVICE_TRANSFORM": ["RAW.CLINICAL", "RAW.OPERATIONAL", "RAW.BILLING", "RAW.FINANCE", "RAW.INTEROPERABILITY", "RAW.REFERENCE", "CURATED.CORE", "CURATED.CLINICAL", "CURATED.OPERATIONAL", "CURATED.BILLING", "CURATED.FINANCE", "CURATED.RESEARCH", "CURATED.FEATURES", "CURATED.QUALITY", "SERVING.CLINICAL_MARTS", "SERVING.OPERATIONAL_MARTS", "SERVING.BILLING_MARTS", "SERVING.FINANCE_MARTS", "SERVING.RESEARCH_PRODUCTS", "SERVING.BI", "SERVING.ML_OUTPUTS"],
+      "SERVICE_REPORTING": ["SERVING.BI"]
+    },
+    "schema_create": {
+      "DATA_ENGINEER": ["RAW.CLINICAL", "RAW.OPERATIONAL", "RAW.BILLING", "RAW.FINANCE", "RAW.INTEROPERABILITY", "RAW.REFERENCE", "RAW.QUARANTINE", "RAW.AUDIT"],
+      "ANALYTICS_ENGINEER": ["CURATED.CORE", "CURATED.CLINICAL", "CURATED.OPERATIONAL", "CURATED.BILLING", "CURATED.FINANCE", "CURATED.RESEARCH", "CURATED.FEATURES", "CURATED.QUALITY"],
+      "SERVICE_INGEST": ["RAW.CLINICAL", "RAW.OPERATIONAL", "RAW.BILLING", "RAW.FINANCE", "RAW.INTEROPERABILITY", "RAW.REFERENCE", "RAW.QUARANTINE", "RAW.AUDIT"],
+      "SERVICE_TRANSFORM": ["CURATED.CORE", "CURATED.CLINICAL", "CURATED.OPERATIONAL", "CURATED.BILLING", "CURATED.FINANCE", "CURATED.RESEARCH", "CURATED.FEATURES", "CURATED.QUALITY", "SERVING.CLINICAL_MARTS", "SERVING.OPERATIONAL_MARTS", "SERVING.BILLING_MARTS", "SERVING.FINANCE_MARTS", "SERVING.RESEARCH_PRODUCTS", "SERVING.BI", "SERVING.ML_OUTPUTS"]
+    },
+    "future_read": {
+      "DATA_QUALITY_ANALYST": ["CURATED.QUALITY", "GOVERNANCE.DATA_QUALITY", "GOVERNANCE.MONITORING"],
+      "CLINICAL_ANALYST": ["SERVING.CLINICAL_MARTS", "SERVING.OPERATIONAL_MARTS"],
+      "FINANCE_ANALYST": ["SERVING.BILLING_MARTS", "SERVING.FINANCE_MARTS"],
+      "DATA_SCIENTIST": ["SERVING.RESEARCH_PRODUCTS", "SERVING.ML_OUTPUTS", "CURATED.FEATURES"],
+      "RESEARCHER": ["SERVING.RESEARCH_PRODUCTS"],
+      "BI_CONSUMER": ["SERVING.BI"],
+      "AUDITOR": ["GOVERNANCE.CONTROL", "GOVERNANCE.MONITORING", "GOVERNANCE.DATA_QUALITY", "GOVERNANCE.EVIDENCE"],
+      "SERVICE_TRANSFORM": ["RAW.CLINICAL", "RAW.OPERATIONAL", "RAW.BILLING", "RAW.FINANCE", "RAW.INTEROPERABILITY", "RAW.REFERENCE"],
+      "SERVICE_REPORTING": ["SERVING.BI"]
+    }
+  },
+  "tags": {
+    "SENSITIVITY_CLASS": {
+      "database": "GOVERNANCE",
+      "schema": "SECURITY",
+      "owner_role": "GOVERNANCE_OWNER",
+      "purpose": "Future classification attachment point; no masking policy is implied.",
+      "allowed_values": ["DIRECT_IDENTIFIER", "INDIRECT_IDENTIFIER", "CLINICAL_CONFIDENTIAL", "FINANCIAL_CONFIDENTIAL", "OPERATIONAL", "RESEARCH_PSEUDONYMISED", "PUBLIC_REFERENCE"]
+    }
+  },
+  "ownership_matrix": {
+    "Terraform": ["DATABASE", "SCHEMA", "WAREHOUSE", "RESOURCE_MONITOR", "ACCOUNT_ROLE", "ROLE_GRANT", "PRIVILEGE_GRANT", "TAG"],
+    "SQL_VALIDATION": ["OBJECT_INVENTORY_QUERY", "ROLE_HIERARCHY_QUERY", "GRANT_QUERY", "RBAC_EXPECTATION_QUERY", "MONITORING_QUERY"],
+    "DBT_FUTURE": ["TABLE", "VIEW", "DYNAMIC_TABLE", "SNAPSHOT", "MART", "SEMANTIC_DEFINITION"],
+    "RUNTIME_FUTURE": ["TEMPORARY_OBJECT", "QUERY_HISTORY", "TASK_RUN_HISTORY", "LOAD_HISTORY"]
+  },
+  "rbac_expectations": {
+    "positive": [
+      "ANALYTICS_ENGINEER can use TRANSFORM_WH and create dbt-owned objects in approved CURATED schemas.",
+      "BI_CONSUMER can use BI_WH and read future objects in SERVING.BI.",
+      "AUDITOR can use ADMIN_WH and inspect approved GOVERNANCE metadata."
+    ],
+    "negative": [
+      "BI_CONSUMER cannot create or modify objects.",
+      "RESEARCHER cannot access RAW.CLINICAL or patient-identity landing zones.",
+      "FINANCE_ANALYST cannot access RAW.CLINICAL.",
+      "SERVICE_INGEST cannot create or query CURATED or SERVING objects.",
+      "DEV roles cannot access TEST or PROD databases or warehouses."
+    ]
+  }
+}

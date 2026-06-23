@@ -2,7 +2,7 @@
 
 A production-style, synthetic-only Healthcare Enterprise Data Platform portfolio for clinical, operational, research and financial data engineering. Snowflake remains the target governed data platform and dbt remains the transformation, testing, documentation, lineage and business-logic centre of gravity.
 
-> **Status — Milestone 2 complete with documented limitations:** the repository generates and validates deterministic synthetic clinical and operational healthcare datasets locally. The large profile is configuration-only. Snowflake deployment, dbt models, interoperability parsers, billing/finance domains and downstream platform integrations remain planned and are **not** implemented.
+> **Status — Milestone 3 implemented locally, deployment pending:** the repository now declares and statically validates a credential-free Snowflake foundation for DEV, TEST and PROD. No Snowflake account was changed. The large synthetic profile remains configuration-only; source loading, dbt models, interoperability parsers, billing/finance domains and downstream integrations remain planned.
 
 ## Why this project exists
 
@@ -21,15 +21,15 @@ Detailed boundaries are documented in [component responsibilities](docs/architec
 | Capability | Responsibility | Current status |
 |---|---|---|
 | Python synthetic platform | Deterministic source data, schemas, validation and provenance | **Implemented locally** for M2 domains |
-| Snowflake | Governed central storage/compute, RAW-to-serving layers and access enforcement | **Scaffolding only; planned** |
+| Snowflake | Governed central storage/compute, RAW-to-serving layers and access enforcement | **M3 foundation declared and statically validated; not deployed** |
 | dbt | Transformation, testing, documentation, lineage, dimensional models, contracts and business logic | **Parseable skeleton only; planned** |
 | FHIR and HL7 | Source interoperability, validation, canonical mapping and quarantine | **FHIR-inspired fixture only; parsers planned** |
 | Airflow | Cross-platform orchestration, retries, backfills and failure handling | **Placeholder only; planned** |
 | Dataiku | Governed analytics, feature engineering, ML, experiments and model monitoring | **Placeholder only; planned** |
 | Feature store | Governed reusable features, ownership, freshness, versions and point-in-time correctness | **Not implemented; planned** |
 | Fabric and Power BI | Certified semantic consumption and operational/financial/executive reporting | **Placeholder only; planned** |
-| Terraform | Repeatable infrastructure, identity, storage, networking, secrets and monitoring | **No-resource scaffold only; planned** |
-| Governance/security | RBAC, masking, pseudonymisation, row access, consent, retention and audit | **Documented design; deployment planned** |
+| Terraform | Repeatable infrastructure, identity, storage, networking, secrets and monitoring | **Snowflake foundation module implemented; no apply performed** |
+| Governance/security | RBAC, masking, pseudonymisation, row access, consent, retention and audit | **M3 roles/grants/tags declared; policies remain planned** |
 
 ## Local-first development
 
@@ -53,7 +53,8 @@ The design follows least privilege, workload isolation, encryption in transit/at
 
 - **Complete:** Milestone 1 repository foundation.
 - **Complete with documented limitations:** Milestone 2 deterministic synthetic healthcare generation.
-- **Recommended next:** Milestone 3 Snowflake foundation.
+- **Complete locally; live evidence pending:** Milestone 3 Snowflake foundation.
+- **Recommended next:** Milestone 4 FHIR and HL7 ingestion.
 - **Planned:** Milestones 4–17 add interoperability, dbt healthcare core, billing/finance and reconciliation, Airflow, Dataiku, feature store, Fabric/Power BI, executable governance, broader Terraform, multi-region recovery and portfolio evidence.
 
 The original 15-milestone plan has been transparently realigned into a 17-milestone dependency-led [roadmap](docs/roadmap/milestones.md). [ADR 0009](docs/decisions/0009-expand-to-healthcare-enterprise-platform.md) records why.
@@ -66,7 +67,7 @@ The original 15-milestone plan has been transparently realigned into a 17-milest
 | `config/synthetic` | Small, medium and large generation profiles |
 | `data/samples/small` | Reviewed 100-patient synthetic sample and evidence |
 | `dbt` | Transformation project conventions and future models |
-| `snowflake` | Modular, numbered deployment SQL scaffolding |
+| `snowflake` | Foundation contract, inventory and live-validation SQL |
 | `infrastructure` | Terraform modules/environments and Docker tooling |
 | `orchestration`, `dataiku`, `fabric` | Deliberately bounded downstream/cross-platform scaffolds |
 | `docs` | Architecture, ADRs, governance, security, roadmap, learning and evidence |
@@ -92,11 +93,23 @@ Docker alternative: `docker compose build && docker compose run --rm dev make va
 
 Generation uses no network service and makes no Snowflake connection. Existing output is not overwritten unless `--overwrite` is supplied. The committed sample at `data/samples/small` contains canonical CSV, equivalent JSON Lines, lightweight FHIR-inspired resources, a schema catalogue, manifest, checksums and validation reports. Those FHIR-inspired resources are not formally conformant.
 
+The Snowflake foundation can be checked without credentials:
+
+```bash
+healthcare-platform snowflake-validate
+healthcare-platform snowflake-render --environment DEV \
+  --output-dir /tmp/hedp-snowflake-preview
+terraform -chdir=infrastructure/terraform/environments/dev init -backend=false
+terraform -chdir=infrastructure/terraform/environments/dev validate
+```
+
+Rendering is a deterministic review artifact, not an apply. See the [deployment runbook](docs/operations/snowflake-deployment.md) before any connected execution.
+
 ## Limitations
 
-The generator uses compact portfolio code sets rather than authoritative clinical terminology. Large-profile configuration exists but has not been executed; current relationship assembly is in-memory and must be partitioned before million-patient benchmarking. There are no Snowflake resources or loads, dbt domain models, live security policies, dashboards, governed research workflows, or cloud deployment evidence. The example Snowflake SQL remains design scaffolding.
+The generator uses compact portfolio code sets rather than authoritative clinical terminology. Large-profile configuration exists but has not been executed; current relationship assembly is in-memory and must be partitioned before million-patient benchmarking. The Snowflake foundation has not been planned or applied against a live account, and there are no source loads, dbt domain models, live security policies, dashboards, governed research workflows, or cloud deployment evidence.
 
-Current non-goals also include formal FHIR conformance, HL7 parsing, billing/finance generation, revenue calculations, Airflow DAGs, Dataiku projects or models, feature-store implementation, Fabric/Power BI artifacts, Terraform-managed resources and multi-region deployment. Target-state documentation does not turn these into implemented capabilities.
+Current non-goals also include formal FHIR conformance, HL7 parsing, billing/finance generation, revenue calculations, Airflow DAGs, Dataiku projects or models, feature-store implementation, Fabric/Power BI artifacts, broader platform Terraform and multi-region deployment. Target-state documentation does not turn these into implemented capabilities.
 
 ## Portfolio positioning
 

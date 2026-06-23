@@ -2,6 +2,8 @@
 
 Evidence must be reproducible, dated, environment-labelled, redacted, and traceable to a commit. Never fabricate screenshots or retain sensitive query results.
 
+Milestone 3 local declaration evidence is recorded in [milestone-3-evidence.md](milestone-3-evidence.md). Its live plan/apply and RBAC signals remain pending and must satisfy the table below before deployment is claimed.
+
 | Capability | Future evidence | Acceptance signal |
 |---|---|---|
 | Snowflake deployment | Terraform plan/apply and object inventory | Expected tagged objects exist |

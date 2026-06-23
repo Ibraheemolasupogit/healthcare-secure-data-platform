@@ -1,7 +1,26 @@
-# Snowflake deployment foundation
+# Snowflake foundation
 
-SQL is organised by concern and numbered in intended deployment order within each concern. Milestone 1 files are reviewed design scaffolds; they are not a complete deployment and contain no account identifiers. Terraform will ultimately drive durable resources, while SQL remains useful for policy definitions, review and focused validation.
+Milestone 3 defines a secure, environment-scoped Snowflake foundation without requiring credentials for local review. `config/foundation.json` is the authoritative contract. Terraform consumes it directly; the Python CLI validates it and generates the committed object inventory.
 
-Target order: account settings → databases/schemas → warehouses/monitors → ownership and functional roles/grants → security policies → ingestion → Streams/Tasks → sharing → monitoring. Scripts should be idempotent where Snowflake permits, parameterised by environment, tagged with owner/classification, and executed by a narrowly scoped deployment role.
+For each of DEV, TEST and PROD the contract declares four databases, 29 managed-access schemas, six workload-isolated warehouses, one resource monitor, 17 account roles and one classification tag. Names use `HEDP_<ENV>_<OBJECT>`. The complete inventory contains 174 objects.
 
-Time Travel retention will be risk- and cost-based by layer. Temporary zero-copy clones require owner, expiry and cleanup. Secure sharing exposes approved secure views only. Future scripts must accompany positive and negative access tests.
+## Ownership boundary
+
+- Terraform owns databases, schemas, warehouses, resource monitors, roles, grants, ownership transfers and tags.
+- SQL under `account`, `databases`, `schemas`, `warehouses`, `monitoring` and `roles` inspects or validates Terraform-managed state.
+- SQL under `validation` captures live inventory, hierarchy, grants, monitoring and allow/deny evidence after an approved apply.
+- dbt will own future business tables, views, models, tests and contracts. Milestone 3 creates none.
+- Future security, ingestion, Streams/Tasks and sharing files remain bounded placeholders for later milestones.
+
+## Credential-free checks
+
+```bash
+healthcare-platform snowflake-validate
+healthcare-platform snowflake-inventory --output /tmp/hedp-foundation.json
+healthcare-platform snowflake-render --environment DEV \
+  --output-dir /tmp/hedp-snowflake-preview
+terraform -chdir=../infrastructure/terraform/environments/dev init -backend=false
+terraform -chdir=../infrastructure/terraform/environments/dev validate
+```
+
+The render command creates deterministic preview SQL and RBAC expectations. It does not connect or apply. The inventory records declared—not deployed—state. See the [deployment](../docs/operations/snowflake-deployment.md), [validation](../docs/operations/snowflake-validation.md) and [teardown](../docs/operations/snowflake-teardown.md) runbooks.

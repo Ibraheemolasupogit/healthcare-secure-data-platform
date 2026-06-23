@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: install info generate-sample validate-sample format lint type test yaml sql dbt-parse terraform-fmt terraform-validate secrets validate
+.PHONY: install info generate-sample validate-sample snowflake-inventory snowflake-render snowflake-validate format lint type test yaml sql dbt-parse terraform-fmt terraform-validate secrets validate
 
 install:
 	$(PYTHON) -m pip install -r requirements-dev.txt
@@ -14,6 +14,15 @@ generate-sample:
 
 validate-sample:
 	$(PYTHON) -m healthcare_platform.cli validate-data --input-dir data/samples/small
+
+snowflake-inventory:
+	$(PYTHON) -m healthcare_platform.cli snowflake-inventory
+
+snowflake-render:
+	$(PYTHON) -m healthcare_platform.cli snowflake-render --environment DEV --overwrite
+
+snowflake-validate:
+	$(PYTHON) -m healthcare_platform.cli snowflake-validate
 
 format:
 	ruff format src tests
@@ -44,9 +53,13 @@ terraform-fmt:
 terraform-validate:
 	terraform -chdir=infrastructure/terraform/environments/dev init -backend=false
 	terraform -chdir=infrastructure/terraform/environments/dev validate
+	terraform -chdir=infrastructure/terraform/environments/test init -backend=false
+	terraform -chdir=infrastructure/terraform/environments/test validate
+	terraform -chdir=infrastructure/terraform/environments/prod init -backend=false
+	terraform -chdir=infrastructure/terraform/environments/prod validate
 
 secrets:
 	@if command -v gitleaks >/dev/null; then gitleaks detect --no-git --redact; else echo "gitleaks not installed; CI performs the authoritative scan"; fi
 
-validate: lint type test yaml sql dbt-parse secrets
+validate: lint type test yaml sql dbt-parse snowflake-validate secrets
 	@echo "Core credential-free validation complete. Run terraform-fmt/validate when Terraform is installed."

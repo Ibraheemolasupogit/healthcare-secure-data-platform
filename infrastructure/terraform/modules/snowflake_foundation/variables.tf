@@ -1,15 +1,14 @@
 variable "environment" {
-  description = "Short environment name used for naming and tagging."
+  description = "Environment suffix used for strict object isolation."
   type        = string
 
   validation {
-    condition     = contains(["dev", "test", "prod"], var.environment)
-    error_message = "environment must be dev, test, or prod."
+    condition     = contains(["DEV", "TEST", "PROD"], var.environment)
+    error_message = "environment must be DEV, TEST, or PROD."
   }
 }
 
-variable "name_prefix" {
-  description = "Non-sensitive prefix for future Snowflake objects."
-  type        = string
-  default     = "HSDP"
+variable "foundation_config" {
+  description = "Decoded snowflake/config/foundation.json contract."
+  type        = any
 }

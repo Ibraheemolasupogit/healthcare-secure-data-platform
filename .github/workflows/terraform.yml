@@ -2,10 +2,16 @@ name: Terraform validation
 
 on:
   pull_request:
-    paths: ["infrastructure/terraform/**", ".github/workflows/terraform.yml"]
+    paths:
+      - "infrastructure/terraform/**"
+      - "snowflake/config/**"
+      - ".github/workflows/terraform.yml"
   push:
     branches: [main]
-    paths: ["infrastructure/terraform/**", ".github/workflows/terraform.yml"]
+    paths:
+      - "infrastructure/terraform/**"
+      - "snowflake/config/**"
+      - ".github/workflows/terraform.yml"
 
 permissions:
   contents: read
@@ -13,13 +19,16 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [dev, test, prod]
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.8.5
       - run: terraform fmt -check -recursive infrastructure/terraform
-      - working-directory: infrastructure/terraform/environments/dev
+      - working-directory: infrastructure/terraform/environments/${{ matrix.environment }}
         run: terraform init -backend=false
-      - working-directory: infrastructure/terraform/environments/dev
+      - working-directory: infrastructure/terraform/environments/${{ matrix.environment }}
         run: terraform validate

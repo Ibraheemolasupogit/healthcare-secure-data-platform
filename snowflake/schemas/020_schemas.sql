@@ -1,2 +1,2 @@
--- MILESTONE 3 SCAFFOLD: managed-access schemas by logical layer.
--- RAW, STAGING, INTERMEDIATE, CURATED, MART, SEMANTIC, GOVERNANCE and AUDIT.
+-- Terraform owns managed schemas. No healthcare business tables are created in Milestone 3.
+show schemas like 'HEDP_DEV_%' in account;

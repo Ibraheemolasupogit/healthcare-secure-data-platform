@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "deployment_owner": "Terraform",
+  "validation_owner": "SQL",
+  "steps": [
+    {"order": 10, "phase": "declare", "path": "snowflake/config/foundation.json", "purpose": "Validate the shared environment contract."},
+    {"order": 20, "phase": "preview", "path": "infrastructure/terraform/modules/snowflake_foundation/main.tf", "purpose": "Preview Terraform-owned durable objects."},
+    {"order": 30, "phase": "deploy_optional", "path": "infrastructure/terraform/environments/dev/main.tf", "purpose": "Apply a protected disposable DEV foundation only when explicitly authorised."},
+    {"order": 100, "phase": "validate_live", "path": "snowflake/validation/100_object_inventory.sql", "purpose": "Inspect deployed objects."},
+    {"order": 110, "phase": "validate_live", "path": "snowflake/validation/110_role_hierarchy.sql", "purpose": "Inspect role inheritance."},
+    {"order": 120, "phase": "validate_live", "path": "snowflake/validation/120_grants.sql", "purpose": "Inspect privilege grants."},
+    {"order": 130, "phase": "validate_live", "path": "snowflake/validation/130_positive_rbac.sql", "purpose": "Run allowed-role probes."},
+    {"order": 140, "phase": "validate_live", "path": "snowflake/validation/140_negative_rbac.sql", "purpose": "Run expected-denial probes one at a time."},
+    {"order": 150, "phase": "validate_live", "path": "snowflake/validation/150_monitoring.sql", "purpose": "Inspect warehouse, query and security telemetry."}
+  ]
+}

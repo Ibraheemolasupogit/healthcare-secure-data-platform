@@ -1,0 +1,7 @@
+# Non-secret local metadata only. Prefer Snowflake provider environment variables.
+# snowflake_profile           = "hedp-dev-deployer"
+# snowflake_organization_name = "example_organisation"
+# snowflake_account_name      = "example_account"
+# snowflake_account_locator   = "example_locator"
+# snowflake_region            = "example_region"
+# snowflake_user              = "example_deployment_user"

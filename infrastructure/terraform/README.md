@@ -1,7 +1,27 @@
 # Terraform foundation
 
-Terraform will manage durable Snowflake resources through reusable modules. Root modules live under `environments/<name>` and call narrowly focused modules. Provider and module versions are pinned; plans are reviewed; applies use protected environments and a dedicated least-privilege deployment identity.
+Terraform manages the durable Milestone 3 Snowflake foundation. The reusable `snowflake_foundation` module is called by isolated DEV, TEST and PROD roots, all of which read `snowflake/config/foundation.json`. Snowflake provider 2.17.0 and Terraform 1.8.5 are pinned.
 
-State must use an encrypted remote backend with locking, versioning, access logging and environment separation. State may contain sensitive metadata and must never be committed. Credentials are supplied by workload identity or a secret manager, never variables files or provider blocks. Production state and apply authority are isolated from development.
+The module creates databases, managed-access schemas, workload warehouses, an environment resource monitor, ownership and functional account roles, role hierarchy, least-privilege grants, ownership transfers and a classification tag. It deliberately creates no users, stages, pipes, business tables, views or dbt models.
 
-Milestone 1 exposes a no-resource foundation module so `terraform init -backend=false` and `terraform validate` can run without a Snowflake account or provider download. `providers.tf.example` records the future pinned-provider pattern but is intentionally inactive. Milestone 3 will activate it and add resources only after provider-version and ownership semantics are tested.
+## Authentication and administration
+
+Provider configuration contains no credentials. Connected use relies on Snowflake provider environment variables, workload identity or an approved local profile. Three provider aliases express Snowflake's administrative boundaries:
+
+- `ACCOUNTADMIN` manages resource monitors and their warehouse assignment.
+- `SECURITYADMIN` manages roles, grants and ownership transfer.
+- `SYSADMIN` creates databases, schemas and tags.
+
+These roles are bootstrap authorities, not application personas. Use a protected deployment identity with only the necessary administrative roles; never place credentials in `*.tfvars`, source, state or command history.
+
+## Local validation
+
+```bash
+terraform fmt -check -recursive infrastructure/terraform
+for environment in dev test prod; do
+  terraform -chdir="infrastructure/terraform/environments/${environment}" init -backend=false
+  terraform -chdir="infrastructure/terraform/environments/${environment}" validate
+done
+```
+
+Initialization downloads a provider but validation requires no Snowflake login. A plan or apply is a connected, protected operation and must follow the [deployment runbook](../../docs/operations/snowflake-deployment.md). Each environment requires an encrypted remote backend with locking, versioning, access logging and isolated apply authority before live use.

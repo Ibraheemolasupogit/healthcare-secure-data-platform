@@ -1,2 +1,3 @@
--- MILESTONE 3 SCAFFOLD: environment budgets and notify/suspend thresholds.
--- Account-level emergency protection must not replace workload-level attribution.
+-- Terraform owns resource monitors and warehouse assignment.
+-- noqa: disable=PRS
+show resource monitors like 'HEDP_DEV_%';

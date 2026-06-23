@@ -12,7 +12,7 @@ Every milestone must capture a reproducible command/run, validation artifacts, k
 |---|---|---|---|
 | **1 — Repository foundation (COMPLETE)** | Standards, architecture, ADRs, package/dbt/Snowflake/Terraform/Docker/CI scaffolds | Credential-free lint/test/parse/format/security evidence | Data/platform deployment |
 | **2 — Synthetic healthcare data (COMPLETE WITH DOCUMENTED LIMITATIONS)** | 15 deterministic clinical/operational domains, schemas, profiles, CSV/JSONL/FHIR-inspired fixtures, validation and provenance | 19 tests/93% coverage; 1,090-row sample; deterministic checksums | Large execution, formal FHIR, billing domains |
-| **3 — Snowflake foundation (NEXT)** | Environment-scoped databases, managed schemas, warehouses, monitors, ownership/functional roles and grants using existing SQL/Terraform structures | Reviewed plan/apply, object inventory, warehouse isolation, positive/negative RBAC tests | Source loading and dbt models |
+| **3 — Snowflake foundation (COMPLETE LOCALLY; LIVE DEPLOYMENT PENDING)** | Environment-scoped databases, managed schemas, warehouses, monitors, ownership/functional roles, grants and classification tags using a shared contract and Terraform | 31 tests/91% coverage; 174-object inventory; static controls; Terraform validation; live plan/apply and RBAC probes pending | Source loading and dbt models |
 | **4 — FHIR and HL7 ingestion** | Synthetic messages, named validation rules/profiles, identifier/terminology mapping, immutable RAW payloads and rejected-message quarantine | Valid/invalid/replay fixtures, provenance and quarantine reconciliation | Live clinical interfaces, conformance claims beyond validator evidence |
 | **5 — dbt staging layer** | Sources/freshness and source-aligned staging for batch/FHIR/HL7 canonical inputs | `dbt build`, freshness, schema/code mapping tests and lineage | Conformed core and marts |
 | **6 — Healthcare core model** | Conformed patient, identity, organisation, provider, location, encounter, admission, appointment, pathway, treatment/procedure and clinical facts/dimensions | Grain/key/identity/history tests, source reconciliation, contracts and docs | Billing/finance logic |
@@ -60,7 +60,7 @@ The sections below preserve the original roadmap as an audit trail. They are sup
 
 ## 3 — Snowflake foundations and RBAC
 
-**Original status before realignment: planned next.**
+**Current status: implemented and validated locally; live deployment evidence pending.**
 
 - **Objective:** provision environment-scoped accounts objects, compute and least-privilege roles.
 - **Deliverables:** Terraform/SQL for databases, schemas, warehouses, monitors, roles and grants.

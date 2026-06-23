@@ -1,2 +1,3 @@
--- MILESTONE 3 SCAFFOLD: explicit current/future grants with negative-access tests.
--- Use least privilege and managed-access schema grant ownership.
+-- Terraform owns grants. SQL is limited to inspection and evidence capture.
+show grants to role HEDP_DEV_DATA_ENGINEER;
+show grants to role HEDP_DEV_BI_CONSUMER;

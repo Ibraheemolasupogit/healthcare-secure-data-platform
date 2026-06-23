@@ -2,7 +2,7 @@
 
 ## Current state
 
-Milestones 1–2 implement repository standards plus deterministic generation and validation of synthetic-only healthcare records. They create no Snowflake resources, perform no ingestion, and process no real health records.
+Milestones 1–3 implement repository standards, deterministic generation and validation of synthetic-only healthcare records, and a credential-free Snowflake foundation declaration for DEV, TEST and PROD. The foundation has passed static and Terraform provider-schema validation but has not been planned or applied to a Snowflake account. There is no ingestion or real health data processing.
 
 ## Target flow
 

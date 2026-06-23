@@ -1,2 +1,2 @@
--- MILESTONE 3 SCAFFOLD: ownership roles and functional role hierarchy.
--- Never grant object privileges directly to users or service identities.
+-- Terraform owns account roles and their hierarchy. Users receive roles outside this module.
+show roles like 'HEDP_DEV_%';

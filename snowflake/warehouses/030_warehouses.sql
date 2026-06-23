@@ -1,2 +1,2 @@
--- MILESTONE 3 SCAFFOLD: isolated INGEST, TRANSFORM, BI and RESEARCH warehouses.
--- Require auto-suspend/resume, statement timeout, tags and resource monitors.
+-- Terraform owns cost-aware workload-isolated warehouses.
+show warehouses like 'HEDP_DEV_%';

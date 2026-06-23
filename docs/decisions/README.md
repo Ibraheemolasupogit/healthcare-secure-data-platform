@@ -12,3 +12,4 @@ ADRs use: status/date, context, decision, consequences, alternatives, and valida
 | 0006 | Transformation/reporting separation |
 | 0007 | Layered data modelling |
 | 0008 | Least-privilege RBAC |
+| 0009 | Expand to a healthcare enterprise data platform |

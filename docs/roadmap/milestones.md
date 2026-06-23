@@ -2,7 +2,41 @@
 
 Each milestone ends in one reviewable commit (or a small, explicitly related series) and does not claim completion until its validation and evidence are present.
 
+## Current revised roadmap
+
+The target expanded after Milestone 2 from a 15-milestone secure data-platform portfolio to a 17-milestone Healthcare Enterprise Data Platform. Completed work is not reopened. Billing/finance synthetic sources are a focused Milestone 7 extension immediately before billing transformations: doing this earlier would cannibalise completed M2, while doing it inside dbt work would mix source and transformation ownership.
+
+Every milestone must capture a reproducible command/run, validation artifacts, known limitations and a scoped commit. Existing credential-free gates remain mandatory.
+
+| Milestone | Objective and main deliverables | Validation / evidence gate | Explicit exclusions |
+|---|---|---|---|
+| **1 — Repository foundation (COMPLETE)** | Standards, architecture, ADRs, package/dbt/Snowflake/Terraform/Docker/CI scaffolds | Credential-free lint/test/parse/format/security evidence | Data/platform deployment |
+| **2 — Synthetic healthcare data (COMPLETE WITH DOCUMENTED LIMITATIONS)** | 15 deterministic clinical/operational domains, schemas, profiles, CSV/JSONL/FHIR-inspired fixtures, validation and provenance | 19 tests/93% coverage; 1,090-row sample; deterministic checksums | Large execution, formal FHIR, billing domains |
+| **3 — Snowflake foundation (NEXT)** | Environment-scoped databases, managed schemas, warehouses, monitors, ownership/functional roles and grants using existing SQL/Terraform structures | Reviewed plan/apply, object inventory, warehouse isolation, positive/negative RBAC tests | Source loading and dbt models |
+| **4 — FHIR and HL7 ingestion** | Synthetic messages, named validation rules/profiles, identifier/terminology mapping, immutable RAW payloads and rejected-message quarantine | Valid/invalid/replay fixtures, provenance and quarantine reconciliation | Live clinical interfaces, conformance claims beyond validator evidence |
+| **5 — dbt staging layer** | Sources/freshness and source-aligned staging for batch/FHIR/HL7 canonical inputs | `dbt build`, freshness, schema/code mapping tests and lineage | Conformed core and marts |
+| **6 — Healthcare core model** | Conformed patient, identity, organisation, provider, location, encounter, admission, appointment, pathway, treatment/procedure and clinical facts/dimensions | Grain/key/identity/history tests, source reconciliation, contracts and docs | Billing/finance logic |
+| **7 — Billing and finance synthetic extension** | Versioned services, products, tariffs, contracts, claims, invoices/lines, payment lifecycle, exceptions and control totals in the existing generator | Determinism, keys, lifecycle/amount rules, checksums and bounded committed samples | dbt billing models or real finance data |
+| **8 — Billing and finance dbt domain** | Billable activity, effective tariffs, invoice totals, payment allocation, refunds/adjustments, outstanding balance and revenue models | Known-case unit tests, source/control reconciliation, contracts and lineage | Revenue-assurance workflow orchestration |
+| **9 — Reconciliation and revenue assurance** | Control totals, exception classifications, operational finance marts, SLOs and evidence | Injected breaks, balanced/unbalanced scenarios, alert ownership and traceable resolution | BI dashboards and ML |
+| **10 — Airflow orchestration** | Cross-platform sensors, retries, backfills, failure handling and evidence workflows | Success/retry/backfill/idempotency tests and single-trigger ownership | Reimplementing dbt DAGs or Snowflake Tasks |
+| **11 — Dataiku workflows** | Governed collaborative analytics, preparation, ML experiments, operationalisation and monitoring over trusted products | Connection/role boundaries, reproducibility, lineage and blocked export tests | Warehouse transformation duplication |
+| **12 — Governed feature store** | Feature registry, entity keys, ownership, versions, freshness and point-in-time-correct offline access | Leakage/point-in-time/freshness/version tests and lineage | Online serving without a proven latency requirement |
+| **13 — Fabric and Power BI** | Certified semantic models and clinical, operational, financial and executive reporting | Measure reconciliation, refresh, persona access, lineage and performance | Curated transformation in BI |
+| **14 — Governance and security implementation** | Pseudonymisation, masking, row access, consent, retention, audit integrity, research access and separation of duties | Persona allow/deny tests, expiry/revocation, policy combinations and audit evidence | Unsupported anonymisation/compliance claims |
+| **15 — Terraform and environment design** | Repeatable Snowflake/platform identity, storage, network, secret integration, monitoring and protected state/promotion | Plan/apply/policy checks, drift, isolation, approvals and rollback | Unreviewed production apply |
+| **16 — Multi-region architecture and recovery** | Residency constraints, replication/failover, RTO/RPO, dependency mapping and operational runbooks | Recovery/failover exercises, data-loss/reconnect evidence and return-to-primary test | Claims based on diagrams alone |
+| **17 — Portfolio evidence and polish** | Consolidated evidence index, runbooks, CI/CD releases, benchmarks, demos and claim-to-evidence audit | Clean-room reproduction, link/checksum audit and limitation review | Fabricated evidence or real health data |
+
+Dependencies follow the table order except security, observability, CI and evidence, which are incrementally applied to every milestone and consolidated at their explicit implementation milestones. See the [realignment plan](../architecture/repository-realignment-plan.md) and [target-state architecture](../architecture/target-state-architecture.md).
+
+## Historical 15-milestone baseline
+
+The sections below preserve the original roadmap as an audit trail. They are superseded for work after Milestone 2; their useful requirements have been redistributed above rather than silently removed.
+
 ## 1 — Repository foundation and architecture
+
+**Status: complete.**
 
 - **Objective:** establish a secure, maintainable engineering baseline.
 - **Deliverables:** repository/docs, ADRs, Python CLI, dbt/Snowflake/Terraform/Docker/CI scaffolds.
@@ -14,6 +48,8 @@ Each milestone ends in one reviewable commit (or a small, explicitly related ser
 
 ## 2 — Synthetic healthcare data generator
 
+**Status: complete.**
+
 - **Objective:** generate deterministic, explicitly synthetic, relational healthcare fixtures at configurable scale.
 - **Deliverables:** domain schemas, seeded generator, small/medium/large profiles, manifest and validation.
 - **Validation:** reproducibility, referential integrity, distributions, synthetic-only invariants and small-mode runtime.
@@ -23,6 +59,8 @@ Each milestone ends in one reviewable commit (or a small, explicitly related ser
 - **Exclusions:** Snowflake loading and large benchmark execution.
 
 ## 3 — Snowflake foundations and RBAC
+
+**Original status before realignment: planned next.**
 
 - **Objective:** provision environment-scoped accounts objects, compute and least-privilege roles.
 - **Deliverables:** Terraform/SQL for databases, schemas, warehouses, monitors, roles and grants.

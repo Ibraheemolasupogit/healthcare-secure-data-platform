@@ -26,3 +26,6 @@ All notable changes will follow Keep a Changelog conventions. The project does n
 - Milestone 9 healthcare billing reconciliation and revenue assurance controls with tolerance
   seeds, exception ownership, lifecycle, prioritisation, remediation status, revenue-at-risk
   summaries, deterministic evidence packs, guardrails, documentation and ADR.
+- Milestone 10 Apache Airflow orchestration foundation with five DAGs, safe CLI/dbt command
+  wrappers, typed configuration, bounded sensors, callbacks, local evidence metadata,
+  optional Docker profile, guardrails, documentation and ADR.

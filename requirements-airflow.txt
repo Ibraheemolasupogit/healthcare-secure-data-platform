@@ -1,0 +1,5 @@
+# Optional Milestone 10 local Airflow dependency set.
+# Install separately from requirements-dev.txt to keep normal validation lightweight:
+# python -m pip install -r requirements-airflow.txt
+--constraint https://raw.githubusercontent.com/apache/airflow/constraints-2.9.3/constraints-3.11.txt
+apache-airflow==2.9.3

@@ -25,6 +25,8 @@ jobs:
         run: dbt parse --profiles-dir . --no-partial-parse
       - run: pytest tests/unit/test_dbt_milestone5.py
       - run: pytest tests/unit/test_dbt_milestone6.py
+      - run: pytest tests/unit/test_dbt_milestone8.py
+      - run: pytest tests/unit/test_dbt_milestone9.py
       # Future integration job (protected environment only) will read:
       # SNOWFLAKE_ACCOUNT, SNOWFLAKE_USER, SNOWFLAKE_PRIVATE_KEY,
       # SNOWFLAKE_ROLE, SNOWFLAKE_WAREHOUSE and SNOWFLAKE_DATABASE.

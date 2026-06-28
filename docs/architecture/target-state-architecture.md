@@ -84,7 +84,7 @@ flowchart LR
 
 ## Orchestration
 
-**Placeholder only / planned (M10):** Airflow coordinates cross-platform dependencies, sensors, retries, backfills, failure handling and evidence workflows. Snowflake Tasks continue to own Snowflake-local change graphs; dbt continues to own model selection/execution semantics. One workflow has one trigger owner.
+**Implemented locally (M10):** Airflow coordinates cross-platform dependencies, sensors, retries, backfills, failure handling and evidence workflows through local-first DAGs that invoke existing CLI and dbt contracts. Snowflake Tasks continue to own Snowflake-local change graphs; dbt continues to own model selection/execution semantics. One workflow has one trigger owner.
 
 ## Analytics, machine learning and feature store
 
@@ -120,4 +120,4 @@ flowchart LR
 
 **Partially implemented:** Milestone 2 includes local manifests, checksums, validation reports and tests. Every future claim must link to redacted, reproducible evidence for a commit and environment.
 
-Current non-goals are live Snowflake execution, formal revenue recognition, external reconciliation workflow orchestration, marts, Airflow DAGs, Dataiku workflows, ML models, feature-store code, Fabric/Power BI artifacts, broader Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing placeholders.
+Current non-goals are live Snowflake execution, formal revenue recognition, production Airflow deployment, marts, Dataiku workflows, ML models, feature-store code, Fabric/Power BI artifacts, broader Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing placeholders.

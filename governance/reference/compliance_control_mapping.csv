@@ -1,0 +1,8 @@
+control_id,theme,frameworks,implementation_status,evidence_ref,limitations
+ctrl_default_deny,least_privilege,"['UK_GDPR_principles', 'NIST_CSF', 'Microsoft_Zero_Trust']",LOCALLY_SIMULATED,governance/reference/access_decisions.csv,Not production authorisation infrastructure.
+ctrl_purpose_limitation,privacy,"['UK_GDPR_principles', 'Data_Protection_Act_2018_concepts']",STATICALLY_VALIDATED,governance/registry/purposes.yaml,No legal conclusion.
+ctrl_consent_aware_research,privacy,"['UK_GDPR_principles', 'NHS_data_security_concepts']",STATICALLY_VALIDATED,governance/registry/consent_policies.yaml,Requires organisational IG review.
+ctrl_masking_sensitive_fields,data_minimisation,"['NIST_CSF', 'CIS_Controls', 'ISO_27001_themes']",STATICALLY_VALIDATED,governance/reference/sensitive_field_coverage.csv,No live masking deployment.
+ctrl_export_governance,controlled_export,"['UK_GDPR_principles', 'CIS_Controls']",STATICALLY_VALIDATED,governance/registry/export_policies.yaml,No live DLP tooling.
+ctrl_model_human_oversight,ai_governance,"['NIST_AI_RMF', 'Microsoft_Zero_Trust']",STATICALLY_VALIDATED,dataiku/projects/healthcare_analytics/governance/use_case.yaml,No production ML approval.
+ctrl_qualified_compliance_language,compliance_claim_control,"['ISO_27001_themes', 'OWASP_principles']",LOCALLY_SIMULATED,governance/reference/unsupported_claim_report.csv,Not legal review.

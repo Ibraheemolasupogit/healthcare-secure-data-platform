@@ -1,5 +1,10 @@
 # Snowflake foundation
 
+Milestone 14 maps central governance policies to existing Snowflake roles, tags, grants,
+masking-policy previews, row-access-policy previews and audit schemas. These mappings are
+static contracts only; Terraform and the Snowflake foundation remain authoritative for
+durable deployment.
+
 Milestone 3 defines a secure, environment-scoped Snowflake foundation without requiring credentials for local review. `config/foundation.json` is the authoritative contract. Terraform consumes it directly; the Python CLI validates it and generates the committed object inventory.
 
 For each of DEV, TEST and PROD the contract declares four databases, 29 managed-access schemas, six workload-isolated warehouses, one resource monitor, 17 account roles and one classification tag. Names use `HEDP_<ENV>_<OBJECT>`. The complete inventory contains 174 objects.

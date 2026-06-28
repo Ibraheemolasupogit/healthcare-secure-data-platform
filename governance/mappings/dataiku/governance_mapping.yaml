@@ -1,0 +1,10 @@
+version: 1.0.0
+trusted_inputs_only: true
+project_purpose: MODEL_DEVELOPMENT
+acceptable_use_source: dataiku/projects/healthcare_analytics/governance/use_case.yaml
+human_approval_required: true
+feature_set_version_recorded: true
+prediction_output_classification: MODEL_GOVERNANCE
+autonomous_clinical_decisions: prohibited
+audit_event: aud_model_approval
+implementation_status: STATICALLY_VALIDATED

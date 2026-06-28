@@ -27,3 +27,7 @@ The deployment uses separate `ACCOUNTADMIN`, `SECURITYADMIN` and `SYSADMIN` prov
 ## Deferred controls
 
 The `SENSITIVITY_CLASS` tag defines permitted classification values, but no masking or row-access policy is attached in Milestone 3. Consent filtering, pseudonymisation, research expiry/revocation and identity provisioning remain later controlled work. A declared role is not evidence that an identity has been safely assigned to it.
+
+Milestone 14 supplies central masking, row-access, service-identity and privileged-access
+contracts plus static Snowflake policy previews. Terraform and the Snowflake foundation
+remain authoritative for durable deployment.

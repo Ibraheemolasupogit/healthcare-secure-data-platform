@@ -1,0 +1,15 @@
+{
+  "certification_status": "not_certified",
+  "connected_status": {
+    "dataiku": "not_connected",
+    "entra_id": "not_connected",
+    "fabric_powerbi": "not_connected",
+    "purview": "not_connected",
+    "snowflake": "not_connected"
+  },
+  "enforcement_status": "not_live_enforced",
+  "legal_advice": "not_provided",
+  "milestone": 14,
+  "status": "local_simulated_static_evidence",
+  "validation_valid": true
+}

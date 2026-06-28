@@ -1,0 +1,246 @@
+version: 1.0.0
+default_decision:
+  policy_id: ap_default_deny
+  effect: DENY
+  reason: No explicit matching allow policy.
+policies:
+  - policy_id: ap_clinical_aggregate_read
+    subject: CLINICAL_ANALYST
+    domain: operational
+    object: healthcare_operations_semantic
+    environment: PROD
+    purpose: CARE_OPERATIONS
+    operation: read_aggregated_data
+    effect: ALLOW
+    conditions: [organisation_scope_required]
+    required_classification: SYNTHETIC_HEALTH_CONFIDENTIAL
+    required_approval: domain_owner
+    masking_policy_ref: mask_patient_identifiers
+    row_access_policy_ref: row_organisation_scope
+    object_access_policy_ref: obj_semantic_healthcare_operations
+    export_policy_ref: exp_aggregated_only
+    audit_event_ref: aud_sensitive_object_access
+    effective_from: "2026-06-28"
+    effective_to: null
+    owner: DATA_GOVERNANCE_STEWARD
+    version: 1.0.0
+    status: STATICALLY_VALIDATED
+    implementation_mapping: [snowflake_secure_view, powerbi_rls]
+    enforcement_status: not_live_enforced
+    limitations: Synthetic portfolio policy simulation only.
+  - policy_id: ap_billing_invoice_read
+    subject: BILLING_ANALYST
+    domain: billing
+    object: fct_invoice
+    environment: PROD
+    purpose: BILLING_OPERATIONS
+    operation: view_finance_detail
+    effect: ALLOW
+    conditions: [payer_scope_required]
+    required_classification: SYNTHETIC_FINANCIAL_CONFIDENTIAL
+    required_approval: finance_owner
+    masking_policy_ref: mask_patient_identifiers
+    row_access_policy_ref: row_payer_scope
+    object_access_policy_ref: obj_finance_detail
+    export_policy_ref: exp_restricted_detail
+    audit_event_ref: aud_sensitive_object_access
+    effective_from: "2026-06-28"
+    effective_to: null
+    owner: FINANCE_ANALYTICS
+    version: 1.0.0
+    status: STATICALLY_VALIDATED
+    implementation_mapping: [snowflake_row_access, powerbi_rls]
+    enforcement_status: not_live_enforced
+    limitations: Does not grant live Snowflake access.
+  - policy_id: ap_finance_no_direct_identifiers
+    subject: FINANCE_ANALYST
+    domain: clinical
+    object: core_patient.synthetic_nhs_number
+    environment: PROD
+    purpose: FINANCIAL_CONTROL
+    operation: read_synthetic_identifiers
+    effect: DENY
+    conditions: [direct_identifier]
+    required_classification: SYNTHETIC_DIRECT_IDENTIFIER
+    required_approval: security_admin
+    masking_policy_ref: mask_direct_identifier_full_redaction
+    row_access_policy_ref: row_environment_scope
+    object_access_policy_ref: obj_patient_direct_identifier
+    export_policy_ref: exp_prohibited
+    audit_event_ref: aud_failed_access
+    effective_from: "2026-06-28"
+    effective_to: null
+    owner: DATA_GOVERNANCE_STEWARD
+    version: 1.0.0
+    status: STATICALLY_VALIDATED
+    implementation_mapping: [snowflake_masking, powerbi_ols]
+    enforcement_status: not_live_enforced
+    limitations: Simulated denial only.
+  - policy_id: ap_revenue_assurance_exception_read
+    subject: REVENUE_ASSURANCE_ANALYST
+    domain: assurance
+    object: reconciliation_exception
+    environment: PROD
+    purpose: REVENUE_ASSURANCE
+    operation: investigate_assurance_exceptions
+    effect: ALLOW
+    conditions: [assurance_domain_scope_required]
+    required_classification: SYNTHETIC_FINANCIAL_CONFIDENTIAL
+    required_approval: assurance_owner
+    masking_policy_ref: mask_evidence_reference
+    row_access_policy_ref: row_assurance_domain_scope
+    object_access_policy_ref: obj_assurance_evidence
+    export_policy_ref: exp_restricted_detail
+    audit_event_ref: aud_sensitive_object_access
+    effective_from: "2026-06-28"
+    effective_to: null
+    owner: REVENUE_ASSURANCE
+    version: 1.0.0
+    status: STATICALLY_VALIDATED
+    implementation_mapping: [snowflake_secure_view, powerbi_rls]
+    enforcement_status: not_live_enforced
+    limitations: Cannot alter invoice calculations.
+  - policy_id: ap_research_requires_eligibility
+    subject: RESEARCH_ANALYST
+    domain: research
+    object: core_research_eligibility
+    environment: TEST
+    purpose: APPROVED_RESEARCH
+    operation: read_detailed_synthetic_records
+    effect: ALLOW
+    conditions: [approved_research_project, active_research_eligible_flag]
+    required_classification: RESEARCH_RESTRICTED
+    required_approval: research_governance_approval
+    masking_policy_ref: mask_patient_identifiers
+    row_access_policy_ref: row_research_cohort_scope
+    object_access_policy_ref: obj_research_products
+    export_policy_ref: exp_approved_detail
+    audit_event_ref: aud_sensitive_object_access
+    effective_from: "2026-06-28"
+    effective_to: null
+    owner: RESEARCH_GOVERNANCE
+    version: 1.0.0
+    status: STATICALLY_VALIDATED
+    implementation_mapping: [dbt_core_research_eligibility, snowflake_row_access]
+    enforcement_status: not_live_enforced
+    limitations: Requires organisational legal and IG review.
+  - policy_id: ap_research_withdrawn_consent_deny
+    subject: RESEARCH_ANALYST
+    domain: research
+    object: core_research_eligibility
+    environment: TEST
+    purpose: APPROVED_RESEARCH
+    operation: read_detailed_synthetic_records
+    effect: DENY
+    conditions: [withdrawn_or_expired_consent]
+    required_classification: RESEARCH_RESTRICTED
+    required_approval: research_governance_approval
+    masking_policy_ref: mask_patient_identifiers
+    row_access_policy_ref: row_research_cohort_scope
+    object_access_policy_ref: obj_research_products
+    export_policy_ref: exp_prohibited
+    audit_event_ref: aud_failed_access
+    effective_from: "2026-06-28"
+    effective_to: null
+    owner: RESEARCH_GOVERNANCE
+    version: 1.0.0
+    status: STATICALLY_VALIDATED
+    implementation_mapping: [dbt_core_research_eligibility]
+    enforcement_status: not_live_enforced
+    limitations: Portfolio control pattern, not legal interpretation.
+  - policy_id: ap_data_scientist_feature_read
+    subject: DATA_SCIENTIST
+    domain: feature_store
+    object: billing_exception_prioritisation_features
+    environment: TEST
+    purpose: MODEL_DEVELOPMENT
+    operation: read_feature_sets
+    effect: ALLOW
+    conditions: [approved_feature_set_version]
+    required_classification: MODEL_GOVERNANCE
+    required_approval: model_risk_review
+    masking_policy_ref: mask_evidence_reference
+    row_access_policy_ref: row_environment_scope
+    object_access_policy_ref: obj_feature_registry
+    export_policy_ref: exp_restricted_detail
+    audit_event_ref: aud_feature_approval
+    effective_from: "2026-06-28"
+    effective_to: null
+    owner: DATA_SCIENCE
+    version: 1.0.0
+    status: STATICALLY_VALIDATED
+    implementation_mapping: [feature_store_registry, dataiku_contract]
+    enforcement_status: not_live_enforced
+    limitations: No online serving.
+  - policy_id: ap_report_viewer_no_detail_export
+    subject: REPORT_VIEWER
+    domain: semantic_consumption
+    object: healthcare_enterprise
+    environment: PROD
+    purpose: SERVICE_PLANNING
+    operation: export_restricted_detail
+    effect: DENY
+    conditions: [restricted_detail]
+    required_classification: SYNTHETIC_HEALTH_CONFIDENTIAL
+    required_approval: data_owner
+    masking_policy_ref: mask_patient_identifiers
+    row_access_policy_ref: row_organisation_scope
+    object_access_policy_ref: obj_semantic_healthcare_operations
+    export_policy_ref: exp_prohibited
+    audit_event_ref: aud_data_export
+    effective_from: "2026-06-28"
+    effective_to: null
+    owner: BI_PLATFORM_OWNER
+    version: 1.0.0
+    status: STATICALLY_VALIDATED
+    implementation_mapping: [powerbi_export_policy]
+    enforcement_status: not_live_enforced
+    limitations: No live Power BI enforcement.
+  - policy_id: ap_auditor_read_evidence
+    subject: AUDITOR
+    domain: governance_audit
+    object: governance_evidence
+    environment: PROD
+    purpose: SECURITY_AUDIT
+    operation: read_audit_evidence
+    effect: ALLOW
+    conditions: [audit_scope_approval]
+    required_classification: SECURITY_AUDIT
+    required_approval: audit_scope_approval
+    masking_policy_ref: mask_secret_metadata
+    row_access_policy_ref: row_environment_scope
+    object_access_policy_ref: obj_audit_logs
+    export_policy_ref: exp_prohibited
+    audit_event_ref: aud_sensitive_object_access
+    effective_from: "2026-06-28"
+    effective_to: null
+    owner: SECURITY_ADMIN
+    version: 1.0.0
+    status: STATICALLY_VALIDATED
+    implementation_mapping: [governance_evidence_catalogue]
+    enforcement_status: not_live_enforced
+    limitations: Read-only.
+  - policy_id: ap_service_identity_no_interactive_login
+    subject: SERVICE_IDENTITY
+    domain: governance_audit
+    object: service_identity
+    environment: PROD
+    purpose: PLATFORM_ADMINISTRATION
+    operation: interactive_login
+    effect: DENY
+    conditions: [service_identity]
+    required_classification: SECRET_METADATA
+    required_approval: security_admin
+    masking_policy_ref: mask_secret_metadata
+    row_access_policy_ref: row_environment_scope
+    object_access_policy_ref: obj_secret_metadata
+    export_policy_ref: exp_prohibited
+    audit_event_ref: aud_failed_access
+    effective_from: "2026-06-28"
+    effective_to: null
+    owner: SECURITY_ADMIN
+    version: 1.0.0
+    status: STATICALLY_VALIDATED
+    implementation_mapping: [snowflake_service_roles, airflow_service_identity]
+    enforcement_status: not_live_enforced
+    limitations: No live identity-provider enforcement.

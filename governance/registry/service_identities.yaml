@@ -1,0 +1,79 @@
+version: 1.0.0
+service_identities:
+  - service_id: svc_airflow_orchestrator
+    purpose: Execute approved Airflow workflows.
+    environment: [DEV, TEST, PROD]
+    required_permissions: [execute_airflow_workflows, read_control_metadata]
+    prohibited_permissions: [interactive_login, grant_roles, read_direct_identifiers]
+    credential_type: secret_reference_only
+    rotation_expectation: quarterly_or_on_incident
+    interactive_login: prohibited
+    owner: PLATFORM_OWNER
+    audit_expectation: aud_sensitive_object_access
+    deployment_status: not_live_configured
+  - service_id: svc_dbt_ci
+    purpose: Parse and validate dbt metadata.
+    environment: [DEV, TEST]
+    required_permissions: [execute_dbt]
+    prohibited_permissions: [interactive_login, production_write]
+    credential_type: workload_identity_or_key_pair_reference
+    rotation_expectation: quarterly_or_on_incident
+    interactive_login: prohibited
+    owner: ANALYTICS_ENGINEERING
+    audit_expectation: aud_sensitive_object_access
+    deployment_status: not_live_configured
+  - service_id: svc_dataiku
+    purpose: Governed analytical workflow execution.
+    environment: [TEST, PROD]
+    required_permissions: [read_approved_analytical_contracts]
+    prohibited_permissions: [interactive_login, raw_source_read, autonomous_decision]
+    credential_type: service_connection_reference
+    rotation_expectation: quarterly_or_on_incident
+    interactive_login: prohibited
+    owner: DATA_SCIENCE
+    audit_expectation: aud_model_approval
+    deployment_status: not_live_configured
+  - service_id: svc_feature_materialisation
+    purpose: Offline feature materialisation and validation.
+    environment: [DEV, TEST]
+    required_permissions: [read_governed_dbt_outputs, write_feature_reference_outputs]
+    prohibited_permissions: [online_serving_admin, interactive_login]
+    credential_type: workload_identity_reference
+    rotation_expectation: quarterly_or_on_incident
+    interactive_login: prohibited
+    owner: ANALYTICS_ENGINEERING
+    audit_expectation: aud_feature_approval
+    deployment_status: not_live_configured
+  - service_id: svc_powerbi_refresh
+    purpose: Future semantic-model refresh.
+    environment: [TEST, PROD]
+    required_permissions: [read_semantic_contracts]
+    prohibited_permissions: [interactive_login, external_share, public_publish]
+    credential_type: service_principal_reference
+    rotation_expectation: quarterly_or_on_incident
+    interactive_login: prohibited
+    owner: BI_PLATFORM_OWNER
+    audit_expectation: aud_semantic_model_promotion
+    deployment_status: not_live_configured
+  - service_id: svc_terraform_deploy
+    purpose: Future protected infrastructure deployment.
+    environment: [DEV, TEST, PROD]
+    required_permissions: [plan_apply_approved_resources]
+    prohibited_permissions: [unreviewed_production_apply, interactive_login]
+    credential_type: protected_environment_secret_reference
+    rotation_expectation: quarterly_or_on_incident
+    interactive_login: prohibited
+    owner: PLATFORM_OWNER
+    audit_expectation: aud_privileged_role_use
+    deployment_status: not_live_configured
+  - service_id: svc_governance_validation
+    purpose: Local governance metadata validation and evidence generation.
+    environment: [DEV]
+    required_permissions: [read_policy_registry, write_local_reference_outputs]
+    prohibited_permissions: [live_policy_deployment, interactive_login]
+    credential_type: none_local_only
+    rotation_expectation: not_applicable
+    interactive_login: prohibited
+    owner: DATA_GOVERNANCE_STEWARD
+    audit_expectation: aud_evidence_generation
+    deployment_status: local_only

@@ -1,0 +1,318 @@
+{
+  "default_decision": {
+    "effect": "DENY",
+    "policy_id": "ap_default_deny",
+    "reason": "No explicit matching allow policy."
+  },
+  "policies": [
+    {
+      "audit_event_ref": "aud_sensitive_object_access",
+      "conditions": [
+        "organisation_scope_required"
+      ],
+      "domain": "operational",
+      "effect": "ALLOW",
+      "effective_from": "2026-06-28",
+      "effective_to": null,
+      "enforcement_status": "not_live_enforced",
+      "environment": "PROD",
+      "export_policy_ref": "exp_aggregated_only",
+      "implementation_mapping": [
+        "snowflake_secure_view",
+        "powerbi_rls"
+      ],
+      "limitations": "Synthetic portfolio policy simulation only.",
+      "masking_policy_ref": "mask_patient_identifiers",
+      "object": "healthcare_operations_semantic",
+      "object_access_policy_ref": "obj_semantic_healthcare_operations",
+      "operation": "read_aggregated_data",
+      "owner": "DATA_GOVERNANCE_STEWARD",
+      "policy_id": "ap_clinical_aggregate_read",
+      "purpose": "CARE_OPERATIONS",
+      "required_approval": "domain_owner",
+      "required_classification": "SYNTHETIC_HEALTH_CONFIDENTIAL",
+      "row_access_policy_ref": "row_organisation_scope",
+      "status": "STATICALLY_VALIDATED",
+      "subject": "CLINICAL_ANALYST",
+      "version": "1.0.0"
+    },
+    {
+      "audit_event_ref": "aud_sensitive_object_access",
+      "conditions": [
+        "payer_scope_required"
+      ],
+      "domain": "billing",
+      "effect": "ALLOW",
+      "effective_from": "2026-06-28",
+      "effective_to": null,
+      "enforcement_status": "not_live_enforced",
+      "environment": "PROD",
+      "export_policy_ref": "exp_restricted_detail",
+      "implementation_mapping": [
+        "snowflake_row_access",
+        "powerbi_rls"
+      ],
+      "limitations": "Does not grant live Snowflake access.",
+      "masking_policy_ref": "mask_patient_identifiers",
+      "object": "fct_invoice",
+      "object_access_policy_ref": "obj_finance_detail",
+      "operation": "view_finance_detail",
+      "owner": "FINANCE_ANALYTICS",
+      "policy_id": "ap_billing_invoice_read",
+      "purpose": "BILLING_OPERATIONS",
+      "required_approval": "finance_owner",
+      "required_classification": "SYNTHETIC_FINANCIAL_CONFIDENTIAL",
+      "row_access_policy_ref": "row_payer_scope",
+      "status": "STATICALLY_VALIDATED",
+      "subject": "BILLING_ANALYST",
+      "version": "1.0.0"
+    },
+    {
+      "audit_event_ref": "aud_failed_access",
+      "conditions": [
+        "direct_identifier"
+      ],
+      "domain": "clinical",
+      "effect": "DENY",
+      "effective_from": "2026-06-28",
+      "effective_to": null,
+      "enforcement_status": "not_live_enforced",
+      "environment": "PROD",
+      "export_policy_ref": "exp_prohibited",
+      "implementation_mapping": [
+        "snowflake_masking",
+        "powerbi_ols"
+      ],
+      "limitations": "Simulated denial only.",
+      "masking_policy_ref": "mask_direct_identifier_full_redaction",
+      "object": "core_patient.synthetic_nhs_number",
+      "object_access_policy_ref": "obj_patient_direct_identifier",
+      "operation": "read_synthetic_identifiers",
+      "owner": "DATA_GOVERNANCE_STEWARD",
+      "policy_id": "ap_finance_no_direct_identifiers",
+      "purpose": "FINANCIAL_CONTROL",
+      "required_approval": "security_admin",
+      "required_classification": "SYNTHETIC_DIRECT_IDENTIFIER",
+      "row_access_policy_ref": "row_environment_scope",
+      "status": "STATICALLY_VALIDATED",
+      "subject": "FINANCE_ANALYST",
+      "version": "1.0.0"
+    },
+    {
+      "audit_event_ref": "aud_sensitive_object_access",
+      "conditions": [
+        "assurance_domain_scope_required"
+      ],
+      "domain": "assurance",
+      "effect": "ALLOW",
+      "effective_from": "2026-06-28",
+      "effective_to": null,
+      "enforcement_status": "not_live_enforced",
+      "environment": "PROD",
+      "export_policy_ref": "exp_restricted_detail",
+      "implementation_mapping": [
+        "snowflake_secure_view",
+        "powerbi_rls"
+      ],
+      "limitations": "Cannot alter invoice calculations.",
+      "masking_policy_ref": "mask_evidence_reference",
+      "object": "reconciliation_exception",
+      "object_access_policy_ref": "obj_assurance_evidence",
+      "operation": "investigate_assurance_exceptions",
+      "owner": "REVENUE_ASSURANCE",
+      "policy_id": "ap_revenue_assurance_exception_read",
+      "purpose": "REVENUE_ASSURANCE",
+      "required_approval": "assurance_owner",
+      "required_classification": "SYNTHETIC_FINANCIAL_CONFIDENTIAL",
+      "row_access_policy_ref": "row_assurance_domain_scope",
+      "status": "STATICALLY_VALIDATED",
+      "subject": "REVENUE_ASSURANCE_ANALYST",
+      "version": "1.0.0"
+    },
+    {
+      "audit_event_ref": "aud_sensitive_object_access",
+      "conditions": [
+        "approved_research_project",
+        "active_research_eligible_flag"
+      ],
+      "domain": "research",
+      "effect": "ALLOW",
+      "effective_from": "2026-06-28",
+      "effective_to": null,
+      "enforcement_status": "not_live_enforced",
+      "environment": "TEST",
+      "export_policy_ref": "exp_approved_detail",
+      "implementation_mapping": [
+        "dbt_core_research_eligibility",
+        "snowflake_row_access"
+      ],
+      "limitations": "Requires organisational legal and IG review.",
+      "masking_policy_ref": "mask_patient_identifiers",
+      "object": "core_research_eligibility",
+      "object_access_policy_ref": "obj_research_products",
+      "operation": "read_detailed_synthetic_records",
+      "owner": "RESEARCH_GOVERNANCE",
+      "policy_id": "ap_research_requires_eligibility",
+      "purpose": "APPROVED_RESEARCH",
+      "required_approval": "research_governance_approval",
+      "required_classification": "RESEARCH_RESTRICTED",
+      "row_access_policy_ref": "row_research_cohort_scope",
+      "status": "STATICALLY_VALIDATED",
+      "subject": "RESEARCH_ANALYST",
+      "version": "1.0.0"
+    },
+    {
+      "audit_event_ref": "aud_failed_access",
+      "conditions": [
+        "withdrawn_or_expired_consent"
+      ],
+      "domain": "research",
+      "effect": "DENY",
+      "effective_from": "2026-06-28",
+      "effective_to": null,
+      "enforcement_status": "not_live_enforced",
+      "environment": "TEST",
+      "export_policy_ref": "exp_prohibited",
+      "implementation_mapping": [
+        "dbt_core_research_eligibility"
+      ],
+      "limitations": "Portfolio control pattern, not legal interpretation.",
+      "masking_policy_ref": "mask_patient_identifiers",
+      "object": "core_research_eligibility",
+      "object_access_policy_ref": "obj_research_products",
+      "operation": "read_detailed_synthetic_records",
+      "owner": "RESEARCH_GOVERNANCE",
+      "policy_id": "ap_research_withdrawn_consent_deny",
+      "purpose": "APPROVED_RESEARCH",
+      "required_approval": "research_governance_approval",
+      "required_classification": "RESEARCH_RESTRICTED",
+      "row_access_policy_ref": "row_research_cohort_scope",
+      "status": "STATICALLY_VALIDATED",
+      "subject": "RESEARCH_ANALYST",
+      "version": "1.0.0"
+    },
+    {
+      "audit_event_ref": "aud_feature_approval",
+      "conditions": [
+        "approved_feature_set_version"
+      ],
+      "domain": "feature_store",
+      "effect": "ALLOW",
+      "effective_from": "2026-06-28",
+      "effective_to": null,
+      "enforcement_status": "not_live_enforced",
+      "environment": "TEST",
+      "export_policy_ref": "exp_restricted_detail",
+      "implementation_mapping": [
+        "feature_store_registry",
+        "dataiku_contract"
+      ],
+      "limitations": "No online serving.",
+      "masking_policy_ref": "mask_evidence_reference",
+      "object": "billing_exception_prioritisation_features",
+      "object_access_policy_ref": "obj_feature_registry",
+      "operation": "read_feature_sets",
+      "owner": "DATA_SCIENCE",
+      "policy_id": "ap_data_scientist_feature_read",
+      "purpose": "MODEL_DEVELOPMENT",
+      "required_approval": "model_risk_review",
+      "required_classification": "MODEL_GOVERNANCE",
+      "row_access_policy_ref": "row_environment_scope",
+      "status": "STATICALLY_VALIDATED",
+      "subject": "DATA_SCIENTIST",
+      "version": "1.0.0"
+    },
+    {
+      "audit_event_ref": "aud_data_export",
+      "conditions": [
+        "restricted_detail"
+      ],
+      "domain": "semantic_consumption",
+      "effect": "DENY",
+      "effective_from": "2026-06-28",
+      "effective_to": null,
+      "enforcement_status": "not_live_enforced",
+      "environment": "PROD",
+      "export_policy_ref": "exp_prohibited",
+      "implementation_mapping": [
+        "powerbi_export_policy"
+      ],
+      "limitations": "No live Power BI enforcement.",
+      "masking_policy_ref": "mask_patient_identifiers",
+      "object": "healthcare_enterprise",
+      "object_access_policy_ref": "obj_semantic_healthcare_operations",
+      "operation": "export_restricted_detail",
+      "owner": "BI_PLATFORM_OWNER",
+      "policy_id": "ap_report_viewer_no_detail_export",
+      "purpose": "SERVICE_PLANNING",
+      "required_approval": "data_owner",
+      "required_classification": "SYNTHETIC_HEALTH_CONFIDENTIAL",
+      "row_access_policy_ref": "row_organisation_scope",
+      "status": "STATICALLY_VALIDATED",
+      "subject": "REPORT_VIEWER",
+      "version": "1.0.0"
+    },
+    {
+      "audit_event_ref": "aud_sensitive_object_access",
+      "conditions": [
+        "audit_scope_approval"
+      ],
+      "domain": "governance_audit",
+      "effect": "ALLOW",
+      "effective_from": "2026-06-28",
+      "effective_to": null,
+      "enforcement_status": "not_live_enforced",
+      "environment": "PROD",
+      "export_policy_ref": "exp_prohibited",
+      "implementation_mapping": [
+        "governance_evidence_catalogue"
+      ],
+      "limitations": "Read-only.",
+      "masking_policy_ref": "mask_secret_metadata",
+      "object": "governance_evidence",
+      "object_access_policy_ref": "obj_audit_logs",
+      "operation": "read_audit_evidence",
+      "owner": "SECURITY_ADMIN",
+      "policy_id": "ap_auditor_read_evidence",
+      "purpose": "SECURITY_AUDIT",
+      "required_approval": "audit_scope_approval",
+      "required_classification": "SECURITY_AUDIT",
+      "row_access_policy_ref": "row_environment_scope",
+      "status": "STATICALLY_VALIDATED",
+      "subject": "AUDITOR",
+      "version": "1.0.0"
+    },
+    {
+      "audit_event_ref": "aud_failed_access",
+      "conditions": [
+        "service_identity"
+      ],
+      "domain": "governance_audit",
+      "effect": "DENY",
+      "effective_from": "2026-06-28",
+      "effective_to": null,
+      "enforcement_status": "not_live_enforced",
+      "environment": "PROD",
+      "export_policy_ref": "exp_prohibited",
+      "implementation_mapping": [
+        "snowflake_service_roles",
+        "airflow_service_identity"
+      ],
+      "limitations": "No live identity-provider enforcement.",
+      "masking_policy_ref": "mask_secret_metadata",
+      "object": "service_identity",
+      "object_access_policy_ref": "obj_secret_metadata",
+      "operation": "interactive_login",
+      "owner": "SECURITY_ADMIN",
+      "policy_id": "ap_service_identity_no_interactive_login",
+      "purpose": "PLATFORM_ADMINISTRATION",
+      "required_approval": "security_admin",
+      "required_classification": "SECRET_METADATA",
+      "row_access_policy_ref": "row_environment_scope",
+      "status": "STATICALLY_VALIDATED",
+      "subject": "SERVICE_IDENTITY",
+      "version": "1.0.0"
+    }
+  ],
+  "version": "1.0.0"
+}

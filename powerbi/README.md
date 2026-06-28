@@ -15,3 +15,6 @@ The implementation follows a thin-report pattern:
 
 All artefacts are metadata only, synthetic-only, not published, not refreshed, not
 tenant validated and not certified.
+
+Milestone 14 maps RLS, OLS, sensitivity, export, certification and model-output controls
+to the central governance registry. Power BI does not own independent governance truth.

@@ -1,0 +1,23 @@
+version: 1.0.0
+snowflake:
+  ownership_source: Milestone 3
+  mapped_constructs: [roles, grants, classification_tags, masking_policy_previews, row_policy_previews, secure_views]
+  deployment_status: not_deployed
+  terraform_owner: infrastructure/terraform/modules/snowflake_foundation
+dbt:
+  mapped_constructs: [model_meta_owner, sensitivity, contract_status, lineage, tags]
+  coverage_scope: curated_and_externally_consumed_models
+  deployment_status: parse_only_without_live_snowflake
+airflow:
+  mapped_constructs: [fixture_default, connected_mode_flag, service_identity, evidence_outputs]
+  connected_mode_default: disabled
+  deployment_status: local_blueprint
+dataiku:
+  mapped_constructs: [trusted_inputs, use_case, approval_gates, model_card, prediction_contract]
+  live_deployment_status: not_deployed
+feature_store:
+  mapped_constructs: [feature_owners, feature_sets, consumers, point_in_time_rules, lifecycle]
+  online_serving_status: deferred
+fabric_powerbi:
+  mapped_constructs: [workspace_roles, rls, ols, sensitivity_mapping, export_policy, certification_workflow]
+  live_deployment_status: not_deployed

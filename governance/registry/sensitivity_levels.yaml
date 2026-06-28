@@ -1,0 +1,57 @@
+version: 1.0.0
+sensitivity_levels:
+  - level_id: PUBLIC
+    rank: 1
+    permitted_personas: [REPORT_VIEWER, AUDITOR, DATA_GOVERNANCE_STEWARD]
+    minimum_authentication: none_for_published_reference
+    export_allowance: SYNTHETIC_UNRESTRICTED_WITHIN_REPOSITORY
+    sharing_allowance: internal_or_public_documentation
+    masking_expectation: none
+    logging_expectation: standard_repository_history
+    retention_expectation: documentation_retention
+    approval_requirement: none
+    environment_restrictions: [DEV, TEST, PROD]
+  - level_id: INTERNAL
+    rank: 2
+    permitted_personas: [DATA_ENGINEER, ANALYTICS_ENGINEER, REPORT_VIEWER, AUDITOR]
+    minimum_authentication: workforce_identity
+    export_allowance: AGGREGATED_ONLY
+    sharing_allowance: internal_only
+    masking_expectation: hide_technical_identifiers
+    logging_expectation: access_logged
+    retention_expectation: operational_retention
+    approval_requirement: domain_owner_for_external_use
+    environment_restrictions: [DEV, TEST, PROD]
+  - level_id: CONFIDENTIAL
+    rank: 3
+    permitted_personas: [ANALYTICS_ENGINEER, DATA_SCIENTIST, POWER_BI_DEVELOPER, AUDITOR]
+    minimum_authentication: workforce_identity_mfa
+    export_allowance: AGGREGATED_ONLY
+    sharing_allowance: approved_internal_workspace
+    masking_expectation: sensitive_columns_hidden
+    logging_expectation: detailed_access_logged
+    retention_expectation: governed_retention
+    approval_requirement: data_owner
+    environment_restrictions: [DEV, TEST, PROD]
+  - level_id: HIGHLY_CONFIDENTIAL
+    rank: 4
+    permitted_personas: [CLINICAL_ANALYST, BILLING_ANALYST, FINANCE_ANALYST, REVENUE_ASSURANCE_ANALYST]
+    minimum_authentication: workforce_identity_mfa_privileged_review
+    export_allowance: REDACTED_DETAIL
+    sharing_allowance: need_to_know_only
+    masking_expectation: direct_identifiers_masked_by_default
+    logging_expectation: sensitive_object_access_logged
+    retention_expectation: domain_retention_policy
+    approval_requirement: data_owner_and_governance
+    environment_restrictions: [TEST, PROD]
+  - level_id: RESTRICTED
+    rank: 5
+    permitted_personas: [SECURITY_ADMIN, AUDITOR, DATA_GOVERNANCE_STEWARD, BREAK_GLASS_ADMIN]
+    minimum_authentication: privileged_mfa_with_time_bound_approval
+    export_allowance: EXPORT_PROHIBITED
+    sharing_allowance: prohibited_by_default
+    masking_expectation: redact_or_deny_by_default
+    logging_expectation: privileged_access_logged_with_correlation_id
+    retention_expectation: audit_retention
+    approval_requirement: security_and_governance
+    environment_restrictions: [PROD]

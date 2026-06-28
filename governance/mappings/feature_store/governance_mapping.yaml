@@ -1,0 +1,10 @@
+version: 1.0.0
+owners_required: true
+sensitivity_required: true
+approved_consumers_required: true
+point_in_time_rules_required: true
+online_serving_status: deferred
+retention_policy: ret_feature_materialisations
+export_policy: exp_restricted_detail
+audit_event: aud_feature_approval
+implementation_status: STATICALLY_VALIDATED

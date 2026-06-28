@@ -23,7 +23,7 @@ Every milestone must capture a reproducible command/run, validation artifacts, k
 | **11 — Dataiku workflows (COMPLETE LOCALLY)** | Governed collaborative analytics blueprint, billing exception prioritisation ML design, local reference evidence, model card, scenarios and monitoring over trusted products | Blueprint schema, Flow graph, trusted-input, leakage, split, model, output-contract and reference-execution guardrails | Warehouse transformation duplication, live Dataiku deployment and feature-store implementation |
 | **12 — Governed feature store (COMPLETE LOCALLY)** | Offline feature registry, entity keys, feature views, feature sets, dbt feature models, point-in-time retrieval, freshness, lineage and Dataiku consumption contracts | Registry, dbt boundary, point-in-time, retrieval, Dataiku integration, checksum and future-scope guardrails | Online serving without a proven latency requirement |
 | **13 — Fabric and Power BI** | Certified semantic models and clinical, operational, financial and executive reporting | Measure reconciliation, refresh, persona access, lineage and performance | Curated transformation in BI |
-| **14 — Governance and security implementation** | Pseudonymisation, masking, row access, consent, retention, audit integrity, research access and separation of duties | Persona allow/deny tests, expiry/revocation, policy combinations and audit evidence | Unsupported anonymisation/compliance claims |
+| **14 — Governance and security implementation (COMPLETE LOCALLY)** | Central governance registry, classifications, personas, purposes, access simulation, masking, row/object/export/retention/audit controls and platform mappings | Registry validation, persona allow/deny tests, sensitive-field coverage, compliance-claim checks and deterministic evidence | Live enforcement or certification claims |
 | **15 — Terraform and environment design** | Repeatable Snowflake/platform identity, storage, network, secret integration, monitoring and protected state/promotion | Plan/apply/policy checks, drift, isolation, approvals and rollback | Unreviewed production apply |
 | **16 — Multi-region architecture and recovery** | Residency constraints, replication/failover, RTO/RPO, dependency mapping and operational runbooks | Recovery/failover exercises, data-loss/reconnect evidence and return-to-primary test | Claims based on diagrams alone |
 | **17 — Portfolio evidence and polish** | Consolidated evidence index, runbooks, CI/CD releases, benchmarks, demos and claim-to-evidence audit | Clean-room reproduction, link/checksum audit and limitation review | Fabricated evidence or real health data |
@@ -173,9 +173,9 @@ The sections below preserve the original roadmap as an audit trail. They are sup
 ## 14 — Expanded governance, security and compliance controls
 
 - **Objective:** strengthen platform-wide executable governance and security controls without claiming regulatory compliance.
-- **Deliverables:** pseudonymisation/masking policy designs, row/object access enforcement patterns, consent-aware access contracts, retention and audit controls, export controls, persona tests and governance evidence.
-- **Validation:** least-privilege tests, deny-by-default checks, sensitive-field access tests, consent and retention guardrails, audit evidence and fabricated-compliance claim checks.
-- **Evidence:** local policy metadata, static validation reports, persona matrix and limitations.
+- **Deliverables:** central governance registry, data-domain ownership, sensitivity taxonomy, persona/purpose catalogue, access policies, masking/row/object/export/retention/audit controls, service identities, platform mappings and governance evidence.
+- **Validation:** registry validation, least-privilege tests, deny-by-default checks, sensitive-field access tests, consent and retention guardrails, audit evidence and unsupported-compliance-claim checks.
+- **Evidence:** local policy metadata, static validation reports, persona access decisions, coverage reports, checksum manifest and limitations.
 - **Commit boundary:** `feat: add expanded governance and compliance controls`.
 - **Dependencies:** all governed product and consumption capabilities from 3–13.
 - **Exclusions:** unsupported anonymisation, statutory compliance certification, live tenant enforcement or production patient-safety claims.

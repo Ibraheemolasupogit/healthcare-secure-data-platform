@@ -55,4 +55,8 @@ Implemented Milestone 12 assets:
 - registry-linked contracts and guardrail tests;
 - dbt parse validation without live Snowflake materialisation.
 
+Milestone 14 governance mapping references curated and externally consumed dbt models for
+owner, sensitivity, contract status, lineage, retention and export-policy coverage. dbt
+continues to own transformation logic and model grains.
+
 `dbt parse --profiles-dir . --no-partial-parse` validates structure without connecting to Snowflake. The placeholder profile must never be used for execution. Connected `dbt compile`, `dbt build`, `dbt source freshness` and `dbt docs generate` require a separate authorised Snowflake profile.

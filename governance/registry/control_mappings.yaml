@@ -1,0 +1,68 @@
+version: 1.0.0
+implementation_statuses:
+  - DOCUMENTED
+  - STATICALLY_VALIDATED
+  - LOCALLY_SIMULATED
+  - DEPLOYMENT_READY
+  - PARTIALLY_ENFORCED
+  - LIVE_ENFORCED
+  - EVIDENCE_VERIFIED
+  - NOT_IMPLEMENTED
+  - NOT_APPLICABLE
+controls:
+  - control_id: ctrl_default_deny
+    theme: least_privilege
+    intent: Access is denied unless an explicit policy allows it.
+    frameworks: [UK_GDPR_principles, NIST_CSF, Microsoft_Zero_Trust]
+    evidence_ref: governance/reference/access_decisions.csv
+    implementation_status: LOCALLY_SIMULATED
+    owner: DATA_GOVERNANCE_STEWARD
+    limitations: Not production authorisation infrastructure.
+  - control_id: ctrl_purpose_limitation
+    theme: privacy
+    intent: Access policies must reference controlled purposes.
+    frameworks: [UK_GDPR_principles, Data_Protection_Act_2018_concepts]
+    evidence_ref: governance/registry/purposes.yaml
+    implementation_status: STATICALLY_VALIDATED
+    owner: DATA_GOVERNANCE_STEWARD
+    limitations: No legal conclusion.
+  - control_id: ctrl_consent_aware_research
+    theme: privacy
+    intent: Research access uses governed eligibility and consent outputs.
+    frameworks: [UK_GDPR_principles, NHS_data_security_concepts]
+    evidence_ref: governance/registry/consent_policies.yaml
+    implementation_status: STATICALLY_VALIDATED
+    owner: RESEARCH_GOVERNANCE
+    limitations: Requires organisational IG review.
+  - control_id: ctrl_masking_sensitive_fields
+    theme: data_minimisation
+    intent: Sensitive direct/quasi identifiers have masking or object policies.
+    frameworks: [NIST_CSF, CIS_Controls, ISO_27001_themes]
+    evidence_ref: governance/reference/sensitive_field_coverage.csv
+    implementation_status: STATICALLY_VALIDATED
+    owner: SECURITY_ADMIN
+    limitations: No live masking deployment.
+  - control_id: ctrl_export_governance
+    theme: controlled_export
+    intent: Restricted detail exports require approval and audit events.
+    frameworks: [UK_GDPR_principles, CIS_Controls]
+    evidence_ref: governance/registry/export_policies.yaml
+    implementation_status: STATICALLY_VALIDATED
+    owner: DATA_GOVERNANCE_STEWARD
+    limitations: No live DLP tooling.
+  - control_id: ctrl_model_human_oversight
+    theme: ai_governance
+    intent: Dataiku outputs are human-reviewed and not autonomous clinical decisions.
+    frameworks: [NIST_AI_RMF, Microsoft_Zero_Trust]
+    evidence_ref: dataiku/projects/healthcare_analytics/governance/use_case.yaml
+    implementation_status: STATICALLY_VALIDATED
+    owner: MODEL_RISK_REVIEWER
+    limitations: No production ML approval.
+  - control_id: ctrl_qualified_compliance_language
+    theme: compliance_claim_control
+    intent: Unsupported absolute compliance claims are rejected.
+    frameworks: [ISO_27001_themes, OWASP_principles]
+    evidence_ref: governance/reference/unsupported_claim_report.csv
+    implementation_status: LOCALLY_SIMULATED
+    owner: SECURITY_ADMIN
+    limitations: Not legal review.

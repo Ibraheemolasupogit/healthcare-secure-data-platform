@@ -1,0 +1,62 @@
+version: 1.0.0
+row_access_policies:
+  - row_policy_id: row_organisation_scope
+    protected_object: healthcare_operations_semantic
+    scope_key: organisation_key
+    subject_mapping: synthetic_user_to_organisation_role_fixture
+    default_behaviour: DENY
+    null_behaviour: DENY
+    hierarchy_behaviour: parent_child_organisation_rollup
+    owner: DATA_GOVERNANCE_STEWARD
+    test_fixtures: [clinical_analyst_allowed_org, report_viewer_denied_detail]
+    snowflake_mapping: M14_ROW_ORGANISATION_SCOPE_PREVIEW
+    powerbi_rls_mapping: healthcare_operations_viewer
+    implementation_status: STATICALLY_VALIDATED
+  - row_policy_id: row_payer_scope
+    protected_object: finance_semantic
+    scope_key: payer_key
+    subject_mapping: synthetic_user_to_payer_role_fixture
+    default_behaviour: DENY
+    null_behaviour: DENY
+    hierarchy_behaviour: no_hierarchy
+    owner: FINANCE_ANALYTICS
+    test_fixtures: [billing_analyst_allowed_payer]
+    snowflake_mapping: M14_ROW_PAYER_SCOPE_PREVIEW
+    powerbi_rls_mapping: billing_finance_viewer
+    implementation_status: STATICALLY_VALIDATED
+  - row_policy_id: row_assurance_domain_scope
+    protected_object: reconciliation_exception
+    scope_key: exception_origin
+    subject_mapping: synthetic_user_to_assurance_domain_fixture
+    default_behaviour: DENY
+    null_behaviour: DENY
+    hierarchy_behaviour: assurance_domain_only
+    owner: REVENUE_ASSURANCE
+    test_fixtures: [assurance_analyst_allowed_exception_domain]
+    snowflake_mapping: M14_ROW_ASSURANCE_SCOPE_PREVIEW
+    powerbi_rls_mapping: revenue_assurance_analyst
+    implementation_status: STATICALLY_VALIDATED
+  - row_policy_id: row_research_cohort_scope
+    protected_object: core_research_eligibility
+    scope_key: cohort_id
+    subject_mapping: approved_research_project_to_cohort_fixture
+    default_behaviour: DENY
+    null_behaviour: DENY
+    hierarchy_behaviour: project_cohort_only
+    owner: RESEARCH_GOVERNANCE
+    test_fixtures: [research_active_consent_allowed, research_withdrawn_consent_denied]
+    snowflake_mapping: M14_ROW_RESEARCH_COHORT_PREVIEW
+    powerbi_rls_mapping: not_broadly_exposed
+    implementation_status: STATICALLY_VALIDATED
+  - row_policy_id: row_environment_scope
+    protected_object: all_governed_products
+    scope_key: environment
+    subject_mapping: persona_allowed_environment
+    default_behaviour: DENY
+    null_behaviour: DENY
+    hierarchy_behaviour: no_cross_environment_access
+    owner: PLATFORM_OWNER
+    test_fixtures: [service_identity_environment_denied]
+    snowflake_mapping: M3_ENVIRONMENT_ROLE_PREFIX
+    powerbi_rls_mapping: environment_workspace_binding
+    implementation_status: STATICALLY_VALIDATED

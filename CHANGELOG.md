@@ -39,3 +39,6 @@ All notable changes will follow Keep a Changelog conventions. The project does n
 - Milestone 13 governed Fabric and Power BI consumption layer with workspace blueprints,
   a shared semantic model, central measures and KPIs, RLS/OLS, report specifications,
   refresh/deployment metadata, deterministic reference catalogues, guardrails and ADR.
+- Milestone 14 enterprise governance, security, privacy and compliance-control foundation
+  with central registry, access simulation, masking/row/object/export/retention/audit
+  controls, platform mappings, evidence outputs, guardrails and ADR.

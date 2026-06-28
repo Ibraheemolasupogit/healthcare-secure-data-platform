@@ -1,0 +1,8 @@
+version: 1.0.0
+connected_mode_default: disabled
+service_identity: svc_airflow_orchestrator
+commands_secret_boundary: no_secrets_in_command_strings
+failure_callbacks_payload_boundary: no_patient_payloads
+evidence_retention_policy: ret_audit_records
+audit_event: aud_sensitive_object_access
+implementation_status: STATICALLY_VALIDATED

@@ -1,0 +1,18 @@
+persona_id,allowed_domains,permitted_purposes,permitted_operations,export_allowance,privileged
+PLATFORM_ADMIN,"['governance_audit', 'interoperability']",['PLATFORM_ADMINISTRATION'],"['read_audit_evidence', 'administer_snowflake']",EXPORT_PROHIBITED,True
+SECURITY_ADMIN,['governance_audit'],"['SECURITY_AUDIT', 'PLATFORM_ADMINISTRATION']","['manage_security_policies', 'read_audit_evidence']",EXPORT_PROHIBITED,True
+DATA_ENGINEER,"['interoperability', 'operational', 'governance_audit']","['DATA_QUALITY', 'PLATFORM_ADMINISTRATION']","['create_dbt_models', 'execute_dbt', 'read_audit_evidence']",AGGREGATED_ONLY,False
+ANALYTICS_ENGINEER,"['clinical', 'operational', 'billing', 'finance', 'assurance', 'feature_store']","['DATA_QUALITY', 'FINANCIAL_CONTROL', 'MODEL_DEVELOPMENT']","['create_dbt_models', 'execute_dbt', 'manage_feature_definitions']",REDACTED_DETAIL,False
+DATA_SCIENTIST,"['machine_learning', 'feature_store', 'assurance']","['MODEL_DEVELOPMENT', 'MODEL_MONITORING']","['train_models', 'read_feature_sets']",REDACTED_DETAIL,False
+CLINICAL_ANALYST,"['clinical', 'operational']","['CARE_OPERATIONS', 'SERVICE_PLANNING']","['read_aggregated_data', 'read_detailed_synthetic_records']",AGGREGATED_ONLY,False
+BILLING_ANALYST,['billing'],['BILLING_OPERATIONS'],"['view_finance_detail', 'read_detailed_synthetic_records']",REDACTED_DETAIL,False
+FINANCE_ANALYST,"['finance', 'billing']","['FINANCIAL_CONTROL', 'BILLING_OPERATIONS']","['view_finance_detail', 'read_aggregated_data']",REDACTED_DETAIL,False
+REVENUE_ASSURANCE_ANALYST,"['assurance', 'billing', 'finance']","['REVENUE_ASSURANCE', 'FINANCIAL_CONTROL']","['investigate_assurance_exceptions', 'read_aggregated_data']",REDACTED_DETAIL,False
+RESEARCH_ANALYST,['research'],['APPROVED_RESEARCH'],['read_detailed_synthetic_records'],APPROVED_DETAIL,False
+POWER_BI_DEVELOPER,['semantic_consumption'],"['SERVICE_PLANNING', 'BILLING_OPERATIONS', 'REVENUE_ASSURANCE']",['publish_semantic_models'],AGGREGATED_ONLY,False
+REPORT_VIEWER,['semantic_consumption'],"['SERVICE_PLANNING', 'TRAINING_AND_DEMONSTRATION']",['read_aggregated_data'],AGGREGATED_ONLY,False
+MODEL_RISK_REVIEWER,"['machine_learning', 'feature_store']",['MODEL_MONITORING'],"['approve_models', 'read_audit_evidence']",AGGREGATED_ONLY,False
+DATA_GOVERNANCE_STEWARD,"['governance_audit', 'clinical', 'billing', 'finance', 'assurance']","['SECURITY_AUDIT', 'DATA_QUALITY']","['manage_security_policies', 'read_audit_evidence']",EXPORT_PROHIBITED,True
+AUDITOR,['governance_audit'],['SECURITY_AUDIT'],['read_audit_evidence'],EXPORT_PROHIBITED,False
+SERVICE_IDENTITY,"['governance_audit', 'semantic_consumption', 'feature_store']","['PLATFORM_ADMINISTRATION', 'MODEL_MONITORING']","['execute_dbt', 'execute_airflow_workflows']",EXPORT_PROHIBITED,False
+BREAK_GLASS_ADMIN,['governance_audit'],"['PLATFORM_ADMINISTRATION', 'SECURITY_AUDIT']","['administer_snowflake', 'manage_security_policies']",EXPORT_PROHIBITED,True

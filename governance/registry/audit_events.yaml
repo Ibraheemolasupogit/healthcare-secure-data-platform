@@ -1,0 +1,89 @@
+version: 1.0.0
+audit_events:
+  - event_id: aud_authentication_attempt
+    actor_type: human_or_service
+    action: authentication_attempt
+    object: identity_provider
+    required_fields: [timestamp, actor_id_reference, outcome, purpose, policy_id, correlation_id]
+    prohibited_payloads: [patient_payload, secret_value]
+    retention_ref: ret_audit_records
+    severity: medium
+  - event_id: aud_privileged_role_use
+    actor_type: human
+    action: privileged_role_use
+    object: security_policy_or_platform_admin
+    required_fields: [timestamp, actor_id_reference, purpose, policy_id, correlation_id]
+    prohibited_payloads: [patient_payload, secret_value]
+    retention_ref: ret_audit_records
+    severity: high
+  - event_id: aud_policy_change
+    actor_type: human
+    action: policy_change
+    object: governance_registry
+    required_fields: [timestamp, actor_id_reference, purpose, policy_id, change_reference, correlation_id]
+    prohibited_payloads: [patient_payload, secret_value]
+    retention_ref: ret_audit_records
+    severity: high
+  - event_id: aud_data_export
+    actor_type: human_or_service
+    action: data_export
+    object: governed_dataset_or_report
+    required_fields: [timestamp, actor_id_reference, purpose, policy_id, export_policy_id, correlation_id]
+    prohibited_payloads: [patient_payload, secret_value]
+    retention_ref: ret_audit_records
+    severity: high
+  - event_id: aud_sensitive_object_access
+    actor_type: human_or_service
+    action: sensitive_object_access
+    object: governed_dataset
+    required_fields: [timestamp, actor_id_reference, purpose, policy_id, object, correlation_id]
+    prohibited_payloads: [patient_payload, secret_value]
+    retention_ref: ret_audit_records
+    severity: medium
+  - event_id: aud_failed_access
+    actor_type: human_or_service
+    action: failed_access
+    object: governed_dataset_or_policy
+    required_fields: [timestamp, actor_id_reference, purpose, policy_id, reason, correlation_id]
+    prohibited_payloads: [patient_payload, secret_value]
+    retention_ref: ret_audit_records
+    severity: medium
+  - event_id: aud_model_approval
+    actor_type: human
+    action: model_approval
+    object: dataiku_model_registry
+    required_fields: [timestamp, actor_id_reference, model_id, model_version, purpose, policy_id, correlation_id]
+    prohibited_payloads: [patient_payload, secret_value]
+    retention_ref: ret_predictions
+    severity: high
+  - event_id: aud_feature_approval
+    actor_type: human
+    action: feature_approval
+    object: feature_store_registry
+    required_fields:
+      - timestamp
+      - actor_id_reference
+      - feature_set_id
+      - feature_set_version
+      - purpose
+      - policy_id
+      - correlation_id
+    prohibited_payloads: [patient_payload, secret_value]
+    retention_ref: ret_feature_materialisations
+    severity: medium
+  - event_id: aud_semantic_model_promotion
+    actor_type: human_or_service
+    action: semantic_model_promotion
+    object: powerbi_semantic_model
+    required_fields: [timestamp, actor_id_reference, semantic_model_id, stage, purpose, policy_id, correlation_id]
+    prohibited_payloads: [patient_payload, secret_value]
+    retention_ref: ret_powerbi_extracts
+    severity: medium
+  - event_id: aud_evidence_generation
+    actor_type: service
+    action: evidence_generation
+    object: governance_reference_outputs
+    required_fields: [timestamp, actor_id_reference, evidence_manifest, purpose, policy_id, correlation_id]
+    prohibited_payloads: [patient_payload, secret_value]
+    retention_ref: ret_audit_records
+    severity: low

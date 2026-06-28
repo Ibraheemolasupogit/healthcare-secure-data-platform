@@ -1,0 +1,39 @@
+version: 1.0.0
+roles:
+  - role_id: PLATFORM_OWNER
+    source: snowflake_m3
+    privileged: true
+  - role_id: SECURITY_ADMIN
+    source: governance_m14
+    privileged: true
+  - role_id: ANALYTICS_ENGINEERING
+    source: dbt_m5_to_m12
+    privileged: false
+  - role_id: DATA_SCIENCE
+    source: dataiku_m11_feature_store_m12
+    privileged: false
+  - role_id: BI_PLATFORM_OWNER
+    source: fabric_powerbi_m13
+    privileged: true
+  - role_id: DATA_GOVERNANCE_STEWARD
+    source: governance_m14
+    privileged: true
+incompatible_roles:
+  - rule_id: sod_platform_admin_self_approval
+    roles: [PLATFORM_ADMIN, SECURITY_ADMIN]
+    prohibited_combination: approve_own_privileged_access
+  - rule_id: sod_data_scientist_model_approval
+    roles: [DATA_SCIENTIST, MODEL_RISK_REVIEWER]
+    prohibited_combination: train_and_approve_same_model
+  - rule_id: sod_powerbi_self_certification
+    roles: [POWER_BI_DEVELOPER, BI_PLATFORM_OWNER]
+    prohibited_combination: develop_and_certify_same_semantic_model_without_review
+  - rule_id: sod_auditor_read_only
+    roles: [AUDITOR]
+    prohibited_combination: modify_policies_or_business_data
+  - rule_id: sod_service_identity_interactive
+    roles: [SERVICE_IDENTITY]
+    prohibited_combination: interactive_login
+  - rule_id: sod_break_glass_time_bound
+    roles: [BREAK_GLASS_ADMIN]
+    prohibited_combination: permanent_unreviewed_access

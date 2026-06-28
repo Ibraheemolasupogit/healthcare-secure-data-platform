@@ -1,0 +1,67 @@
+version: 1.0.0
+export_policies:
+  - export_policy_id: exp_prohibited
+    state: EXPORT_PROHIBITED
+    allowed_personas: []
+    allowed_domains: []
+    allowed_formats: []
+    row_volume_limit: 0
+    aggregation_expectation: none
+    masking_requirement: full_redaction
+    approval_requirement: security_exception_required
+    destination_restrictions: no_export
+    logging_requirement: aud_data_export
+    expiration: immediate
+    owner: SECURITY_ADMIN
+  - export_policy_id: exp_aggregated_only
+    state: AGGREGATED_ONLY
+    allowed_personas: [CLINICAL_ANALYST, REPORT_VIEWER, POWER_BI_DEVELOPER]
+    allowed_domains: [operational, semantic_consumption]
+    allowed_formats: [csv_summary, pdf_summary]
+    row_volume_limit: 1000
+    aggregation_expectation: aggregate_no_low_volume_sensitive_breakdown
+    masking_requirement: direct_identifiers_hidden
+    approval_requirement: domain_owner_for_external_destination
+    destination_restrictions: internal_workspace_only
+    logging_requirement: aud_data_export
+    expiration: 30_days
+    owner: DATA_GOVERNANCE_STEWARD
+  - export_policy_id: exp_restricted_detail
+    state: REDACTED_DETAIL
+    allowed_personas: [BILLING_ANALYST, FINANCE_ANALYST, REVENUE_ASSURANCE_ANALYST, DATA_SCIENTIST]
+    allowed_domains: [billing, finance, assurance, feature_store, machine_learning]
+    allowed_formats: [csv_redacted, parquet_redacted]
+    row_volume_limit: 10000
+    aggregation_expectation: detail_allowed_only_after_redaction
+    masking_requirement: masking_policy_required
+    approval_requirement: data_owner_and_governance
+    destination_restrictions: approved_internal_storage_only
+    logging_requirement: aud_data_export
+    expiration: 7_days
+    owner: DATA_GOVERNANCE_STEWARD
+  - export_policy_id: exp_approved_detail
+    state: APPROVED_DETAIL
+    allowed_personas: [RESEARCH_ANALYST]
+    allowed_domains: [research]
+    allowed_formats: [csv_redacted, parquet_redacted]
+    row_volume_limit: 5000
+    aggregation_expectation: project_scope_only
+    masking_requirement: research_pseudonymised
+    approval_requirement: research_governance_approval
+    destination_restrictions: approved_research_workspace
+    logging_requirement: aud_data_export
+    expiration: project_end_date
+    owner: RESEARCH_GOVERNANCE
+  - export_policy_id: exp_repository_synthetic
+    state: SYNTHETIC_UNRESTRICTED_WITHIN_REPOSITORY
+    allowed_personas: [DATA_ENGINEER, ANALYTICS_ENGINEER]
+    allowed_domains: [governance_audit]
+    allowed_formats: [yaml, json, csv]
+    row_volume_limit: 100000
+    aggregation_expectation: not_applicable
+    masking_requirement: no_secrets
+    approval_requirement: code_review
+    destination_restrictions: repository_only
+    logging_requirement: git_history
+    expiration: not_applicable
+    owner: PLATFORM_OWNER

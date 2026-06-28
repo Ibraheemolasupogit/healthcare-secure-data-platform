@@ -25,3 +25,7 @@ Dataiku does not own raw ingestion, dbt transformations, Airflow orchestration, 
 Milestone 12 integration: Dataiku consumes exact feature-store feature set `billing_exception_prioritisation_features` version `1.0.0`. Dataiku keeps model-specific preprocessing and does not duplicate reusable feature definitions.
 
 Milestone 13 downstream consumption: Power BI may consume governed prediction-output metadata, model version, feature-set version and validation status. Power BI must not recalculate features, retrain models, redefine thresholds or reinterpret predictions as clinical decision support.
+
+Milestone 14 governance mapping records Dataiku trusted inputs, acceptable/prohibited
+uses, human approval, feature-set version, prediction classification, export policy and
+audit-event requirements. No live Dataiku access change is made.

@@ -1,0 +1,16 @@
+version: 1.0.0
+rules:
+  - rule_id: unique_registry_ids
+    description: Registry identifiers must be unique within their file.
+  - rule_id: references_resolve
+    description: Personas, purposes, domains and policy references must resolve.
+  - rule_id: default_deny
+    description: Unmatched access requests must return DENY.
+  - rule_id: no_live_enforcement_claim
+    description: LIVE_ENFORCED is prohibited without real evidence.
+  - rule_id: no_secret_values_or_real_identities
+    description: Registry content must not include real emails, tenant IDs, tokens or secrets.
+  - rule_id: unsupported_compliance_claims_blocked
+    description: Absolute certification/compliance claims must be reported.
+  - rule_id: central_policy_single_source
+    description: Snowflake and Power BI mappings must reference central row/masking policies.

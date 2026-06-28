@@ -1,0 +1,45 @@
+version: 1.0.0
+classifications:
+  - classification_id: PUBLIC_REFERENCE
+    sensitivity_level: PUBLIC
+    description: Published documentation and non-sensitive reference content.
+  - classification_id: INTERNAL_OPERATIONAL
+    sensitivity_level: INTERNAL
+    description: Internal platform metadata and operational summaries.
+  - classification_id: SYNTHETIC_DIRECT_IDENTIFIER
+    sensitivity_level: RESTRICTED
+    description: Synthetic NHS-number-like identifiers and source identifiers.
+  - classification_id: SYNTHETIC_QUASI_IDENTIFIER
+    sensitivity_level: HIGHLY_CONFIDENTIAL
+    description: Synthetic birth dates, postcode sectors and linkable attributes.
+  - classification_id: SYNTHETIC_HEALTH_CONFIDENTIAL
+    sensitivity_level: HIGHLY_CONFIDENTIAL
+    description: Synthetic clinical, consent, pathway and patient-flow records.
+  - classification_id: SYNTHETIC_FINANCIAL_CONFIDENTIAL
+    sensitivity_level: HIGHLY_CONFIDENTIAL
+    description: Synthetic invoices, payments, balances and assurance values.
+  - classification_id: RESEARCH_RESTRICTED
+    sensitivity_level: RESTRICTED
+    description: Consent-governed research eligibility and cohort metadata.
+  - classification_id: MODEL_GOVERNANCE
+    sensitivity_level: CONFIDENTIAL
+    description: Model cards, feature sets, prediction metadata and approval state.
+  - classification_id: SECURITY_AUDIT
+    sensitivity_level: RESTRICTED
+    description: Access, policy, evidence and audit metadata.
+  - classification_id: SECRET_METADATA
+    sensitivity_level: RESTRICTED
+    description: Secret references and credential metadata without values.
+  - classification_id: PROHIBITED_SECRET_VALUE
+    sensitivity_level: RESTRICTED
+    description: Real passwords, tokens, keys, private certificates or connection strings.
+    repository_allowed: false
+snowflake_tag_mapping:
+  RESTRICTED: RESTRICTED
+  GOVERNED: CONFIDENTIAL
+  GOVERNANCE: RESTRICTED
+powerbi_label_mapping:
+  Synthetic Health Data: HIGHLY_CONFIDENTIAL
+  Synthetic Financial Data: HIGHLY_CONFIDENTIAL
+  Internal: INTERNAL
+  Public: PUBLIC

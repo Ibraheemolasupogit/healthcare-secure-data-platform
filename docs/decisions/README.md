@@ -23,3 +23,4 @@ ADRs use: status/date, context, decision, consequences, alternatives, and valida
 | 0017 | Dataiku consumes governed products for ML workflows |
 | 0018 | Offline-first governed feature store |
 | 0019 | Governed Fabric and Power BI consumption |
+| 0020 | Central governance policy registry |

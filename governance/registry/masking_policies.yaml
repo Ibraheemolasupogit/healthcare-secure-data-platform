@@ -1,0 +1,42 @@
+version: 1.0.0
+masking_policies:
+  - masking_policy_id: mask_direct_identifier_full_redaction
+    fields: [synthetic_nhs_number, source_patient_identifier, gateway_reference]
+    classification: SYNTHETIC_DIRECT_IDENTIFIER
+    strategy: full_redaction
+    clear_text_personas: [BREAK_GLASS_ADMIN]
+    snowflake_mapping: M14_MASK_DIRECT_IDENTIFIER_PREVIEW
+    powerbi_ols_mapping: Patient.synthetic_nhs_number
+    status: STATICALLY_VALIDATED
+  - masking_policy_id: mask_patient_identifiers
+    fields: [patient_pseudonym, birth_date, postcode_sector]
+    classification: SYNTHETIC_QUASI_IDENTIFIER
+    strategy: generalisation_or_date_reduction
+    clear_text_personas: [CLINICAL_ANALYST, RESEARCH_ANALYST]
+    snowflake_mapping: M14_MASK_PATIENT_QUASI_IDENTIFIER_PREVIEW
+    powerbi_ols_mapping: Patient.birth_date
+    status: STATICALLY_VALIDATED
+  - masking_policy_id: mask_payment_reference
+    fields: [external_reference, payment_attempt_id]
+    classification: SYNTHETIC_FINANCIAL_CONFIDENTIAL
+    strategy: partial_redaction
+    clear_text_personas: [BILLING_ANALYST]
+    snowflake_mapping: M14_MASK_PAYMENT_REFERENCE_PREVIEW
+    powerbi_ols_mapping: Payments.external_reference
+    status: STATICALLY_VALIDATED
+  - masking_policy_id: mask_evidence_reference
+    fields: [evidence_reference, model_explanation_reference]
+    classification: MODEL_GOVERNANCE
+    strategy: role_based_clear_text
+    clear_text_personas: [REVENUE_ASSURANCE_ANALYST, MODEL_RISK_REVIEWER]
+    snowflake_mapping: M14_MASK_EVIDENCE_REFERENCE_PREVIEW
+    powerbi_ols_mapping: Billing Exceptions.evidence_reference
+    status: STATICALLY_VALIDATED
+  - masking_policy_id: mask_secret_metadata
+    fields: [credential_reference, service_account_identifier, secret_reference]
+    classification: SECRET_METADATA
+    strategy: null_substitution
+    clear_text_personas: [SECURITY_ADMIN]
+    snowflake_mapping: M14_MASK_SECRET_METADATA_PREVIEW
+    powerbi_ols_mapping: not_applicable
+    status: STATICALLY_VALIDATED

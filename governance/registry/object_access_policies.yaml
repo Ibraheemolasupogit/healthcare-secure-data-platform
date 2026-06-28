@@ -1,0 +1,50 @@
+version: 1.0.0
+object_access_policies:
+  - object_policy_id: obj_patient_direct_identifier
+    objects: [core_patient.synthetic_nhs_number, core_patient_identity.source_patient_identifier]
+    allowed_personas: [BREAK_GLASS_ADMIN]
+    denied_personas: [FINANCE_ANALYST, REPORT_VIEWER, POWER_BI_DEVELOPER]
+    owner: DATA_GOVERNANCE_STEWARD
+    status: STATICALLY_VALIDATED
+  - object_policy_id: obj_finance_detail
+    objects: [fct_invoice, fct_payment, fct_outstanding_balance]
+    allowed_personas: [BILLING_ANALYST, FINANCE_ANALYST, REVENUE_ASSURANCE_ANALYST]
+    denied_personas: [CLINICAL_ANALYST, REPORT_VIEWER]
+    owner: FINANCE_ANALYTICS
+    status: STATICALLY_VALIDATED
+  - object_policy_id: obj_assurance_evidence
+    objects: [reconciliation_exception.evidence_reference, assurance_evidence_pack]
+    allowed_personas: [REVENUE_ASSURANCE_ANALYST, AUDITOR]
+    denied_personas: [REPORT_VIEWER]
+    owner: REVENUE_ASSURANCE
+    status: STATICALLY_VALIDATED
+  - object_policy_id: obj_feature_registry
+    objects: [feature_store.registry, feature_store.reference.outputs]
+    allowed_personas: [DATA_SCIENTIST, ANALYTICS_ENGINEER, MODEL_RISK_REVIEWER]
+    denied_personas: [REPORT_VIEWER]
+    owner: DATA_SCIENCE
+    status: STATICALLY_VALIDATED
+  - object_policy_id: obj_semantic_healthcare_operations
+    objects: [healthcare_enterprise.Healthcare Operations perspective]
+    allowed_personas: [CLINICAL_ANALYST, OPERATIONAL_ANALYST, REPORT_VIEWER]
+    denied_personas: [BILLING_ANALYST]
+    owner: BI_PLATFORM_OWNER
+    status: STATICALLY_VALIDATED
+  - object_policy_id: obj_research_products
+    objects: [core_research_eligibility, approved_research_outputs]
+    allowed_personas: [RESEARCH_ANALYST]
+    denied_personas: [REPORT_VIEWER, BILLING_ANALYST]
+    owner: RESEARCH_GOVERNANCE
+    status: STATICALLY_VALIDATED
+  - object_policy_id: obj_audit_logs
+    objects: [governance.reference, snowflake.GOVERNANCE.EVIDENCE]
+    allowed_personas: [AUDITOR, SECURITY_ADMIN, DATA_GOVERNANCE_STEWARD]
+    denied_personas: [REPORT_VIEWER]
+    owner: SECURITY_ADMIN
+    status: STATICALLY_VALIDATED
+  - object_policy_id: obj_secret_metadata
+    objects: [credential_reference, secret_reference]
+    allowed_personas: [SECURITY_ADMIN]
+    denied_personas: [SERVICE_IDENTITY, REPORT_VIEWER]
+    owner: SECURITY_ADMIN
+    status: STATICALLY_VALIDATED

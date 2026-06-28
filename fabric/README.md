@@ -22,3 +22,6 @@ Dataiku workflows, governed feature definitions or Airflow orchestration.
 
 All Fabric artefacts are `blueprint_only`. They are not tenant validated, not deployed,
 not refreshed and not certified.
+
+Milestone 14 maps workspace roles, sharing, sensitivity and refresh identity expectations
+to the central governance registry. No live tenant security configuration is performed.

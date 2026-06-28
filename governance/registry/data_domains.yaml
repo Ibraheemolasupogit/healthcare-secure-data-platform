@@ -1,0 +1,145 @@
+version: 1.0.0
+domains:
+  - domain_id: clinical
+    name: Clinical
+    business_owner_role: CLINICAL_ANALYTICS
+    technical_owner_role: ANALYTICS_ENGINEERING
+    data_steward_role: DATA_GOVERNANCE_STEWARD
+    sensitivity_baseline: HIGHLY_CONFIDENTIAL
+    permitted_purposes: [CARE_OPERATIONS, DATA_QUALITY, APPROVED_RESEARCH]
+    restricted_purposes: [BILLING_OPERATIONS, PUBLIC_SHARING]
+    authoritative_models: [core_patient, core_encounter, core_clinical_event, core_consent]
+    downstream_consumers: [dataiku, powerbi, feature_store]
+    retention_policy_ref: ret_governed_healthcare_core
+    export_policy_ref: exp_restricted_detail
+    lifecycle_status: ACTIVE
+  - domain_id: operational
+    name: Operational
+    business_owner_role: OPERATIONAL_ANALYTICS
+    technical_owner_role: ANALYTICS_ENGINEERING
+    data_steward_role: DATA_GOVERNANCE_STEWARD
+    sensitivity_baseline: CONFIDENTIAL
+    permitted_purposes: [CARE_OPERATIONS, SERVICE_PLANNING, DATA_QUALITY]
+    restricted_purposes: [PUBLIC_SHARING]
+    authoritative_models: [core_appointment, core_pathway, core_organisation, core_provider]
+    downstream_consumers: [powerbi, airflow]
+    retention_policy_ref: ret_governed_healthcare_core
+    export_policy_ref: exp_aggregated_only
+    lifecycle_status: ACTIVE
+  - domain_id: interoperability
+    name: Interoperability
+    business_owner_role: PLATFORM_OWNER
+    technical_owner_role: DATA_ENGINEER
+    data_steward_role: DATA_GOVERNANCE_STEWARD
+    sensitivity_baseline: RESTRICTED
+    permitted_purposes: [DATA_QUALITY, PLATFORM_ADMINISTRATION]
+    restricted_purposes: [APPROVED_RESEARCH, PUBLIC_SHARING]
+    authoritative_models: [stg_interoperability__fhir_resources, stg_interoperability__hl7_messages]
+    downstream_consumers: [dbt]
+    retention_policy_ref: ret_raw_interoperability_payloads
+    export_policy_ref: exp_prohibited
+    lifecycle_status: ACTIVE
+  - domain_id: research
+    name: Research
+    business_owner_role: RESEARCH_GOVERNANCE
+    technical_owner_role: ANALYTICS_ENGINEERING
+    data_steward_role: DATA_GOVERNANCE_STEWARD
+    sensitivity_baseline: HIGHLY_CONFIDENTIAL
+    permitted_purposes: [APPROVED_RESEARCH, DATA_QUALITY]
+    restricted_purposes: [BILLING_OPERATIONS, PUBLIC_SHARING]
+    authoritative_models: [core_research_eligibility, core_consent]
+    downstream_consumers: [dataiku]
+    retention_policy_ref: ret_governed_healthcare_core
+    export_policy_ref: exp_approved_detail
+    lifecycle_status: ACTIVE
+  - domain_id: billing
+    name: Billing
+    business_owner_role: BILLING_OPERATIONS
+    technical_owner_role: ANALYTICS_ENGINEERING
+    data_steward_role: FINANCE_ANALYTICS
+    sensitivity_baseline: HIGHLY_CONFIDENTIAL
+    permitted_purposes: [BILLING_OPERATIONS, FINANCIAL_CONTROL, REVENUE_ASSURANCE]
+    restricted_purposes: [PUBLIC_SHARING]
+    authoritative_models: [fct_invoice, fct_claim, fct_billable_activity, dim_payer]
+    downstream_consumers: [powerbi, dataiku]
+    retention_policy_ref: ret_billing_finance_records
+    export_policy_ref: exp_restricted_detail
+    lifecycle_status: ACTIVE
+  - domain_id: finance
+    name: Finance
+    business_owner_role: FINANCE_ANALYTICS
+    technical_owner_role: ANALYTICS_ENGINEERING
+    data_steward_role: FINANCE_ANALYTICS
+    sensitivity_baseline: HIGHLY_CONFIDENTIAL
+    permitted_purposes: [FINANCIAL_CONTROL, BILLING_OPERATIONS, REVENUE_ASSURANCE]
+    restricted_purposes: [PUBLIC_SHARING]
+    authoritative_models: [fct_payment, fct_outstanding_balance, fct_revenue_event]
+    downstream_consumers: [powerbi]
+    retention_policy_ref: ret_billing_finance_records
+    export_policy_ref: exp_restricted_detail
+    lifecycle_status: ACTIVE
+  - domain_id: assurance
+    name: Assurance
+    business_owner_role: REVENUE_ASSURANCE
+    technical_owner_role: ANALYTICS_ENGINEERING
+    data_steward_role: DATA_GOVERNANCE_STEWARD
+    sensitivity_baseline: HIGHLY_CONFIDENTIAL
+    permitted_purposes: [REVENUE_ASSURANCE, FINANCIAL_CONTROL, DATA_QUALITY]
+    restricted_purposes: [PUBLIC_SHARING]
+    authoritative_models: [reconciliation_exception, reconciliation_control_result]
+    downstream_consumers: [powerbi, dataiku]
+    retention_policy_ref: ret_assurance_exceptions
+    export_policy_ref: exp_restricted_detail
+    lifecycle_status: ACTIVE
+  - domain_id: machine_learning
+    name: Machine learning
+    business_owner_role: DATA_SCIENCE
+    technical_owner_role: DATA_SCIENCE
+    data_steward_role: MODEL_RISK_REVIEWER
+    sensitivity_baseline: HIGHLY_CONFIDENTIAL
+    permitted_purposes: [MODEL_DEVELOPMENT, MODEL_MONITORING, REVENUE_ASSURANCE]
+    restricted_purposes: [CARE_OPERATIONS, PUBLIC_SHARING]
+    authoritative_models: [dataiku_prediction_output_contract]
+    downstream_consumers: [powerbi]
+    retention_policy_ref: ret_predictions
+    export_policy_ref: exp_restricted_detail
+    lifecycle_status: ACTIVE
+  - domain_id: feature_store
+    name: Feature store
+    business_owner_role: DATA_SCIENCE
+    technical_owner_role: ANALYTICS_ENGINEERING
+    data_steward_role: DATA_GOVERNANCE_STEWARD
+    sensitivity_baseline: HIGHLY_CONFIDENTIAL
+    permitted_purposes: [MODEL_DEVELOPMENT, MODEL_MONITORING]
+    restricted_purposes: [PUBLIC_SHARING]
+    authoritative_models: [billing_exception_prioritisation_features]
+    downstream_consumers: [dataiku, powerbi]
+    retention_policy_ref: ret_feature_materialisations
+    export_policy_ref: exp_restricted_detail
+    lifecycle_status: ACTIVE
+  - domain_id: semantic_consumption
+    name: Semantic consumption
+    business_owner_role: BI_PLATFORM_OWNER
+    technical_owner_role: POWER_BI_DEVELOPER
+    data_steward_role: DATA_GOVERNANCE_STEWARD
+    sensitivity_baseline: CONFIDENTIAL
+    permitted_purposes: [SERVICE_PLANNING, BILLING_OPERATIONS, REVENUE_ASSURANCE, MODEL_MONITORING]
+    restricted_purposes: [PUBLIC_SHARING]
+    authoritative_models: [healthcare_enterprise]
+    downstream_consumers: [powerbi_reports]
+    retention_policy_ref: ret_powerbi_extracts
+    export_policy_ref: exp_aggregated_only
+    lifecycle_status: ACTIVE
+  - domain_id: governance_audit
+    name: Governance and audit
+    business_owner_role: SECURITY_ADMIN
+    technical_owner_role: PLATFORM_OWNER
+    data_steward_role: DATA_GOVERNANCE_STEWARD
+    sensitivity_baseline: RESTRICTED
+    permitted_purposes: [SECURITY_AUDIT, PLATFORM_ADMINISTRATION]
+    restricted_purposes: [PUBLIC_SHARING]
+    authoritative_models: [governance_policy_registry]
+    downstream_consumers: [auditor]
+    retention_policy_ref: ret_audit_records
+    export_policy_ref: exp_prohibited
+    lifecycle_status: ACTIVE

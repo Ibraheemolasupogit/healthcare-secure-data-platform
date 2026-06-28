@@ -1,0 +1,12 @@
+classification_id,sensitivity_level,description
+PUBLIC_REFERENCE,PUBLIC,Published documentation and non-sensitive reference content.
+INTERNAL_OPERATIONAL,INTERNAL,Internal platform metadata and operational summaries.
+SYNTHETIC_DIRECT_IDENTIFIER,RESTRICTED,Synthetic NHS-number-like identifiers and source identifiers.
+SYNTHETIC_QUASI_IDENTIFIER,HIGHLY_CONFIDENTIAL,"Synthetic birth dates, postcode sectors and linkable attributes."
+SYNTHETIC_HEALTH_CONFIDENTIAL,HIGHLY_CONFIDENTIAL,"Synthetic clinical, consent, pathway and patient-flow records."
+SYNTHETIC_FINANCIAL_CONFIDENTIAL,HIGHLY_CONFIDENTIAL,"Synthetic invoices, payments, balances and assurance values."
+RESEARCH_RESTRICTED,RESTRICTED,Consent-governed research eligibility and cohort metadata.
+MODEL_GOVERNANCE,CONFIDENTIAL,"Model cards, feature sets, prediction metadata and approval state."
+SECURITY_AUDIT,RESTRICTED,"Access, policy, evidence and audit metadata."
+SECRET_METADATA,RESTRICTED,Secret references and credential metadata without values.
+PROHIBITED_SECRET_VALUE,RESTRICTED,"Real passwords, tokens, keys, private certificates or connection strings."

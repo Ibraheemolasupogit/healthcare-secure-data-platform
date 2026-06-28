@@ -100,7 +100,15 @@ The implementation is metadata only: no Fabric workspace, capacity, lakehouse, n
 
 ## Governance and security
 
-**Partially implemented as design; planned implementation (M3 and M14):** classification, threat model, research access, credential policy and least-privilege ADRs exist. Future controls include object/functional role separation, SSO/workload identity, pseudonymisation, masking, row policies, consent enforcement, retention, audit integrity, controlled export and separation of duties. No deployed control is currently claimed.
+**Implemented locally as registry and simulation (M14):** classification, sensitivity,
+domains, personas, purposes, access policies, masking/row/object/export/retention/audit
+controls, service identities, separation of duties, consent-aware research access and
+control mappings are defined centrally. Existing Snowflake, dbt, Airflow, Dataiku,
+feature-store and Power BI ownership remains unchanged.
+
+No deployed control is claimed. Live identity-provider enforcement, live Snowflake policy
+attachment, Purview labelling, Power BI security deployment, legal retention, data-subject
+request handling and compliance certification remain outside the local registry.
 
 ## Quality, observability and operational assurance
 
@@ -122,4 +130,4 @@ The implementation is metadata only: no Fabric workspace, capacity, lakehouse, n
 
 **Partially implemented:** Milestone 2 includes local manifests, checksums, validation reports and tests. Every future claim must link to redacted, reproducible evidence for a commit and environment.
 
-Current non-goals are live Snowflake execution, formal revenue recognition, production Airflow deployment, live Dataiku execution, production ML approval, online feature serving, live Fabric/Power BI deployment or refresh, broader Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing metadata blueprints.
+Current non-goals are live Snowflake execution, formal revenue recognition, production Airflow deployment, live Dataiku execution, production ML approval, online feature serving, live Fabric/Power BI deployment or refresh, live governance enforcement, formal compliance certification, broader Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing metadata blueprints.

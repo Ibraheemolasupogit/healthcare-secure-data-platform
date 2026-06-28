@@ -1,0 +1,110 @@
+version: 1.0.0
+retention_policies:
+  - retention_policy_id: ret_raw_synthetic_clinical
+    data_class: SYNTHETIC_HEALTH_CONFIDENTIAL
+    retention_period: symbolic_short_lived_raw
+    trigger: source_landing
+    archival_expectation: none_for_local_portfolio
+    deletion_expectation: manual_review_only_no_auto_delete
+    legal_hold_override: documented_not_implemented
+    owner: PLATFORM_OWNER
+    review_cadence: quarterly
+    environments: [DEV, TEST, PROD]
+    implementation_status: DOCUMENTED
+    limitations: Not a legal retention requirement.
+  - retention_policy_id: ret_raw_interoperability_payloads
+    data_class: SYNTHETIC_HEALTH_CONFIDENTIAL
+    retention_period: symbolic_short_lived_raw
+    trigger: fhir_hl7_landing
+    archival_expectation: quarantine_evidence_only
+    deletion_expectation: no_automatic_repository_deletion
+    legal_hold_override: documented_not_implemented
+    owner: DATA_ENGINEER
+    review_cadence: quarterly
+    environments: [DEV, TEST]
+    implementation_status: DOCUMENTED
+    limitations: Payloads remain synthetic examples.
+  - retention_policy_id: ret_governed_healthcare_core
+    data_class: SYNTHETIC_HEALTH_CONFIDENTIAL
+    retention_period: symbolic_governed_core
+    trigger: dbt_publication
+    archival_expectation: preserve_lineage_and_checksums
+    deletion_expectation: manual_review_only_no_auto_delete
+    legal_hold_override: documented_not_implemented
+    owner: ANALYTICS_ENGINEERING
+    review_cadence: quarterly
+    environments: [DEV, TEST, PROD]
+    implementation_status: DOCUMENTED
+    limitations: Synthetic portfolio expectation only.
+  - retention_policy_id: ret_billing_finance_records
+    data_class: SYNTHETIC_FINANCIAL_CONFIDENTIAL
+    retention_period: symbolic_finance_control
+    trigger: finance_publication
+    archival_expectation: preserve_control_lineage
+    deletion_expectation: manual_review_only_no_auto_delete
+    legal_hold_override: documented_not_implemented
+    owner: FINANCE_ANALYTICS
+    review_cadence: quarterly
+    environments: [DEV, TEST, PROD]
+    implementation_status: DOCUMENTED
+    limitations: Not formal financial-record retention.
+  - retention_policy_id: ret_assurance_exceptions
+    data_class: SYNTHETIC_FINANCIAL_CONFIDENTIAL
+    retention_period: symbolic_assurance_evidence
+    trigger: assurance_run
+    archival_expectation: preserve_evidence_pack
+    deletion_expectation: no_automatic_repository_deletion
+    legal_hold_override: documented_not_implemented
+    owner: REVENUE_ASSURANCE
+    review_cadence: quarterly
+    environments: [DEV, TEST, PROD]
+    implementation_status: DOCUMENTED
+    limitations: Not audit certification.
+  - retention_policy_id: ret_audit_records
+    data_class: SECURITY_AUDIT
+    retention_period: symbolic_audit_evidence
+    trigger: audit_event_generation
+    archival_expectation: immutable_evidence_reference
+    deletion_expectation: no_automatic_repository_deletion
+    legal_hold_override: documented_not_implemented
+    owner: SECURITY_ADMIN
+    review_cadence: quarterly
+    environments: [DEV, TEST, PROD]
+    implementation_status: DOCUMENTED
+    limitations: No SIEM integration.
+  - retention_policy_id: ret_feature_materialisations
+    data_class: MODEL_GOVERNANCE
+    retention_period: symbolic_model_development
+    trigger: feature_materialisation
+    archival_expectation: preserve_registry_version
+    deletion_expectation: no_automatic_repository_deletion
+    legal_hold_override: documented_not_implemented
+    owner: DATA_SCIENCE
+    review_cadence: quarterly
+    environments: [DEV, TEST]
+    implementation_status: DOCUMENTED
+    limitations: No online store.
+  - retention_policy_id: ret_predictions
+    data_class: MODEL_GOVERNANCE
+    retention_period: symbolic_model_monitoring
+    trigger: batch_scoring
+    archival_expectation: preserve_model_and_feature_set_version
+    deletion_expectation: no_automatic_repository_deletion
+    legal_hold_override: documented_not_implemented
+    owner: DATA_SCIENCE
+    review_cadence: quarterly
+    environments: [TEST, PROD]
+    implementation_status: DOCUMENTED
+    limitations: No production Dataiku execution.
+  - retention_policy_id: ret_powerbi_extracts
+    data_class: INTERNAL_OPERATIONAL
+    retention_period: symbolic_report_extract
+    trigger: report_export
+    archival_expectation: restricted_internal_storage
+    deletion_expectation: manual_review_only_no_auto_delete
+    legal_hold_override: documented_not_implemented
+    owner: BI_PLATFORM_OWNER
+    review_cadence: quarterly
+    environments: [TEST, PROD]
+    implementation_status: DOCUMENTED
+    limitations: No live Power BI export control.

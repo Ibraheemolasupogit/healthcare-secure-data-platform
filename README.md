@@ -2,7 +2,7 @@
 
 A production-style, synthetic-only Healthcare Enterprise Data Platform portfolio for clinical, operational, research and financial data engineering. Snowflake remains the target governed data platform and dbt remains the transformation, testing, documentation, lineage and business-logic centre of gravity.
 
-> **Status — Milestone 13 complete locally:** dbt includes governed billing/finance, assurance and offline feature models; Airflow provides local-first orchestration; Dataiku has governed analytics/MLOps blueprints; the feature store has reusable registry, point-in-time retrieval and local reference evidence; and Fabric/Power BI now have governed consumption metadata, semantic-model and thin-report blueprints. Snowflake execution, live Fabric/Power BI deployment and later platform integrations remain planned.
+> **Status — Milestone 14 complete locally:** dbt includes governed billing/finance, assurance and offline feature models; Airflow provides local-first orchestration; Dataiku has governed analytics/MLOps blueprints; the feature store has reusable registry, point-in-time retrieval and local reference evidence; Fabric/Power BI have governed consumption metadata; and the platform now has a central governance/security-control registry with local policy simulation. Snowflake execution, live policy enforcement, live Fabric/Power BI deployment and later integrations remain planned.
 
 ## Why this project exists
 
@@ -30,7 +30,7 @@ Detailed boundaries are documented in [component responsibilities](docs/architec
 | Feature store | Governed reusable features, ownership, freshness, versions and point-in-time correctness | **Implemented locally as an offline M12 foundation** |
 | Fabric and Power BI | Certified semantic consumption and operational/financial/executive reporting | **M13 metadata blueprint implemented locally; not deployed or refreshed** |
 | Terraform | Repeatable infrastructure, identity, storage, networking, secrets and monitoring | **Snowflake foundation module implemented; no apply performed** |
-| Governance/security | RBAC, masking, pseudonymisation, row access, consent, retention and audit | **M3 roles/grants/tags declared; policies remain planned** |
+| Governance/security | RBAC, masking, pseudonymisation, row access, consent, retention, audit and compliance-claim controls | **M14 central registry, local simulation and evidence implemented; not live-enforced** |
 
 ## Local-first development
 
@@ -65,8 +65,9 @@ The design follows least privilege, workload isolation, encryption in transit/at
 - **Complete locally:** Milestone 11 governed Dataiku analytics and MLOps blueprint.
 - **Complete locally:** Milestone 12 governed offline healthcare feature store.
 - **Complete locally:** Milestone 13 Fabric and Power BI governed consumption layer.
-- **Recommended next:** Milestone 14 expanded security, governance and compliance controls.
-- **Planned:** Milestones 14–17 add executable governance, broader Terraform, multi-region recovery and portfolio evidence.
+- **Complete locally:** Milestone 14 enterprise governance, security, privacy and compliance-control foundation.
+- **Recommended next:** Milestone 15 CI/CD, protected delivery and deployment evidence.
+- **Planned:** Milestones 15–17 add broader Terraform, multi-region recovery and portfolio evidence.
 
 The original 15-milestone plan has been transparently realigned into a 17-milestone dependency-led [roadmap](docs/roadmap/milestones.md). [ADR 0009](docs/decisions/0009-expand-to-healthcare-enterprise-platform.md) records why.
 
@@ -86,6 +87,7 @@ The original 15-milestone plan has been transparently realigned into a 17-milest
 | `feature_store` | Governed offline feature registry, contracts and local retrieval evidence |
 | `fabric` | Microsoft Fabric workspace, connection, deployment and governance blueprints |
 | `powerbi` | Power BI semantic model, contracts, reports, theme, validation and reference catalogues |
+| `governance` | Central governance/security registry, platform mappings and deterministic evidence |
 | `docs` | Architecture, ADRs, governance, security, roadmap, learning and evidence |
 | `tests` | Unit and integration tests, including determinism and integrity |
 | `.github/workflows` | Credential-free quality gates |

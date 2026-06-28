@@ -1,0 +1,11 @@
+version: 1.0.0
+workspace_roles_mapped: true
+rls_mapping_source: powerbi/semantic_models/healthcare_enterprise/model.yaml
+ols_mapping_source: powerbi/semantic_models/healthcare_enterprise/model.yaml
+sensitivity_mapping_source: fabric/governance/sensitivity_mapping.yaml
+external_sharing: denied_by_default
+public_publishing: denied
+export_policy: exp_aggregated_only
+refresh_identity: svc_powerbi_refresh
+audit_event: aud_semantic_model_promotion
+implementation_status: STATICALLY_VALIDATED

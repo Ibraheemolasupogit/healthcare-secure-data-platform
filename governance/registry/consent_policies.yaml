@@ -1,0 +1,22 @@
+version: 1.0.0
+consent_policies:
+  - consent_policy_id: consent_research_eligibility_required
+    purpose: APPROVED_RESEARCH
+    governing_models: [core_consent, core_research_eligibility]
+    allowed_when: [research_eligible_flag_true, active_research_consent]
+    deny_when: [withdrawn_consent, expired_consent, no_eligible_cohort]
+    downstream_platforms: [Dataiku, PowerBI]
+    raw_consent_exposure: prohibited_by_default
+    legal_interpretation: not_claimed_requires_organisational_review
+    owner: DATA_GOVERNANCE_STEWARD
+    status: STATICALLY_VALIDATED
+  - consent_policy_id: consent_not_required_for_financial_control
+    purpose: FINANCIAL_CONTROL
+    governing_models: [fct_invoice, fct_payment, reconciliation_exception]
+    allowed_when: [approved_financial_control_purpose]
+    deny_when: [attempt_to_apply_research_consent_as_finance_filter]
+    downstream_platforms: [PowerBI]
+    raw_consent_exposure: prohibited
+    legal_interpretation: not_claimed_requires_organisational_review
+    owner: FINANCE_ANALYTICS
+    status: STATICALLY_VALIDATED

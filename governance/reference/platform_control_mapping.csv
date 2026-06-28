@@ -1,0 +1,7 @@
+platform,deployment_status,live_deployment_status,mapped_constructs
+snowflake,not_deployed,,"['roles', 'grants', 'classification_tags', 'masking_policy_previews', 'row_policy_previews', 'secure_views']"
+dbt,parse_only_without_live_snowflake,,"['model_meta_owner', 'sensitivity', 'contract_status', 'lineage', 'tags']"
+airflow,local_blueprint,,"['fixture_default', 'connected_mode_flag', 'service_identity', 'evidence_outputs']"
+dataiku,,not_deployed,"['trusted_inputs', 'use_case', 'approval_gates', 'model_card', 'prediction_contract']"
+feature_store,,,"['feature_owners', 'feature_sets', 'consumers', 'point_in_time_rules', 'lifecycle']"
+fabric_powerbi,,not_deployed,"['workspace_roles', 'rls', 'ols', 'sensitivity_mapping', 'export_policy', 'certification_workflow']"

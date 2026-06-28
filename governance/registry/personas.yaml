@@ -1,0 +1,207 @@
+version: 1.0.0
+personas:
+  - persona_id: PLATFORM_ADMIN
+    allowed_domains: [governance_audit, interoperability]
+    restricted_domains: [clinical, finance]
+    permitted_purposes: [PLATFORM_ADMINISTRATION]
+    allowed_environments: [DEV, TEST, PROD]
+    permitted_operations: [read_audit_evidence, administer_snowflake]
+    prohibited_operations: [approve_own_privileged_access, certify_semantic_model]
+    export_allowance: EXPORT_PROHIBITED
+    detailed_record_allowance: false
+    privileged: true
+    approval_requirements: security_admin_approval
+    session_logging: privileged_session_required
+  - persona_id: SECURITY_ADMIN
+    allowed_domains: [governance_audit]
+    restricted_domains: [clinical, billing, finance]
+    permitted_purposes: [SECURITY_AUDIT, PLATFORM_ADMINISTRATION]
+    allowed_environments: [TEST, PROD]
+    permitted_operations: [manage_security_policies, read_audit_evidence]
+    prohibited_operations: [approve_own_privileged_access]
+    export_allowance: EXPORT_PROHIBITED
+    detailed_record_allowance: false
+    privileged: true
+    approval_requirements: governance_steward_review
+    session_logging: privileged_session_required
+  - persona_id: DATA_ENGINEER
+    allowed_domains: [interoperability, operational, governance_audit]
+    restricted_domains: [finance, research]
+    permitted_purposes: [DATA_QUALITY, PLATFORM_ADMINISTRATION]
+    allowed_environments: [DEV, TEST]
+    permitted_operations: [create_dbt_models, execute_dbt, read_audit_evidence]
+    prohibited_operations: [certify_semantic_model, approve_models]
+    export_allowance: AGGREGATED_ONLY
+    detailed_record_allowance: true
+    privileged: false
+    approval_requirements: change_review
+    session_logging: standard
+  - persona_id: ANALYTICS_ENGINEER
+    allowed_domains: [clinical, operational, billing, finance, assurance, feature_store]
+    restricted_domains: [governance_audit]
+    permitted_purposes: [DATA_QUALITY, FINANCIAL_CONTROL, MODEL_DEVELOPMENT]
+    allowed_environments: [DEV, TEST]
+    permitted_operations: [create_dbt_models, execute_dbt, manage_feature_definitions]
+    prohibited_operations: [certify_own_semantic_model]
+    export_allowance: REDACTED_DETAIL
+    detailed_record_allowance: true
+    privileged: false
+    approval_requirements: peer_review
+    session_logging: standard
+  - persona_id: DATA_SCIENTIST
+    allowed_domains: [machine_learning, feature_store, assurance]
+    restricted_domains: [raw_interoperability, governance_audit]
+    permitted_purposes: [MODEL_DEVELOPMENT, MODEL_MONITORING]
+    allowed_environments: [DEV, TEST]
+    permitted_operations: [train_models, read_feature_sets]
+    prohibited_operations: [approve_own_model, autonomous_clinical_decision]
+    export_allowance: REDACTED_DETAIL
+    detailed_record_allowance: true
+    privileged: false
+    approval_requirements: model_risk_review
+    session_logging: model_activity_logged
+  - persona_id: CLINICAL_ANALYST
+    allowed_domains: [clinical, operational]
+    restricted_domains: [billing, finance]
+    permitted_purposes: [CARE_OPERATIONS, SERVICE_PLANNING]
+    allowed_environments: [TEST, PROD]
+    permitted_operations: [read_aggregated_data, read_detailed_synthetic_records]
+    prohibited_operations: [view_finance_detail, export_restricted_detail]
+    export_allowance: AGGREGATED_ONLY
+    detailed_record_allowance: true
+    privileged: false
+    approval_requirements: domain_owner
+    session_logging: sensitive_access_logged
+  - persona_id: BILLING_ANALYST
+    allowed_domains: [billing]
+    restricted_domains: [clinical]
+    permitted_purposes: [BILLING_OPERATIONS]
+    allowed_environments: [TEST, PROD]
+    permitted_operations: [view_finance_detail, read_detailed_synthetic_records]
+    prohibited_operations: [modify_payment_source_records, view_clinical_detail]
+    export_allowance: REDACTED_DETAIL
+    detailed_record_allowance: true
+    privileged: false
+    approval_requirements: finance_owner
+    session_logging: sensitive_access_logged
+  - persona_id: FINANCE_ANALYST
+    allowed_domains: [finance, billing]
+    restricted_domains: [clinical]
+    permitted_purposes: [FINANCIAL_CONTROL, BILLING_OPERATIONS]
+    allowed_environments: [TEST, PROD]
+    permitted_operations: [view_finance_detail, read_aggregated_data]
+    prohibited_operations: [read_synthetic_identifiers]
+    export_allowance: REDACTED_DETAIL
+    detailed_record_allowance: false
+    privileged: false
+    approval_requirements: finance_owner
+    session_logging: sensitive_access_logged
+  - persona_id: REVENUE_ASSURANCE_ANALYST
+    allowed_domains: [assurance, billing, finance]
+    restricted_domains: [clinical]
+    permitted_purposes: [REVENUE_ASSURANCE, FINANCIAL_CONTROL]
+    allowed_environments: [TEST, PROD]
+    permitted_operations: [investigate_assurance_exceptions, read_aggregated_data]
+    prohibited_operations: [alter_invoice_calculations]
+    export_allowance: REDACTED_DETAIL
+    detailed_record_allowance: true
+    privileged: false
+    approval_requirements: assurance_owner
+    session_logging: sensitive_access_logged
+  - persona_id: RESEARCH_ANALYST
+    allowed_domains: [research]
+    restricted_domains: [billing, finance, raw_interoperability]
+    permitted_purposes: [APPROVED_RESEARCH]
+    allowed_environments: [TEST]
+    permitted_operations: [read_detailed_synthetic_records]
+    prohibited_operations: [read_raw_consent_records, public_publish]
+    export_allowance: APPROVED_DETAIL
+    detailed_record_allowance: true
+    privileged: false
+    approval_requirements: research_governance_approval
+    session_logging: research_access_logged
+  - persona_id: POWER_BI_DEVELOPER
+    allowed_domains: [semantic_consumption]
+    restricted_domains: [clinical, finance]
+    permitted_purposes: [SERVICE_PLANNING, BILLING_OPERATIONS, REVENUE_ASSURANCE]
+    allowed_environments: [DEV, TEST]
+    permitted_operations: [publish_semantic_models]
+    prohibited_operations: [redefine_governed_finance_calculations]
+    export_allowance: AGGREGATED_ONLY
+    detailed_record_allowance: false
+    privileged: false
+    approval_requirements: measure_owner_review
+    session_logging: standard
+  - persona_id: REPORT_VIEWER
+    allowed_domains: [semantic_consumption]
+    restricted_domains: [clinical, finance, governance_audit]
+    permitted_purposes: [SERVICE_PLANNING, TRAINING_AND_DEMONSTRATION]
+    allowed_environments: [PROD]
+    permitted_operations: [read_aggregated_data]
+    prohibited_operations: [export_restricted_detail]
+    export_allowance: AGGREGATED_ONLY
+    detailed_record_allowance: false
+    privileged: false
+    approval_requirements: workspace_role
+    session_logging: report_access_logged
+  - persona_id: MODEL_RISK_REVIEWER
+    allowed_domains: [machine_learning, feature_store]
+    restricted_domains: [clinical]
+    permitted_purposes: [MODEL_MONITORING]
+    allowed_environments: [TEST, PROD]
+    permitted_operations: [approve_models, read_audit_evidence]
+    prohibited_operations: [train_models]
+    export_allowance: AGGREGATED_ONLY
+    detailed_record_allowance: false
+    privileged: false
+    approval_requirements: governance_steward_review
+    session_logging: model_review_logged
+  - persona_id: DATA_GOVERNANCE_STEWARD
+    allowed_domains: [governance_audit, clinical, billing, finance, assurance]
+    restricted_domains: []
+    permitted_purposes: [SECURITY_AUDIT, DATA_QUALITY]
+    allowed_environments: [TEST, PROD]
+    permitted_operations: [manage_security_policies, read_audit_evidence]
+    prohibited_operations: [approve_own_policy_change]
+    export_allowance: EXPORT_PROHIBITED
+    detailed_record_allowance: false
+    privileged: true
+    approval_requirements: security_admin_review
+    session_logging: privileged_session_required
+  - persona_id: AUDITOR
+    allowed_domains: [governance_audit]
+    restricted_domains: [clinical, billing, finance]
+    permitted_purposes: [SECURITY_AUDIT]
+    allowed_environments: [TEST, PROD]
+    permitted_operations: [read_audit_evidence]
+    prohibited_operations: [modify_policies, export_restricted_detail]
+    export_allowance: EXPORT_PROHIBITED
+    detailed_record_allowance: false
+    privileged: false
+    approval_requirements: audit_scope_approval
+    session_logging: audit_access_logged
+  - persona_id: SERVICE_IDENTITY
+    allowed_domains: [governance_audit, semantic_consumption, feature_store]
+    restricted_domains: [clinical]
+    permitted_purposes: [PLATFORM_ADMINISTRATION, MODEL_MONITORING]
+    allowed_environments: [DEV, TEST, PROD]
+    permitted_operations: [execute_dbt, execute_airflow_workflows]
+    prohibited_operations: [interactive_login, approve_models, public_publish]
+    export_allowance: EXPORT_PROHIBITED
+    detailed_record_allowance: false
+    privileged: false
+    approval_requirements: service_owner
+    session_logging: service_execution_logged
+  - persona_id: BREAK_GLASS_ADMIN
+    allowed_domains: [governance_audit]
+    restricted_domains: []
+    permitted_purposes: [PLATFORM_ADMINISTRATION, SECURITY_AUDIT]
+    allowed_environments: [PROD]
+    permitted_operations: [administer_snowflake, manage_security_policies]
+    prohibited_operations: [permanent_access, unreviewed_use]
+    export_allowance: EXPORT_PROHIBITED
+    detailed_record_allowance: false
+    privileged: true
+    approval_requirements: emergency_approval_and_post_use_review
+    session_logging: privileged_session_required
+    max_duration_hours: 4

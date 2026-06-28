@@ -1,0 +1,12 @@
+version: 1.0.0
+scope: curated_and_externally_consumed_models
+required_metadata:
+  - owner
+  - sensitivity
+  - contract_status
+  - lineage
+  - retention_reference
+  - export_policy_reference
+coverage_status: static_metadata_coverage_report_generated
+implementation_status: STATICALLY_VALIDATED
+limitations: Existing dbt model metadata is inspected locally; no live Snowflake build is claimed.

@@ -1,0 +1,19 @@
+{
+  "access_policy_count": 10,
+  "audit_event_count": 10,
+  "classification_count": 11,
+  "control_count": 7,
+  "domain_count": 11,
+  "errors": [],
+  "export_policy_count": 5,
+  "masking_policy_count": 5,
+  "object_policy_count": 8,
+  "persona_count": 17,
+  "purpose_count": 12,
+  "retention_policy_count": 9,
+  "row_policy_count": 5,
+  "sensitivity_count": 5,
+  "service_identity_count": 7,
+  "valid": true,
+  "warnings": []
+}

@@ -1,0 +1,38 @@
+version: 1.0.0
+purposes:
+  - purpose_id: CARE_OPERATIONS
+    description: Synthetic operational care-flow analysis; not clinical decision support.
+    allowed_domains: [clinical, operational]
+  - purpose_id: SERVICE_PLANNING
+    description: Aggregate planning and operational performance.
+    allowed_domains: [operational, semantic_consumption]
+  - purpose_id: BILLING_OPERATIONS
+    description: Billing workflow and invoice analysis.
+    allowed_domains: [billing, finance, semantic_consumption]
+  - purpose_id: FINANCIAL_CONTROL
+    description: Finance control and balance validation.
+    allowed_domains: [billing, finance, assurance]
+  - purpose_id: REVENUE_ASSURANCE
+    description: Reconciliation, exception and revenue-at-risk review.
+    allowed_domains: [billing, finance, assurance, machine_learning]
+  - purpose_id: APPROVED_RESEARCH
+    description: Governed research use requiring consent/eligibility metadata.
+    allowed_domains: [research, clinical]
+  - purpose_id: MODEL_DEVELOPMENT
+    description: Synthetic model development using approved analytical and feature contracts.
+    allowed_domains: [machine_learning, feature_store, assurance]
+  - purpose_id: MODEL_MONITORING
+    description: Monitoring governed model output metadata.
+    allowed_domains: [machine_learning, semantic_consumption]
+  - purpose_id: DATA_QUALITY
+    description: Data quality, reconciliation and validation activity.
+    allowed_domains: [clinical, operational, interoperability, billing, finance, assurance]
+  - purpose_id: SECURITY_AUDIT
+    description: Read-only review of governance and audit evidence.
+    allowed_domains: [governance_audit]
+  - purpose_id: PLATFORM_ADMINISTRATION
+    description: Platform administration and deployment metadata management.
+    allowed_domains: [governance_audit, interoperability]
+  - purpose_id: TRAINING_AND_DEMONSTRATION
+    description: Synthetic portfolio demonstration without real data or compliance claims.
+    allowed_domains: [semantic_consumption]

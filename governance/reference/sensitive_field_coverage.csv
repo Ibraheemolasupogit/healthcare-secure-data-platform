@@ -1,0 +1,8 @@
+field,classification,covered
+synthetic_nhs_number,SYNTHETIC_DIRECT_IDENTIFIER,True
+patient_pseudonym,SYNTHETIC_QUASI_IDENTIFIER,True
+birth_date,SYNTHETIC_QUASI_IDENTIFIER,True
+postcode_sector,SYNTHETIC_QUASI_IDENTIFIER,True
+external_reference,SYNTHETIC_FINANCIAL_CONFIDENTIAL,True
+evidence_reference,MODEL_GOVERNANCE,True
+secret_reference,SECRET_METADATA,True

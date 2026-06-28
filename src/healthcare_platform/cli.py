@@ -14,6 +14,22 @@ from healthcare_platform.assurance import write_evidence_pack
 from healthcare_platform.config import load_settings, snowflake_credentials_present
 from healthcare_platform.dataiku import run_reference_pipeline
 from healthcare_platform.feature_store import build_reference_outputs, validate_registry
+from healthcare_platform.governance import (
+    build_governance_evidence,
+    load_governance_registry,
+)
+from healthcare_platform.governance import (
+    describe_policy as describe_governance_policy,
+)
+from healthcare_platform.governance import (
+    evaluate_access as evaluate_governance_access,
+)
+from healthcare_platform.governance import (
+    validate_registry as validate_governance_registry,
+)
+from healthcare_platform.governance import (
+    verify_evidence as verify_governance_evidence,
+)
 from healthcare_platform.interoperability.config import (
     DEFAULT_CONFIG_PATH as DEFAULT_INTEROPERABILITY_CONFIG_PATH,
 )
@@ -260,6 +276,42 @@ def build_parser() -> argparse.ArgumentParser:
     verify_reference_command.add_argument(
         "--output-dir", type=Path, default=Path("powerbi/reference")
     )
+    governance = subparsers.add_parser(
+        "governance",
+        help="validate and simulate the local governance-control registry",
+    )
+    governance_commands = governance.add_subparsers(dest="governance_command", required=True)
+    governance_commands.add_parser("validate-registry", help="validate governance registry")
+    governance_commands.add_parser("list-personas", help="list governed personas")
+    governance_commands.add_parser("list-policies", help="list access policies")
+    describe_policy_command = governance_commands.add_parser(
+        "describe-policy", help="describe one access policy"
+    )
+    describe_policy_command.add_argument("policy_id")
+    evaluate_access_command = governance_commands.add_parser(
+        "evaluate-access", help="simulate a deterministic access decision"
+    )
+    evaluate_access_command.add_argument("--persona", required=True)
+    evaluate_access_command.add_argument("--purpose", required=True)
+    evaluate_access_command.add_argument("--environment", required=True)
+    evaluate_access_command.add_argument("--domain", required=True)
+    evaluate_access_command.add_argument("--object", dest="object_name", required=True)
+    evaluate_access_command.add_argument("--operation", required=True)
+    evaluate_access_command.add_argument("--sensitivity", required=True)
+    evaluate_access_command.add_argument("--consent-state", default="not_applicable")
+    evaluate_access_command.add_argument("--export-request", action="store_true")
+    generate_governance = governance_commands.add_parser(
+        "generate-evidence", help="generate deterministic local governance evidence"
+    )
+    generate_governance.add_argument(
+        "--output-dir", type=Path, default=Path("governance/reference")
+    )
+    generate_governance.add_argument("--overwrite", action="store_true")
+    verify_governance = governance_commands.add_parser(
+        "verify-evidence", help="verify governance evidence checksums"
+    )
+    verify_governance.add_argument("--output-dir", type=Path, default=Path("governance/reference"))
+    governance_commands.add_parser("coverage-report", help="show governance coverage counts")
     return parser
 
 
@@ -530,6 +582,59 @@ def _powerbi(args: argparse.Namespace) -> int:
     return 2
 
 
+def _governance(args: argparse.Namespace) -> int:
+    if args.governance_command == "validate-registry":
+        result = validate_governance_registry()
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["valid"] else 1
+    if args.governance_command == "generate-evidence":
+        evidence = build_governance_evidence(args.output_dir, overwrite=args.overwrite)
+        print(f"output_dir: {evidence.output_dir}")
+        print(f"validation_report: {evidence.validation_report}")
+        print(f"evidence_manifest: {evidence.evidence_manifest}")
+        print(f"checksums: {evidence.checksums}")
+        return 0
+    if args.governance_command == "verify-evidence":
+        result = verify_governance_evidence(args.output_dir)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["valid"] else 1
+    registry = load_governance_registry()
+    if args.governance_command == "list-personas":
+        for persona in registry["personas"]["personas"]:
+            print(f"{persona['persona_id']}: {persona['export_allowance']}")
+        return 0
+    if args.governance_command == "list-policies":
+        for policy in registry["access"]["policies"]:
+            print(f"{policy['policy_id']}: {policy['subject']} {policy['effect']}")
+        return 0
+    if args.governance_command == "describe-policy":
+        policy = describe_governance_policy(args.policy_id)
+        if policy is None:
+            print(f"error: unknown policy {args.policy_id}")
+            return 2
+        print(json.dumps(policy, indent=2, sort_keys=True))
+        return 0
+    if args.governance_command == "evaluate-access":
+        decision = evaluate_governance_access(
+            persona=args.persona,
+            purpose=args.purpose,
+            environment=args.environment,
+            domain=args.domain,
+            object_name=args.object_name,
+            operation=args.operation,
+            sensitivity=args.sensitivity,
+            consent_state=args.consent_state,
+            export_request=args.export_request,
+        )
+        print(json.dumps(decision, indent=2, sort_keys=True))
+        return 0 if decision["decision"] == "ALLOW" else 1
+    if args.governance_command == "coverage-report":
+        result = validate_governance_registry()
+        print(json.dumps({k: v for k, v in result.items() if k.endswith("_count")}, indent=2))
+        return 0 if result["valid"] else 1
+    return 2
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the CLI."""
     args = build_parser().parse_args(argv)
@@ -566,6 +671,8 @@ def main(argv: list[str] | None = None) -> int:
             return _feature_store(args)
         if args.command == "powerbi":
             return _powerbi(args)
+        if args.command == "governance":
+            return _governance(args)
     except (ValueError, OSError, json.JSONDecodeError) as error:
         print(f"error: {error}")
         return 2

@@ -1,0 +1,42 @@
+version: 1.0.0
+feature_sets:
+  - feature_set_id: billing_exception_prioritisation_features
+    version: 1.0.0
+    status: APPROVED
+    use_case: billing_exception_prioritisation
+    entity: billing_exception
+    feature_views:
+      - exception_history_features_v1
+      - reconciliation_history_features_v1
+      - payer_history_features_v1
+    features:
+      - fs_prior_exception_count_90d
+      - fs_prior_high_severity_exception_count_90d
+      - fs_prior_value_at_risk_90d
+      - fs_source_system_failure_rate_30d
+      - fs_payer_prior_exception_count_90d
+    excluded_features:
+      - priority_score
+      - priority_band
+      - material_remediation_required
+      - final_recovered_amount
+      - resolution_status
+    exact_version_required: true
+    training_retrieval_contract: feature_store/contracts/historical_retrieval_contract.yaml
+    scoring_retrieval_contract: feature_store/contracts/batch_scoring_retrieval_contract.yaml
+    consumers: [dataiku_billing_exception_prioritisation]
+    owner: DATA_SCIENCE
+  - feature_set_id: appointment_non_attendance_features_blueprint
+    version: 0.1.0
+    status: DRAFT
+    use_case: appointment_non_attendance_prediction
+    entity: patient
+    feature_views:
+      - appointment_history_features_v1
+      - patient_activity_features_v1
+    features:
+      - fs_prior_appointment_count_180d
+      - fs_days_since_last_encounter
+    exact_version_required: true
+    consumers: [future_dataiku_appointment_blueprint]
+    owner: CLINICAL_ANALYTICS

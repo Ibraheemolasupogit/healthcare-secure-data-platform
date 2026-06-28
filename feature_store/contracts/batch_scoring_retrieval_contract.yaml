@@ -1,0 +1,22 @@
+version: 1.0.0
+contract_id: batch_scoring_feature_retrieval
+feature_set_id: billing_exception_prioritisation_features
+feature_set_version: 1.0.0
+mode: offline_batch_scoring
+required_inputs:
+  - entity_key
+  - observation_timestamp
+  - requested_feature_set_version
+outputs:
+  - entity_key
+  - observation_timestamp
+  - feature_set_version
+  - feature values
+  - feature timestamps
+  - freshness_status
+  - missing_feature_status
+  - source_lineage
+  - retrieval_timestamp
+  - synthetic_flag
+online_serving: deferred
+status: contract_only_not_online_served

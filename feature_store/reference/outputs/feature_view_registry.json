@@ -1,0 +1,115 @@
+{
+  "feature_views": [
+    {
+      "availability_timestamp": "detected_at",
+      "consumers": [
+        "billing_exception_prioritisation"
+      ],
+      "entity": "billing_exception",
+      "event_timestamp": "detected_at",
+      "feature_view_id": "exception_history_features_v1",
+      "features": [
+        "fs_prior_exception_count_90d",
+        "fs_prior_high_severity_exception_count_90d",
+        "fs_prior_value_at_risk_90d"
+      ],
+      "grain": "reconciliation_exception_key, observation_timestamp",
+      "materialisation_mode": "offline_snowflake_dbt_table",
+      "offline_store_contract": "CURATED.FEATURES.EXCEPTION_HISTORY_FEATURES_V1",
+      "owner": "REVENUE_ASSURANCE",
+      "refresh_expectation": "daily",
+      "sensitivity": "synthetic_financial_restricted",
+      "source_model": "reconciliation_exception",
+      "status": "ACTIVE",
+      "version": "1.0.0"
+    },
+    {
+      "availability_timestamp": "detected_at",
+      "consumers": [
+        "billing_exception_prioritisation"
+      ],
+      "entity": "source_system",
+      "event_timestamp": "control_date",
+      "feature_view_id": "reconciliation_history_features_v1",
+      "features": [
+        "fs_source_system_failure_rate_30d"
+      ],
+      "grain": "source_system, observation_timestamp",
+      "materialisation_mode": "offline_snowflake_dbt_table",
+      "offline_store_contract": "CURATED.FEATURES.RECONCILIATION_HISTORY_FEATURES_V1",
+      "owner": "DATA_GOVERNANCE",
+      "refresh_expectation": "daily",
+      "sensitivity": "synthetic_financial_restricted",
+      "source_model": "reconciliation_control_result",
+      "status": "ACTIVE",
+      "version": "1.0.0"
+    },
+    {
+      "availability_timestamp": "dbt_updated_at",
+      "consumers": [
+        "billing_exception_prioritisation",
+        "outstanding_balance_risk_blueprint"
+      ],
+      "entity": "payer",
+      "event_timestamp": "payment_datetime",
+      "feature_view_id": "payer_history_features_v1",
+      "features": [
+        "fs_payer_prior_exception_count_90d",
+        "fs_prior_payment_count_90d"
+      ],
+      "grain": "payer_key, observation_timestamp",
+      "materialisation_mode": "mixed_registry_and_dbt_blueprint",
+      "offline_store_contract": "CURATED.FEATURES.PAYER_HISTORY_FEATURES_V1",
+      "owner": "FINANCE_ANALYTICS",
+      "refresh_expectation": "daily",
+      "sensitivity": "synthetic_financial_restricted",
+      "source_model": "fct_payment",
+      "status": "ACTIVE",
+      "version": "1.0.0"
+    },
+    {
+      "availability_timestamp": "dbt_updated_at",
+      "consumers": [
+        "appointment_non_attendance_blueprint"
+      ],
+      "entity": "patient",
+      "event_timestamp": "appointment_datetime",
+      "feature_view_id": "appointment_history_features_v1",
+      "features": [
+        "fs_prior_appointment_count_180d"
+      ],
+      "grain": "patient_key, observation_timestamp",
+      "materialisation_mode": "offline_snowflake_dbt_table",
+      "offline_store_contract": "CURATED.FEATURES.APPOINTMENT_HISTORY_FEATURES_V1",
+      "owner": "CLINICAL_ANALYTICS",
+      "refresh_expectation": "daily",
+      "sensitivity": "synthetic_patient_restricted",
+      "source_model": "core_appointment",
+      "status": "ACTIVE",
+      "version": "1.0.0"
+    },
+    {
+      "availability_timestamp": "dbt_updated_at",
+      "consumers": [
+        "appointment_non_attendance_blueprint",
+        "readmission_risk_blueprint"
+      ],
+      "entity": "patient",
+      "event_timestamp": "encounter_start_at",
+      "feature_view_id": "patient_activity_features_v1",
+      "features": [
+        "fs_days_since_last_encounter"
+      ],
+      "grain": "patient_key, observation_timestamp",
+      "materialisation_mode": "registry_only",
+      "offline_store_contract": "CURATED.FEATURES.PATIENT_ACTIVITY_FEATURES_V1",
+      "owner": "CLINICAL_ANALYTICS",
+      "refresh_expectation": "daily",
+      "sensitivity": "synthetic_patient_restricted",
+      "source_model": "core_encounter",
+      "status": "DRAFT",
+      "version": "1.0.0"
+    }
+  ],
+  "version": "1.0.0"
+}

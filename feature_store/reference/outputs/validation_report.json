@@ -1,0 +1,17 @@
+{
+  "batch_scoring_rows": 3,
+  "consumer_count": 2,
+  "dataiku_connected": false,
+  "entity_count": 5,
+  "errors": [],
+  "feature_count": 8,
+  "feature_set_count": 2,
+  "feature_set_id": "billing_exception_prioritisation_features",
+  "feature_set_version": "1.0.0",
+  "feature_view_count": 5,
+  "historical_training_rows": 7,
+  "online_serving": "deferred",
+  "point_in_time_valid": true,
+  "snowflake_connected": false,
+  "valid": true
+}

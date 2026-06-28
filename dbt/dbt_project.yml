@@ -48,6 +48,9 @@ models:
       assurance:
         +schema: assurance
         +tags: ["milestone_9", "assurance"]
+      features:
+        +schema: features
+        +tags: ["milestone_12", "feature_store"]
     marts:
       +materialized: table
       +schema: mart

@@ -21,3 +21,5 @@ Execution modes:
 No managed Airflow service, Kubernetes deployment, production notification integration or live Snowflake execution is claimed.
 
 Future Dataiku integration contract: Airflow validates trusted inputs, invokes one approved Dataiku scenario, receives scenario status and artefact references, and records cross-platform evidence. Milestone 11 does not add live Dataiku API calls to Airflow.
+
+Future feature-store integration contract: Airflow may coordinate feature-materialisation preflight, dbt feature build, feature validation, historical feature retrieval, Dataiku scenario trigger and freshness monitoring. Milestone 12 does not alter M10 DAG ownership.

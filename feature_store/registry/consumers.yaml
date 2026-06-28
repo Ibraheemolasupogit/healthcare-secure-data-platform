@@ -1,0 +1,18 @@
+version: 1.0.0
+consumers:
+  - consumer_id: dataiku_billing_exception_prioritisation
+    consumer_type: dataiku_project
+    owner: DATA_SCIENCE
+    project_ref: dataiku/projects/healthcare_analytics/project.yaml
+    model_registry_ref: dataiku/projects/healthcare_analytics/models/model_registry.yaml
+    feature_set_id: billing_exception_prioritisation_features
+    feature_set_version: 1.0.0
+    consumption_mode: offline_training_and_batch_scoring
+    status: ACTIVE
+  - consumer_id: future_dataiku_appointment_blueprint
+    consumer_type: planned_dataiku_project
+    owner: CLINICAL_ANALYTICS
+    feature_set_id: appointment_non_attendance_features_blueprint
+    feature_set_version: 0.1.0
+    consumption_mode: planned_offline_training
+    status: DRAFT

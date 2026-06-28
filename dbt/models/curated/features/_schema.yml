@@ -1,0 +1,76 @@
+version: 2
+models:
+  - name: exception_history_features_v1
+    description: Offline reusable exception-history feature view for governed assurance exceptions.
+    config:
+      contract:
+        enforced: true
+    meta: &feature_meta
+      owner: analytics engineering
+      milestone: '12'
+      layer: curated_features
+      sensitivity: synthetic_financial_restricted
+      contract_status: declared_not_runtime_proven
+      model_grain: one entity and observation timestamp
+      offline_store: CURATED.FEATURES
+    columns:
+      - name: feature_row_key
+        data_type: varchar
+        data_tests: [not_null, unique, valid_sha256]
+      - name: entity_key
+        data_type: varchar
+        data_tests: [not_null]
+      - name: observation_timestamp
+        data_type: timestamp_tz
+      - name: availability_timestamp
+        data_type: timestamp_tz
+      - name: prior_exception_count_90d
+        data_type: number
+      - name: prior_high_severity_exception_count_90d
+        data_type: number
+      - name: prior_value_at_risk_90d
+        data_type: number
+  - name: reconciliation_history_features_v1
+    description: Offline reusable reconciliation-history feature view by source system.
+    config:
+      contract:
+        enforced: true
+    meta: *feature_meta
+    columns:
+      - name: feature_row_key
+        data_type: varchar
+        data_tests: [not_null, unique, valid_sha256]
+      - name: entity_key
+        data_type: varchar
+      - name: source_system_failure_rate_30d
+        data_type: number
+  - name: payer_history_features_v1
+    description: Offline reusable payer payment-history feature view.
+    config:
+      contract:
+        enforced: true
+    meta: *feature_meta
+    columns:
+      - name: feature_row_key
+        data_type: varchar
+        data_tests: [not_null, unique, valid_sha256]
+      - name: entity_key
+        data_type: varchar
+      - name: prior_payment_count_90d
+        data_type: number
+  - name: appointment_history_features_v1
+    description: Offline reusable appointment-history feature view for future appointment use cases.
+    config:
+      contract:
+        enforced: true
+    meta:
+      <<: *feature_meta
+      sensitivity: synthetic_patient_restricted
+    columns:
+      - name: feature_row_key
+        data_type: varchar
+        data_tests: [not_null, unique, valid_sha256]
+      - name: entity_key
+        data_type: varchar
+      - name: prior_appointment_count_180d
+        data_type: number

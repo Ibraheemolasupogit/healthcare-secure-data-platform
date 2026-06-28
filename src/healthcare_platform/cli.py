@@ -8,9 +8,12 @@ from dataclasses import replace
 from datetime import date
 from pathlib import Path
 
+import yaml  # type: ignore[import-untyped]
+
 from healthcare_platform.assurance import write_evidence_pack
 from healthcare_platform.config import load_settings, snowflake_credentials_present
 from healthcare_platform.dataiku import run_reference_pipeline
+from healthcare_platform.feature_store import build_reference_outputs, validate_registry
 from healthcare_platform.interoperability.config import (
     DEFAULT_CONFIG_PATH as DEFAULT_INTEROPERABILITY_CONFIG_PATH,
 )
@@ -197,6 +200,27 @@ def build_parser() -> argparse.ArgumentParser:
     dataiku_reference.add_argument("--input", type=Path, required=True)
     dataiku_reference.add_argument("--output-dir", type=Path, required=True)
     dataiku_reference.add_argument("--overwrite", action="store_true")
+    feature_store = subparsers.add_parser(
+        "feature-store",
+        help="inspect and validate the local governed feature-store registry",
+    )
+    feature_commands = feature_store.add_subparsers(dest="feature_store_command", required=True)
+    feature_commands.add_parser("list-entities", help="list registered feature-store entities")
+    feature_commands.add_parser("list-features", help="list registered reusable features")
+    describe_feature = feature_commands.add_parser("describe-feature", help="describe one feature")
+    describe_feature.add_argument("feature_id")
+    feature_commands.add_parser("validate-registry", help="validate registry integrity")
+    build_reference = feature_commands.add_parser(
+        "build-reference",
+        help="build deterministic historical and scoring retrieval reference outputs",
+    )
+    build_reference.add_argument("--output-dir", type=Path, required=True)
+    build_reference.add_argument(
+        "--fixture",
+        type=Path,
+        default=Path("feature_store/reference/fixtures/exception_events.csv"),
+    )
+    build_reference.add_argument("--overwrite", action="store_true")
     return parser
 
 
@@ -386,6 +410,41 @@ def _dataiku_reference(args: argparse.Namespace) -> int:
     return 0
 
 
+def _feature_store(args: argparse.Namespace) -> int:
+    if args.feature_store_command == "validate-registry":
+        registry_result = validate_registry()
+        print(json.dumps(registry_result, indent=2, sort_keys=True))
+        return 0 if registry_result["valid"] else 1
+    if args.feature_store_command == "build-reference":
+        reference_result = build_reference_outputs(
+            args.output_dir, fixture_path=args.fixture, overwrite=args.overwrite
+        )
+        print(f"output_dir: {reference_result.output_dir}")
+        print(f"retrieval_manifest: {reference_result.retrieval_manifest}")
+        print(f"validation_report: {reference_result.validation_report}")
+        print(f"historical_training_set: {reference_result.historical_training_set}")
+        print(f"batch_scoring_set: {reference_result.batch_scoring_set}")
+        print(f"checksums: {reference_result.checksums}")
+        return 0
+    registry = Path("feature_store/registry")
+    if args.feature_store_command == "list-entities":
+        for entity in yaml.safe_load((registry / "entities.yaml").read_text())["entities"]:
+            print(f"{entity['entity_id']}: {entity['canonical_join_key']}")
+        return 0
+    if args.feature_store_command == "list-features":
+        for feature in yaml.safe_load((registry / "features.yaml").read_text())["features"]:
+            print(f"{feature['feature_id']}: {feature['feature_name']}")
+        return 0
+    if args.feature_store_command == "describe-feature":
+        for feature in yaml.safe_load((registry / "features.yaml").read_text())["features"]:
+            if feature["feature_id"] == args.feature_id:
+                print(json.dumps(feature, indent=2, sort_keys=True))
+                return 0
+        print(f"error: unknown feature {args.feature_id}")
+        return 2
+    return 2
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the CLI."""
     args = build_parser().parse_args(argv)
@@ -418,6 +477,8 @@ def main(argv: list[str] | None = None) -> int:
             return _assurance_evidence(args)
         if args.command == "dataiku-reference":
             return _dataiku_reference(args)
+        if args.command == "feature-store":
+            return _feature_store(args)
     except (ValueError, OSError, json.JSONDecodeError) as error:
         print(f"error: {error}")
         return 2

@@ -1,0 +1,12 @@
+{
+  "feature_set_id": "billing_exception_prioritisation_features",
+  "feature_set_version": "1.0.0",
+  "fixture": "feature_store/reference/fixtures/exception_events.csv",
+  "fixture_sha256": "1782ec92ec249b77cdc68face987c9e5dba331c517bb8271e32391d511c9eb36",
+  "generated_at": "2025-01-01T00:00:00+00:00",
+  "mode": "local_reference",
+  "not_online_served": true,
+  "not_snowflake_materialised": true,
+  "run_id": "m12-feature-store-reference-2025-01-01",
+  "synthetic": true
+}

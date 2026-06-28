@@ -21,3 +21,4 @@ ADRs use: status/date, context, decision, consequences, alternatives, and valida
 | 0015 | Assurance layer owns reconciliation, not finance calculation |
 | 0016 | Airflow orchestrates existing platform contracts |
 | 0017 | Dataiku consumes governed products for ML workflows |
+| 0018 | Offline-first governed feature store |

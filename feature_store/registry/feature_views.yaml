@@ -1,0 +1,85 @@
+version: 1.0.0
+feature_views:
+  - feature_view_id: exception_history_features_v1
+    entity: billing_exception
+    grain: reconciliation_exception_key, observation_timestamp
+    event_timestamp: detected_at
+    availability_timestamp: detected_at
+    source_model: reconciliation_exception
+    refresh_expectation: daily
+    features:
+      - fs_prior_exception_count_90d
+      - fs_prior_high_severity_exception_count_90d
+      - fs_prior_value_at_risk_90d
+    materialisation_mode: offline_snowflake_dbt_table
+    owner: REVENUE_ASSURANCE
+    sensitivity: synthetic_financial_restricted
+    version: 1.0.0
+    status: ACTIVE
+    consumers: [billing_exception_prioritisation]
+    offline_store_contract: CURATED.FEATURES.EXCEPTION_HISTORY_FEATURES_V1
+  - feature_view_id: reconciliation_history_features_v1
+    entity: source_system
+    grain: source_system, observation_timestamp
+    event_timestamp: control_date
+    availability_timestamp: detected_at
+    source_model: reconciliation_control_result
+    refresh_expectation: daily
+    features:
+      - fs_source_system_failure_rate_30d
+    materialisation_mode: offline_snowflake_dbt_table
+    owner: DATA_GOVERNANCE
+    sensitivity: synthetic_financial_restricted
+    version: 1.0.0
+    status: ACTIVE
+    consumers: [billing_exception_prioritisation]
+    offline_store_contract: CURATED.FEATURES.RECONCILIATION_HISTORY_FEATURES_V1
+  - feature_view_id: payer_history_features_v1
+    entity: payer
+    grain: payer_key, observation_timestamp
+    event_timestamp: payment_datetime
+    availability_timestamp: dbt_updated_at
+    source_model: fct_payment
+    refresh_expectation: daily
+    features:
+      - fs_payer_prior_exception_count_90d
+      - fs_prior_payment_count_90d
+    materialisation_mode: mixed_registry_and_dbt_blueprint
+    owner: FINANCE_ANALYTICS
+    sensitivity: synthetic_financial_restricted
+    version: 1.0.0
+    status: ACTIVE
+    consumers: [billing_exception_prioritisation, outstanding_balance_risk_blueprint]
+    offline_store_contract: CURATED.FEATURES.PAYER_HISTORY_FEATURES_V1
+  - feature_view_id: appointment_history_features_v1
+    entity: patient
+    grain: patient_key, observation_timestamp
+    event_timestamp: appointment_datetime
+    availability_timestamp: dbt_updated_at
+    source_model: core_appointment
+    refresh_expectation: daily
+    features:
+      - fs_prior_appointment_count_180d
+    materialisation_mode: offline_snowflake_dbt_table
+    owner: CLINICAL_ANALYTICS
+    sensitivity: synthetic_patient_restricted
+    version: 1.0.0
+    status: ACTIVE
+    consumers: [appointment_non_attendance_blueprint]
+    offline_store_contract: CURATED.FEATURES.APPOINTMENT_HISTORY_FEATURES_V1
+  - feature_view_id: patient_activity_features_v1
+    entity: patient
+    grain: patient_key, observation_timestamp
+    event_timestamp: encounter_start_at
+    availability_timestamp: dbt_updated_at
+    source_model: core_encounter
+    refresh_expectation: daily
+    features:
+      - fs_days_since_last_encounter
+    materialisation_mode: registry_only
+    owner: CLINICAL_ANALYTICS
+    sensitivity: synthetic_patient_restricted
+    version: 1.0.0
+    status: DRAFT
+    consumers: [appointment_non_attendance_blueprint, readmission_risk_blueprint]
+    offline_store_contract: CURATED.FEATURES.PATIENT_ACTIVITY_FEATURES_V1

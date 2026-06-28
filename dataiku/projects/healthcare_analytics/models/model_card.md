@@ -22,6 +22,8 @@ Trusted inputs are governed dbt outputs: `reconciliation_exception`, `exception_
 
 Features are model-specific exception attributes such as severity, value at risk, age, recurrence, owner group, source system, payer type, contract type and control status. Excluded leakage fields include priority score, priority band, resolution timestamps, final recovered amount and post-resolution outcomes.
 
+Milestone 12 feature-store integration uses exact feature set `billing_exception_prioritisation_features` version `1.0.0` for reusable governed features. Dataiku keeps final model-specific preprocessing only.
+
 ## Split strategy
 
 Deterministic temporal split sorted by `detected_at` and `reconciliation_exception_key`: earliest 70% train, next 15% validation, latest 15% test.

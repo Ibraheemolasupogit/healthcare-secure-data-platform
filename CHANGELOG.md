@@ -33,3 +33,6 @@ All notable changes will follow Keep a Changelog conventions. The project does n
   billing exception prioritisation Flow design, feature specifications, experiment/evaluation
   configuration, approval gates, model card, scenario blueprints, monitoring design, local
   reference execution, guardrails, documentation and ADR.
+- Milestone 12 governed offline healthcare feature-store foundation with reusable feature
+  registry, entities, feature views, feature sets, dbt feature models, point-in-time local
+  retrieval, Dataiku feature-set references, quality rules, evidence, guardrails and ADR.

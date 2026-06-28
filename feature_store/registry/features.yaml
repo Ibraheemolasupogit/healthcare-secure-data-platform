@@ -1,0 +1,210 @@
+version: 1.0.0
+features:
+  - feature_id: fs_prior_exception_count_90d
+    feature_name: prior_exception_count_90d
+    description: Count of prior governed exceptions for the affected object type in the last 90 days.
+    entity: billing_exception
+    data_type: integer
+    source_model: reconciliation_exception
+    source_columns: [affected_object_type, detected_at, reconciliation_exception_key]
+    transformation: count prior exceptions by affected_object_type within 90-day lookback
+    event_time_column: detected_at
+    availability_time_column: detected_at
+    aggregation: count
+    lookback_window: 90 days
+    default_value_policy: 0 when no prior exceptions exist
+    null_policy: non_null
+    freshness_expectation: daily
+    point_in_time_rule: availability_time <= observation_time and event_time < observation_time
+    sensitivity: synthetic_financial_restricted
+    owner: REVENUE_ASSURANCE
+    version: 1.0.0
+    lifecycle_status: ACTIVE
+    consumers: [billing_exception_prioritisation]
+    reusable: true
+    local_implementation_status: implemented_reference_and_dbt_blueprint
+    snowflake_implementation_status: dbt_model_declared_not_runtime_proven
+    dataiku_use_status: consumed_by_feature_set_reference
+    limitations: synthetic local validation only
+  - feature_id: fs_prior_high_severity_exception_count_90d
+    feature_name: prior_high_severity_exception_count_90d
+    description: Count of prior high or critical exceptions for the affected object type in 90 days.
+    entity: billing_exception
+    data_type: integer
+    source_model: reconciliation_exception
+    source_columns: [affected_object_type, severity, detected_at]
+    transformation: count prior HIGH or CRITICAL exceptions within 90-day lookback
+    event_time_column: detected_at
+    availability_time_column: detected_at
+    aggregation: count_if
+    lookback_window: 90 days
+    default_value_policy: 0 when no prior high severity exceptions exist
+    null_policy: non_null
+    freshness_expectation: daily
+    point_in_time_rule: availability_time <= observation_time and event_time < observation_time
+    sensitivity: synthetic_financial_restricted
+    owner: REVENUE_ASSURANCE
+    version: 1.0.0
+    lifecycle_status: ACTIVE
+    consumers: [billing_exception_prioritisation]
+    reusable: true
+    local_implementation_status: implemented_reference_and_dbt_blueprint
+    snowflake_implementation_status: dbt_model_declared_not_runtime_proven
+    dataiku_use_status: consumed_by_feature_set_reference
+    limitations: no live Snowflake materialisation
+  - feature_id: fs_prior_value_at_risk_90d
+    feature_name: prior_value_at_risk_90d
+    description: Sum of prior financial value at risk for matching affected object type in 90 days.
+    entity: billing_exception
+    data_type: number
+    source_model: reconciliation_exception
+    source_columns: [affected_object_type, financial_value_at_risk, detected_at]
+    transformation: sum prior value at risk within 90-day lookback
+    event_time_column: detected_at
+    availability_time_column: detected_at
+    aggregation: sum
+    lookback_window: 90 days
+    default_value_policy: 0.00 when no prior value exists
+    null_policy: non_null
+    freshness_expectation: daily
+    point_in_time_rule: availability_time <= observation_time and event_time < observation_time
+    sensitivity: synthetic_financial_restricted
+    owner: REVENUE_ASSURANCE
+    version: 1.0.0
+    lifecycle_status: ACTIVE
+    consumers: [billing_exception_prioritisation]
+    reusable: true
+    local_implementation_status: implemented_reference_and_dbt_blueprint
+    snowflake_implementation_status: dbt_model_declared_not_runtime_proven
+    dataiku_use_status: consumed_by_feature_set_reference
+    limitations: uses existing M9 value-at-risk output without recalculation
+  - feature_id: fs_source_system_failure_rate_30d
+    feature_name: source_system_failure_rate_30d
+    description: Prior failed control share by source system over 30 days.
+    entity: source_system
+    data_type: number
+    source_model: reconciliation_control_result
+    source_columns: [source_system, control_date, reconciliation_status]
+    transformation: count failed controls divided by count controls in 30-day lookback
+    event_time_column: control_date
+    availability_time_column: detected_at
+    aggregation: ratio
+    lookback_window: 30 days
+    default_value_policy: null with missingness indicator when no controls exist
+    null_policy: nullable_with_indicator
+    freshness_expectation: daily
+    point_in_time_rule: detected_at <= observation_time and control_date < observation_time
+    sensitivity: synthetic_financial_restricted
+    owner: DATA_GOVERNANCE
+    version: 1.0.0
+    lifecycle_status: ACTIVE
+    consumers: [billing_exception_prioritisation]
+    reusable: true
+    local_implementation_status: implemented_reference_and_dbt_blueprint
+    snowflake_implementation_status: dbt_model_declared_not_runtime_proven
+    dataiku_use_status: consumed_by_feature_set_reference
+    limitations: low fixture volume
+  - feature_id: fs_payer_prior_exception_count_90d
+    feature_name: payer_prior_exception_count_90d
+    description: Count of prior exceptions associated with payer type in 90 days.
+    entity: payer
+    data_type: integer
+    source_model: reconciliation_exception
+    source_columns: [assigned_owner, detected_at]
+    transformation: count prior exceptions by payer-like owner/context within lookback
+    event_time_column: detected_at
+    availability_time_column: detected_at
+    aggregation: count
+    lookback_window: 90 days
+    default_value_policy: 0 when no prior payer-context exceptions exist
+    null_policy: non_null
+    freshness_expectation: daily
+    point_in_time_rule: availability_time <= observation_time and event_time < observation_time
+    sensitivity: synthetic_financial_restricted
+    owner: FINANCE_ANALYTICS
+    version: 1.0.0
+    lifecycle_status: ACTIVE
+    consumers: [billing_exception_prioritisation]
+    reusable: true
+    local_implementation_status: implemented_reference
+    snowflake_implementation_status: registry_only
+    dataiku_use_status: consumed_by_feature_set_reference
+    limitations: payer context requires governed enrichment before Snowflake implementation
+  - feature_id: fs_prior_payment_count_90d
+    feature_name: prior_payment_count_90d
+    description: Count of governed payments by payer in the previous 90 days.
+    entity: payer
+    data_type: integer
+    source_model: fct_payment
+    source_columns: [payer_key, payment_datetime, payment_key]
+    transformation: count payments by payer_key within 90-day lookback
+    event_time_column: payment_datetime
+    availability_time_column: dbt_updated_at
+    aggregation: count
+    lookback_window: 90 days
+    default_value_policy: 0 when no prior payments exist
+    null_policy: non_null
+    freshness_expectation: daily
+    point_in_time_rule: dbt_updated_at <= observation_time and payment_datetime < observation_time
+    sensitivity: synthetic_financial_restricted
+    owner: FINANCE_ANALYTICS
+    version: 1.0.0
+    lifecycle_status: ACTIVE
+    consumers: [billing_exception_prioritisation, outstanding_balance_risk_blueprint]
+    reusable: true
+    local_implementation_status: registry_only
+    snowflake_implementation_status: dbt_model_declared_not_runtime_proven
+    dataiku_use_status: available_for_future_consumers
+    limitations: not used in local billing exception fixture
+  - feature_id: fs_prior_appointment_count_180d
+    feature_name: prior_appointment_count_180d
+    description: Count of prior appointments for a patient over 180 days.
+    entity: patient
+    data_type: integer
+    source_model: core_appointment
+    source_columns: [patient_key, appointment_datetime, appointment_key]
+    transformation: count appointments by patient_key within 180-day lookback
+    event_time_column: appointment_datetime
+    availability_time_column: dbt_updated_at
+    aggregation: count
+    lookback_window: 180 days
+    default_value_policy: 0 when no prior appointments exist
+    null_policy: non_null
+    freshness_expectation: daily
+    point_in_time_rule: dbt_updated_at <= observation_time and appointment_datetime < observation_time
+    sensitivity: synthetic_patient_restricted
+    owner: CLINICAL_ANALYTICS
+    version: 1.0.0
+    lifecycle_status: ACTIVE
+    consumers: [appointment_non_attendance_blueprint]
+    reusable: true
+    local_implementation_status: registry_only
+    snowflake_implementation_status: dbt_model_declared_not_runtime_proven
+    dataiku_use_status: future_blueprint
+    limitations: future use case only
+  - feature_id: fs_days_since_last_encounter
+    feature_name: days_since_last_encounter
+    description: Days since prior encounter for a patient at observation time.
+    entity: patient
+    data_type: integer
+    source_model: core_encounter
+    source_columns: [patient_key, encounter_start_at]
+    transformation: datediff between max prior encounter_start_at and observation timestamp
+    event_time_column: encounter_start_at
+    availability_time_column: dbt_updated_at
+    aggregation: max_then_datediff
+    lookback_window: 365 days
+    default_value_policy: null when no prior encounter exists
+    null_policy: nullable_with_indicator
+    freshness_expectation: daily
+    point_in_time_rule: dbt_updated_at <= observation_time and encounter_start_at < observation_time
+    sensitivity: synthetic_patient_restricted
+    owner: CLINICAL_ANALYTICS
+    version: 1.0.0
+    lifecycle_status: ACTIVE
+    consumers: [appointment_non_attendance_blueprint, readmission_risk_blueprint]
+    reusable: true
+    local_implementation_status: registry_only
+    snowflake_implementation_status: registry_only
+    dataiku_use_status: future_blueprint
+    limitations: dbt feature model deferred until supported by immediate consumer

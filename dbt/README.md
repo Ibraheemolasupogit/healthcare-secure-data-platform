@@ -1,6 +1,6 @@
 # dbt foundation
 
-This now contains the Milestone 5 source/staging foundation, the Milestone 6 conformed healthcare core, the Milestone 8 governed billing/finance domain, and the Milestone 9 assurance-control layer. It remains intentionally bounded: no marts, semantic models, external workflows or downstream-platform logic are included.
+This now contains the Milestone 5 source/staging foundation, the Milestone 6 conformed healthcare core, the Milestone 8 governed billing/finance domain, the Milestone 9 assurance-control layer, and Milestone 12 offline feature-view models. It remains intentionally bounded: no marts, semantic models, external workflows, online feature serving or downstream BI logic are included.
 
 Models follow `stg_<source>__<entity>`, `int_<domain>__<purpose>`, `dim_<entity>`, `fct_<event>`, `mart_<domain>__<purpose>` and `sem_<subject>` naming. Each published model will document owner, description, grain, classification, allowed use, columns and upstream assumptions. SQL uses lower-case keywords and explicit column lists.
 
@@ -47,5 +47,12 @@ Implemented Milestone 9 assets:
 - consolidated exception inventory, lifecycle events and remediation status;
 - revenue-at-risk, daily assurance, month-end assurance and evidence-pack models;
 - assurance guardrail tests and deterministic local evidence-pack CLI.
+
+Implemented Milestone 12 assets:
+
+- curated offline feature-view models under `models/curated/features`;
+- reusable exception, reconciliation, payer and appointment feature views;
+- registry-linked contracts and guardrail tests;
+- dbt parse validation without live Snowflake materialisation.
 
 `dbt parse --profiles-dir . --no-partial-parse` validates structure without connecting to Snowflake. The placeholder profile must never be used for execution. Connected `dbt compile`, `dbt build`, `dbt source freshness` and `dbt docs generate` require a separate authorised Snowflake profile.

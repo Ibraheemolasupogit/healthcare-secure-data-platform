@@ -6,7 +6,9 @@ models:
     use_case: billing_exception_prioritisation
     version: 1.0.0-local-reference
     algorithm: bounded_rule_scorecard
+    feature_set_id: billing_exception_prioritisation_features
     feature_set_version: 1.0.0
+    feature_store_registry: feature_store/registry/feature_sets.yaml
     training_data_version: synthetic_fixture_v1
     training_period: 2024-10-01_to_2024-12-06
     validation_period: 2024-12-10_to_2024-12-14

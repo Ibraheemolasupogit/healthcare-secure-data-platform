@@ -1,0 +1,29 @@
+version: 1.0.0
+freshness_states: [FRESH, WARNING, STALE, UNAVAILABLE, NOT_APPLICABLE]
+quality_expectations:
+  - expectation_id: no_point_in_time_leakage
+    type: temporal
+    rule: event_time <= observation_time and availability_time <= observation_time
+  - expectation_id: unique_entity_observation_grain
+    type: structural
+    rule: one feature row per entity key and observation timestamp
+  - expectation_id: lineage_populated
+    type: lineage
+    rule: source model, feature view, feature set and registry version must be populated
+  - expectation_id: null_rate_threshold
+    type: statistical
+    rule: nullable features must record missingness status and null rate
+  - expectation_id: freshness_threshold
+    type: freshness
+    rule: daily feature views warn after 1 day and stale after 2 days
+missing_value_policy:
+  entity_not_found: set feature status MISSING_ENTITY and use declared default
+  source_unavailable: set feature status UNAVAILABLE and fail validation for approved feature sets
+  invalid_value: set validation status FAIL
+freshness_thresholds:
+  daily:
+    expected_refresh_interval: 1 day
+    warning_threshold: 1 day
+    stale_threshold: 2 days
+    availability_delay: 0 days
+    fallback_behaviour: fail approved feature-set retrieval if stale

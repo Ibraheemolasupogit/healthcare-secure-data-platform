@@ -1,0 +1,58 @@
+{
+  "feature_sets": [
+    {
+      "consumers": [
+        "dataiku_billing_exception_prioritisation"
+      ],
+      "entity": "billing_exception",
+      "exact_version_required": true,
+      "excluded_features": [
+        "priority_score",
+        "priority_band",
+        "material_remediation_required",
+        "final_recovered_amount",
+        "resolution_status"
+      ],
+      "feature_set_id": "billing_exception_prioritisation_features",
+      "feature_views": [
+        "exception_history_features_v1",
+        "reconciliation_history_features_v1",
+        "payer_history_features_v1"
+      ],
+      "features": [
+        "fs_prior_exception_count_90d",
+        "fs_prior_high_severity_exception_count_90d",
+        "fs_prior_value_at_risk_90d",
+        "fs_source_system_failure_rate_30d",
+        "fs_payer_prior_exception_count_90d"
+      ],
+      "owner": "DATA_SCIENCE",
+      "scoring_retrieval_contract": "feature_store/contracts/batch_scoring_retrieval_contract.yaml",
+      "status": "APPROVED",
+      "training_retrieval_contract": "feature_store/contracts/historical_retrieval_contract.yaml",
+      "use_case": "billing_exception_prioritisation",
+      "version": "1.0.0"
+    },
+    {
+      "consumers": [
+        "future_dataiku_appointment_blueprint"
+      ],
+      "entity": "patient",
+      "exact_version_required": true,
+      "feature_set_id": "appointment_non_attendance_features_blueprint",
+      "feature_views": [
+        "appointment_history_features_v1",
+        "patient_activity_features_v1"
+      ],
+      "features": [
+        "fs_prior_appointment_count_180d",
+        "fs_days_since_last_encounter"
+      ],
+      "owner": "CLINICAL_ANALYTICS",
+      "status": "DRAFT",
+      "use_case": "appointment_non_attendance_prediction",
+      "version": "0.1.0"
+    }
+  ],
+  "version": "1.0.0"
+}

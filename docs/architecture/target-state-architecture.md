@@ -90,7 +90,7 @@ flowchart LR
 
 **Dataiku implemented locally as blueprints (M11):** governed collaborative preparation, model-specific feature engineering, experimentation, operationalisation design and model monitoring consume trusted products. Dataiku does not become a second warehouse transformation layer.
 
-**Feature store not implemented / planned (M12):** register reusable feature definitions, entity keys, owners, versions, freshness and point-in-time logic over trusted dbt products. Offline access is first; online serving is a future extension requiring a demonstrated latency use case.
+**Feature store implemented locally as offline foundation (M12):** reusable feature definitions, entity keys, owners, versions, freshness and point-in-time logic are registered over trusted dbt products. Offline access is first; online serving remains a future extension requiring a demonstrated latency use case.
 
 ## Fabric and Power BI
 
@@ -120,4 +120,4 @@ flowchart LR
 
 **Partially implemented:** Milestone 2 includes local manifests, checksums, validation reports and tests. Every future claim must link to redacted, reproducible evidence for a commit and environment.
 
-Current non-goals are live Snowflake execution, formal revenue recognition, production Airflow deployment, live Dataiku execution, production ML approval, feature-store code, Fabric/Power BI artifacts, broader Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing placeholders.
+Current non-goals are live Snowflake execution, formal revenue recognition, production Airflow deployment, live Dataiku execution, production ML approval, online feature serving, Fabric/Power BI artifacts, broader Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing placeholders.

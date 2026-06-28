@@ -1,0 +1,75 @@
+{
+  "entities": [
+    {
+      "allowed_downstream_use": "approved analytics and offline feature retrieval",
+      "canonical_join_key": "patient_key",
+      "description": "Conformed patient entity from Milestone 6.",
+      "entity_id": "patient",
+      "entity_name": "patient",
+      "key_data_type": "varchar",
+      "lifecycle_status": "ACTIVE",
+      "ownership": "ANALYTICS_ENGINEERING",
+      "point_in_time_applicability": "patient activity features use observation timestamp",
+      "sensitivity": "synthetic_patient_restricted",
+      "upstream_owning_model": "core_patient",
+      "version": "1.0.0"
+    },
+    {
+      "allowed_downstream_use": "approved operational analytics and offline features",
+      "canonical_join_key": "appointment_key",
+      "description": "Conformed appointment entity from Milestone 6.",
+      "entity_id": "appointment",
+      "entity_name": "appointment",
+      "key_data_type": "varchar",
+      "lifecycle_status": "ACTIVE",
+      "ownership": "CLINICAL_ANALYTICS",
+      "point_in_time_applicability": "appointment features use appointment timestamp",
+      "sensitivity": "synthetic_patient_restricted",
+      "upstream_owning_model": "core_appointment",
+      "version": "1.0.0"
+    },
+    {
+      "allowed_downstream_use": "approved finance analytics and offline features",
+      "canonical_join_key": "payer_key",
+      "description": "Governed payer dimension from Milestone 8.",
+      "entity_id": "payer",
+      "entity_name": "payer",
+      "key_data_type": "varchar",
+      "lifecycle_status": "ACTIVE",
+      "ownership": "FINANCE_ANALYTICS",
+      "point_in_time_applicability": "payer features use payment or exception timestamp",
+      "sensitivity": "synthetic_financial_restricted",
+      "upstream_owning_model": "dim_payer",
+      "version": "1.0.0"
+    },
+    {
+      "allowed_downstream_use": "approved assurance analytics and offline features",
+      "canonical_join_key": "reconciliation_exception_key",
+      "description": "Governed M9 reconciliation exception entity.",
+      "entity_id": "billing_exception",
+      "entity_name": "billing exception",
+      "key_data_type": "varchar",
+      "lifecycle_status": "ACTIVE",
+      "ownership": "REVENUE_ASSURANCE",
+      "point_in_time_applicability": "exception features use detected timestamp",
+      "sensitivity": "synthetic_financial_restricted",
+      "upstream_owning_model": "reconciliation_exception",
+      "version": "1.0.0"
+    },
+    {
+      "allowed_downstream_use": "operational quality and assurance analytics",
+      "canonical_join_key": "source_system",
+      "description": "Synthetic upstream system identifier for assurance controls.",
+      "entity_id": "source_system",
+      "entity_name": "source system",
+      "key_data_type": "varchar",
+      "lifecycle_status": "ACTIVE",
+      "ownership": "DATA_GOVERNANCE",
+      "point_in_time_applicability": "source-system features use control date",
+      "sensitivity": "synthetic_financial_restricted",
+      "upstream_owning_model": "reconciliation_control_result",
+      "version": "1.0.0"
+    }
+  ],
+  "version": "1.0.0"
+}

@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [{name = "Healthcare Secure Data Platform contributors"}]
-dependencies = []
+dependencies = ["PyYAML>=6.0,<7"]
 
 [project.scripts]
 healthcare-platform = "healthcare_platform.cli:main"

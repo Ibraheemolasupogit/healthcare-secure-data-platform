@@ -3,6 +3,9 @@ experiment_id: billing_exception_priority_materiality
 target: material_remediation_required
 target_type: binary_classification
 random_seed: 42
+feature_set_id: billing_exception_prioritisation_features
+feature_set_version: 1.0.0
+feature_store_registry: feature_store/registry/feature_sets.yaml
 split_strategy:
   type: temporal
   train: earliest_70_percent

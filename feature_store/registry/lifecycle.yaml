@@ -1,0 +1,19 @@
+version: 1.0.0
+allowed_statuses: [DRAFT, VALIDATED, APPROVED, ACTIVE, DEPRECATED, RETIRED, BLOCKED]
+allowed_transitions:
+  DRAFT: [VALIDATED, BLOCKED]
+  VALIDATED: [APPROVED, BLOCKED]
+  APPROVED: [ACTIVE, DEPRECATED]
+  ACTIVE: [DEPRECATED, BLOCKED]
+  DEPRECATED: [RETIRED]
+  BLOCKED: [DRAFT, RETIRED]
+  RETIRED: []
+version_change_policy:
+  patch: documentation or non-behavioural metadata
+  minor: backward-compatible new feature
+  major: changed definition, grain, key, time semantics, or output type
+deprecation_requirements:
+  - successor_or_retirement_reason
+  - consumer_impact_assessment
+  - migration_window
+repository_approval_scope: local portfolio governance only, not production approval

@@ -1,0 +1,62 @@
+version: 1.0.0
+entities:
+  - entity_id: patient
+    entity_name: patient
+    canonical_join_key: patient_key
+    upstream_owning_model: core_patient
+    key_data_type: varchar
+    description: Conformed patient entity from Milestone 6.
+    sensitivity: synthetic_patient_restricted
+    allowed_downstream_use: approved analytics and offline feature retrieval
+    point_in_time_applicability: patient activity features use observation timestamp
+    ownership: ANALYTICS_ENGINEERING
+    version: 1.0.0
+    lifecycle_status: ACTIVE
+  - entity_id: appointment
+    entity_name: appointment
+    canonical_join_key: appointment_key
+    upstream_owning_model: core_appointment
+    key_data_type: varchar
+    description: Conformed appointment entity from Milestone 6.
+    sensitivity: synthetic_patient_restricted
+    allowed_downstream_use: approved operational analytics and offline features
+    point_in_time_applicability: appointment features use appointment timestamp
+    ownership: CLINICAL_ANALYTICS
+    version: 1.0.0
+    lifecycle_status: ACTIVE
+  - entity_id: payer
+    entity_name: payer
+    canonical_join_key: payer_key
+    upstream_owning_model: dim_payer
+    key_data_type: varchar
+    description: Governed payer dimension from Milestone 8.
+    sensitivity: synthetic_financial_restricted
+    allowed_downstream_use: approved finance analytics and offline features
+    point_in_time_applicability: payer features use payment or exception timestamp
+    ownership: FINANCE_ANALYTICS
+    version: 1.0.0
+    lifecycle_status: ACTIVE
+  - entity_id: billing_exception
+    entity_name: billing exception
+    canonical_join_key: reconciliation_exception_key
+    upstream_owning_model: reconciliation_exception
+    key_data_type: varchar
+    description: Governed M9 reconciliation exception entity.
+    sensitivity: synthetic_financial_restricted
+    allowed_downstream_use: approved assurance analytics and offline features
+    point_in_time_applicability: exception features use detected timestamp
+    ownership: REVENUE_ASSURANCE
+    version: 1.0.0
+    lifecycle_status: ACTIVE
+  - entity_id: source_system
+    entity_name: source system
+    canonical_join_key: source_system
+    upstream_owning_model: reconciliation_control_result
+    key_data_type: varchar
+    description: Synthetic upstream system identifier for assurance controls.
+    sensitivity: synthetic_financial_restricted
+    allowed_downstream_use: operational quality and assurance analytics
+    point_in_time_applicability: source-system features use control date
+    ownership: DATA_GOVERNANCE
+    version: 1.0.0
+    lifecycle_status: ACTIVE

@@ -17,7 +17,7 @@ def test_output_manifest_checksums_and_validation(tmp_path: Path) -> None:
     manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["seed"] == 42
     assert manifest["reference_date"] == "2025-01-01"
-    assert len(manifest["datasets"]) == 15
+    assert len(manifest["datasets"]) == 33
     assert verify_checksums(output) == (True, [])
     assert validate_directory(output).valid
     assert "not formally conformant" in (

@@ -4,4 +4,4 @@ Only obviously synthetic data is allowed. `raw/`, `synthetic/`, `generated/`, an
 
 Do not place real patient data, NHS numbers, personal data, vendor extracts or production-like secrets here. Large benchmark outputs belong in controlled artefact storage, not Git.
 
-`samples/interoperability` contains the reviewed Milestone 4 positive corpus. `negative_tests/interoperability` is the separately committed expected-failure corpus and quarantine evidence. Both are synthetic, deterministic and intentionally small.
+`samples/interoperability` contains the reviewed Milestone 4 positive corpus. `negative_tests/interoperability` is the separately committed expected-failure corpus and quarantine evidence. `samples/small` now includes the Milestone 7 billing/finance source extension. `negative_tests/billing` is the separately committed expected-failure billing corpus. All are synthetic, deterministic and intentionally small.

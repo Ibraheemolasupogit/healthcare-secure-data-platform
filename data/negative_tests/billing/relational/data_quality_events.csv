@@ -1,0 +1,2 @@
+quality_event_id,dataset_name,rule_id,rule_name,severity,record_identifier,detected_at,status,resolution_action
+DQE-000000001,appointments,BR-APT-001,Cancelled appointment reason required,ERROR,APT-000000001,2025-01-01T09:00:00Z,OPEN,NEGATIVE_TEST_ONLY

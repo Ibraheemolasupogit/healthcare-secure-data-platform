@@ -17,3 +17,6 @@ All notable changes will follow Keep a Changelog conventions. The project does n
   staging utility macros, source/staging tests, local guardrails, documentation and evidence.
 - Milestone 6 conformed healthcare core dbt models, deterministic synthetic identity reconciliation,
   SHA-256 surrogate keys, core reconciliation outputs, contracts, guardrail tests, documentation and ADR.
+- Milestone 7 deterministic billing and finance synthetic source extension with source schemas,
+  Decimal-safe lifecycle generation, validation, positive and negative fixtures, CLI helpers,
+  static raw contract metadata, documentation and evidence.

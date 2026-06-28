@@ -39,6 +39,26 @@ from healthcare_platform.synthetic.schemas import DATASET_ORDER, SCHEMAS
 from healthcare_platform.synthetic.service import generate_to_directory, validate_directory
 
 PROJECT_NAME = "Healthcare Secure Data Platform"
+BILLING_DATASETS = {
+    "payers",
+    "services",
+    "products",
+    "tariffs",
+    "contracts",
+    "billable_activity",
+    "claims",
+    "claim_lines",
+    "invoices",
+    "invoice_lines",
+    "payment_attempts",
+    "payments",
+    "refunds",
+    "adjustments",
+    "billing_exceptions",
+    "revenue_events",
+    "outstanding_balances",
+    "daily_control_totals",
+}
 
 
 def dbt_available() -> bool:
@@ -57,6 +77,14 @@ def build_parser() -> argparse.ArgumentParser:
     generate.add_argument("--reference-date", type=date.fromisoformat, default=date(2025, 1, 1))
     generate.add_argument("--output-dir", type=Path)
     generate.add_argument("--format", choices=("all", "csv", "jsonl"), default="all")
+    generate.add_argument(
+        "--include",
+        choices=("all", "billing"),
+        default="all",
+        help=(
+            "dataset family to include; billing is generated through the canonical source portfolio"
+        ),
+    )
     generate.add_argument("--patient-count", type=int)
     generate.add_argument("--inject-defects", action="store_true")
     generate.add_argument("--negative-test-mode", action="store_true")
@@ -64,12 +92,37 @@ def build_parser() -> argparse.ArgumentParser:
     generate.add_argument("--config", type=Path, default=DEFAULT_PROFILE_PATH)
     validate_parser = subparsers.add_parser("validate-data", help="validate a generated output")
     validate_parser.add_argument("--input-dir", type=Path, required=True)
+    validate_billing = subparsers.add_parser(
+        "validate-billing", help="validate generated billing and finance source outputs"
+    )
+    validate_billing.add_argument("--input-dir", type=Path, required=True)
     describe = subparsers.add_parser(
         "describe-profile", help="show profile configuration and estimates"
     )
     describe.add_argument("profile", choices=("small", "medium", "large"))
     describe.add_argument("--config", type=Path, default=DEFAULT_PROFILE_PATH)
-    subparsers.add_parser("list-datasets", help="list canonical datasets and schema versions")
+    list_datasets = subparsers.add_parser(
+        "list-datasets", help="list canonical datasets and schema versions"
+    )
+    list_datasets.add_argument("--domain", choices=("all", "billing"), default="all")
+    describe_schema = subparsers.add_parser("describe-schema", help="show one dataset schema")
+    describe_schema.add_argument("dataset", choices=DATASET_ORDER)
+    generate_negative = subparsers.add_parser(
+        "generate-negative", help="generate deterministic negative synthetic source fixtures"
+    )
+    generate_negative.add_argument("--domain", choices=("billing",), default="billing")
+    generate_negative.add_argument(
+        "--profile", choices=("small", "medium", "large"), default="small"
+    )
+    generate_negative.add_argument("--seed", type=int, default=42)
+    generate_negative.add_argument(
+        "--reference-date", type=date.fromisoformat, default=date(2025, 1, 1)
+    )
+    generate_negative.add_argument(
+        "--output-dir", type=Path, default=Path("data/negative_tests/billing")
+    )
+    generate_negative.add_argument("--overwrite", action="store_true")
+    generate_negative.add_argument("--config", type=Path, default=DEFAULT_PROFILE_PATH)
     snowflake_validate = subparsers.add_parser(
         "snowflake-validate", help="statically validate the credential-free Snowflake foundation"
     )
@@ -182,8 +235,11 @@ def _describe(args: argparse.Namespace) -> int:
     return 0
 
 
-def _list_datasets() -> int:
-    for name in DATASET_ORDER:
+def _list_datasets(args: argparse.Namespace) -> int:
+    names = DATASET_ORDER
+    if args.domain == "billing":
+        names = tuple(name for name in DATASET_ORDER if name in BILLING_DATASETS)
+    for name in names:
         print(f"{name}: schema {SCHEMAS[name].schema_version} — {SCHEMAS[name].description}")
     return 0
 
@@ -195,6 +251,31 @@ def _validate_data(args: argparse.Namespace) -> int:
     print(f"rows_validated: {report.rows_validated}")
     print(f"issues: {len(report.issues)}")
     return 0 if report.valid else 1
+
+
+def _describe_schema(args: argparse.Namespace) -> int:
+    print(json.dumps(SCHEMAS[args.dataset].as_dict(), indent=2, sort_keys=True))
+    return 0
+
+
+def _generate_negative(args: argparse.Namespace) -> int:
+    profile = load_profile(args.profile, args.config)
+    result = generate_to_directory(
+        profile=profile,
+        seed=args.seed,
+        reference_date=args.reference_date,
+        output_dir=args.output_dir,
+        overwrite=args.overwrite,
+        inject_defects=True,
+        negative_test_mode=True,
+    )
+    print(f"negative_output_dir: {result.output_dir}")
+    for dataset in DATASET_ORDER:
+        if dataset in BILLING_DATASETS:
+            print(f"{dataset}: {result.row_counts[dataset]}")
+    print(f"validation: {'PASS' if result.validation.valid else 'FAIL'}")
+    print(f"issues: {len(result.validation.issues)}")
+    return 0
 
 
 def _snowflake_validate(args: argparse.Namespace) -> int:
@@ -277,10 +358,16 @@ def main(argv: list[str] | None = None) -> int:
             return _generate(args)
         if args.command == "validate-data":
             return _validate_data(args)
+        if args.command == "validate-billing":
+            return _validate_data(args)
         if args.command == "describe-profile":
             return _describe(args)
         if args.command == "list-datasets":
-            return _list_datasets()
+            return _list_datasets(args)
+        if args.command == "describe-schema":
+            return _describe_schema(args)
+        if args.command == "generate-negative":
+            return _generate_negative(args)
         if args.command == "snowflake-validate":
             return _snowflake_validate(args)
         if args.command == "snowflake-inventory":

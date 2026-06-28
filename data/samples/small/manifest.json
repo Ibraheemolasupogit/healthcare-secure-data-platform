@@ -1,5 +1,5 @@
 {
-  "configuration_hash": "9929a89c3c315c29bcafa5f5eedc14838d4594b5c140b2765bbd8ddef6c54f3c",
+  "configuration_hash": "8ccc38a57dfd32325f197616655d5b25278734f5efa72da4afa0926d16b180ed",
   "datasets": [
     {
       "files": [
@@ -255,10 +255,316 @@
       "name": "data_quality_events",
       "row_count": 0,
       "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/payers.jsonl",
+          "sha256": "7ea52f63c319557586213a774c5a2eee7afe9d0aa34530c57b6f627631745a0f"
+        },
+        {
+          "format": "csv",
+          "path": "relational/payers.csv",
+          "sha256": "ade4abf51bc6f4d82f6170f3f7bb72a73ad9b69295c777cb91ae5bdc750d2c5f"
+        }
+      ],
+      "name": "payers",
+      "row_count": 6,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/services.jsonl",
+          "sha256": "b5dd66722c54912b7378f515582921ee8145fde7583380d5024dbcf5b934a70a"
+        },
+        {
+          "format": "csv",
+          "path": "relational/services.csv",
+          "sha256": "f9c60f8e93e459dce1cb6ac38d342e7135169d20f012119b9f621d53b8e0ff71"
+        }
+      ],
+      "name": "services",
+      "row_count": 12,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/products.jsonl",
+          "sha256": "4b6424ca7b47ec3cb3597eae45ed6d3ba10708ef6da036839691d313b5f0adc0"
+        },
+        {
+          "format": "csv",
+          "path": "relational/products.csv",
+          "sha256": "c97630337eee3095ac4cf5d13af3b1b5d0c0311640a4c35b029fddaecf9efe51"
+        }
+      ],
+      "name": "products",
+      "row_count": 8,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/tariffs.jsonl",
+          "sha256": "2c146f7fb0f3b406f76468875ff408e608f202f2d73ce77b122fa47e2922257b"
+        },
+        {
+          "format": "csv",
+          "path": "relational/tariffs.csv",
+          "sha256": "db4e2b291cc74874eae38ac95192a9ad9f6458b67efe01771435b4c023ec1e61"
+        }
+      ],
+      "name": "tariffs",
+      "row_count": 16,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/contracts.jsonl",
+          "sha256": "d33426ce809936aa0be75e53c272e1e59f0d5cfdabf662edbc959eb25ad2374a"
+        },
+        {
+          "format": "csv",
+          "path": "relational/contracts.csv",
+          "sha256": "686051b0c0919553378332a2bfcb825664c30108b81ae37bfe18de697b2c3641"
+        }
+      ],
+      "name": "contracts",
+      "row_count": 8,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/billable_activity.jsonl",
+          "sha256": "0b7482216cf4f33e2034edcbae1969c40f5df95bd1efced61e8391fec6f40292"
+        },
+        {
+          "format": "csv",
+          "path": "relational/billable_activity.csv",
+          "sha256": "7e48235b73eac650aaa21c0414b7efa403836c3ae0ad093499306562070b029c"
+        }
+      ],
+      "name": "billable_activity",
+      "row_count": 123,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/claims.jsonl",
+          "sha256": "2e28f5c4b6b09c6335389d8e9a6bf8fa9e2534c7282c12ab5de412acdafcf0a4"
+        },
+        {
+          "format": "csv",
+          "path": "relational/claims.csv",
+          "sha256": "94a5b855b5cc7e7b6a2d242e12da65b733403f4cbb7ebe47c872984856fce50d"
+        }
+      ],
+      "name": "claims",
+      "row_count": 80,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/claim_lines.jsonl",
+          "sha256": "d0376d685b7ff4d1a74f8f61c756a0c4c7bbc7c3416983716573b8c818b1c328"
+        },
+        {
+          "format": "csv",
+          "path": "relational/claim_lines.csv",
+          "sha256": "50e710bc8e9345aeecc0053c2b41483488e4b47e5c3cb35ea10cfc11cf4da836"
+        }
+      ],
+      "name": "claim_lines",
+      "row_count": 80,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/invoices.jsonl",
+          "sha256": "0b0afd2b60ebe3fb1ab34c8911f995d44fa970255412cf230602aa60ab43b3be"
+        },
+        {
+          "format": "csv",
+          "path": "relational/invoices.csv",
+          "sha256": "2a478cd658f68426439a60a49e5ddc5c54a3c176a94987bb28bdb8800eb1ac7c"
+        }
+      ],
+      "name": "invoices",
+      "row_count": 111,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/invoice_lines.jsonl",
+          "sha256": "067403fcc11cafcb51614558903fa596e19b7a927e558c90ab3a6bb883ce8da1"
+        },
+        {
+          "format": "csv",
+          "path": "relational/invoice_lines.csv",
+          "sha256": "1fc153f58a35af412fddc189136db89d37d142d046db73023a0a3a66127ea6b1"
+        }
+      ],
+      "name": "invoice_lines",
+      "row_count": 111,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/payment_attempts.jsonl",
+          "sha256": "b29b6a12fb1d3b294692a8deeb5f83a24d071ce73748f3b6831d32dc3fe25306"
+        },
+        {
+          "format": "csv",
+          "path": "relational/payment_attempts.csv",
+          "sha256": "6f0e66eb91e8e2d6aa54a61542104e6b362366b24a51575aa87b76cdf01ce437"
+        }
+      ],
+      "name": "payment_attempts",
+      "row_count": 94,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/payments.jsonl",
+          "sha256": "d286e614eac5b8331422c0eca29a8c9ae6a2560ed9e8dfc4fb81efd0b7e9047d"
+        },
+        {
+          "format": "csv",
+          "path": "relational/payments.csv",
+          "sha256": "ed0f5c619579b1b4999e37fdf1903f0c5ffb386cd5a6ae458a984e244e140bdd"
+        }
+      ],
+      "name": "payments",
+      "row_count": 77,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/refunds.jsonl",
+          "sha256": "994c9af4fe1391058674e18573a9b096562e01a3b4bb15713909c88c7ab676a3"
+        },
+        {
+          "format": "csv",
+          "path": "relational/refunds.csv",
+          "sha256": "8c014c42fd1d5ca4d6ac7495e48963a3073c702871694e449c150f416a2838fc"
+        }
+      ],
+      "name": "refunds",
+      "row_count": 4,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/adjustments.jsonl",
+          "sha256": "9fe98f23ed99fcc8ab2811a2429d0aa3b1a40419b567e85b2986395af9ea5694"
+        },
+        {
+          "format": "csv",
+          "path": "relational/adjustments.csv",
+          "sha256": "bdf2f46a357fc11d75f738c908d5fb219ed9aa2767aded465b2c5b3f020d4d49"
+        }
+      ],
+      "name": "adjustments",
+      "row_count": 9,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/billing_exceptions.jsonl",
+          "sha256": "b5cf0da13cdbf12ed74e5dfc0ec8e495cd29226d842e758b7a6b05217af8c78e"
+        },
+        {
+          "format": "csv",
+          "path": "relational/billing_exceptions.csv",
+          "sha256": "17408f71218ae21ec66f3df4d2d7a6736e559cd3e1b1d1b5aef6b1a32d9c72fb"
+        }
+      ],
+      "name": "billing_exceptions",
+      "row_count": 9,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/revenue_events.jsonl",
+          "sha256": "51d12bb13851e8060fa5658b11a6731515dacd287b695965af66881b99558946"
+        },
+        {
+          "format": "csv",
+          "path": "relational/revenue_events.csv",
+          "sha256": "c842b34b24347506028396575dcf1b350a8205c8512f361c46562207cc46f078"
+        }
+      ],
+      "name": "revenue_events",
+      "row_count": 188,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/outstanding_balances.jsonl",
+          "sha256": "a5e7fe40b296f7f65d4ac3a7179f167bfd5719680e8d0ea1880df6dc5caa9c21"
+        },
+        {
+          "format": "csv",
+          "path": "relational/outstanding_balances.csv",
+          "sha256": "d40cfc6c4598a7e2c65f6f252b7436115314ac91e714b0ef0e8d9f2ecb64b1c2"
+        }
+      ],
+      "name": "outstanding_balances",
+      "row_count": 111,
+      "schema_version": "1.0.0"
+    },
+    {
+      "files": [
+        {
+          "format": "jsonl",
+          "path": "json/daily_control_totals.jsonl",
+          "sha256": "bb1cd53ccd6af279ccbbf76bb523940783af2193a301e4c243cfc0634e05f9a4"
+        },
+        {
+          "format": "csv",
+          "path": "relational/daily_control_totals.csv",
+          "sha256": "b524be32259beba6d88b003c059b0d1b01087889e4927a7d2fd3bbccef1ee996"
+        }
+      ],
+      "name": "daily_control_totals",
+      "row_count": 5,
+      "schema_version": "1.0.0"
     }
   ],
   "defect_injection_enabled": false,
-  "generation_timestamp": "2026-06-23T02:06:53+00:00",
+  "generation_timestamp": "2026-06-28T07:20:55+00:00",
   "generator_version": "0.2.0",
   "output_formats": [
     "csv",
@@ -267,9 +573,9 @@
   "profile": "small",
   "project_name": "Healthcare Secure Data Platform",
   "reference_date": "2025-01-01",
-  "runtime_duration_seconds": 0.025595,
+  "runtime_duration_seconds": 0.034974,
   "seed": 42,
-  "source_code_identifier": "a43a808302de832c76be86b9053bb149cadfc670-dirty",
+  "source_code_identifier": "9c83ca16b941b5431b0cd0a4ce3de8cae42f568a-dirty",
   "synthetic_data_statement": "All records are deterministic synthetic portfolio data.",
   "validation_passed": true,
   "warnings": [

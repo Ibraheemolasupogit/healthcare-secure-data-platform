@@ -30,6 +30,8 @@ data/negative_tests/
 data/negative_tests/*
 !data/negative_tests/interoperability/
 !data/negative_tests/interoperability/**
+!data/negative_tests/billing/
+!data/negative_tests/billing/**
 data/**/*.tmp
 data/**/*.partial
 data/**/*.gz

@@ -1,0 +1,1 @@
+{"dataset_name":"appointments","detected_at":"2025-01-01T09:00:00Z","quality_event_id":"DQE-000000001","record_identifier":"APT-000000001","resolution_action":"NEGATIVE_TEST_ONLY","rule_id":"BR-APT-001","rule_name":"Cancelled appointment reason required","severity":"ERROR","status":"OPEN"}

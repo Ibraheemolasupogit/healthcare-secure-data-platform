@@ -1,0 +1,38 @@
+{
+  "contract": "billing_finance_raw_contracts",
+  "status": "STATIC_CONTRACT_NOT_DEPLOYED",
+  "milestone": 7,
+  "description": "Static source contract preview for future raw landing of deterministic synthetic billing and finance datasets.",
+  "schemas": {
+    "raw_billing": [
+      "payers",
+      "services",
+      "products",
+      "tariffs",
+      "contracts",
+      "billable_activity",
+      "claims",
+      "claim_lines",
+      "invoices",
+      "invoice_lines",
+      "payment_attempts",
+      "payments",
+      "refunds",
+      "adjustments",
+      "billing_exceptions"
+    ],
+    "raw_finance": [
+      "revenue_events",
+      "outstanding_balances",
+      "daily_control_totals"
+    ]
+  },
+  "explicit_exclusions": [
+    "dbt source declarations",
+    "dbt staging models",
+    "finance facts and dimensions",
+    "revenue recognition",
+    "payment allocation",
+    "live Snowflake loading"
+  ]
+}

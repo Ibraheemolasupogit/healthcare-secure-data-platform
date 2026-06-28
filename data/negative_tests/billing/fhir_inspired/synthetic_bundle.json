@@ -1,0 +1,402 @@
+{
+  "disclaimer": "FHIR-inspired synthetic resources; not validated and not formally conformant.",
+  "entry": [
+    {
+      "resource": {
+        "id": "ORG-000000001",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "name": "Synthetic Trust 001",
+        "resourceType": "Organization"
+      }
+    },
+    {
+      "resource": {
+        "id": "ORG-000000002",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "name": "Synthetic Hospital 002",
+        "resourceType": "Organization"
+      }
+    },
+    {
+      "resource": {
+        "id": "PRV-000000001",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "name": [
+          {
+            "text": "Provider-000001"
+          }
+        ],
+        "resourceType": "Practitioner"
+      }
+    },
+    {
+      "resource": {
+        "id": "PRV-000000002",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "name": [
+          {
+            "text": "Provider-000002"
+          }
+        ],
+        "resourceType": "Practitioner"
+      }
+    },
+    {
+      "resource": {
+        "birthDate": "1962-08-06",
+        "gender": "female",
+        "id": "PAT-000000001",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "resourceType": "Patient"
+      }
+    },
+    {
+      "resource": {
+        "birthDate": "1987-06-16",
+        "gender": "female",
+        "id": "PAT-000000002",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "resourceType": "Patient"
+      }
+    },
+    {
+      "resource": {
+        "birthDate": "1979-01-02",
+        "gender": "female",
+        "id": "PAT-000000003",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "resourceType": "Patient"
+      }
+    },
+    {
+      "resource": {
+        "id": "ENC-000000001",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "period": {
+          "end": "2022-01-11T14:45:00Z",
+          "start": "2022-01-11T02:45:00Z"
+        },
+        "resourceType": "Encounter",
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/PAT-000000001"
+        }
+      }
+    },
+    {
+      "resource": {
+        "id": "ENC-000000002",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "period": {
+          "end": "2023-09-09T14:45:00Z",
+          "start": "2023-09-09T12:45:00Z"
+        },
+        "resourceType": "Encounter",
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/PAT-000000002"
+        }
+      }
+    },
+    {
+      "resource": {
+        "id": "ENC-000000003",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "period": {
+          "end": "2024-11-30T20:00:00Z",
+          "start": "2024-11-30T12:00:00Z"
+        },
+        "resourceType": "Encounter",
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/PAT-000000003"
+        }
+      }
+    },
+    {
+      "resource": {
+        "id": "ENC-000000101",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "period": {
+          "end": "2022-01-11T12:45:00Z",
+          "start": "2022-01-11T03:45:00Z"
+        },
+        "resourceType": "Encounter",
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/PAT-000000001"
+        }
+      }
+    },
+    {
+      "resource": {
+        "id": "ENC-000000102",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "period": {
+          "end": "2022-04-24T14:45:00Z",
+          "start": "2022-04-18T09:45:00Z"
+        },
+        "resourceType": "Encounter",
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/PAT-000000002"
+        }
+      }
+    },
+    {
+      "resource": {
+        "id": "ENC-000000103",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "period": {
+          "end": "2023-06-28T19:00:00Z",
+          "start": "2023-06-28T07:00:00Z"
+        },
+        "resourceType": "Encounter",
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/PAT-000000003"
+        }
+      }
+    },
+    {
+      "resource": {
+        "code": {
+          "text": "SYN-REF-04"
+        },
+        "effectiveDateTime": "2022-04-21T12:15:00Z",
+        "id": "CLE-000000001",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "resourceType": "Observation",
+        "subject": {
+          "reference": "Patient/PAT-000000002"
+        }
+      }
+    },
+    {
+      "resource": {
+        "code": {
+          "text": "SYN-REF-29"
+        },
+        "effectiveDateTime": "2024-11-30T16:00:00Z",
+        "id": "CLE-000000002",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "resourceType": "Observation",
+        "subject": {
+          "reference": "Patient/PAT-000000003"
+        }
+      }
+    },
+    {
+      "resource": {
+        "code": {
+          "text": "SYN-REF-01"
+        },
+        "effectiveDateTime": "2022-01-11T08:15:00Z",
+        "id": "CLE-000000101",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "resourceType": "Observation",
+        "subject": {
+          "reference": "Patient/PAT-000000001"
+        }
+      }
+    },
+    {
+      "resource": {
+        "code": {
+          "text": "SYN-PRO-07"
+        },
+        "effectiveDateTime": "2023-09-09T13:45:00Z",
+        "id": "CLE-000000102",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "resourceType": "Observation",
+        "subject": {
+          "reference": "Patient/PAT-000000002"
+        }
+      }
+    },
+    {
+      "resource": {
+        "code": {
+          "text": "SYN-TRE-27"
+        },
+        "effectiveDateTime": "2024-11-30T16:00:00Z",
+        "id": "CLE-000000103",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "resourceType": "Observation",
+        "subject": {
+          "reference": "Patient/PAT-000000003"
+        }
+      }
+    },
+    {
+      "resource": {
+        "code": {
+          "text": "SYN-DIA-15"
+        },
+        "effectiveDateTime": "2022-01-11T08:45:00Z",
+        "id": "CLE-000000201",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "resourceType": "Observation",
+        "subject": {
+          "reference": "Patient/PAT-000000001"
+        }
+      }
+    },
+    {
+      "resource": {
+        "code": {
+          "text": "SYN-TRE-21"
+        },
+        "effectiveDateTime": "2022-04-21T12:15:00Z",
+        "id": "CLE-000000202",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "resourceType": "Observation",
+        "subject": {
+          "reference": "Patient/PAT-000000002"
+        }
+      }
+    },
+    {
+      "resource": {
+        "code": {
+          "text": "SYN-ASS-01"
+        },
+        "effectiveDateTime": "2023-06-28T13:00:00Z",
+        "id": "CLE-000000203",
+        "meta": {
+          "tag": [
+            {
+              "code": "SYNTHETIC-NON-CONFORMANT"
+            }
+          ]
+        },
+        "resourceType": "Observation",
+        "subject": {
+          "reference": "Patient/PAT-000000003"
+        }
+      }
+    }
+  ],
+  "resourceType": "Bundle",
+  "type": "collection"
+}

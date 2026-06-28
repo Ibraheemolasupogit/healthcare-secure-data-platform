@@ -56,6 +56,7 @@ OPERATIONAL = "operational"
 RESEARCH = "research"
 GOVERNANCE = "governance"
 PUBLIC = "public metadata"
+FINANCIAL = "financial confidential"
 
 SCHEMAS: dict[str, DatasetSchema] = {
     "organisations": DatasetSchema(
@@ -1218,5 +1219,732 @@ SCHEMAS.update(
         ),
     }
 )
+
+
+def bf(
+    name: str,
+    data_type: str,
+    nullable: bool,
+    description: str,
+    example: Any,
+    code_set: str | None = None,
+    classification: str = FINANCIAL,
+) -> FieldSpec:
+    return f(name, data_type, nullable, description, classification, example, code_set)
+
+
+SCHEMAS.update(
+    {
+        "payers": DatasetSchema(
+            "payers",
+            "Synthetic healthcare billing payers.",
+            (
+                bf(
+                    "payer_id",
+                    "string",
+                    False,
+                    "Stable payer identifier.",
+                    "PAYR-000000001",
+                    classification=ID,
+                ),
+                bf(
+                    "payer_code",
+                    "string",
+                    False,
+                    "Synthetic payer code.",
+                    "SYN-PAYR-001",
+                    classification=PUBLIC,
+                ),
+                bf(
+                    "payer_name",
+                    "string",
+                    False,
+                    "Obviously synthetic payer name.",
+                    "Synthetic Commissioner 001",
+                    classification=PUBLIC,
+                ),
+                bf(
+                    "payer_type",
+                    "string",
+                    False,
+                    "Synthetic payer type.",
+                    "COMMISSIONER",
+                    "payer_type",
+                ),
+                bf(
+                    "organisation_id",
+                    "string",
+                    True,
+                    "Linked organisation where applicable.",
+                    "ORG-000000001",
+                ),
+                bf("active_flag", "boolean", False, "Whether payer is active.", True),
+                bf("valid_from", "date", False, "Effective start date.", "2021-01-01"),
+                bf("valid_to", "date", True, "Effective end date.", None),
+                bf("source_system", "string", False, "Synthetic billing source.", "SYN-BILLING"),
+                bf(
+                    "updated_at",
+                    "datetime",
+                    False,
+                    "Synthetic last update.",
+                    "2025-01-01T09:00:00Z",
+                ),
+            ),
+            ("payer_id",),
+            (ForeignKey(("organisation_id",), "organisations", ("organisation_id",)),),
+        ),
+        "services": DatasetSchema(
+            "services",
+            "Synthetic service catalogue.",
+            (
+                bf(
+                    "service_id",
+                    "string",
+                    False,
+                    "Stable service identifier.",
+                    "SRV-000000001",
+                    classification=ID,
+                ),
+                bf(
+                    "service_code",
+                    "string",
+                    False,
+                    "Synthetic service code.",
+                    "SYN-SRV-001",
+                    classification=PUBLIC,
+                ),
+                bf(
+                    "service_name",
+                    "string",
+                    False,
+                    "Synthetic service name.",
+                    "Synthetic consultation",
+                    classification=PUBLIC,
+                ),
+                bf(
+                    "service_category",
+                    "string",
+                    False,
+                    "Service category.",
+                    "CONSULTATION",
+                    "service_category",
+                ),
+                bf("specialty", "string", False, "Specialty.", "GENERAL_MEDICINE", "specialty"),
+                bf("billable_flag", "boolean", False, "Whether service is billable.", True),
+                bf("active_flag", "boolean", False, "Whether service is active.", True),
+                bf("valid_from", "date", False, "Effective start.", "2021-01-01"),
+                bf("valid_to", "date", True, "Effective end.", None),
+                bf("source_system", "string", False, "Synthetic billing source.", "SYN-BILLING"),
+                bf(
+                    "updated_at",
+                    "datetime",
+                    False,
+                    "Synthetic last update.",
+                    "2025-01-01T09:00:00Z",
+                ),
+            ),
+            ("service_id",),
+        ),
+        "products": DatasetSchema(
+            "products",
+            "Synthetic product catalogue.",
+            (
+                bf(
+                    "product_id",
+                    "string",
+                    False,
+                    "Stable product identifier.",
+                    "PRD-000000001",
+                    classification=ID,
+                ),
+                bf(
+                    "product_code",
+                    "string",
+                    False,
+                    "Synthetic product code.",
+                    "SYN-PRD-001",
+                    classification=PUBLIC,
+                ),
+                bf(
+                    "product_name",
+                    "string",
+                    False,
+                    "Synthetic product name.",
+                    "Synthetic diagnostic kit",
+                    classification=PUBLIC,
+                ),
+                bf(
+                    "product_category",
+                    "string",
+                    False,
+                    "Product category.",
+                    "DIAGNOSTIC_KIT",
+                    "product_category",
+                ),
+                bf("unit_of_measure", "string", False, "Unit of measure.", "EACH"),
+                bf("billable_flag", "boolean", False, "Whether product is billable.", True),
+                bf("active_flag", "boolean", False, "Whether product is active.", True),
+                bf("valid_from", "date", False, "Effective start.", "2021-01-01"),
+                bf("valid_to", "date", True, "Effective end.", None),
+                bf("source_system", "string", False, "Synthetic billing source.", "SYN-BILLING"),
+                bf(
+                    "updated_at",
+                    "datetime",
+                    False,
+                    "Synthetic last update.",
+                    "2025-01-01T09:00:00Z",
+                ),
+            ),
+            ("product_id",),
+        ),
+        "tariffs": DatasetSchema(
+            "tariffs",
+            "Synthetic source tariff records.",
+            (
+                bf(
+                    "tariff_id",
+                    "string",
+                    False,
+                    "Stable tariff identifier.",
+                    "TRF-000000001",
+                    classification=ID,
+                ),
+                bf(
+                    "tariff_code",
+                    "string",
+                    False,
+                    "Synthetic tariff code.",
+                    "SYN-TRF-001",
+                    classification=PUBLIC,
+                ),
+                bf("service_id", "string", False, "Referenced service.", "SRV-000000001"),
+                bf("product_id", "string", True, "Optional product.", None),
+                bf("payer_type", "string", False, "Payer type.", "COMMISSIONER", "payer_type"),
+                bf("specialty", "string", False, "Specialty.", "GENERAL_MEDICINE", "specialty"),
+                bf("currency", "string", False, "Currency.", "GBP", "currency"),
+                bf("unit_price", "number", False, "Synthetic source unit price.", "120.00"),
+                bf("valid_from", "date", False, "Effective start.", "2021-01-01"),
+                bf("valid_to", "date", True, "Effective end.", None),
+                bf("active_flag", "boolean", False, "Whether tariff is active.", True),
+                bf("version", "integer", False, "Source tariff version.", 1),
+                bf("source_system", "string", False, "Synthetic billing source.", "SYN-BILLING"),
+                bf(
+                    "updated_at",
+                    "datetime",
+                    False,
+                    "Synthetic last update.",
+                    "2025-01-01T09:00:00Z",
+                ),
+            ),
+            ("tariff_id",),
+            (
+                ForeignKey(("service_id",), "services", ("service_id",)),
+                ForeignKey(("product_id",), "products", ("product_id",)),
+            ),
+        ),
+        "contracts": DatasetSchema(
+            "contracts",
+            "Synthetic payer-provider contracts.",
+            (
+                bf(
+                    "contract_id",
+                    "string",
+                    False,
+                    "Stable contract identifier.",
+                    "CTR-000000001",
+                    classification=ID,
+                ),
+                bf(
+                    "contract_code",
+                    "string",
+                    False,
+                    "Synthetic contract code.",
+                    "SYN-CTR-001",
+                    classification=PUBLIC,
+                ),
+                bf("payer_id", "string", False, "Payer.", "PAYR-000000001"),
+                bf(
+                    "provider_organisation_id",
+                    "string",
+                    False,
+                    "Provider organisation.",
+                    "ORG-000000001",
+                ),
+                bf(
+                    "contract_type",
+                    "string",
+                    False,
+                    "Contract type.",
+                    "COMMISSIONER",
+                    "contract_type",
+                ),
+                bf("valid_from", "date", False, "Effective start.", "2021-01-01"),
+                bf("valid_to", "date", True, "Effective end.", None),
+                bf("currency", "string", False, "Currency.", "GBP", "currency"),
+                bf("payment_terms_days", "integer", False, "Payment terms.", 30),
+                bf("pricing_basis", "string", False, "Pricing basis.", "TARIFF", "pricing_basis"),
+                bf("status", "string", False, "Contract status.", "ACTIVE"),
+                bf("source_system", "string", False, "Synthetic billing source.", "SYN-BILLING"),
+                bf(
+                    "updated_at",
+                    "datetime",
+                    False,
+                    "Synthetic last update.",
+                    "2025-01-01T09:00:00Z",
+                ),
+            ),
+            ("contract_id",),
+            (
+                ForeignKey(("payer_id",), "payers", ("payer_id",)),
+                ForeignKey(("provider_organisation_id",), "organisations", ("organisation_id",)),
+            ),
+        ),
+        "billable_activity": DatasetSchema(
+            "billable_activity",
+            "Synthetic billable source activity linked to healthcare events.",
+            (
+                bf(
+                    "billable_activity_id",
+                    "string",
+                    False,
+                    "Stable billable activity identifier.",
+                    "BACT-000000001",
+                    classification=ID,
+                ),
+                bf("patient_id", "string", False, "Patient.", "PAT-000000001"),
+                bf("encounter_id", "string", True, "Encounter.", "ENC-000000001"),
+                bf("appointment_id", "string", True, "Appointment.", None),
+                bf("clinical_event_id", "string", True, "Clinical event.", None),
+                bf("service_id", "string", False, "Service.", "SRV-000000001"),
+                bf("product_id", "string", True, "Product.", None),
+                bf("provider_id", "string", False, "Provider.", "PRV-000000001"),
+                bf("organisation_id", "string", False, "Organisation.", "ORG-000000001"),
+                bf(
+                    "activity_datetime",
+                    "datetime",
+                    False,
+                    "Activity timestamp.",
+                    "2024-01-01T09:00:00Z",
+                ),
+                bf("quantity", "number", False, "Source quantity.", "1.00"),
+                bf("unit_of_measure", "string", False, "Unit of measure.", "EACH"),
+                bf(
+                    "billing_status",
+                    "string",
+                    False,
+                    "Billing status.",
+                    "INVOICED",
+                    "billing_status",
+                ),
+                bf("source_system", "string", False, "Synthetic billing source.", "SYN-BILLING"),
+                bf(
+                    "source_record_id",
+                    "string",
+                    False,
+                    "Healthcare source record.",
+                    "ENC-000000001",
+                ),
+                bf(
+                    "updated_at",
+                    "datetime",
+                    False,
+                    "Synthetic last update.",
+                    "2025-01-01T09:00:00Z",
+                ),
+            ),
+            ("billable_activity_id",),
+            (
+                ForeignKey(("patient_id",), "patients", ("patient_id",)),
+                ForeignKey(("encounter_id",), "encounters", ("encounter_id",)),
+                ForeignKey(("appointment_id",), "appointments", ("appointment_id",)),
+                ForeignKey(("clinical_event_id",), "clinical_events", ("clinical_event_id",)),
+                ForeignKey(("service_id",), "services", ("service_id",)),
+                ForeignKey(("product_id",), "products", ("product_id",)),
+                ForeignKey(("provider_id",), "providers", ("provider_id",)),
+                ForeignKey(("organisation_id",), "organisations", ("organisation_id",)),
+            ),
+        ),
+    }
+)
+
+for _name, _fields, _pk, _fks in (
+    (
+        "claims",
+        (
+            "claim_id",
+            "claim_number",
+            "patient_id",
+            "encounter_id",
+            "payer_id",
+            "contract_id",
+            "claim_date",
+            "service_period_start",
+            "service_period_end",
+            "claim_status",
+            "currency",
+            "claimed_amount",
+            "submitted_at",
+            "adjudicated_at",
+            "rejection_code",
+            "source_system",
+            "updated_at",
+        ),
+        "claim_id",
+        (
+            ("patient_id", "patients", "patient_id"),
+            ("encounter_id", "encounters", "encounter_id"),
+            ("payer_id", "payers", "payer_id"),
+            ("contract_id", "contracts", "contract_id"),
+        ),
+    ),
+    (
+        "claim_lines",
+        (
+            "claim_line_id",
+            "claim_id",
+            "billable_activity_id",
+            "service_id",
+            "product_id",
+            "tariff_id",
+            "quantity",
+            "unit_price",
+            "line_amount",
+            "line_status",
+            "rejection_code",
+            "source_system",
+            "updated_at",
+        ),
+        "claim_line_id",
+        (
+            ("claim_id", "claims", "claim_id"),
+            ("billable_activity_id", "billable_activity", "billable_activity_id"),
+            ("service_id", "services", "service_id"),
+            ("product_id", "products", "product_id"),
+            ("tariff_id", "tariffs", "tariff_id"),
+        ),
+    ),
+    (
+        "invoices",
+        (
+            "invoice_id",
+            "invoice_number",
+            "payer_id",
+            "patient_id",
+            "encounter_id",
+            "contract_id",
+            "invoice_date",
+            "due_date",
+            "invoice_status",
+            "currency",
+            "subtotal_amount",
+            "tax_amount",
+            "total_amount",
+            "source_system",
+            "updated_at",
+        ),
+        "invoice_id",
+        (
+            ("payer_id", "payers", "payer_id"),
+            ("patient_id", "patients", "patient_id"),
+            ("encounter_id", "encounters", "encounter_id"),
+            ("contract_id", "contracts", "contract_id"),
+        ),
+    ),
+    (
+        "invoice_lines",
+        (
+            "invoice_line_id",
+            "invoice_id",
+            "billable_activity_id",
+            "claim_line_id",
+            "service_id",
+            "product_id",
+            "tariff_id",
+            "description",
+            "quantity",
+            "unit_price",
+            "net_amount",
+            "tax_amount",
+            "gross_amount",
+            "source_system",
+            "updated_at",
+        ),
+        "invoice_line_id",
+        (
+            ("invoice_id", "invoices", "invoice_id"),
+            ("billable_activity_id", "billable_activity", "billable_activity_id"),
+            ("claim_line_id", "claim_lines", "claim_line_id"),
+            ("service_id", "services", "service_id"),
+            ("product_id", "products", "product_id"),
+            ("tariff_id", "tariffs", "tariff_id"),
+        ),
+    ),
+    (
+        "payment_attempts",
+        (
+            "payment_attempt_id",
+            "invoice_id",
+            "payer_id",
+            "attempt_datetime",
+            "payment_method",
+            "requested_amount",
+            "attempt_status",
+            "failure_code",
+            "gateway_reference",
+            "idempotency_key",
+            "source_system",
+            "updated_at",
+        ),
+        "payment_attempt_id",
+        (("invoice_id", "invoices", "invoice_id"), ("payer_id", "payers", "payer_id")),
+    ),
+    (
+        "payments",
+        (
+            "payment_id",
+            "payment_attempt_id",
+            "invoice_id",
+            "payer_id",
+            "payment_datetime",
+            "amount",
+            "currency",
+            "payment_method",
+            "payment_status",
+            "external_reference",
+            "source_system",
+            "updated_at",
+        ),
+        "payment_id",
+        (
+            ("payment_attempt_id", "payment_attempts", "payment_attempt_id"),
+            ("invoice_id", "invoices", "invoice_id"),
+            ("payer_id", "payers", "payer_id"),
+        ),
+    ),
+    (
+        "refunds",
+        (
+            "refund_id",
+            "payment_id",
+            "invoice_id",
+            "refund_datetime",
+            "refund_amount",
+            "refund_reason",
+            "refund_status",
+            "source_system",
+            "updated_at",
+        ),
+        "refund_id",
+        (("payment_id", "payments", "payment_id"), ("invoice_id", "invoices", "invoice_id")),
+    ),
+    (
+        "adjustments",
+        (
+            "adjustment_id",
+            "invoice_id",
+            "claim_id",
+            "adjustment_type",
+            "adjustment_reason",
+            "adjustment_datetime",
+            "adjustment_amount",
+            "currency",
+            "status",
+            "source_system",
+            "updated_at",
+        ),
+        "adjustment_id",
+        (("invoice_id", "invoices", "invoice_id"), ("claim_id", "claims", "claim_id")),
+    ),
+    (
+        "billing_exceptions",
+        (
+            "exception_id",
+            "exception_type",
+            "source_system",
+            "source_record_id",
+            "patient_id",
+            "encounter_id",
+            "billable_activity_id",
+            "claim_id",
+            "invoice_id",
+            "payment_id",
+            "severity",
+            "financial_value_at_risk",
+            "detected_at",
+            "assigned_owner",
+            "status",
+            "resolution_date",
+            "root_cause",
+            "remediation_action",
+            "synthetic_flag",
+        ),
+        "exception_id",
+        (
+            ("patient_id", "patients", "patient_id"),
+            ("encounter_id", "encounters", "encounter_id"),
+            ("billable_activity_id", "billable_activity", "billable_activity_id"),
+            ("claim_id", "claims", "claim_id"),
+            ("invoice_id", "invoices", "invoice_id"),
+            ("payment_id", "payments", "payment_id"),
+        ),
+    ),
+    (
+        "revenue_events",
+        (
+            "revenue_event_id",
+            "invoice_id",
+            "invoice_line_id",
+            "claim_id",
+            "billable_activity_id",
+            "event_type",
+            "event_datetime",
+            "amount",
+            "currency",
+            "source_status",
+            "source_system",
+            "updated_at",
+        ),
+        "revenue_event_id",
+        (
+            ("invoice_id", "invoices", "invoice_id"),
+            ("invoice_line_id", "invoice_lines", "invoice_line_id"),
+            ("claim_id", "claims", "claim_id"),
+            ("billable_activity_id", "billable_activity", "billable_activity_id"),
+        ),
+    ),
+    (
+        "outstanding_balances",
+        (
+            "balance_snapshot_id",
+            "invoice_id",
+            "snapshot_date",
+            "invoiced_amount",
+            "payment_amount",
+            "refund_amount",
+            "adjustment_amount",
+            "outstanding_amount",
+            "ageing_bucket",
+            "currency",
+            "source_system",
+            "updated_at",
+        ),
+        "balance_snapshot_id",
+        (("invoice_id", "invoices", "invoice_id"),),
+    ),
+    (
+        "daily_control_totals",
+        (
+            "control_total_id",
+            "control_date",
+            "source_system",
+            "entity_type",
+            "record_count",
+            "gross_amount",
+            "net_amount",
+            "payment_amount",
+            "refund_amount",
+            "adjustment_amount",
+            "currency",
+            "generated_at",
+            "checksum",
+        ),
+        "control_total_id",
+        (),
+    ),
+):
+    SCHEMAS[_name] = DatasetSchema(
+        _name,
+        f"Synthetic billing source dataset {_name}.",
+        tuple(
+            bf(
+                _field,
+                "number"
+                if _field.endswith("_amount")
+                or _field
+                in {
+                    "quantity",
+                    "unit_price",
+                    "line_amount",
+                    "net_amount",
+                    "gross_amount",
+                    "tax_amount",
+                    "claimed_amount",
+                    "requested_amount",
+                    "amount",
+                    "invoiced_amount",
+                    "payment_amount",
+                    "refund_amount",
+                    "adjustment_amount",
+                    "outstanding_amount",
+                    "financial_value_at_risk",
+                }
+                else "integer"
+                if _field in {"record_count"}
+                else "boolean"
+                if _field == "synthetic_flag"
+                else "date"
+                if _field.endswith("_date")
+                or _field == "snapshot_date"
+                or _field == "control_date"
+                or _field == "resolution_date"
+                else "datetime"
+                if _field.endswith("_at")
+                or _field.endswith("_datetime")
+                or _field in {"generated_at", "detected_at"}
+                else "string",
+                _field
+                in {
+                    "encounter_id",
+                    "product_id",
+                    "clinical_event_id",
+                    "claim_line_id",
+                    "payment_id",
+                    "claim_id",
+                    "invoice_id",
+                    "invoice_line_id",
+                    "billable_activity_id",
+                    "patient_id",
+                    "rejection_code",
+                    "failure_code",
+                    "resolution_date",
+                    "root_cause",
+                    "remediation_action",
+                },
+                f"Synthetic billing field {_field}.",
+                None,
+                "claim_status"
+                if _field == "claim_status"
+                else "claim_line_status"
+                if _field == "line_status"
+                else "invoice_status"
+                if _field == "invoice_status"
+                else "payment_attempt_status"
+                if _field == "attempt_status"
+                else "payment_status"
+                if _field == "payment_status"
+                else "payment_method"
+                if _field == "payment_method"
+                else "refund_status"
+                if _field == "refund_status"
+                else "adjustment_type"
+                if _field == "adjustment_type"
+                else "billing_exception_type"
+                if _field == "exception_type"
+                else "quality_severity"
+                if _field == "severity"
+                else "revenue_event_type"
+                if _field == "event_type"
+                else "ageing_bucket"
+                if _field == "ageing_bucket"
+                else "currency"
+                if _field == "currency"
+                else None,
+                ID if _field == _pk or _field.endswith("_id") else FINANCIAL,
+            )
+            for _field in _fields
+        ),
+        (_pk,),
+        tuple(ForeignKey((_field,), _dataset, (_ref,)) for _field, _dataset, _ref in _fks),
+    )
 
 DATASET_ORDER = tuple(SCHEMAS)

@@ -1,0 +1,55 @@
+{
+  "datasets_validated": 33,
+  "issues": [
+    {
+      "dataset": "claims",
+      "message": "payer_id is required",
+      "record_identifier": "CLM-000000080",
+      "rule_id": "STRUCT-NULL"
+    },
+    {
+      "dataset": "appointments",
+      "message": "cancellation reason does not align with status",
+      "record_identifier": "APT-000000001",
+      "rule_id": "BR-APT-001"
+    },
+    {
+      "dataset": "tariffs",
+      "message": "tariff valid_to precedes valid_from",
+      "record_identifier": "TRF-000000001",
+      "rule_id": "TIME-TRF-001"
+    },
+    {
+      "dataset": "billable_activity",
+      "message": "activity must follow birth_date",
+      "record_identifier": "BACT-000000123",
+      "rule_id": "TIME-BACT-001"
+    },
+    {
+      "dataset": "invoice_lines",
+      "message": "gross does not equal net plus tax",
+      "record_identifier": "INVL-000000111",
+      "rule_id": "FIN-INVL-002"
+    },
+    {
+      "dataset": "invoices",
+      "message": "invoice totals do not equal lines",
+      "record_identifier": "INV-000000111",
+      "rule_id": "FIN-INV-002"
+    },
+    {
+      "dataset": "payment_attempts",
+      "message": "failed attempt lacks failure code",
+      "record_identifier": "PATM-000000094",
+      "rule_id": "BR-PATM-001"
+    },
+    {
+      "dataset": "outstanding_balances",
+      "message": "outstanding balance mismatch",
+      "record_identifier": "BAL-000000111",
+      "rule_id": "FIN-BAL-001"
+    }
+  ],
+  "rows_validated": 2145,
+  "valid": false
+}

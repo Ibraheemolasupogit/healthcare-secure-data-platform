@@ -22,7 +22,7 @@ def test_generation_is_deterministic_and_seed_sensitive() -> None:
 def test_clean_generation_passes_integrity_validation() -> None:
     report = validate(_small_data(), date(2025, 1, 1))
     assert report.valid, report.issues
-    assert report.datasets_validated == 15
+    assert report.datasets_validated == 33
 
 
 def test_temporal_and_business_rules_detect_mutation() -> None:

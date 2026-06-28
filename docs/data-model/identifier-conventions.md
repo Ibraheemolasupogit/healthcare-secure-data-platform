@@ -5,3 +5,5 @@ Identifiers use an uppercase three-letter prefix, hyphen and nine-digit one-base
 Identifiers are allocated by stable canonical generation order. They never use Python's process-randomised `hash()`, UUID randomness, real identifiers, or source-system values. Provider labels use `Provider-000001`. Patient external-style identifiers use `SYN-NHS-000000001`; the `SYN-` marker deliberately prevents confusion with a real NHS number and no modulus/check-digit claim is made.
 
 Domain random streams are derived from `SHA-256(seed:domain)`. Patient pseudonyms are derived separately from seed and ordinal. Changing a domain algorithm may change values within that domain, so generator version and configuration hash are part of provenance.
+
+Billing and finance prefixes are listed in [billing identifier conventions](billing-identifier-conventions.md). They deliberately avoid real invoice, payer, card, bank, claim or payment references.

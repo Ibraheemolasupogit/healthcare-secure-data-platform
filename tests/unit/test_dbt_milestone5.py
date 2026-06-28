@@ -50,7 +50,14 @@ def test_declared_sources_match_milestone_2_and_4_contracts() -> None:
     interoperability_contracts = json.loads(
         (ROOT / "snowflake/contracts/interoperability_raw_contracts.json").read_text()
     )
+    billing_contracts = json.loads(
+        (ROOT / "snowflake/contracts/billing_finance_raw_contracts.json").read_text()
+    )
+    billing_source_datasets = {
+        dataset for datasets in billing_contracts["schemas"].values() for dataset in datasets
+    }
     expected = set(schema_catalog)
+    expected.difference_update(billing_source_datasets)
     expected.update(
         contract["name"].lower() for contract in interoperability_contracts["contracts"]
     )
@@ -58,6 +65,7 @@ def test_declared_sources_match_milestone_2_and_4_contracts() -> None:
     declared = {table["name"] for _, table in _source_tables()}
 
     assert declared == expected
+    assert not declared.intersection(billing_source_datasets)
     assert len(declared) == 23
 
 

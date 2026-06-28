@@ -4,7 +4,7 @@ from healthcare_platform.synthetic.schemas import DATASET_ORDER, SCHEMAS
 
 
 def test_all_domains_have_versioned_explicit_schemas() -> None:
-    assert len(DATASET_ORDER) == 15
+    assert len(DATASET_ORDER) == 33
     assert set(DATASET_ORDER) == set(PREFIXES)
     for schema in SCHEMAS.values():
         assert schema.schema_version == "1.0.0"
@@ -15,6 +15,7 @@ def test_all_domains_have_versioned_explicit_schemas() -> None:
 def test_stable_identifier_format() -> None:
     assert stable_id("patients", 1) == "PAT-000000001"
     assert stable_id("pathways", 42) == "PTH-000000042"
+    assert stable_id("invoices", 7) == "INV-000000007"
 
 
 def test_code_sets_are_nonempty_and_unique() -> None:

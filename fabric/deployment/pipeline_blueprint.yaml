@@ -1,0 +1,39 @@
+deployment_pipeline_id: healthcare_platform_consumption_pipeline
+status: blueprint_only
+stages:
+  - stage: development
+    workspace: healthcare_platform_development
+    validation_gates:
+      - metadata_schema_valid
+      - no_raw_source_references
+      - no_credentials
+  - stage: test
+    workspace: healthcare_platform_test
+    validation_gates:
+      - semantic_model_static_tests_pass
+      - report_accessibility_metadata_present
+      - rls_and_ols_rules_resolve
+      - refresh_policy_validated_statically
+  - stage: production
+    workspace: healthcare_platform_production
+    validation_gates:
+      - data_owner_approval_recorded
+      - measure_owner_approval_recorded
+      - security_review_recorded
+      - release_evidence_captured
+promotion_rules:
+  artefacts:
+    - semantic_model_metadata
+    - thin_report_specifications
+    - theme_metadata
+    - security_role_metadata
+  connection_rebinding: environment_specific_connection_ids
+  parameter_rules: no_credentials_or_real_tenant_ids_in_repository
+  rollback: redeploy_last_certified_metadata_bundle
+evidence:
+  required:
+    - validation_report
+    - checksum_manifest
+    - approval_record_reference
+    - release_notes
+deployment_status: not_deployed

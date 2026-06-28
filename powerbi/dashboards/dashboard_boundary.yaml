@@ -1,0 +1,8 @@
+status: optional_blueprint_only
+primary_semantic_layer: shared_powerbi_semantic_model
+dashboard_role: optional executive pinboard after certification
+prohibited:
+  - dashboard_owned_business_logic
+  - fabricated_tiles
+  - live_service_claims
+  - public_sharing

@@ -23,3 +23,5 @@ PYTHONPATH=src python -m healthcare_platform.cli dataiku-reference \
 Dataiku does not own raw ingestion, dbt transformations, Airflow orchestration, feature-store definitions, Fabric/Power BI artefacts or production approval.
 
 Milestone 12 integration: Dataiku consumes exact feature-store feature set `billing_exception_prioritisation_features` version `1.0.0`. Dataiku keeps model-specific preprocessing and does not duplicate reusable feature definitions.
+
+Milestone 13 downstream consumption: Power BI may consume governed prediction-output metadata, model version, feature-set version and validation status. Power BI must not recalculate features, retrain models, redefine thresholds or reinterpret predictions as clinical decision support.

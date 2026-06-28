@@ -1,3 +1,12 @@
-# Power BI placeholder
+# Power BI boundary within Fabric
 
-Milestone 13 will document report pages, personas, refresh, accessibility, performance and deployment. Binary artifacts will be handled deliberately rather than committed by default.
+Power BI artefacts are source-controlled under `powerbi/`. This directory remains a
+compatibility note for the original Fabric scaffold and points to the governed M13
+metadata:
+
+- `powerbi/semantic_models/healthcare_enterprise/model.yaml`
+- `powerbi/contracts/consumption_contracts.yaml`
+- `powerbi/reports/report_portfolio.yaml`
+- `powerbi/reference/`
+
+No PBIX, tenant export or service artefact is stored here.

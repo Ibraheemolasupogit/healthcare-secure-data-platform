@@ -94,7 +94,9 @@ flowchart LR
 
 ## Fabric and Power BI
 
-**Placeholder only / planned (M13):** Fabric and Power BI provide certified semantic models, clinical/operational/financial dashboards and executive reporting. They consume dbt-owned semantic products using read-only identities. Report-local logic is limited to presentation-specific measures and inventoried explicitly.
+**Implemented locally as metadata blueprints (M13):** Fabric and Power BI provide the governed downstream consumption layer. The repository defines workspace topology, Snowflake-to-Power BI connectivity decisions, one shared enterprise semantic model, central measures and KPIs, RLS/OLS, sensitivity mapping, refresh groups, incremental refresh policies, deployment-pipeline stages and thin-report specifications.
+
+The implementation is metadata only: no Fabric workspace, capacity, lakehouse, notebook, pipeline, Power BI dataset, report publication, refresh history or certification is claimed. Fabric and Power BI consume governed products and do not recreate dbt, Dataiku or feature-store logic.
 
 ## Governance and security
 
@@ -120,4 +122,4 @@ flowchart LR
 
 **Partially implemented:** Milestone 2 includes local manifests, checksums, validation reports and tests. Every future claim must link to redacted, reproducible evidence for a commit and environment.
 
-Current non-goals are live Snowflake execution, formal revenue recognition, production Airflow deployment, live Dataiku execution, production ML approval, online feature serving, Fabric/Power BI artifacts, broader Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing placeholders.
+Current non-goals are live Snowflake execution, formal revenue recognition, production Airflow deployment, live Dataiku execution, production ML approval, online feature serving, live Fabric/Power BI deployment or refresh, broader Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing metadata blueprints.

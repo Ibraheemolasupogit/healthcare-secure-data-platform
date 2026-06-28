@@ -15,3 +15,4 @@ Current scope:
 
 Online serving is explicitly deferred.
 
+Milestone 13 consumes feature-set version metadata in Power BI specifications. It does not move reusable feature ownership into Fabric or Power BI.

@@ -1,0 +1,15 @@
+workspace_id: healthcare_platform_test
+display_name: Healthcare Platform Test
+environment: test
+purpose: Test promoted semantic models and thin reports before production certification.
+capacity_expectation: governed_capacity_blueprint
+ownership_role: BI_PLATFORM_OWNER
+contributor_role: RELEASE_MANAGER
+viewer_role: DATA_OWNER_REVIEWER
+data_sensitivity: Synthetic Health Data
+deployment_stage: test
+endorsement_eligibility: Reviewed
+external_sharing_policy: prohibited
+service_principal_use: allowed_for_future_deployment_only
+synthetic_only: true
+implementation_status: blueprint_only

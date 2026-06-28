@@ -1,0 +1,17 @@
+classifications:
+  - source_classification: public
+    microsoft_label_blueprint: Public
+    export_policy: allowed_for_public_docs_only
+  - source_classification: internal
+    microsoft_label_blueprint: Internal
+    export_policy: organisation_controlled
+  - source_classification: synthetic_restricted
+    microsoft_label_blueprint: Synthetic Health Data
+    export_policy: restricted
+  - source_classification: synthetic_financial_restricted
+    microsoft_label_blueprint: Synthetic Financial Data
+    export_policy: restricted
+  - source_classification: highly_confidential_synthetic
+    microsoft_label_blueprint: Highly Confidential
+    export_policy: disabled_by_default
+purview_status: mapping_only_not_applied

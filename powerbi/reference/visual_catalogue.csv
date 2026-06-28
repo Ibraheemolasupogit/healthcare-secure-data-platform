@@ -1,0 +1,9 @@
+report_id,visual_id,type,page,title,accessibility_text,business_question
+healthcare_operations_overview,ops_kpi_appointments,card,operational_summary,Appointment Count,Total governed appointment count for selected filters.,How much scheduled activity exists?
+healthcare_operations_overview,ops_trend_attendance,line_chart,appointments,Attendance Rate Trend,Trend of appointment attendance rate by month.,Is synthetic attendance changing over time?
+billing_finance_performance,fin_kpi_invoiced,card,billing_summary,Invoiced Amount,Sum of governed invoice totals.,What is the governed invoiced amount?
+billing_finance_performance,fin_ageing_bar,bar_chart,outstanding_balances,Outstanding Balance by Ageing Bucket,Outstanding balance split by governed ageing bucket.,Where is outstanding balance concentrated?
+revenue_assurance_reconciliation,ass_kpi_pass_rate,card,assurance_summary,Control Pass Rate,Share of governed control results that passed.,Are assurance controls passing?
+revenue_assurance_reconciliation,ass_exception_matrix,matrix,open_exceptions,Exceptions by Type and Severity,Exception counts and value at risk by governed type and severity.,Which exception groups need attention?
+model_feature_monitoring,ml_kpi_prediction_count,card,prediction_volumes,Prediction Count,Count of governed prediction output rows.,How many prediction rows were produced?
+model_feature_monitoring,ml_probability_histogram,column_chart,prediction_distribution,Predicted Probability Distribution,Prediction count by governed risk band.,How are model outputs distributed?

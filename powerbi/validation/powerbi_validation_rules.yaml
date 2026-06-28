@@ -1,0 +1,21 @@
+rules:
+  - id: source_models_are_governed
+    description: >
+      Semantic tables must reference governed dbt, Dataiku contract, feature-store or
+      deterministic date-spec sources only.
+  - id: no_raw_or_generator_sources
+    description: Raw, quarantine, FHIR, HL7 and generator outputs are prohibited.
+  - id: relationships_are_single_direction
+    description: Relationships default to single-direction filtering and controlled cardinalities.
+  - id: measures_are_centralised
+    description: Business measures live in the semantic model catalogue, not reports.
+  - id: divisions_use_divide
+    description: Ratio measures must use safe DIVIDE semantics.
+  - id: security_is_metadata_only
+    description: RLS and OLS are repository blueprints with synthetic fixtures only.
+  - id: no_real_tenant_or_user_identity
+    description: No real workspace IDs, tenant IDs or real user emails are allowed.
+  - id: no_fabric_future_scope
+    description: >
+      No Fabric notebooks, pipelines, lakehouse duplication, real-time intelligence or
+      online feature serving.

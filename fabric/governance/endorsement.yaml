@@ -1,0 +1,21 @@
+statuses:
+  - Draft
+  - Reviewed
+  - Promoted
+  - Certified
+  - Deprecated
+  - Retired
+certification_requirements:
+  technical_validation: required
+  data_owner_approval: required
+  measure_owner_approval: required
+  security_review: required
+  accessibility_review: required
+  refresh_validation: required_before_live_deployment
+  lineage_validation: required
+  documentation_completeness: required
+repository_claims:
+  power_bi_certification: not_claimed
+  fabric_deployment: not_claimed
+  refresh_history: not_claimed
+  usage_metrics: not_claimed

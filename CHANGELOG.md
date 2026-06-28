@@ -36,3 +36,6 @@ All notable changes will follow Keep a Changelog conventions. The project does n
 - Milestone 12 governed offline healthcare feature-store foundation with reusable feature
   registry, entities, feature views, feature sets, dbt feature models, point-in-time local
   retrieval, Dataiku feature-set references, quality rules, evidence, guardrails and ADR.
+- Milestone 13 governed Fabric and Power BI consumption layer with workspace blueprints,
+  a shared semantic model, central measures and KPIs, RLS/OLS, report specifications,
+  refresh/deployment metadata, deterministic reference catalogues, guardrails and ADR.

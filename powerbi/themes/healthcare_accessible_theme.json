@@ -1,0 +1,13 @@
+{
+  "name": "Healthcare Accessible Blueprint",
+  "dataColors": ["#1F77B4", "#2CA02C", "#FF7F0E", "#9467BD", "#8C564B", "#17BECF"],
+  "background": "#FFFFFF",
+  "foreground": "#1A1A1A",
+  "tableAccent": "#1F77B4",
+  "textClasses": {
+    "label": {"fontSize": 11, "color": "#1A1A1A"},
+    "callout": {"fontSize": 24, "color": "#1A1A1A"},
+    "title": {"fontSize": 14, "color": "#1A1A1A"}
+  },
+  "status": "metadata_only_not_power_bi_desktop_validated"
+}

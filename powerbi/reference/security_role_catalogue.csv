@@ -1,0 +1,6 @@
+role_id,deny_by_default,description
+enterprise_viewer,False,Aggregated enterprise viewer with OLS restrictions.
+healthcare_operations_viewer,True,Organisation-scoped operational analytics.
+billing_finance_viewer,True,Payer-scoped finance analytics.
+revenue_assurance_analyst,True,Assurance-domain analyst.
+data_science_consumer,True,Validated model-output consumer.

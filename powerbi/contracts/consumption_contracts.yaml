@@ -1,0 +1,198 @@
+version: 1.0.0
+status: blueprint_only
+allowed_transformations:
+  - business_friendly_renaming
+  - hiding_technical_fields
+  - formatting
+  - semantic_relationships
+  - central_measure_definitions
+  - display_folders
+  - hierarchies
+  - perspectives
+  - security_roles
+prohibited_transformations:
+  - raw_data_cleansing
+  - tariff_matching
+  - financial_recalculation
+  - patient_identity_resolution
+  - exception_reprioritisation
+  - feature_recomputation
+  - model_retraining
+contracts:
+  - contract_id: con_core_appointment
+    source_model: core_appointment
+    source_grain: one appointment
+    source_key: appointment_key
+    semantic_table: Appointments
+    import_mode: Import
+    expected_columns:
+      - appointment_key
+      - patient_key
+      - organisation_key
+      - location_key
+      - provider_key
+      - appointment_datetime
+      - booking_datetime
+      - appointment_type
+      - attendance_status
+      - synthetic_flag
+    sensitivity: synthetic_restricted
+    refresh_expectation: intraday_operational
+    relationship_role: fact
+    measure_ownership: BI_ANALYTICS
+    implementation_status: metadata_only
+    lineage: dbt.curated.core.core_appointment
+  - contract_id: con_core_encounter
+    source_model: core_encounter
+    source_grain: one encounter
+    source_key: encounter_key
+    semantic_table: Encounters
+    import_mode: Import
+    expected_columns:
+      - encounter_key
+      - patient_key
+      - organisation_key
+      - location_key
+      - provider_key
+      - encounter_type
+      - start_datetime
+      - end_datetime
+      - encounter_status
+      - synthetic_flag
+    sensitivity: synthetic_restricted
+    refresh_expectation: intraday_operational
+    relationship_role: fact
+    measure_ownership: BI_ANALYTICS
+    implementation_status: metadata_only
+    lineage: dbt.curated.core.core_encounter
+  - contract_id: con_fct_invoice
+    source_model: fct_invoice
+    source_grain: one governed invoice
+    source_key: invoice_key
+    semantic_table: Invoices
+    import_mode: Import
+    expected_columns:
+      - invoice_key
+      - payer_key
+      - patient_key
+      - encounter_key
+      - contract_key
+      - invoice_date
+      - due_date
+      - invoice_status
+      - currency
+      - governed_total_amount
+      - invoice_line_count
+      - synthetic_flag
+    sensitivity: synthetic_financial_restricted
+    refresh_expectation: daily_finance
+    relationship_role: fact
+    measure_ownership: FINANCE_ANALYTICS
+    implementation_status: metadata_only
+    lineage: dbt.curated.billing.fct_invoice
+  - contract_id: con_fct_payment
+    source_model: fct_payment
+    source_grain: one payment
+    source_key: payment_key
+    semantic_table: Payments
+    import_mode: Import
+    expected_columns:
+      - payment_key
+      - invoice_key
+      - payer_key
+      - payment_datetime
+      - amount
+      - currency
+      - payment_status
+      - synthetic_flag
+    sensitivity: synthetic_financial_restricted
+    refresh_expectation: daily_finance
+    relationship_role: fact
+    measure_ownership: FINANCE_ANALYTICS
+    implementation_status: metadata_only
+    lineage: dbt.curated.finance.fct_payment
+  - contract_id: con_fct_outstanding_balance
+    source_model: fct_outstanding_balance
+    source_grain: one invoice balance snapshot
+    source_key: balance_snapshot_key
+    semantic_table: Outstanding Balances
+    import_mode: Import
+    expected_columns:
+      - balance_snapshot_key
+      - invoice_key
+      - snapshot_date
+      - governed_outstanding_amount
+      - governed_ageing_bucket
+      - currency
+      - synthetic_flag
+    sensitivity: synthetic_financial_restricted
+    refresh_expectation: daily_finance
+    relationship_role: fact
+    measure_ownership: FINANCE_ANALYTICS
+    implementation_status: metadata_only
+    lineage: dbt.curated.finance.fct_outstanding_balance
+  - contract_id: con_reconciliation_control_result
+    source_model: reconciliation_control_result
+    source_grain: one control date, source system, entity, currency and rule
+    source_key: reconciliation_control_key
+    semantic_table: Reconciliation Controls
+    import_mode: Import
+    expected_columns:
+      - reconciliation_control_key
+      - control_date
+      - source_system
+      - entity_type
+      - currency
+      - control_rule_id
+      - reconciliation_status
+      - amount_variance
+    sensitivity: synthetic_financial_restricted
+    refresh_expectation: daily_assurance
+    relationship_role: fact
+    measure_ownership: REVENUE_ASSURANCE
+    implementation_status: metadata_only
+    lineage: dbt.curated.assurance.reconciliation_control_result
+  - contract_id: con_reconciliation_exception
+    source_model: reconciliation_exception
+    source_grain: one affected object and failed rule
+    source_key: reconciliation_exception_key
+    semantic_table: Billing Exceptions
+    import_mode: Import
+    expected_columns:
+      - reconciliation_exception_key
+      - reconciliation_control_key
+      - exception_type
+      - affected_object_type
+      - financial_value_at_risk
+      - severity
+      - detected_at
+      - overdue_flag
+      - exception_age_days
+    sensitivity: synthetic_financial_restricted
+    refresh_expectation: daily_assurance
+    relationship_role: fact
+    measure_ownership: REVENUE_ASSURANCE
+    implementation_status: metadata_only
+    lineage: dbt.curated.assurance.reconciliation_exception
+  - contract_id: con_dataiku_predictions
+    source_model: dataiku_prediction_output_contract
+    source_grain: one governed batch prediction output
+    source_key: prediction_id
+    semantic_table: Predictions
+    import_mode: Import
+    expected_columns:
+      - prediction_id
+      - model_id
+      - model_version
+      - feature_set_id
+      - feature_set_version
+      - prediction_timestamp
+      - predicted_probability
+      - risk_band
+      - validation_status
+    sensitivity: synthetic_financial_restricted
+    refresh_expectation: model_output_refresh
+    relationship_role: fact
+    measure_ownership: DATA_SCIENCE
+    implementation_status: contract_only
+    lineage: dataiku.contracts.prediction_output_contract

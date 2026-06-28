@@ -1,0 +1,15 @@
+workspace_id: healthcare_platform_development
+display_name: Healthcare Platform Development
+environment: development
+purpose: Develop and validate semantic-model and report metadata against governed synthetic contracts.
+capacity_expectation: shared_or_trial_capacity_blueprint
+ownership_role: BI_PLATFORM_OWNER
+contributor_role: ANALYTICS_ENGINEERING
+viewer_role: PLATFORM_DEVELOPER
+data_sensitivity: Synthetic Health Data
+deployment_stage: development
+endorsement_eligibility: Draft
+external_sharing_policy: prohibited
+service_principal_use: allowed_for_future_deployment_only
+synthetic_only: true
+implementation_status: blueprint_only

@@ -1,0 +1,39 @@
+connection_id: snowflake_curated_consumption
+status: blueprint_only
+source_platform: Snowflake
+target_platforms:
+  - Microsoft Fabric
+  - Power BI
+credential_policy:
+  repository_credentials: prohibited
+  preferred_authentication: service_principal_or_oauth_where_supported
+  fallback_authentication: key_pair_with_vault_storage
+  personal_gateway: prohibited
+  rotation_owner: SECURITY_OPERATIONS
+  rotation_cadence: quarterly_or_on_incident
+environment_bindings:
+  development: SNOWFLAKE_DEV_CURATED_CONSUMPTION
+  test: SNOWFLAKE_TEST_CURATED_CONSUMPTION
+  production: SNOWFLAKE_PROD_CURATED_CONSUMPTION
+least_privilege:
+  allowed_schemas:
+    - CURATED.CORE
+    - CURATED.BILLING
+    - CURATED.FINANCE
+    - CURATED.ASSURANCE
+    - CURATED.FEATURES
+    - SERVING.ML_OUTPUTS
+  prohibited_schemas:
+    - RAW
+    - QUARANTINE
+    - SOURCE_GENERATOR_OUTPUTS
+storage_mode_decision:
+  default_mode: Import
+  rationale:
+    - curated synthetic portfolio is small enough for deterministic scheduled refresh
+    - Import mode protects Snowflake compute from interactive report concurrency
+    - semantic modelling flexibility is higher than DirectQuery for this foundation
+    - Direct Lake requires a Fabric-native governed copy, which is not in scope
+  directquery_allowed_when: low_latency_requirement_is_formally_approved
+  direct_lake_status: deferred_until_fabric_storage_design_exists
+lineage: governed_dbt_outputs_to_shared_semantic_model_to_thin_reports

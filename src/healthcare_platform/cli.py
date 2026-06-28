@@ -27,6 +27,17 @@ from healthcare_platform.interoperability.service import (
     validate_corpus,
 )
 from healthcare_platform.logging_config import configure_logging
+from healthcare_platform.powerbi import (
+    build_reference_outputs as build_powerbi_reference_outputs,
+)
+from healthcare_platform.powerbi import (
+    describe_measure as describe_powerbi_measure,
+)
+from healthcare_platform.powerbi import (
+    load_powerbi_metadata,
+    validate_model,
+    verify_reference_outputs,
+)
 from healthcare_platform.snowflake_foundation import (
     DEFAULT_CONFIG_PATH as DEFAULT_SNOWFLAKE_CONFIG_PATH,
 )
@@ -221,6 +232,34 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("feature_store/reference/fixtures/exception_events.csv"),
     )
     build_reference.add_argument("--overwrite", action="store_true")
+    powerbi = subparsers.add_parser(
+        "powerbi",
+        help="inspect and validate local Power BI semantic-model metadata",
+    )
+    powerbi_commands = powerbi.add_subparsers(dest="powerbi_command", required=True)
+    powerbi_commands.add_parser("validate-model", help="validate semantic model metadata")
+    powerbi_commands.add_parser("list-tables", help="list semantic model tables")
+    powerbi_commands.add_parser("list-measures", help="list central semantic measures")
+    powerbi_commands.add_parser("list-kpis", help="list KPI definitions")
+    powerbi_commands.add_parser("list-reports", help="list thin-report specifications")
+    describe_measure_command = powerbi_commands.add_parser(
+        "describe-measure", help="describe one measure"
+    )
+    describe_measure_command.add_argument("measure_id")
+    generate_reference_command = powerbi_commands.add_parser(
+        "generate-reference",
+        help="generate deterministic local Power BI reference metadata outputs",
+    )
+    generate_reference_command.add_argument(
+        "--output-dir", type=Path, default=Path("powerbi/reference")
+    )
+    generate_reference_command.add_argument("--overwrite", action="store_true")
+    verify_reference_command = powerbi_commands.add_parser(
+        "verify-reference", help="verify generated Power BI reference checksums"
+    )
+    verify_reference_command.add_argument(
+        "--output-dir", type=Path, default=Path("powerbi/reference")
+    )
     return parser
 
 
@@ -445,6 +484,52 @@ def _feature_store(args: argparse.Namespace) -> int:
     return 2
 
 
+def _powerbi(args: argparse.Namespace) -> int:
+    if args.powerbi_command == "validate-model":
+        validation_result = validate_model()
+        print(json.dumps(validation_result, indent=2, sort_keys=True))
+        return 0 if validation_result["valid"] else 1
+    if args.powerbi_command == "generate-reference":
+        reference_result = build_powerbi_reference_outputs(
+            args.output_dir, overwrite=args.overwrite
+        )
+        print(f"output_dir: {reference_result.output_dir}")
+        print(f"semantic_model_manifest: {reference_result.semantic_model_manifest}")
+        print(f"validation_report: {reference_result.validation_report}")
+        print(f"checksums: {reference_result.checksums}")
+        return 0
+    if args.powerbi_command == "verify-reference":
+        verification_result = verify_reference_outputs(args.output_dir)
+        print(json.dumps(verification_result, indent=2, sort_keys=True))
+        return 0 if verification_result["valid"] else 1
+    metadata = load_powerbi_metadata()
+    model = metadata["model"]
+    if args.powerbi_command == "list-tables":
+        for table in model["tables"]:
+            print(f"{table['table_id']}: {table['display_name']} <- {table['source_model']}")
+        return 0
+    if args.powerbi_command == "list-measures":
+        for measure in model["measures"]:
+            print(f"{measure['measure_id']}: {measure['display_name']}")
+        return 0
+    if args.powerbi_command == "list-kpis":
+        for kpi in model["kpis"]:
+            print(f"{kpi['kpi_id']}: {kpi['name']} -> {kpi['measure']}")
+        return 0
+    if args.powerbi_command == "list-reports":
+        for report in metadata["reports"]["reports"]:
+            print(f"{report['report_id']}: {report['name']}")
+        return 0
+    if args.powerbi_command == "describe-measure":
+        measure = describe_powerbi_measure(args.measure_id)
+        if measure is None:
+            print(f"error: unknown measure {args.measure_id}")
+            return 2
+        print(json.dumps(measure, indent=2, sort_keys=True))
+        return 0
+    return 2
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the CLI."""
     args = build_parser().parse_args(argv)
@@ -479,6 +564,8 @@ def main(argv: list[str] | None = None) -> int:
             return _dataiku_reference(args)
         if args.command == "feature-store":
             return _feature_store(args)
+        if args.command == "powerbi":
+            return _powerbi(args)
     except (ValueError, OSError, json.JSONDecodeError) as error:
         print(f"error: {error}")
         return 2

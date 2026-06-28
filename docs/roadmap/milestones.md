@@ -163,22 +163,22 @@ The sections below preserve the original roadmap as an audit trail. They are sup
 ## 13 — Fabric and Power BI consumption
 
 - **Objective:** expose governed semantic products for operational/executive reporting.
-- **Deliverables:** semantic model, measures, refresh design, reports, RLS mapping and dbt exposures.
-- **Validation:** source lineage, measure reconciliation, refresh, access personas and performance.
-- **Evidence:** model metadata, redacted report captures and test results.
-- **Commit boundary:** `feat: add Fabric and Power BI consumption layer`.
-- **Dependencies:** 6–7, 9–10.
-- **Exclusions:** duplicated warehouse transformations.
+- **Deliverables:** Fabric workspace topology, connection blueprint, one shared semantic model, central measures, KPI catalogue, RLS/OLS, sensitivity mapping, report specifications, refresh strategy, deployment blueprint and local reference outputs.
+- **Validation:** source lineage, relationship graph, measure/KPI resolution, security metadata, accessibility metadata, refresh policy, checksum verification and future-scope prohibitions.
+- **Evidence:** local metadata catalogues, validation report, checksum manifest and blueprint limitations.
+- **Commit boundary:** `feat: add governed Fabric and Power BI consumption layer`.
+- **Dependencies:** 6, 8, 9, 10, 11 and 12.
+- **Exclusions:** live tenant deployment, Fabric lakehouse duplication, notebooks, pipelines, production refresh and duplicated warehouse transformations.
 
-## 14 — CI/CD, Slim CI, deployment and release controls
+## 14 — Expanded governance, security and compliance controls
 
-- **Objective:** safely promote code and infrastructure with changed-scope feedback.
-- **Deliverables:** state-aware dbt CI, protected integration jobs, Terraform plan/apply, release/versioning and rollback controls.
-- **Validation:** changed-model selection, injected failure, approvals, environment isolation and rollback rehearsal.
-- **Evidence:** CI logs, artifacts, release record and protection settings.
-- **Commit boundary:** `ci: implement protected platform delivery`.
-- **Dependencies:** all deployable capabilities from 3–13.
-- **Exclusions:** bypassable production credentials or automatic unreviewed apply.
+- **Objective:** strengthen platform-wide executable governance and security controls without claiming regulatory compliance.
+- **Deliverables:** pseudonymisation/masking policy designs, row/object access enforcement patterns, consent-aware access contracts, retention and audit controls, export controls, persona tests and governance evidence.
+- **Validation:** least-privilege tests, deny-by-default checks, sensitive-field access tests, consent and retention guardrails, audit evidence and fabricated-compliance claim checks.
+- **Evidence:** local policy metadata, static validation reports, persona matrix and limitations.
+- **Commit boundary:** `feat: add expanded governance and compliance controls`.
+- **Dependencies:** all governed product and consumption capabilities from 3–13.
+- **Exclusions:** unsupported anonymisation, statutory compliance certification, live tenant enforcement or production patient-safety claims.
 
 ## 15 — Evidence, runbooks and portfolio polish
 

@@ -1,0 +1,782 @@
+semantic_model_id: healthcare_enterprise
+display_name: Healthcare Enterprise Governed Semantic Model
+version: 1.0.0
+status: metadata_only
+storage_mode_default: Import
+domains: [healthcare_operations, billing_and_finance, revenue_assurance, data_science_outputs]
+tables:
+  - table_id: dim_date
+    display_name: Date
+    source_model: deterministic_date_dimension_spec
+    grain: one calendar date
+    primary_key: date
+    foreign_keys: []
+    hidden_columns: []
+    visible_columns:
+      - date
+      - day
+      - week
+      - month
+      - month_name
+      - quarter
+      - year
+      - financial_period
+      - month_end_flag
+      - weekday_weekend
+      - relative_period_label
+      - month_sort
+    sensitivity: internal
+    owner: BI_ANALYTICS
+    refresh_group: periodic_reference_data
+    storage_mode: Import
+    endorsement_status: Draft
+    lineage: repository_date_specification
+  - table_id: dim_patient
+    display_name: Patient
+    source_model: core_patient
+    grain: one canonical synthetic patient
+    primary_key: patient_key
+    foreign_keys: [registered_gp_organisation_key]
+    hidden_columns: [patient_key, canonical_patient_id, synthetic_nhs_number]
+    visible_columns:
+      - patient_pseudonym
+      - sex_code
+      - ethnicity_code
+      - postcode_sector
+      - research_consent_status
+      - synthetic_flag
+    sensitivity: synthetic_restricted
+    owner: BI_ANALYTICS
+    refresh_group: periodic_reference_data
+    storage_mode: Import
+    endorsement_status: Draft
+    lineage: dbt.curated.core.core_patient
+  - table_id: dim_organisation
+    display_name: Organisation
+    source_model: core_organisation
+    grain: one organisation
+    primary_key: organisation_key
+    foreign_keys: [parent_organisation_key]
+    hidden_columns: [organisation_key, canonical_organisation_id]
+    visible_columns: [organisation_code, organisation_name, organisation_type, region, active_flag, synthetic_flag]
+    sensitivity: synthetic_restricted
+    owner: BI_ANALYTICS
+    refresh_group: periodic_reference_data
+    storage_mode: Import
+    endorsement_status: Draft
+    lineage: dbt.curated.core.core_organisation
+  - table_id: dim_provider
+    display_name: Provider
+    source_model: core_provider
+    grain: one provider
+    primary_key: provider_key
+    foreign_keys: [organisation_key]
+    hidden_columns: [provider_key, canonical_provider_id]
+    visible_columns: [provider_type, specialty, active_flag, synthetic_flag]
+    sensitivity: synthetic_restricted
+    owner: BI_ANALYTICS
+    refresh_group: periodic_reference_data
+    storage_mode: Import
+    endorsement_status: Draft
+    lineage: dbt.curated.core.core_provider
+  - table_id: dim_payer
+    display_name: Payer
+    source_model: dim_payer
+    grain: one payer
+    primary_key: payer_key
+    foreign_keys: []
+    hidden_columns: [payer_key]
+    visible_columns: [source_system, synthetic_flag]
+    sensitivity: synthetic_financial_restricted
+    owner: FINANCE_ANALYTICS
+    refresh_group: periodic_reference_data
+    storage_mode: Import
+    endorsement_status: Draft
+    lineage: dbt.curated.billing.dim_payer
+  - table_id: fact_appointments
+    display_name: Appointments
+    source_model: core_appointment
+    grain: one appointment
+    primary_key: appointment_key
+    foreign_keys: [patient_key, organisation_key, location_key, provider_key, appointment_datetime]
+    hidden_columns: [appointment_key, patient_key, organisation_key, location_key, provider_key]
+    visible_columns:
+      - appointment_datetime
+      - booking_datetime
+      - appointment_type
+      - attendance_status
+      - cancellation_reason
+      - synthetic_flag
+    sensitivity: synthetic_restricted
+    owner: BI_ANALYTICS
+    refresh_group: intraday_operational
+    storage_mode: Import
+    endorsement_status: Draft
+    lineage: dbt.curated.core.core_appointment
+  - table_id: fact_encounters
+    display_name: Encounters
+    source_model: core_encounter
+    grain: one encounter
+    primary_key: encounter_key
+    foreign_keys: [patient_key, organisation_key, location_key, provider_key, start_datetime]
+    hidden_columns: [encounter_key, patient_key, organisation_key, location_key, provider_key]
+    visible_columns: [encounter_type, start_datetime, end_datetime, encounter_status, synthetic_flag]
+    sensitivity: synthetic_restricted
+    owner: BI_ANALYTICS
+    refresh_group: intraday_operational
+    storage_mode: Import
+    endorsement_status: Draft
+    lineage: dbt.curated.core.core_encounter
+  - table_id: fact_invoices
+    display_name: Invoices
+    source_model: fct_invoice
+    grain: one governed invoice
+    primary_key: invoice_key
+    foreign_keys: [payer_key, patient_key, encounter_key, contract_key, invoice_date, due_date]
+    hidden_columns: [invoice_key, payer_key, patient_key, encounter_key, contract_key]
+    visible_columns:
+      - invoice_date
+      - due_date
+      - invoice_status
+      - currency
+      - governed_total_amount
+      - invoice_line_count
+      - synthetic_flag
+    sensitivity: synthetic_financial_restricted
+    owner: FINANCE_ANALYTICS
+    refresh_group: daily_finance
+    storage_mode: Import
+    endorsement_status: Draft
+    lineage: dbt.curated.billing.fct_invoice
+  - table_id: fact_payments
+    display_name: Payments
+    source_model: fct_payment
+    grain: one payment
+    primary_key: payment_key
+    foreign_keys: [invoice_key, payer_key, payment_datetime]
+    hidden_columns: [payment_key, invoice_key, payer_key, external_reference]
+    visible_columns: [payment_datetime, amount, currency, payment_status, payment_method, synthetic_flag]
+    sensitivity: synthetic_financial_restricted
+    owner: FINANCE_ANALYTICS
+    refresh_group: daily_finance
+    storage_mode: Import
+    endorsement_status: Draft
+    lineage: dbt.curated.finance.fct_payment
+  - table_id: fact_outstanding_balances
+    display_name: Outstanding Balances
+    source_model: fct_outstanding_balance
+    grain: one invoice balance snapshot
+    primary_key: balance_snapshot_key
+    foreign_keys: [invoice_key, snapshot_date]
+    hidden_columns: [balance_snapshot_key, invoice_key]
+    visible_columns:
+      - snapshot_date
+      - governed_outstanding_amount
+      - governed_ageing_bucket
+      - currency
+      - credit_balance_flag
+      - synthetic_flag
+    sensitivity: synthetic_financial_restricted
+    owner: FINANCE_ANALYTICS
+    refresh_group: daily_finance
+    storage_mode: Import
+    endorsement_status: Draft
+    lineage: dbt.curated.finance.fct_outstanding_balance
+  - table_id: fact_reconciliation_controls
+    display_name: Reconciliation Controls
+    source_model: reconciliation_control_result
+    grain: one control date, source system, entity, currency and rule
+    primary_key: reconciliation_control_key
+    foreign_keys: [control_date]
+    hidden_columns: [reconciliation_control_key]
+    visible_columns:
+      - control_date
+      - source_system
+      - entity_type
+      - currency
+      - control_rule_id
+      - reconciliation_status
+      - amount_variance
+    sensitivity: synthetic_financial_restricted
+    owner: REVENUE_ASSURANCE
+    refresh_group: daily_assurance
+    storage_mode: Import
+    endorsement_status: Draft
+    lineage: dbt.curated.assurance.reconciliation_control_result
+  - table_id: fact_billing_exceptions
+    display_name: Billing Exceptions
+    source_model: reconciliation_exception
+    grain: one affected object and failed rule
+    primary_key: reconciliation_exception_key
+    foreign_keys: [reconciliation_control_key, detected_at]
+    hidden_columns:
+      - reconciliation_exception_key
+      - reconciliation_control_key
+      - affected_object_key
+      - evidence_reference
+    visible_columns:
+      - exception_origin
+      - exception_type
+      - affected_object_type
+      - financial_value_at_risk
+      - currency
+      - severity
+      - detected_at
+      - overdue_flag
+      - exception_age_days
+    sensitivity: synthetic_financial_restricted
+    owner: REVENUE_ASSURANCE
+    refresh_group: daily_assurance
+    storage_mode: Import
+    endorsement_status: Draft
+    lineage: dbt.curated.assurance.reconciliation_exception
+  - table_id: fact_predictions
+    display_name: Predictions
+    source_model: dataiku_prediction_output_contract
+    grain: one governed batch prediction
+    primary_key: prediction_id
+    foreign_keys: [model_version, feature_set_version, prediction_timestamp]
+    hidden_columns: [prediction_id]
+    visible_columns:
+      - model_id
+      - model_version
+      - feature_set_id
+      - feature_set_version
+      - prediction_timestamp
+      - predicted_probability
+      - risk_band
+      - validation_status
+    sensitivity: synthetic_financial_restricted
+    owner: DATA_SCIENCE
+    refresh_group: model_output_refresh
+    storage_mode: Import
+    endorsement_status: Draft
+    lineage: dataiku.contracts.prediction_output_contract
+relationships:
+  - relationship_id: rel_date_appointments
+    from_table: dim_date
+    from_column: date
+    to_table: fact_appointments
+    to_column: appointment_datetime
+    cardinality: one_to_many
+    filter_direction: single
+    active: true
+  - relationship_id: rel_patient_appointments
+    from_table: dim_patient
+    from_column: patient_key
+    to_table: fact_appointments
+    to_column: patient_key
+    cardinality: one_to_many
+    filter_direction: single
+    active: true
+  - relationship_id: rel_org_appointments
+    from_table: dim_organisation
+    from_column: organisation_key
+    to_table: fact_appointments
+    to_column: organisation_key
+    cardinality: one_to_many
+    filter_direction: single
+    active: true
+  - relationship_id: rel_date_encounters
+    from_table: dim_date
+    from_column: date
+    to_table: fact_encounters
+    to_column: start_datetime
+    cardinality: one_to_many
+    filter_direction: single
+    active: true
+  - relationship_id: rel_patient_encounters
+    from_table: dim_patient
+    from_column: patient_key
+    to_table: fact_encounters
+    to_column: patient_key
+    cardinality: one_to_many
+    filter_direction: single
+    active: true
+  - relationship_id: rel_payer_invoices
+    from_table: dim_payer
+    from_column: payer_key
+    to_table: fact_invoices
+    to_column: payer_key
+    cardinality: one_to_many
+    filter_direction: single
+    active: true
+  - relationship_id: rel_date_invoices
+    from_table: dim_date
+    from_column: date
+    to_table: fact_invoices
+    to_column: invoice_date
+    cardinality: one_to_many
+    filter_direction: single
+    active: true
+  - relationship_id: rel_invoice_payments
+    from_table: fact_invoices
+    from_column: invoice_key
+    to_table: fact_payments
+    to_column: invoice_key
+    cardinality: one_to_many
+    filter_direction: single
+    active: true
+  - relationship_id: rel_invoice_balances
+    from_table: fact_invoices
+    from_column: invoice_key
+    to_table: fact_outstanding_balances
+    to_column: invoice_key
+    cardinality: one_to_many
+    filter_direction: single
+    active: true
+  - relationship_id: rel_date_controls
+    from_table: dim_date
+    from_column: date
+    to_table: fact_reconciliation_controls
+    to_column: control_date
+    cardinality: one_to_many
+    filter_direction: single
+    active: true
+  - relationship_id: rel_control_exceptions
+    from_table: fact_reconciliation_controls
+    from_column: reconciliation_control_key
+    to_table: fact_billing_exceptions
+    to_column: reconciliation_control_key
+    cardinality: one_to_many
+    filter_direction: single
+    active: true
+  - relationship_id: rel_date_exceptions
+    from_table: dim_date
+    from_column: date
+    to_table: fact_billing_exceptions
+    to_column: detected_at
+    cardinality: one_to_many
+    filter_direction: single
+    active: false
+    inactive_reason: active control-date relationship is preferred for assurance pages
+measures:
+  - measure_id: appointment_count
+    display_name: Appointment Count
+    expression: COUNTROWS('Appointments')
+    source_columns: [fact_appointments.appointment_key]
+    domain: healthcare_operations
+    format_string: "#,0"
+    owner: BI_ANALYTICS
+    grain_assumptions: one row per appointment
+    filter_behaviour: respects date, organisation, provider and patient filters
+    sensitivity: synthetic_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: row count equals governed appointment fact count
+    prohibited_reinterpretation: not a statutory waiting-list metric
+  - measure_id: attended_appointment_count
+    display_name: Attended Appointment Count
+    expression: CALCULATE([Appointment Count], 'Appointments'[attendance_status] = "ATTENDED")
+    source_columns: [fact_appointments.attendance_status]
+    domain: healthcare_operations
+    format_string: "#,0"
+    owner: BI_ANALYTICS
+    grain_assumptions: attendance_status is governed upstream
+    filter_behaviour: respects report filters
+    sensitivity: synthetic_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: status-filtered count cannot exceed Appointment Count
+    prohibited_reinterpretation: not clinical attendance performance assurance
+  - measure_id: attendance_rate
+    display_name: Attendance Rate
+    expression: DIVIDE([Attended Appointment Count], [Appointment Count])
+    source_columns: [fact_appointments.attendance_status]
+    domain: healthcare_operations
+    format_string: 0.0%
+    owner: BI_ANALYTICS
+    grain_assumptions: appointment rows are unique
+    filter_behaviour: blank when denominator is blank
+    sensitivity: synthetic_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: uses DIVIDE safe semantics
+    prohibited_reinterpretation: not a contractual KPI
+  - measure_id: encounter_count
+    display_name: Encounter Count
+    expression: COUNTROWS('Encounters')
+    source_columns: [fact_encounters.encounter_key]
+    domain: healthcare_operations
+    format_string: "#,0"
+    owner: BI_ANALYTICS
+    grain_assumptions: one row per encounter
+    filter_behaviour: respects date, organisation and patient filters
+    sensitivity: synthetic_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: row count equals governed encounter fact count
+    prohibited_reinterpretation: not an admission-count substitute
+  - measure_id: invoice_count
+    display_name: Invoice Count
+    expression: COUNTROWS('Invoices')
+    source_columns: [fact_invoices.invoice_key]
+    domain: billing_and_finance
+    format_string: "#,0"
+    owner: FINANCE_ANALYTICS
+    grain_assumptions: one row per governed invoice
+    filter_behaviour: respects payer and invoice date filters
+    sensitivity: synthetic_financial_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: row count equals governed invoice fact count
+    prohibited_reinterpretation: not reconstructed from invoice lines
+  - measure_id: invoiced_amount
+    display_name: Invoiced Amount
+    expression: SUM('Invoices'[governed_total_amount])
+    source_columns: [fact_invoices.governed_total_amount]
+    domain: billing_and_finance
+    format_string: £#,0.00
+    owner: FINANCE_ANALYTICS
+    grain_assumptions: governed_total_amount is owned by M8 dbt
+    filter_behaviour: respects payer, date and status filters
+    sensitivity: synthetic_financial_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: sums governed invoice total only
+    prohibited_reinterpretation: no DAX invoice total reconstruction
+  - measure_id: payment_amount
+    display_name: Payment Amount
+    expression: SUM('Payments'[amount])
+    source_columns: [fact_payments.amount]
+    domain: billing_and_finance
+    format_string: £#,0.00
+    owner: FINANCE_ANALYTICS
+    grain_assumptions: payment amount is governed by M8 finance outputs
+    filter_behaviour: respects date and payer filters
+    sensitivity: synthetic_financial_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: sums governed payment amount only
+    prohibited_reinterpretation: no allocation recalculation
+  - measure_id: outstanding_balance
+    display_name: Outstanding Balance
+    expression: SUM('Outstanding Balances'[governed_outstanding_amount])
+    source_columns: [fact_outstanding_balances.governed_outstanding_amount]
+    domain: billing_and_finance
+    format_string: £#,0.00
+    owner: FINANCE_ANALYTICS
+    grain_assumptions: balance snapshot grain is selected by report date filters
+    filter_behaviour: respects snapshot date and payer filters
+    sensitivity: synthetic_financial_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: uses governed outstanding amount only
+    prohibited_reinterpretation: no semantic-layer balance calculation
+  - measure_id: collection_rate
+    display_name: Collection Rate
+    expression: DIVIDE([Payment Amount], [Invoiced Amount])
+    source_columns: [fact_payments.amount, fact_invoices.governed_total_amount]
+    domain: billing_and_finance
+    format_string: 0.0%
+    owner: FINANCE_ANALYTICS
+    grain_assumptions: contextual finance portfolio comparison
+    filter_behaviour: blank when denominator is blank
+    sensitivity: synthetic_financial_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: uses DIVIDE safe semantics
+    prohibited_reinterpretation: not a statutory collection metric
+  - measure_id: controls_run
+    display_name: Controls Run
+    expression: COUNTROWS('Reconciliation Controls')
+    source_columns: [fact_reconciliation_controls.reconciliation_control_key]
+    domain: revenue_assurance
+    format_string: "#,0"
+    owner: REVENUE_ASSURANCE
+    grain_assumptions: one row per control execution result
+    filter_behaviour: respects control date and entity filters
+    sensitivity: synthetic_financial_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: row count equals governed control-result count
+    prohibited_reinterpretation: does not create new controls
+  - measure_id: controls_failed
+    display_name: Controls Failed
+    expression: CALCULATE([Controls Run], 'Reconciliation Controls'[reconciliation_status] = "FAILED")
+    source_columns: [fact_reconciliation_controls.reconciliation_status]
+    domain: revenue_assurance
+    format_string: "#,0"
+    owner: REVENUE_ASSURANCE
+    grain_assumptions: status is governed by M9 assurance
+    filter_behaviour: respects report filters
+    sensitivity: synthetic_financial_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: failed count cannot exceed controls run
+    prohibited_reinterpretation: no new failure criteria
+  - measure_id: control_pass_rate
+    display_name: Control Pass Rate
+    expression: DIVIDE([Controls Run] - [Controls Failed], [Controls Run])
+    source_columns: [fact_reconciliation_controls.reconciliation_status]
+    domain: revenue_assurance
+    format_string: 0.0%
+    owner: REVENUE_ASSURANCE
+    grain_assumptions: pass/fail owned by M9
+    filter_behaviour: blank when denominator is blank
+    sensitivity: synthetic_financial_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: uses DIVIDE safe semantics
+    prohibited_reinterpretation: no alternate pass logic
+  - measure_id: open_exception_count
+    display_name: Open Exception Count
+    expression: COUNTROWS('Billing Exceptions')
+    source_columns: [fact_billing_exceptions.reconciliation_exception_key]
+    domain: revenue_assurance
+    format_string: "#,0"
+    owner: REVENUE_ASSURANCE
+    grain_assumptions: consumes governed exception output
+    filter_behaviour: respects assurance filters
+    sensitivity: synthetic_financial_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: no exception reprioritisation
+    prohibited_reinterpretation: no lifecycle recalculation
+  - measure_id: high_priority_exception_count
+    display_name: High-Priority Exception Count
+    expression: CALCULATE([Open Exception Count], 'Billing Exceptions'[severity] IN {"HIGH","CRITICAL"})
+    source_columns: [fact_billing_exceptions.severity]
+    domain: revenue_assurance
+    format_string: "#,0"
+    owner: REVENUE_ASSURANCE
+    grain_assumptions: severity is governed by M9
+    filter_behaviour: respects report filters
+    sensitivity: synthetic_financial_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: filtered count cannot exceed open exceptions
+    prohibited_reinterpretation: no semantic priority score
+  - measure_id: revenue_at_risk
+    display_name: Revenue at Risk
+    expression: SUM('Billing Exceptions'[financial_value_at_risk])
+    source_columns: [fact_billing_exceptions.financial_value_at_risk]
+    domain: revenue_assurance
+    format_string: £#,0.00
+    owner: REVENUE_ASSURANCE
+    grain_assumptions: value-at-risk is governed by M9
+    filter_behaviour: respects exception filters
+    sensitivity: synthetic_financial_restricted
+    certification_status: Draft
+    implementation_status: metadata_only
+    validation_rule: sums governed value-at-risk only
+    prohibited_reinterpretation: no value-at-risk recalculation
+  - measure_id: prediction_count
+    display_name: Prediction Count
+    expression: COUNTROWS('Predictions')
+    source_columns: [fact_predictions.prediction_id]
+    domain: data_science_outputs
+    format_string: "#,0"
+    owner: DATA_SCIENCE
+    grain_assumptions: one row per governed batch prediction output
+    filter_behaviour: respects model version and validation status filters
+    sensitivity: synthetic_financial_restricted
+    certification_status: Draft
+    implementation_status: contract_only
+    validation_rule: count validated prediction output rows
+    prohibited_reinterpretation: not clinical decision support
+  - measure_id: average_predicted_probability
+    display_name: Average Predicted Probability
+    expression: AVERAGE('Predictions'[predicted_probability])
+    source_columns: [fact_predictions.predicted_probability]
+    domain: data_science_outputs
+    format_string: "0.000"
+    owner: DATA_SCIENCE
+    grain_assumptions: probability generated by governed Dataiku workflow
+    filter_behaviour: respects model version filters
+    sensitivity: synthetic_financial_restricted
+    certification_status: Draft
+    implementation_status: contract_only
+    validation_rule: probability stays between zero and one
+    prohibited_reinterpretation: no autonomous decision threshold
+kpis:
+  - kpi_id: kpi_attendance_rate
+    name: Attendance Rate
+    business_question: What share of synthetic appointments were attended?
+    measure: attendance_rate
+    target: 0.85
+    warning_threshold: 0.75
+    critical_threshold: 0.65
+    direction: higher_is_better
+    owner: BI_ANALYTICS
+    refresh: intraday_operational
+    dimensional_slicing: [Date, Organisation, Provider]
+    exclusions: none beyond governed appointment filters
+    source_model: core_appointment
+    limitations: synthetic portfolio only, not a statutory target
+    synthetic_portfolio_classification: synthetic_health_data
+  - kpi_id: kpi_collection_rate
+    name: Collection Rate
+    business_question: How do governed payments compare with governed invoice totals?
+    measure: collection_rate
+    target: 0.90
+    warning_threshold: 0.80
+    critical_threshold: 0.70
+    direction: higher_is_better
+    owner: FINANCE_ANALYTICS
+    refresh: daily_finance
+    dimensional_slicing: [Date, Payer]
+    exclusions: no statutory exclusions
+    source_model: fct_invoice
+    limitations: synthetic portfolio comparison only
+    synthetic_portfolio_classification: synthetic_financial_data
+  - kpi_id: kpi_control_pass_rate
+    name: Control Pass Rate
+    business_question: What share of governed assurance controls pass?
+    measure: control_pass_rate
+    target: 0.95
+    warning_threshold: 0.90
+    critical_threshold: 0.80
+    direction: higher_is_better
+    owner: REVENUE_ASSURANCE
+    refresh: daily_assurance
+    dimensional_slicing: [Date, Control, Entity Type]
+    exclusions: none
+    source_model: reconciliation_control_result
+    limitations: synthetic control portfolio only
+    synthetic_portfolio_classification: synthetic_financial_data
+  - kpi_id: kpi_revenue_at_risk
+    name: Revenue at Risk
+    business_question: What governed value remains at risk in assurance outputs?
+    measure: revenue_at_risk
+    target: 0
+    warning_threshold: 10000
+    critical_threshold: 50000
+    direction: lower_is_better
+    owner: REVENUE_ASSURANCE
+    refresh: daily_assurance
+    dimensional_slicing: [Date, Exception Type, Severity]
+    exclusions: governed M9 exclusions only
+    source_model: reconciliation_exception
+    limitations: not a statutory financial close metric
+    synthetic_portfolio_classification: synthetic_financial_data
+calculation_groups:
+  - calculation_group_id: cg_time_intelligence
+    name: Time Intelligence
+    status: blueprint_only
+    items: [Current Period, Previous Period, Year to Date, Month to Date, Period Variance, Period Variance Percentage]
+perspectives:
+  - perspective_id: healthcare_operations
+    tables: [Date, Patient, Organisation, Provider, Appointments, Encounters]
+  - perspective_id: billing_and_finance
+    tables: [Date, Patient, Payer, Invoices, Payments, Outstanding Balances]
+  - perspective_id: revenue_assurance
+    tables: [Date, Reconciliation Controls, Billing Exceptions]
+  - perspective_id: data_science_outputs
+    tables: [Date, Predictions]
+  - perspective_id: executive_summary
+    tables: [Date, Organisation, Payer, Appointments, Invoices, Billing Exceptions, Predictions]
+hierarchies:
+  - hierarchy_id: date_calendar
+    table: Date
+    levels: [year, quarter, month_name, date]
+  - hierarchy_id: organisation_rollup
+    table: Organisation
+    levels: [region, organisation_name]
+  - hierarchy_id: billing_payer
+    table: Payer
+    levels: [source_system, payer_key]
+  - hierarchy_id: assurance_type
+    table: Billing Exceptions
+    levels: [exception_origin, exception_type, severity]
+security:
+  rls_roles:
+    - role_id: enterprise_viewer
+      deny_by_default: false
+      filters: []
+      description: Aggregated enterprise viewer with OLS restrictions.
+    - role_id: healthcare_operations_viewer
+      deny_by_default: true
+      filters:
+        - table: Organisation
+          column: organisation_key
+          mapping_contract: synthetic_user_to_organisation_role_fixture
+      description: Organisation-scoped operational analytics.
+    - role_id: billing_finance_viewer
+      deny_by_default: true
+      filters:
+        - table: Payer
+          column: payer_key
+          mapping_contract: synthetic_user_to_payer_role_fixture
+      description: Payer-scoped finance analytics.
+    - role_id: revenue_assurance_analyst
+      deny_by_default: true
+      filters:
+        - table: Billing Exceptions
+          column: exception_origin
+          mapping_contract: synthetic_user_to_assurance_domain_fixture
+      description: Assurance-domain analyst.
+    - role_id: data_science_consumer
+      deny_by_default: true
+      filters:
+        - table: Predictions
+          column: validation_status
+          allowed_values: [VALIDATED]
+      description: Validated model-output consumer.
+  ols_rules:
+    - object: Patient.synthetic_nhs_number
+      restricted_roles: [enterprise_viewer, healthcare_operations_viewer, executive_viewer]
+      access: hidden
+      rationale: minimise synthetic identifier exposure
+      sensitivity_class: synthetic_restricted
+    - object: Patient.birth_date
+      restricted_roles: [enterprise_viewer, executive_viewer]
+      access: hidden
+      rationale: patient-level minimisation
+      sensitivity_class: synthetic_restricted
+    - object: Payments.external_reference
+      restricted_roles: [enterprise_viewer, billing_finance_viewer, executive_viewer]
+      access: hidden
+      rationale: payment-reference minimisation
+      sensitivity_class: synthetic_financial_restricted
+    - object: Billing Exceptions.evidence_reference
+      restricted_roles: [enterprise_viewer, executive_viewer]
+      access: hidden
+      rationale: assurance evidence is restricted
+      sensitivity_class: synthetic_financial_restricted
+refresh_groups:
+  - refresh_group_id: intraday_operational
+    mode: Import
+    cadence: every_4_hours_blueprint
+    dependency: dbt_curated_core_complete
+    failure_handling: retry_once_then_airflow_evidence
+    incremental_refresh: true
+    partition_key: appointment_datetime
+    retention: 24_months
+    connected_status: not_connected
+  - refresh_group_id: daily_finance
+    mode: Import
+    cadence: daily_after_finance_controls
+    dependency: dbt_curated_billing_finance_complete
+    failure_handling: stop_promotion_and_record_evidence
+    incremental_refresh: true
+    partition_key: invoice_date
+    retention: 36_months
+    connected_status: not_connected
+  - refresh_group_id: daily_assurance
+    mode: Import
+    cadence: daily_after_assurance
+    dependency: dbt_curated_assurance_complete
+    failure_handling: notify_assurance_owner_blueprint
+    incremental_refresh: true
+    partition_key: control_date
+    retention: 36_months
+    connected_status: not_connected
+  - refresh_group_id: periodic_reference_data
+    mode: Import
+    cadence: weekly_or_on_change
+    dependency: conformed_dimensions_ready
+    failure_handling: retain_previous_certified_dataset
+    incremental_refresh: false
+    partition_key: not_applicable
+    retention: current_snapshot
+    connected_status: not_connected
+  - refresh_group_id: model_output_refresh
+    mode: Import
+    cadence: after_governed_dataiku_batch_outputs
+    dependency: dataiku_prediction_output_contract_ready
+    failure_handling: suppress_stale_monitoring_pages
+    incremental_refresh: true
+    partition_key: prediction_timestamp
+    retention: 24_months
+    connected_status: not_connected

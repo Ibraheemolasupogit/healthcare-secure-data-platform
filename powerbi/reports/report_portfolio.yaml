@@ -1,0 +1,168 @@
+reports:
+  - report_id: healthcare_operations_overview
+    name: Healthcare Operations Overview
+    purpose: Aggregate synthetic operational flow and appointment context.
+    audience: Healthcare Operations Viewer
+    semantic_model: healthcare_enterprise
+    pages:
+      - operational_summary
+      - appointments
+      - encounters_and_admissions
+      - pathways
+      - organisation_performance
+      - data_quality
+    filters: [Date, Organisation, Provider]
+    drill_through: organisation_to_appointment_detail_restricted
+    bookmarks: [default_summary, accessibility_high_contrast]
+    export_policy: summarised_export_only
+    rls_expectations: organisation scoped where applicable
+    sensitivity: Synthetic Health Data
+    owner: BI_ANALYTICS
+    implementation_status: specification_only
+    deployment_status: not_deployed
+    limitations: no clinical decision-support use
+    visuals:
+      - visual_id: ops_kpi_appointments
+        type: card
+        page: operational_summary
+        title: Appointment Count
+        measures: [appointment_count]
+        dimensions: [Date]
+        filters: []
+        accessibility_text: Total governed appointment count for selected filters.
+        business_question: How much scheduled activity exists?
+      - visual_id: ops_trend_attendance
+        type: line_chart
+        page: appointments
+        title: Attendance Rate Trend
+        measures: [attendance_rate]
+        dimensions: [Date.month_name]
+        filters: [Organisation]
+        accessibility_text: Trend of appointment attendance rate by month.
+        business_question: Is synthetic attendance changing over time?
+  - report_id: billing_finance_performance
+    name: Billing and Finance Performance
+    purpose: Monitor governed finance outputs without recalculating billing truth.
+    audience: Billing and Finance Viewer
+    semantic_model: healthcare_enterprise
+    pages: [billing_summary, claims, invoices, payments_and_refunds, outstanding_balances, payer_and_contract_analysis]
+    filters: [Date, Payer]
+    drill_through: payer_to_invoice_detail_restricted
+    bookmarks: [default_summary]
+    export_policy: restricted_financial_export
+    rls_expectations: payer scoped where applicable
+    sensitivity: Synthetic Financial Data
+    owner: FINANCE_ANALYTICS
+    implementation_status: specification_only
+    deployment_status: not_deployed
+    limitations: synthetic finance portfolio only
+    visuals:
+      - visual_id: fin_kpi_invoiced
+        type: card
+        page: billing_summary
+        title: Invoiced Amount
+        measures: [invoiced_amount]
+        dimensions: [Date]
+        filters: [Payer]
+        accessibility_text: Sum of governed invoice totals.
+        business_question: What is the governed invoiced amount?
+      - visual_id: fin_ageing_bar
+        type: bar_chart
+        page: outstanding_balances
+        title: Outstanding Balance by Ageing Bucket
+        measures: [outstanding_balance]
+        dimensions: [Outstanding Balances.governed_ageing_bucket]
+        filters: [Payer]
+        accessibility_text: Outstanding balance split by governed ageing bucket.
+        business_question: Where is outstanding balance concentrated?
+  - report_id: revenue_assurance_reconciliation
+    name: Revenue Assurance and Reconciliation
+    purpose: Present governed assurance control and exception outputs.
+    audience: Revenue Assurance Analyst
+    semantic_model: healthcare_enterprise
+    pages: [assurance_summary, control_status, open_exceptions, revenue_at_risk, remediation_progress, period_assurance]
+    filters: [Date, Exception Type, Severity]
+    drill_through: exception_detail_restricted
+    bookmarks: [open_exception_focus]
+    export_policy: restricted_assurance_export
+    rls_expectations: assurance-domain scoped where applicable
+    sensitivity: Synthetic Financial Data
+    owner: REVENUE_ASSURANCE
+    implementation_status: specification_only
+    deployment_status: not_deployed
+    limitations: not statutory audit evidence
+    visuals:
+      - visual_id: ass_kpi_pass_rate
+        type: card
+        page: assurance_summary
+        title: Control Pass Rate
+        measures: [control_pass_rate]
+        dimensions: [Date]
+        filters: []
+        accessibility_text: Share of governed control results that passed.
+        business_question: Are assurance controls passing?
+      - visual_id: ass_exception_matrix
+        type: matrix
+        page: open_exceptions
+        title: Exceptions by Type and Severity
+        measures: [open_exception_count, revenue_at_risk]
+        dimensions: [Billing Exceptions.exception_type, Billing Exceptions.severity]
+        filters: [Date]
+        accessibility_text: Exception counts and value at risk by governed type and severity.
+        business_question: Which exception groups need attention?
+  - report_id: model_feature_monitoring
+    name: Model and Feature Monitoring
+    purpose: Consume governed Dataiku prediction and feature-set metadata.
+    audience: Data Science Consumer
+    semantic_model: healthcare_enterprise
+    pages:
+      - prediction_volumes
+      - model_versions
+      - prediction_distribution
+      - feature_set_versions
+      - validation_status
+      - monitoring_limitations
+    filters: [Date, Model Version, Feature Set Version]
+    drill_through: prediction_batch_detail_restricted
+    bookmarks: [validated_predictions_only]
+    export_policy: restricted_model_output_export
+    rls_expectations: validated outputs only for data-science consumers
+    sensitivity: Synthetic Financial Data
+    owner: DATA_SCIENCE
+    implementation_status: specification_only
+    deployment_status: not_deployed
+    limitations: no clinical decision support and no autonomous thresholds
+    visuals:
+      - visual_id: ml_kpi_prediction_count
+        type: card
+        page: prediction_volumes
+        title: Prediction Count
+        measures: [prediction_count]
+        dimensions: [Date]
+        filters: [validation_status]
+        accessibility_text: Count of governed prediction output rows.
+        business_question: How many prediction rows were produced?
+      - visual_id: ml_probability_histogram
+        type: column_chart
+        page: prediction_distribution
+        title: Predicted Probability Distribution
+        measures: [prediction_count]
+        dimensions: [Predictions.risk_band]
+        filters: [model_version]
+        accessibility_text: Prediction count by governed risk band.
+        business_question: How are model outputs distributed?
+accessibility_requirements:
+  keyboard_navigation: required
+  tab_order: logical_top_left_to_bottom_right
+  alt_text: required_for_all_visuals
+  colour_independent_interpretation: required
+  contrast: WCAG_AA_target
+  font_size: minimum_11pt
+  tooltip_alternatives: required_for_key_metrics
+  reduced_clutter: required
+thin_report_policy:
+  duplicate_local_semantic_models: prohibited
+  report_level_business_measures: prohibited
+  power_query_transformations: prohibited
+  local_data_imports: prohibited
+  centralised_security: required

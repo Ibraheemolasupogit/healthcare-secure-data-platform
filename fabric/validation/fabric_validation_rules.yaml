@@ -1,0 +1,11 @@
+rules:
+  - id: no_live_workspace_ids
+    description: Workspace identifiers must be synthetic repository IDs, not tenant GUIDs.
+  - id: no_credentials
+    description: Connection blueprints must not contain usernames, passwords, keys or tokens.
+  - id: no_fabric_pipeline_implementation
+    description: Fabric deployment remains a blueprint; Airflow is not replaced.
+  - id: no_lakehouse_duplication
+    description: Milestone 13 must not duplicate governed Snowflake data into Fabric storage.
+  - id: endorsement_claims_are_blueprint_only
+    description: Certification and promotion statuses are process definitions, not live service claims.

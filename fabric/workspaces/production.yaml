@@ -1,0 +1,15 @@
+workspace_id: healthcare_platform_production
+display_name: Healthcare Platform Production Consumption
+environment: production
+purpose: Host certified shared semantic models and thin reports after future deployment approval.
+capacity_expectation: production_capacity_blueprint
+ownership_role: BI_PLATFORM_OWNER
+contributor_role: RELEASE_MANAGER
+viewer_role: APPROVED_BUSINESS_CONSUMER
+data_sensitivity: Synthetic Health Data
+deployment_stage: production
+endorsement_eligibility: Certified
+external_sharing_policy: prohibited
+service_principal_use: required_for_future_automation
+synthetic_only: true
+implementation_status: blueprint_only

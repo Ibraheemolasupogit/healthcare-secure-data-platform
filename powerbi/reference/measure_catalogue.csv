@@ -1,0 +1,18 @@
+measure_id,display_name,expression,domain,format_string,owner,certification_status,implementation_status,validation_rule
+appointment_count,Appointment Count,COUNTROWS('Appointments'),healthcare_operations,"#,0",BI_ANALYTICS,Draft,metadata_only,row count equals governed appointment fact count
+attended_appointment_count,Attended Appointment Count,"CALCULATE([Appointment Count], 'Appointments'[attendance_status] = ""ATTENDED"")",healthcare_operations,"#,0",BI_ANALYTICS,Draft,metadata_only,status-filtered count cannot exceed Appointment Count
+attendance_rate,Attendance Rate,"DIVIDE([Attended Appointment Count], [Appointment Count])",healthcare_operations,0.0%,BI_ANALYTICS,Draft,metadata_only,uses DIVIDE safe semantics
+encounter_count,Encounter Count,COUNTROWS('Encounters'),healthcare_operations,"#,0",BI_ANALYTICS,Draft,metadata_only,row count equals governed encounter fact count
+invoice_count,Invoice Count,COUNTROWS('Invoices'),billing_and_finance,"#,0",FINANCE_ANALYTICS,Draft,metadata_only,row count equals governed invoice fact count
+invoiced_amount,Invoiced Amount,SUM('Invoices'[governed_total_amount]),billing_and_finance,"£#,0.00",FINANCE_ANALYTICS,Draft,metadata_only,sums governed invoice total only
+payment_amount,Payment Amount,SUM('Payments'[amount]),billing_and_finance,"£#,0.00",FINANCE_ANALYTICS,Draft,metadata_only,sums governed payment amount only
+outstanding_balance,Outstanding Balance,SUM('Outstanding Balances'[governed_outstanding_amount]),billing_and_finance,"£#,0.00",FINANCE_ANALYTICS,Draft,metadata_only,uses governed outstanding amount only
+collection_rate,Collection Rate,"DIVIDE([Payment Amount], [Invoiced Amount])",billing_and_finance,0.0%,FINANCE_ANALYTICS,Draft,metadata_only,uses DIVIDE safe semantics
+controls_run,Controls Run,COUNTROWS('Reconciliation Controls'),revenue_assurance,"#,0",REVENUE_ASSURANCE,Draft,metadata_only,row count equals governed control-result count
+controls_failed,Controls Failed,"CALCULATE([Controls Run], 'Reconciliation Controls'[reconciliation_status] = ""FAILED"")",revenue_assurance,"#,0",REVENUE_ASSURANCE,Draft,metadata_only,failed count cannot exceed controls run
+control_pass_rate,Control Pass Rate,"DIVIDE([Controls Run] - [Controls Failed], [Controls Run])",revenue_assurance,0.0%,REVENUE_ASSURANCE,Draft,metadata_only,uses DIVIDE safe semantics
+open_exception_count,Open Exception Count,COUNTROWS('Billing Exceptions'),revenue_assurance,"#,0",REVENUE_ASSURANCE,Draft,metadata_only,no exception reprioritisation
+high_priority_exception_count,High-Priority Exception Count,"CALCULATE([Open Exception Count], 'Billing Exceptions'[severity] IN {""HIGH"",""CRITICAL""})",revenue_assurance,"#,0",REVENUE_ASSURANCE,Draft,metadata_only,filtered count cannot exceed open exceptions
+revenue_at_risk,Revenue at Risk,SUM('Billing Exceptions'[financial_value_at_risk]),revenue_assurance,"£#,0.00",REVENUE_ASSURANCE,Draft,metadata_only,sums governed value-at-risk only
+prediction_count,Prediction Count,COUNTROWS('Predictions'),data_science_outputs,"#,0",DATA_SCIENCE,Draft,contract_only,count validated prediction output rows
+average_predicted_probability,Average Predicted Probability,AVERAGE('Predictions'[predicted_probability]),data_science_outputs,0.000,DATA_SCIENCE,Draft,contract_only,probability stays between zero and one

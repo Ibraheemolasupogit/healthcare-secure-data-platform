@@ -1,0 +1,17 @@
+{
+  "certified": false,
+  "counts": {
+    "kpis": 4,
+    "measures": 17,
+    "relationships": 12,
+    "reports": 4,
+    "tables": 13
+  },
+  "power_bi_desktop_validated": false,
+  "published": false,
+  "refreshed": false,
+  "semantic_model_id": "healthcare_enterprise",
+  "status": "local_reference_metadata_only",
+  "synthetic": true,
+  "version": "1.0.0"
+}

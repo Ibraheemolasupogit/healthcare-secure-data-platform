@@ -7,3 +7,5 @@ GitHub environment secrets will eventually hold references or protected values s
 Secrets require named ownership, least privilege, rotation, expiry where supported, access logging and immediate revocation after exposure. CI scans commits, private keys and dependency configuration. Terraform state is encrypted, access-controlled, locked and treated as sensitive.
 
 Airflow Milestone 10 DAGs do not embed credentials or pass secrets in command strings. Fixture mode is the default. Connected Snowflake mode must use approved dbt/Snowflake credential mechanisms and remains disabled unless explicitly configured.
+
+Fabric and Power BI Milestone 13 artefacts are blueprints only. Tenant IDs, workspace GUIDs, real user emails, gateways, secrets, passwords, tokens and connection strings are prohibited in repository metadata.

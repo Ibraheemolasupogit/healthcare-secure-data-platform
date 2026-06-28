@@ -23,3 +23,5 @@ No managed Airflow service, Kubernetes deployment, production notification integ
 Future Dataiku integration contract: Airflow validates trusted inputs, invokes one approved Dataiku scenario, receives scenario status and artefact references, and records cross-platform evidence. Milestone 11 does not add live Dataiku API calls to Airflow.
 
 Future feature-store integration contract: Airflow may coordinate feature-materialisation preflight, dbt feature build, feature validation, historical feature retrieval, Dataiku scenario trigger and freshness monitoring. Milestone 12 does not alter M10 DAG ownership.
+
+Future Fabric/Power BI integration contract: Airflow may call an approved semantic-model refresh endpoint only after dbt, assurance, Dataiku and feature-store readiness checks are complete. Milestone 13 documents this interface but does not add live refresh API calls or duplicate scheduling in Fabric.

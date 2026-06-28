@@ -1,3 +1,7 @@
-# Semantic model placeholder
+# Semantic model boundary
 
-Milestone 13 will store source-controlled model metadata and measure definitions here after governed dbt interfaces exist.
+The governed semantic model is maintained under `powerbi/semantic_models/`. Fabric does
+not own a separate semantic model in Milestone 13; this avoids fragmented business truth.
+
+The current implementation is metadata-only and not Power BI Desktop, Tabular Editor or
+Fabric tenant validated.

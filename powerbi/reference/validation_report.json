@@ -1,0 +1,16 @@
+{
+  "errors": [],
+  "kpi_count": 4,
+  "measure_count": 17,
+  "ols_rule_count": 4,
+  "refresh_group_count": 5,
+  "relationship_count": 12,
+  "report_count": 4,
+  "security_role_count": 5,
+  "semantic_model_count": 1,
+  "table_count": 13,
+  "valid": true,
+  "visual_count": 8,
+  "warnings": [],
+  "workspace_count": 3
+}

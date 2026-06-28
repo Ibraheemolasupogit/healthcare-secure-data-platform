@@ -1,0 +1,5 @@
+kpi_id,name,measure,target,warning_threshold,critical_threshold,direction,owner,refresh,source_model,synthetic_portfolio_classification
+kpi_attendance_rate,Attendance Rate,attendance_rate,0.85,0.75,0.65,higher_is_better,BI_ANALYTICS,intraday_operational,core_appointment,synthetic_health_data
+kpi_collection_rate,Collection Rate,collection_rate,0.9,0.8,0.7,higher_is_better,FINANCE_ANALYTICS,daily_finance,fct_invoice,synthetic_financial_data
+kpi_control_pass_rate,Control Pass Rate,control_pass_rate,0.95,0.9,0.8,higher_is_better,REVENUE_ASSURANCE,daily_assurance,reconciliation_control_result,synthetic_financial_data
+kpi_revenue_at_risk,Revenue at Risk,revenue_at_risk,0,10000,50000,lower_is_better,REVENUE_ASSURANCE,daily_assurance,reconciliation_exception,synthetic_financial_data

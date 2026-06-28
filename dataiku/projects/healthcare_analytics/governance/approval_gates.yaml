@@ -1,0 +1,27 @@
+version: 1.0.0
+approval_gates:
+  - gate_id: analytical_contract_passes
+    required: true
+  - gate_id: no_leakage_fields
+    required: true
+  - gate_id: reproducibility_passes
+    required: true
+  - gate_id: baseline_comparison_recorded
+    required: true
+  - gate_id: minimum_f1_reference_threshold
+    required: true
+    threshold: 0.50
+  - gate_id: subgroup_report_present
+    required: true
+  - gate_id: model_card_complete
+    required: true
+  - gate_id: prediction_contract_valid
+    required: true
+  - gate_id: monitoring_plan_present
+    required: true
+  - gate_id: human_review_completed
+    required: true
+    status: not_completed_for_local_reference
+approval_status: not_approved_reference_only
+approved_by_role: FINANCE_ANALYST
+promotion_policy: manual approval required; no automatic deployment or retraining

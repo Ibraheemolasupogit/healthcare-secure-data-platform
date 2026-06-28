@@ -1,0 +1,39 @@
+version: 1.0.0
+experiment_id: billing_exception_priority_materiality
+target: material_remediation_required
+target_type: binary_classification
+random_seed: 42
+split_strategy:
+  type: temporal
+  train: earliest_70_percent
+  validation: next_15_percent
+  test: latest_15_percent
+  sort_keys: [detected_at, reconciliation_exception_key]
+baseline_models:
+  - model_id: majority_class_baseline
+    algorithm: majority_class_classifier
+    purpose: transparent lower-bound comparator
+candidate_models:
+  - model_id: transparent_materiality_scorecard
+    algorithm: bounded_rule_scorecard
+    purpose: interpretable candidate for local reference
+  - model_id: shallow_decision_tree_blueprint
+    algorithm: decision_tree_depth_3
+    purpose: Dataiku visual ML candidate blueprint
+excluded_models:
+  - deep_learning
+  - unbounded_hyperparameter_search
+  - target_encoding
+primary_metric: f1
+secondary_metrics: [precision, recall, pr_auc_blueprint, roc_auc_blueprint, calibration_blueprint]
+decision_threshold: 0.50
+threshold_selection_method: fixed synthetic policy threshold for reference fixture
+class_imbalance_policy: report class distribution and consider class weights; no oversampling by default
+preprocessing:
+  categorical_encoding: deterministic one-hot with unseen category as UNKNOWN
+  numeric_scaling: none for transparent scorecard; standard scaling only for future linear models
+  missing_values: fit imputation on training split only
+  rare_categories: group to OTHER after governance review
+  high_cardinality: reject unless approved
+  feature_name_preservation: required
+approval_status: not_approved_reference_only

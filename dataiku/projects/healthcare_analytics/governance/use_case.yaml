@@ -1,0 +1,41 @@
+version: 1.0.0
+use_case_id: billing_exception_prioritisation
+business_question: Which open synthetic billing or reconciliation exceptions should receive earlier manual review?
+decision_supported: Human queue triage for finance-control analysts.
+target_population: Open governed billing and reconciliation exceptions.
+unit_of_prediction: reconciliation_exception_key
+prediction_time: after Milestone 9 assurance publication and before manual review.
+target_definition: material_remediation_required synthetic label.
+label_availability: Local reference fixture only; production label source requires approved remediation outcomes.
+acceptable_use:
+  - workflow design demonstration
+  - synthetic model governance testing
+  - human-reviewed operational prioritisation design
+prohibited_use:
+  - autonomous clinical decision-making
+  - patient treatment decisions
+  - financial posting or write-off automation
+  - regulatory certification
+  - production prioritisation without approval
+users:
+  - DATA_SCIENTIST
+  - FINANCE_ANALYST
+  - DATA_QUALITY_ANALYST
+upstream_governed_inputs:
+  - reconciliation_exception
+  - exception_remediation_status
+  - revenue_at_risk_summary
+downstream_output: SERVING.ML_OUTPUTS.billing_exception_priority_predictions
+risks:
+  - circular leakage from deterministic priority fields
+  - overfitting to synthetic outcomes
+  - operational bias across payer or source-system groups
+limitations:
+  - synthetic-only
+  - not Dataiku-produced
+  - not Snowflake-connected
+monitoring_requirements:
+  - schema checks
+  - drift checks
+  - subgroup performance
+human_oversight: Finance-control users must review model output before any action.

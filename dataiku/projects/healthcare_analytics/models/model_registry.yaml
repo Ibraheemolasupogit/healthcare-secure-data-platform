@@ -1,0 +1,24 @@
+version: 1.0.0
+registry_status: repository_blueprint_not_dataiku_registry
+models:
+  - model_id: dku_billing_exception_materiality_candidate
+    model_name: Billing Exception Materiality Candidate
+    use_case: billing_exception_prioritisation
+    version: 1.0.0-local-reference
+    algorithm: bounded_rule_scorecard
+    feature_set_version: 1.0.0
+    training_data_version: synthetic_fixture_v1
+    training_period: 2024-10-01_to_2024-12-06
+    validation_period: 2024-12-10_to_2024-12-14
+    test_period: 2024-12-18_to_2024-12-28
+    selected_threshold: 0.50
+    approval_status: not_approved_reference_only
+    approved_by_role: FINANCE_ANALYST
+    approved_at: null
+    model_card_path: dataiku/projects/healthcare_analytics/models/model_card.md
+    artefact_checksum: populated_by_reference_output
+    environment: local_reference
+    deployment_status: not_deployed
+    monitoring_status: blueprint_only
+    retirement_status: active_reference
+    synthetic_only: true

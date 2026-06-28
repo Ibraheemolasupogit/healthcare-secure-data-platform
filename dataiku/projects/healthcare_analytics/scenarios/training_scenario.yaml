@@ -1,0 +1,17 @@
+version: 1.0.0
+scenario_id: train_billing_exception_priority
+status: blueprint_not_scheduled
+owner: DATA_SCIENTIST
+steps:
+  - validate_inputs
+  - build_analytical_dataset
+  - validate_features
+  - train_baseline
+  - train_candidates
+  - evaluate_models
+  - generate_model_card
+  - apply_approval_gates
+  - publish_training_evidence
+failure_behaviour: propagate failure and block promotion
+airflow_boundary: Airflow may trigger this scenario later but does not own internal Dataiku flow steps.
+connected_execution_default: false

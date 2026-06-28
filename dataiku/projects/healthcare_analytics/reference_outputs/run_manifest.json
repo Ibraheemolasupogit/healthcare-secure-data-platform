@@ -1,0 +1,10 @@
+{
+  "dataiku_connected": false,
+  "dependency_strategy": "python_standard_library_only",
+  "generated_at": "2025-01-01T00:00:00+00:00",
+  "input_path": "dataiku/projects/healthcare_analytics/reference_data/billing_exception_analytical_fixture.csv",
+  "input_sha256": "f6fc278f300062095312c2104521b2946f08559baf25f852f28bf6d9771641e4",
+  "python_timestamp_utc": "2025-01-01T00:00:00Z",
+  "run_id": "m11-dataiku-reference-2025-01-01",
+  "snowflake_connected": false
+}

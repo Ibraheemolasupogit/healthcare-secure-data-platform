@@ -1,0 +1,46 @@
+version: 1.0.0
+dataset_id: billing_exception_priority_analytical_base
+grain: one open governed billing or reconciliation exception at prediction time
+entity_key: reconciliation_exception_key
+observation_timestamp: detected_at
+prediction_timestamp: prediction_reference_date
+target_availability_timestamp: label_observed_at
+label: material_remediation_required
+sensitivity: synthetic_financial_restricted
+source_model_lineage:
+  - reconciliation_exception
+  - exception_remediation_status
+  - revenue_at_risk_summary
+point_in_time_rule: Features must be known at or before prediction_reference_date.
+training_eligibility: synthetic_flag true and label available.
+scoring_eligibility: open exception and no existing prediction at model/version grain.
+duplicate_policy: one row per reconciliation_exception_key and prediction_reference_date.
+refresh_expectation: daily after Milestone 9 assurance models complete.
+owner: DATA_SCIENTIST
+feature_columns:
+  - exception_type
+  - affected_object_type
+  - severity
+  - financial_value_at_risk
+  - exception_age_days
+  - recurrence_count
+  - assigned_owner
+  - source_system
+  - payer_type
+  - contract_type
+  - timing_difference_flag
+  - control_status
+  - unresolved_dependency_count
+  - currency
+excluded_leakage_columns:
+  - priority_score
+  - priority_band
+  - resolved_at
+  - resolution_status
+  - final_recovered_amount
+  - post_resolution_root_cause
+  - human_assignment_outcome
+  - evidence_generated_after_prediction
+missing_value_expectations:
+  numeric: impute median fitted on training data only
+  categorical: impute UNKNOWN fitted on training data only

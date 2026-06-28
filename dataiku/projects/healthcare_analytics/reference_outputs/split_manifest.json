@@ -1,0 +1,28 @@
+{
+  "class_distribution": {
+    "test": {
+      "0": 2,
+      "1": 1
+    },
+    "train": {
+      "0": 7,
+      "1": 7
+    },
+    "validation": {
+      "0": 1,
+      "1": 2
+    }
+  },
+  "entity_overlap_policy": "same exception key cannot appear in multiple splits",
+  "reference_date": "2025-01-01",
+  "row_counts": {
+    "test": 3,
+    "train": 14,
+    "validation": 3
+  },
+  "sort_keys": [
+    "detected_at",
+    "reconciliation_exception_key"
+  ],
+  "strategy": "temporal_70_15_15"
+}

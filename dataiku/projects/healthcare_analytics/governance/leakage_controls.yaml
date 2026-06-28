@@ -1,0 +1,13 @@
+version: 1.0.0
+prohibited_feature_names:
+  - priority_score
+  - priority_band
+  - resolved_at
+  - resolution_status
+  - final_recovered_amount
+  - post_resolution_root_cause
+  - human_assignment_outcome
+  - evidence_generated_after_prediction
+temporal_rule: No feature may be populated after prediction_reference_date.
+target_rule: material_remediation_required must not be derived from Milestone 9 priority band.
+validation_status: statically_validated

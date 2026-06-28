@@ -10,6 +10,7 @@ from pathlib import Path
 
 from healthcare_platform.assurance import write_evidence_pack
 from healthcare_platform.config import load_settings, snowflake_credentials_present
+from healthcare_platform.dataiku import run_reference_pipeline
 from healthcare_platform.interoperability.config import (
     DEFAULT_CONFIG_PATH as DEFAULT_INTEROPERABILITY_CONFIG_PATH,
 )
@@ -189,6 +190,13 @@ def build_parser() -> argparse.ArgumentParser:
     )
     assurance_evidence.add_argument("--output-dir", type=Path, required=True)
     assurance_evidence.add_argument("--overwrite", action="store_true")
+    dataiku_reference = subparsers.add_parser(
+        "dataiku-reference",
+        help="run the deterministic local Milestone 11 Dataiku reference pipeline",
+    )
+    dataiku_reference.add_argument("--input", type=Path, required=True)
+    dataiku_reference.add_argument("--output-dir", type=Path, required=True)
+    dataiku_reference.add_argument("--overwrite", action="store_true")
     return parser
 
 
@@ -365,6 +373,19 @@ def _assurance_evidence(args: argparse.Namespace) -> int:
     return 0
 
 
+def _dataiku_reference(args: argparse.Namespace) -> int:
+    result = run_reference_pipeline(args.input, args.output_dir, overwrite=args.overwrite)
+    print(f"output_dir: {result.output_dir}")
+    print(f"run_manifest: {result.run_manifest}")
+    print(f"baseline_metrics: {result.baseline_metrics}")
+    print(f"candidate_metrics: {result.candidate_metrics}")
+    print(f"selected_model: {result.selected_model}")
+    print(f"prediction_sample: {result.prediction_sample}")
+    print(f"model_card: {result.model_card}")
+    print(f"checksums: {result.checksums}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the CLI."""
     args = build_parser().parse_args(argv)
@@ -395,6 +416,8 @@ def main(argv: list[str] | None = None) -> int:
             return _interoperability(args)
         if args.command == "assurance-evidence":
             return _assurance_evidence(args)
+        if args.command == "dataiku-reference":
+            return _dataiku_reference(args)
     except (ValueError, OSError, json.JSONDecodeError) as error:
         print(f"error: {error}")
         return 2

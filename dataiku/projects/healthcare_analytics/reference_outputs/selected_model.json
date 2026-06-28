@@ -1,0 +1,8 @@
+{
+  "approval_status": "not_approved_reference_only",
+  "feature_set_version": "1.0.0",
+  "model_id": "dku_billing_exception_materiality_candidate",
+  "model_version": "1.0.0-local-reference",
+  "selected_model": "candidate",
+  "selection_rule": "highest_f1_on_validation_then_final_test_report_for_reference_fixture"
+}

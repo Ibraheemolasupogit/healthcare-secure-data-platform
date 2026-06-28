@@ -1,0 +1,5 @@
+group_type,group_value,row_count,precision,recall,f1,status
+payer_type,NHS_STANDARD,1,,,,sample_too_small
+payer_type,PRIVATE_INSURER,1,,,,sample_too_small
+payer_type,SELF_PAY,1,,,,sample_too_small
+source_system,SYNTHETIC_BILLING_FINANCE,3,0.5,1.0,0.6667,evaluated

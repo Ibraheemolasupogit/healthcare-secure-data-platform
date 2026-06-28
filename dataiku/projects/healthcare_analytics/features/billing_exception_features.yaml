@@ -1,0 +1,130 @@
+version: 1.0.0
+feature_set_id: billing_exception_priority_features
+owner: DATA_SCIENTIST
+features:
+  - name: exception_type
+    data_type: categorical
+    source_model: reconciliation_exception
+    transformation: pass-through controlled category
+    missing_value_handling: UNKNOWN
+    point_in_time_rule: known at detection
+    sensitivity: synthetic_financial_restricted
+    leakage_status: allowed
+    future_reusable_feature_candidate: true
+  - name: affected_object_type
+    data_type: categorical
+    source_model: reconciliation_exception
+    transformation: pass-through controlled category
+    missing_value_handling: UNKNOWN
+    point_in_time_rule: known at detection
+    sensitivity: synthetic_financial_restricted
+    leakage_status: allowed
+    future_reusable_feature_candidate: true
+  - name: severity
+    data_type: ordinal
+    source_model: reconciliation_exception
+    transformation: ordered LOW/MEDIUM/HIGH/CRITICAL
+    missing_value_handling: UNKNOWN
+    point_in_time_rule: assigned before prediction
+    sensitivity: synthetic_financial_restricted
+    leakage_status: allowed
+    future_reusable_feature_candidate: false
+  - name: financial_value_at_risk
+    data_type: numeric
+    source_model: reconciliation_exception
+    transformation: capped non-negative decimal
+    missing_value_handling: median on training
+    point_in_time_rule: known before prediction
+    sensitivity: synthetic_financial_restricted
+    leakage_status: allowed
+    future_reusable_feature_candidate: true
+  - name: exception_age_days
+    data_type: numeric
+    source_model: reconciliation_exception
+    transformation: datediff between detected_at and prediction_reference_date
+    missing_value_handling: zero
+    point_in_time_rule: computed at prediction time
+    sensitivity: synthetic_financial_restricted
+    leakage_status: allowed
+    future_reusable_feature_candidate: true
+  - name: recurrence_count
+    data_type: numeric
+    source_model: analytical_base_recipe
+    transformation: prior exception count by affected_object_type and payer_type
+    missing_value_handling: zero
+    point_in_time_rule: prior records only
+    sensitivity: synthetic_financial_restricted
+    leakage_status: allowed
+    future_reusable_feature_candidate: true
+  - name: assigned_owner
+    data_type: categorical
+    source_model: reconciliation_exception
+    transformation: pass-through owner group
+    missing_value_handling: UNKNOWN
+    point_in_time_rule: assigned before prediction
+    sensitivity: synthetic_financial_restricted
+    leakage_status: allowed
+    future_reusable_feature_candidate: false
+  - name: source_system
+    data_type: categorical
+    source_model: reconciliation_exception
+    transformation: pass-through synthetic source system
+    missing_value_handling: UNKNOWN
+    point_in_time_rule: known at detection
+    sensitivity: synthetic_financial_restricted
+    leakage_status: allowed
+    future_reusable_feature_candidate: true
+  - name: payer_type
+    data_type: categorical
+    source_model: governed_billing_context
+    transformation: joined from governed payer dimension or UNKNOWN in fixture
+    missing_value_handling: UNKNOWN
+    point_in_time_rule: effective at exception date
+    sensitivity: synthetic_financial_restricted
+    leakage_status: allowed
+    future_reusable_feature_candidate: true
+  - name: contract_type
+    data_type: categorical
+    source_model: governed_billing_context
+    transformation: joined from governed contract dimension or UNKNOWN in fixture
+    missing_value_handling: UNKNOWN
+    point_in_time_rule: effective at exception date
+    sensitivity: synthetic_financial_restricted
+    leakage_status: allowed
+    future_reusable_feature_candidate: true
+  - name: timing_difference_flag
+    data_type: boolean
+    source_model: reconciliation_control_result
+    transformation: pass-through
+    missing_value_handling: false
+    point_in_time_rule: known before prediction
+    sensitivity: synthetic_financial_restricted
+    leakage_status: allowed
+    future_reusable_feature_candidate: false
+  - name: control_status
+    data_type: categorical
+    source_model: reconciliation_control_result
+    transformation: pass-through PASS/WARNING/FAIL
+    missing_value_handling: UNKNOWN
+    point_in_time_rule: known before prediction
+    sensitivity: synthetic_financial_restricted
+    leakage_status: allowed
+    future_reusable_feature_candidate: false
+  - name: unresolved_dependency_count
+    data_type: numeric
+    source_model: analytical_base_recipe
+    transformation: count of upstream unresolved related exceptions before prediction time
+    missing_value_handling: zero
+    point_in_time_rule: prior and current open dependencies only
+    sensitivity: synthetic_financial_restricted
+    leakage_status: allowed
+    future_reusable_feature_candidate: true
+  - name: currency
+    data_type: categorical
+    source_model: reconciliation_exception
+    transformation: pass-through ISO currency code
+    missing_value_handling: GBP
+    point_in_time_rule: known before prediction
+    sensitivity: synthetic_financial_restricted
+    leakage_status: allowed
+    future_reusable_feature_candidate: true

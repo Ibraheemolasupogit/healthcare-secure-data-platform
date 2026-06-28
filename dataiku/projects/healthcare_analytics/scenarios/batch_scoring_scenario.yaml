@@ -1,0 +1,14 @@
+version: 1.0.0
+scenario_id: score_billing_exception_priority
+status: blueprint_not_scheduled
+owner: DATA_SCIENTIST
+steps:
+  - validate_scoring_inputs
+  - prepare_scoring_features
+  - score_approved_model
+  - validate_predictions
+  - write_governed_output
+  - publish_scoring_evidence
+requires_approved_model: true
+failure_behaviour: fail closed and do not write governed output
+airflow_boundary: Airflow may trigger one approved scenario and record returned artefact references later.

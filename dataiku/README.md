@@ -1,3 +1,23 @@
-# Dataiku research scaffold
+# Dataiku governed analytics blueprint
 
-Milestone 12 will provide a governed research workflow: approved cohort input from Snowflake, documented recipes, a reproducible scenario, output disclosure review, connection/role mapping and sanitised project export. `flows`, `recipes`, `scenarios` and `documentation` reserve those reviewable artefact types; they are not empty claims of an implemented project.
+Milestone 11 implements a repository-managed Dataiku blueprint for governed analytics and machine-learning workflows.
+
+Current project:
+
+- `projects/healthcare_analytics` — billing exception prioritisation blueprint.
+- `contracts` — static governed output contract references.
+- `templates` — reusable documentation templates.
+- `validation` — reserved for future Dataiku-specific validators.
+
+The artefacts are not Dataiku exports and were not imported into a live Dataiku instance. They describe how Dataiku should consume trusted governed dbt outputs, prepare a model-specific analytical dataset, run transparent experiments, evaluate models, apply approval gates, score approved models and monitor outcomes.
+
+Run the local reference:
+
+```bash
+PYTHONPATH=src python -m healthcare_platform.cli dataiku-reference \
+  --input dataiku/projects/healthcare_analytics/reference_data/billing_exception_analytical_fixture.csv \
+  --output-dir dataiku/projects/healthcare_analytics/reference_outputs \
+  --overwrite
+```
+
+Dataiku does not own raw ingestion, dbt transformations, Airflow orchestration, feature-store definitions, Fabric/Power BI artefacts or production approval.

@@ -1,0 +1,80 @@
+version: 1.0.0
+recipes:
+  - recipe_id: analytical_base_recipe
+    type: visual_prepare
+    inputs: [governed_reconciliation_exception, governed_exception_remediation_status]
+    outputs: [billing_exception_priority_analytical_base]
+    purpose: construct model-specific analytical rows from trusted governed outputs
+    grain: reconciliation_exception_key
+    owner: DATA_SCIENTIST
+    implementation_status: blueprint
+    dataiku_execution_status: not_executed
+    local_reference_equivalent: dataiku-reference analytical_contract.json
+    dependencies: [trusted_snowflake_inputs]
+    failure_behaviour: fail closed when trusted inputs or required columns are missing
+    evidence: analytical_contract.json
+  - recipe_id: data_quality_checks
+    type: checks
+    inputs: [billing_exception_priority_analytical_base]
+    outputs: [model_readiness_report]
+    purpose: validate primary key, missingness, target availability and leakage exclusions
+    grain: dataset
+    owner: DATA_SCIENTIST
+    implementation_status: blueprint
+    dataiku_execution_status: not_executed
+    local_reference_equivalent: reference pipeline validation
+    dependencies: [analytical_base_recipe]
+    failure_behaviour: stop training scenario
+    evidence: run_manifest.json
+  - recipe_id: feature_preparation_recipe
+    type: prepare
+    inputs: [billing_exception_priority_analytical_base]
+    outputs: [billing_exception_priority_features]
+    purpose: apply model-specific feature handling without changing governed entity definitions
+    grain: reconciliation_exception_key
+    owner: DATA_SCIENTIST
+    implementation_status: blueprint
+    dataiku_execution_status: not_executed
+    local_reference_equivalent: reference feature scoring
+    dependencies: [data_quality_checks]
+    failure_behaviour: fail on leakage or unsupported category policy breach
+    evidence: feature_importance.csv
+  - recipe_id: train_validation_test_split
+    type: split
+    inputs: [billing_exception_priority_features]
+    outputs: [train_split, validation_split, test_split]
+    purpose: deterministic temporal split
+    grain: reconciliation_exception_key
+    owner: DATA_SCIENTIST
+    implementation_status: blueprint
+    dataiku_execution_status: not_executed
+    local_reference_equivalent: split_manifest.json
+    dependencies: [feature_preparation_recipe]
+    failure_behaviour: fail when split proportions or temporal ordering are invalid
+    evidence: split_manifest.json
+  - recipe_id: model_training
+    type: visual_ml
+    inputs: [train_split, validation_split]
+    outputs: [baseline_model, candidate_models]
+    purpose: train transparent baseline and bounded candidate models
+    grain: model_version
+    owner: DATA_SCIENTIST
+    implementation_status: blueprint
+    dataiku_execution_status: not_executed
+    local_reference_equivalent: baseline_metrics.json and candidate_metrics.json
+    dependencies: [train_validation_test_split]
+    failure_behaviour: fail without fixed seeds and controlled target
+    evidence: selected_model.json
+  - recipe_id: batch_scoring
+    type: scoring
+    inputs: [approved_model, scoring_features]
+    outputs: [governed_billing_exception_priority_predictions]
+    purpose: score open exceptions after approval
+    grain: reconciliation_exception_key, model_id, model_version, prediction_reference_date
+    owner: DATA_SCIENTIST
+    implementation_status: blueprint
+    dataiku_execution_status: not_executed
+    local_reference_equivalent: prediction_sample.csv
+    dependencies: [approval_gate]
+    failure_behaviour: fail when model is not approved
+    evidence: prediction_sample.csv

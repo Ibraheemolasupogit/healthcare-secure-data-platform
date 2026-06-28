@@ -1,0 +1,31 @@
+{
+  "entity_key": "reconciliation_exception_key",
+  "excluded_leakage_columns": [
+    "final_recovered_amount",
+    "human_assignment_outcome",
+    "post_resolution_root_cause",
+    "priority_band",
+    "priority_score",
+    "resolution_status",
+    "resolved_at"
+  ],
+  "feature_columns": [
+    "exception_type",
+    "affected_object_type",
+    "severity",
+    "financial_value_at_risk",
+    "exception_age_days",
+    "recurrence_count",
+    "assigned_owner",
+    "source_system",
+    "payer_type",
+    "contract_type",
+    "timing_difference_flag",
+    "control_status",
+    "unresolved_dependency_count",
+    "currency"
+  ],
+  "grain": "one open governed billing or reconciliation exception at prediction time",
+  "label": "material_remediation_required",
+  "synthetic_flag": true
+}

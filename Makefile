@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: install info generate-sample validate-sample interoperability-sample interoperability-validate snowflake-inventory snowflake-render snowflake-validate airflow-static format lint type test yaml sql dbt-parse dbt-static terraform-fmt terraform-validate secrets validate
+.PHONY: install info generate-sample validate-sample interoperability-sample interoperability-validate snowflake-inventory snowflake-render snowflake-validate airflow-static dataiku-reference dataiku-static format lint type test yaml sql dbt-parse dbt-static terraform-fmt terraform-validate secrets validate
 
 install:
 	$(PYTHON) -m pip install -r requirements-dev.txt
@@ -65,6 +65,12 @@ dbt-static:
 airflow-static:
 	PYTHONPATH=src pytest tests/unit/test_airflow_milestone10.py
 
+dataiku-reference:
+	PYTHONPATH=src $(PYTHON) -m healthcare_platform.cli dataiku-reference --input dataiku/projects/healthcare_analytics/reference_data/billing_exception_analytical_fixture.csv --output-dir dataiku/projects/healthcare_analytics/reference_outputs --overwrite
+
+dataiku-static:
+	PYTHONPATH=src pytest tests/unit/test_dataiku_milestone11.py
+
 terraform-fmt:
 	terraform fmt -check -recursive infrastructure/terraform
 
@@ -79,5 +85,5 @@ terraform-validate:
 secrets:
 	@if command -v gitleaks >/dev/null; then gitleaks detect --no-git --redact; else echo "gitleaks not installed; CI performs the authoritative scan"; fi
 
-validate: lint type test yaml sql dbt-parse dbt-static airflow-static snowflake-validate interoperability-validate secrets
+validate: lint type test yaml sql dbt-parse dbt-static airflow-static dataiku-static snowflake-validate interoperability-validate secrets
 	@echo "Core credential-free validation complete. Run terraform-fmt/validate when Terraform is installed."

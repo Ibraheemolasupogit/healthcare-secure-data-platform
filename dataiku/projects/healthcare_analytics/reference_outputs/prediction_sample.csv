@@ -1,0 +1,4 @@
+prediction_id,model_id,model_version,entity_key,predicted_label,predicted_probability,decision_threshold,synthetic_flag
+PRED-EXC-0018,dku_billing_exception_materiality_candidate,1.0.0-local-reference,EXC-0018,LOW_MATERIALITY,0.2260,0.50,true
+PRED-EXC-0019,dku_billing_exception_materiality_candidate,1.0.0-local-reference,EXC-0019,MATERIAL_REMEDIATION_REQUIRED,0.6400,0.50,true
+PRED-EXC-0020,dku_billing_exception_materiality_candidate,1.0.0-local-reference,EXC-0020,MATERIAL_REMEDIATION_REQUIRED,0.9900,0.50,true

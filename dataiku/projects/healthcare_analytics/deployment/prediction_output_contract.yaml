@@ -1,0 +1,64 @@
+version: 1.0.0
+dataset_id: governed_billing_exception_priority_predictions
+snowflake_target: SERVING.ML_OUTPUTS.BILLING_EXCEPTION_PRIORITY_PREDICTIONS
+status: contract_only_not_deployed
+grain: reconciliation_exception_key, model_id, model_version, prediction_reference_date
+columns:
+  - name: prediction_id
+    data_type: varchar
+    required: true
+  - name: model_id
+    data_type: varchar
+    required: true
+  - name: model_version
+    data_type: varchar
+    required: true
+  - name: scoring_timestamp
+    data_type: timestamp_tz
+    required: true
+  - name: prediction_reference_date
+    data_type: date
+    required: true
+  - name: entity_key
+    data_type: varchar
+    required: true
+  - name: predicted_label
+    data_type: varchar
+    accepted_values: [MATERIAL_REMEDIATION_REQUIRED, LOW_MATERIALITY]
+  - name: predicted_probability
+    data_type: number(6,5)
+    valid_range: [0, 1]
+  - name: decision_threshold
+    data_type: number(6,5)
+    valid_range: [0, 1]
+  - name: explanation_reference
+    data_type: varchar
+    required: true
+  - name: feature_set_version
+    data_type: varchar
+    required: true
+  - name: input_data_version
+    data_type: varchar
+    required: true
+  - name: scenario_run_id
+    data_type: varchar
+    required: true
+  - name: validation_status
+    data_type: varchar
+    accepted_values: [PASS, WARNING, FAIL]
+  - name: synthetic_flag
+    data_type: boolean
+    required: true
+  - name: created_at
+    data_type: timestamp_tz
+    required: true
+prohibited_columns:
+  - patient_id
+  - nhs_number
+  - direct_identifier
+validation_rules:
+  - probability_between_zero_and_one
+  - threshold_and_label_agree
+  - unique_prediction_grain
+  - model_lineage_populated
+  - synthetic_flag_true_for_committed_fixtures

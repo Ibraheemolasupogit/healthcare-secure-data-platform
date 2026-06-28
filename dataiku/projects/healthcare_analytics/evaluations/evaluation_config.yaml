@@ -1,0 +1,25 @@
+version: 1.0.0
+evaluation_id: billing_exception_priority_evaluation
+primary_metric: f1
+secondary_metrics:
+  - precision
+  - recall
+  - confusion_matrix
+  - precision_at_top_k_blueprint
+  - recall_at_top_k_blueprint
+  - calibration_blueprint
+business_interpretation: prioritise likely material exceptions for human review
+subgroup_assessment:
+  enabled: true
+  groups: [payer_type, source_system]
+  minimum_group_size: 2
+  interpretation: operational segment monitoring, not fairness certification
+explainability:
+  global_feature_importance: required
+  local_explanation_sample: blueprint_only
+  directionality_checks: required
+test_set_policy: final reporting only after model selection
+metric_validity_checks:
+  probability_bounds: [0, 1]
+  confusion_matrix_reconciles: true
+  accuracy_not_primary: true

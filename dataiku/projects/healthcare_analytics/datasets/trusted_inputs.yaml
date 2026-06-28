@@ -1,0 +1,30 @@
+version: 1.0.0
+trusted_inputs:
+  - dataset_id: governed_reconciliation_exception
+    dbt_model: reconciliation_exception
+    layer: curated_assurance
+    allowed_use: analytical_feature_source
+    prohibited_use: raw_transformation_replacement
+  - dataset_id: governed_exception_remediation_status
+    dbt_model: exception_remediation_status
+    layer: curated_assurance
+    allowed_use: pre_prediction_context_only
+    prohibited_columns:
+      - resolved_at
+      - resolution_code
+      - resolution_status
+  - dataset_id: governed_revenue_at_risk_summary
+    dbt_model: revenue_at_risk_summary
+    layer: curated_assurance
+    allowed_use: aggregate_context
+  - dataset_id: governed_billing_exception
+    dbt_model: billing_exception
+    layer: curated_billing
+    allowed_use: upstream_exception_lineage
+blocked_inputs:
+  - source(raw_billing)
+  - source(raw_finance)
+  - source(raw_clinical)
+  - source(raw_interoperability)
+  - data/samples
+  - Python generator internals

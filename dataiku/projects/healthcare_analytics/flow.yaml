@@ -1,0 +1,60 @@
+version: 1.0.0
+flow_id: billing_exception_prioritisation_flow
+status: blueprint_not_imported
+nodes:
+  - id: trusted_snowflake_inputs
+    type: dataset_group
+    owner: dbt
+  - id: analytical_base_recipe
+    type: recipe
+    owner: dataiku
+  - id: data_quality_checks
+    type: checks
+    owner: dataiku
+  - id: feature_preparation_recipe
+    type: recipe
+    owner: dataiku
+  - id: train_validation_test_split
+    type: recipe
+    owner: dataiku
+  - id: baseline_model
+    type: model
+    owner: dataiku
+  - id: candidate_models
+    type: model_group
+    owner: dataiku
+  - id: model_evaluation
+    type: evaluation
+    owner: dataiku
+  - id: approval_gate
+    type: governance
+    owner: dataiku
+  - id: batch_scoring
+    type: scenario_step
+    owner: dataiku
+  - id: prediction_validation
+    type: checks
+    owner: dataiku
+  - id: governed_snowflake_output
+    type: output_contract
+    owner: serving
+edges:
+  - [trusted_snowflake_inputs, analytical_base_recipe]
+  - [analytical_base_recipe, data_quality_checks]
+  - [data_quality_checks, feature_preparation_recipe]
+  - [feature_preparation_recipe, train_validation_test_split]
+  - [train_validation_test_split, baseline_model]
+  - [train_validation_test_split, candidate_models]
+  - [baseline_model, model_evaluation]
+  - [candidate_models, model_evaluation]
+  - [model_evaluation, approval_gate]
+  - [approval_gate, batch_scoring]
+  - [batch_scoring, prediction_validation]
+  - [prediction_validation, governed_snowflake_output]
+prohibited_inputs:
+  - raw_clinical
+  - raw_billing
+  - raw_finance
+  - raw_interoperability
+  - quarantine
+idempotency: Scenario outputs include model version, feature-set version and scenario run id.

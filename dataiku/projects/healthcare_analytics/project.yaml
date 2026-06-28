@@ -1,0 +1,28 @@
+version: 1.0.0
+project_key: HEDP_GOVERNED_ANALYTICS
+project_name: Healthcare Governed Analytics and ML Blueprint
+description: Repository-managed Dataiku blueprint for governed billing exception prioritisation.
+owner_role: DATA_SCIENTIST
+business_sponsor_role: FINANCE_ANALYST
+technical_owner_role: ANALYTICS_ENGINEER
+use_case: billing_exception_prioritisation
+environment: local_blueprint
+snowflake_connection_placeholder: snowflake_healthcare
+code_environment: python-standard-library-reference; Dataiku managed environment later
+tags: [milestone_11, dataiku, governed_analytics, synthetic_only]
+sensitivity: synthetic_financial_restricted
+review_cadence: quarterly
+approval_status: blueprint_not_production_approved
+deployment_status: not_deployed
+synthetic_only: true
+limitations:
+  - Not a Dataiku export.
+  - Not connected to Snowflake.
+  - Not production approved.
+  - Uses local synthetic reference fixtures.
+input_datasets:
+  - governed_reconciliation_exception
+  - governed_exception_remediation_status
+  - governed_revenue_at_risk_summary
+output_datasets:
+  - governed_billing_exception_priority_predictions

@@ -1,0 +1,5 @@
+version: 1.0.0
+contract_ref: dataiku/projects/healthcare_analytics/deployment/prediction_output_contract.yaml
+owner: SERVING_OWNER
+status: static_contract_only
+deployment: not_deployed

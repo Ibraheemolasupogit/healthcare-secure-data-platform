@@ -1,0 +1,8 @@
+feature_name,importance,explanation
+severity,0.36,native transparent scoring weight
+financial_value_at_risk,0.25,normalised capped contribution
+exception_age_days,0.12,normalised capped contribution
+recurrence_count,0.12,normalised capped contribution
+unresolved_dependency_count,0.12,normalised capped contribution
+control_status,0.08,failure indicator
+timing_difference_flag,-0.04,expected timing reduces urgency

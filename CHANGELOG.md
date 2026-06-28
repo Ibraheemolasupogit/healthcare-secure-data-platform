@@ -29,3 +29,7 @@ All notable changes will follow Keep a Changelog conventions. The project does n
 - Milestone 10 Apache Airflow orchestration foundation with five DAGs, safe CLI/dbt command
   wrappers, typed configuration, bounded sensors, callbacks, local evidence metadata,
   optional Docker profile, guardrails, documentation and ADR.
+- Milestone 11 governed Dataiku analytics and MLOps blueprint with trusted-input contracts,
+  billing exception prioritisation Flow design, feature specifications, experiment/evaluation
+  configuration, approval gates, model card, scenario blueprints, monitoring design, local
+  reference execution, guardrails, documentation and ADR.

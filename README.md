@@ -2,7 +2,7 @@
 
 A production-style, synthetic-only Healthcare Enterprise Data Platform portfolio for clinical, operational, research and financial data engineering. Snowflake remains the target governed data platform and dbt remains the transformation, testing, documentation, lineage and business-logic centre of gravity.
 
-> **Status — Milestone 10 complete locally:** dbt includes governed billing/finance and assurance controls, and Airflow now provides a local-first orchestration foundation over existing CLI/dbt contracts. Snowflake execution, Dataiku, feature store, Fabric/Power BI and later platform integrations remain planned.
+> **Status — Milestone 11 complete locally:** dbt includes governed billing/finance and assurance controls, Airflow provides local-first orchestration, and Dataiku now has a governed analytics/MLOps blueprint with deterministic local reference evidence. Snowflake execution, feature store, Fabric/Power BI and later platform integrations remain planned.
 
 ## Why this project exists
 
@@ -26,7 +26,7 @@ Detailed boundaries are documented in [component responsibilities](docs/architec
 | dbt | Transformation, testing, documentation, lineage, dimensional models, contracts, assurance controls and business logic | **M5 sources/staging, M6 healthcare core, M8 billing/finance and M9 assurance controls implemented locally; marts planned** |
 | FHIR and HL7 | Source interoperability, validation, canonical mapping and quarantine | **Bounded synthetic FHIR-inspired and HL7 parsers implemented locally** |
 | Airflow | Cross-platform orchestration, retries, backfills and failure handling | **Implemented locally as an optional M10 Airflow foundation** |
-| Dataiku | Governed analytics, feature engineering, ML, experiments and model monitoring | **Placeholder only; planned** |
+| Dataiku | Governed analytics, model-specific feature preparation, ML experiments and model monitoring | **Implemented locally as M11 blueprints and reference evidence** |
 | Feature store | Governed reusable features, ownership, freshness, versions and point-in-time correctness | **Not implemented; planned** |
 | Fabric and Power BI | Certified semantic consumption and operational/financial/executive reporting | **Placeholder only; planned** |
 | Terraform | Repeatable infrastructure, identity, storage, networking, secrets and monitoring | **Snowflake foundation module implemented; no apply performed** |
@@ -62,8 +62,9 @@ The design follows least privilege, workload isolation, encryption in transit/at
 - **Complete locally:** Milestone 8 governed billing and finance dbt domain.
 - **Complete locally:** Milestone 9 reconciliation and revenue assurance controls.
 - **Complete locally:** Milestone 10 Apache Airflow orchestration foundation.
-- **Recommended next:** Milestone 11 governed Dataiku workflows.
-- **Planned:** Milestones 11–17 add Dataiku, feature store, Fabric/Power BI, executable governance, broader Terraform, multi-region recovery and portfolio evidence.
+- **Complete locally:** Milestone 11 governed Dataiku analytics and MLOps blueprint.
+- **Recommended next:** Milestone 12 governed feature store.
+- **Planned:** Milestones 12–17 add feature store, Fabric/Power BI, executable governance, broader Terraform, multi-region recovery and portfolio evidence.
 
 The original 15-milestone plan has been transparently realigned into a 17-milestone dependency-led [roadmap](docs/roadmap/milestones.md). [ADR 0009](docs/decisions/0009-expand-to-healthcare-enterprise-platform.md) records why.
 
@@ -79,7 +80,8 @@ The original 15-milestone plan has been transparently realigned into a 17-milest
 | `snowflake` | Foundation contract, inventory and live-validation SQL |
 | `infrastructure` | Terraform modules/environments and Docker tooling |
 | `orchestration` | Apache Airflow DAGs and local orchestration helpers |
-| `dataiku`, `fabric` | Deliberately bounded downstream placeholders |
+| `dataiku` | Governed Dataiku analytics and ML workflow blueprints |
+| `fabric` | Deliberately bounded downstream placeholder |
 | `docs` | Architecture, ADRs, governance, security, roadmap, learning and evidence |
 | `tests` | Unit and integration tests, including determinism and integrity |
 | `.github/workflows` | Credential-free quality gates |
@@ -159,11 +161,20 @@ PYTHONPATH=src pytest tests/unit/test_airflow_milestone10.py
 docker compose config
 ```
 
+Validate the Milestone 11 Dataiku blueprint guardrails locally:
+
+```bash
+PYTHONPATH=src pytest tests/unit/test_dataiku_milestone11.py
+PYTHONPATH=src python -m healthcare_platform.cli dataiku-reference \
+  --input dataiku/projects/healthcare_analytics/reference_data/billing_exception_analytical_fixture.csv \
+  --output-dir dataiku/projects/healthcare_analytics/reference_outputs --overwrite
+```
+
 ## Limitations
 
 The generator uses compact portfolio code sets rather than authoritative clinical terminology. Large-profile configuration exists but has not been executed; current relationship assembly is in-memory and must be partitioned before million-patient benchmarking. The Snowflake foundation has not been planned or applied against a live account, and there are no source loads, runtime-proven dbt builds, live security policies, dashboards, governed research workflows, or cloud deployment evidence.
 
-Current non-goals also include formal FHIR conformance, formal revenue recognition, production Airflow deployment, external notification integrations, Dataiku projects or models, feature-store implementation, Fabric/Power BI artifacts, broader platform Terraform and multi-region deployment. Target-state documentation does not turn these into implemented capabilities.
+Current non-goals also include formal FHIR conformance, formal revenue recognition, production Airflow deployment, live Dataiku execution, external notification integrations, feature-store implementation, Fabric/Power BI artifacts, broader platform Terraform and multi-region deployment. Target-state documentation does not turn these into implemented capabilities.
 
 ## Portfolio positioning
 

@@ -1,0 +1,14 @@
+{
+  "confusion_matrix": {
+    "false_negative": 0,
+    "false_positive": 2,
+    "true_negative": 0,
+    "true_positive": 1
+  },
+  "f1": 0.5,
+  "positive_count": 1,
+  "precision": 0.3333,
+  "recall": 1.0,
+  "row_count": 3,
+  "threshold": 0.5
+}

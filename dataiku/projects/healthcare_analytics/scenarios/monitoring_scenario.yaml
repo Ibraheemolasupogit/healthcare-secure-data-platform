@@ -1,0 +1,13 @@
+version: 1.0.0
+scenario_id: monitor_billing_exception_priority
+status: blueprint_not_scheduled
+owner: DATA_SCIENTIST
+steps:
+  - validate_monitoring_inputs
+  - calculate_data_drift
+  - calculate_prediction_drift
+  - calculate_performance_when_labels_arrive
+  - evaluate_alert_rules
+  - publish_monitoring_evidence
+failure_behaviour: create monitoring finding and require human review
+external_notifications: disabled

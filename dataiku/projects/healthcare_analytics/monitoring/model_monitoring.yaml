@@ -1,0 +1,40 @@
+version: 1.0.0
+monitoring_id: billing_exception_priority_monitoring
+status: blueprint
+reference_window: training_period
+comparison_window: latest_scoring_period
+minimum_sample_size: 20
+checks:
+  - input_schema
+  - missingness
+  - category_distribution
+  - numeric_distribution
+  - data_drift
+  - prediction_distribution
+  - score_distribution
+  - calibration_when_labels_arrive
+  - performance_metrics
+  - subgroup_performance
+  - model_age
+  - feature_set_version
+  - training_serving_skew
+  - invalid_predictions
+  - stale_model
+  - scenario_failures
+drift:
+  numeric_metric: population_stability_index_blueprint
+  categorical_metric: distribution_delta_blueprint
+  warning_threshold: 0.10
+  failure_threshold: 0.25
+retraining_triggers:
+  - scheduled_review
+  - primary_metric_deterioration
+  - calibration_deterioration
+  - sustained_data_drift
+  - class_distribution_change
+  - feature_definition_change
+  - upstream_contract_change
+  - model_age_threshold
+  - governance_review
+automatic_retraining: false
+human_review_required: true

@@ -1,0 +1,5 @@
+tolerance_rule_id,domain,control_type,currency,fixed_amount_tolerance,percentage_tolerance,timing_window_days,severity_on_breach,effective_from,effective_to,owner,rationale,synthetic_portfolio_classification
+TOL-COUNT-EXACT,ALL,COUNT,,0.00,0.0000,0,HIGH,2025-01-01,,DATA_QUALITY,Counts should reconcile exactly in deterministic fixtures,SYNTHETIC_OPERATIONAL_EXPECTATION
+TOL-AMOUNT-GBP,FINANCE,AMOUNT,GBP,0.01,0.0000,0,HIGH,2025-01-01,,REVENUE_ASSURANCE,Two-decimal source and governed amounts should reconcile,SYNTHETIC_FINANCIAL_EXPECTATION
+TOL-TIMING-3D,BILLING,TIMING,,0.00,0.0000,3,MEDIUM,2025-01-01,,BILLING_OPERATIONS,Short synthetic cut-off differences are timing differences,SYNTHETIC_OPERATIONAL_EXPECTATION
+TOL-CONTROL-WARN,FINANCE,CONTROL,GBP,1.00,0.0010,1,MEDIUM,2025-01-01,,FINANCE_OPERATIONS,Small synthetic control differences are warnings,SYNTHETIC_CONTROL_EXPECTATION

@@ -18,3 +18,4 @@ ADRs use: status/date, context, decision, consequences, alternatives, and valida
 | 0012 | Healthcare core identity and reconciliation |
 | 0013 | Billing source generation boundary |
 | 0014 | Governed billing and finance dbt ownership |
+| 0015 | Assurance layer owns reconciliation, not finance calculation |

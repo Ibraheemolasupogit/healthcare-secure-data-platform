@@ -1,0 +1,39 @@
+version: 2
+models:
+  - name: int_assurance__control_results
+    description: >
+      Intermediate source-to-governed control result calculation. Grain is one
+      control date, source system, entity, currency and rule.
+    config:
+      contract:
+        enforced: false
+    meta: &assurance_intermediate_meta
+      owner: analytics engineering
+      milestone: '9'
+      layer: intermediate_assurance
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+  - name: int_assurance__reconciliation_exceptions
+    description: Intermediate consolidation of M8 exceptions and failed M9 controls.
+    config:
+      contract:
+        enforced: false
+    meta: *assurance_intermediate_meta
+  - name: int_assurance__exception_enriched
+    description: Adds ownership, severity, value-at-risk grouping and age fields.
+    config:
+      contract:
+        enforced: false
+    meta: *assurance_intermediate_meta
+  - name: int_assurance__exception_priority
+    description: Applies deterministic priority scoring and priority bands.
+    config:
+      contract:
+        enforced: false
+    meta: *assurance_intermediate_meta
+  - name: int_assurance__remediation_state
+    description: Adds synthetic lifecycle, remediation and target-resolution state.
+    config:
+      contract:
+        enforced: false
+    meta: *assurance_intermediate_meta

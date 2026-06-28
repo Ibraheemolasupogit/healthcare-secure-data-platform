@@ -51,7 +51,7 @@ This is a target-state responsibility diagram, not deployment evidence.
 
 **Partially implemented:** referrals, observations, diagnoses and procedures are represented as clinical-event categories rather than independent conformed entities. FHIR-inspired resources exist only as clearly labelled non-conformant examples.
 
-**Planned:** explicit treatment/procedure assessment and revenue-assurance workflows over the governed Milestone 8 billing/finance outputs.
+**Planned:** explicit treatment/procedure assessment and external revenue-assurance workflows over the governed Milestone 8/Milestone 9 billing and assurance outputs.
 
 Source categories ultimately include EPR/PAS, laboratory, pharmacy, community/virtual care, scheduling/waiting list, finance/billing, contract/reference, research/consent and platform audit sources. Production connectivity is not implemented.
 
@@ -69,7 +69,7 @@ The target uses environment-isolated databases and managed-access schemas, workl
 
 ## dbt modelling layers
 
-**Partially implemented (M5–M8):** one dbt project parses without credentials, declares RAW/GOVERNANCE/billing/finance source contracts with freshness metadata, creates source-aligned staging views, adds conformed healthcare core models and now publishes governed billing/finance dimensions, facts and controls. It intentionally contains no marts or semantic models.
+**Partially implemented (M5–M9):** one dbt project parses without credentials, declares RAW/GOVERNANCE/billing/finance source contracts with freshness metadata, creates source-aligned staging views, adds conformed healthcare core models, publishes governed billing/finance dimensions, facts and controls, and adds reconciliation/exception/revenue-assurance models. It intentionally contains no marts or semantic models.
 
 dbt owns source definitions/freshness, source-aligned staging, reusable intermediate logic, conformed healthcare dimensions/facts, billing/finance models, reconciliation controls, snapshots, incrementals, contracts, documentation, exposures, semantic definitions and shared business rules. Revenue-event classification, balances, tariffs, waiting time and consent must not be independently recalculated downstream. Milestone 8 implements governed billing/finance calculations but not formal revenue recognition.
 
@@ -120,4 +120,4 @@ flowchart LR
 
 **Partially implemented:** Milestone 2 includes local manifests, checksums, validation reports and tests. Every future claim must link to redacted, reproducible evidence for a commit and environment.
 
-Current non-goals are live Snowflake execution, formal revenue recognition, Milestone 9 reconciliation workflows, marts, Airflow DAGs, Dataiku workflows, ML models, feature-store code, Fabric/Power BI artifacts, broader Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing placeholders.
+Current non-goals are live Snowflake execution, formal revenue recognition, external reconciliation workflow orchestration, marts, Airflow DAGs, Dataiku workflows, ML models, feature-store code, Fabric/Power BI artifacts, broader Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing placeholders.

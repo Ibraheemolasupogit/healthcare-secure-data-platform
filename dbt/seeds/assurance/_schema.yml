@@ -1,0 +1,46 @@
+version: 2
+seeds:
+  - name: assurance_tolerance_rules
+    description: Authoritative synthetic tolerance framework for Milestone 9 controls.
+    meta: &assurance_seed_meta
+      owner: analytics engineering
+      milestone: '9'
+      layer: assurance_config
+      sensitivity: synthetic_restricted
+      contract_status: static_configuration
+    columns:
+      - name: tolerance_rule_id
+        data_tests: [not_null, unique]
+      - name: domain
+      - name: control_type
+      - name: fixed_amount_tolerance
+      - name: severity_on_breach
+  - name: assurance_exception_ownership
+    description: Authoritative deterministic assignment mapping for synthetic assurance exceptions.
+    meta: *assurance_seed_meta
+    columns:
+      - name: exception_type
+        data_tests: [not_null, unique]
+      - name: assigned_owner
+      - name: root_cause_category
+  - name: assurance_severity_rules
+    description: Deterministic value-at-risk severity bands for synthetic assurance.
+    meta: *assurance_seed_meta
+    columns:
+      - name: severity_rule_id
+        data_tests: [not_null, unique]
+      - name: base_severity
+  - name: assurance_lifecycle_transitions
+    description: Controlled synthetic lifecycle transitions for exception events.
+    meta: *assurance_seed_meta
+    columns:
+      - name: previous_status
+      - name: new_status
+      - name: allowed_flag
+  - name: assurance_priority_weights
+    description: Deterministic priority bands and explanations for assurance exceptions.
+    meta: *assurance_seed_meta
+    columns:
+      - name: priority_rule_id
+        data_tests: [not_null, unique]
+      - name: priority_band

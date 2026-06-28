@@ -1,0 +1,11 @@
+exception_type,domain,assigned_owner,assignment_reason,default_target_resolution_days,root_cause_category
+HEADER_LINE_MISMATCH,BILLING,REVENUE_ASSURANCE,Invoice header and line values differ,5,INVOICE
+BALANCE_MISMATCH,FINANCE,FINANCE_OPERATIONS,Source and governed balance values differ,5,PAYMENT
+CONTROL_TOTAL_MISMATCH,FINANCE,DATA_QUALITY,Source control totals differ from governed controls,3,CONFIGURATION
+REJECTED_CLAIM,BILLING,CLAIMS_TEAM,Claim rejected in source lifecycle,7,CLAIM
+MISSING_TARIFF,BILLING,CONTRACTS_TEAM,Activity cannot be priced with a valid tariff,5,PRICING
+CURRENCY_MISMATCH,FINANCE,FINANCE_OPERATIONS,Related financial records use incompatible currencies,2,CONFIGURATION
+UNALLOCATED_PAYMENT,FINANCE,FINANCE_OPERATIONS,Payment could not be fully allocated,3,PAYMENT
+OVERPAYMENT,FINANCE,FINANCE_OPERATIONS,Payment allocation exceeds governed invoice value,3,PAYMENT
+UNMATCHED_HEALTHCARE_REFERENCE,BILLING,DATA_ENGINEERING,Billing record does not resolve to core healthcare model,5,MAPPING
+DEFAULT,ALL,DATA_QUALITY,Default synthetic assurance owner,7,UNKNOWN

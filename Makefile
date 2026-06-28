@@ -60,6 +60,7 @@ dbt-static:
 	PYTHONPATH=src pytest tests/unit/test_dbt_milestone5.py
 	PYTHONPATH=src pytest tests/unit/test_dbt_milestone6.py
 	PYTHONPATH=src pytest tests/unit/test_dbt_milestone8.py
+	PYTHONPATH=src pytest tests/unit/test_dbt_milestone9.py
 
 terraform-fmt:
 	terraform fmt -check -recursive infrastructure/terraform

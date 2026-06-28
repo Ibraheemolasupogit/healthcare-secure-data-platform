@@ -1,0 +1,8 @@
+priority_rule_id,severity,minimum_value_at_risk,age_days,base_score,priority_band,priority_reason
+PRI-P1-CRITICAL,CRITICAL,10000.00,0,95,P1,Critical synthetic value-at-risk threshold
+PRI-P1-HIGH-OVERDUE,HIGH,1000.00,7,85,P1,High value and overdue
+PRI-P2-HIGH,HIGH,1000.00,0,70,P2,High value assurance exception
+PRI-P2-MEDIUM-AGED,MEDIUM,100.00,7,60,P2,Medium value aged exception
+PRI-P3-MEDIUM,MEDIUM,100.00,0,45,P3,Medium value exception
+PRI-P4-LOW,LOW,0.01,0,25,P4,Low value exception
+PRI-P4-INFO,INFORMATIONAL,0.00,0,10,P4,Informational exception

@@ -14,6 +14,8 @@ dbt owns governed billing and finance calculations from Milestone 8 onward. Pyth
 | Revenue events | `int_finance__revenue_event_classification` |
 | Outstanding balance | `int_finance__governed_outstanding_balance` |
 | Controls/exceptions | `billing_exception`, `finance_daily_control` |
+| Assurance over governed outputs | `dbt/models/intermediate/assurance`, `dbt/models/curated/assurance` |
 
 Healthcare entity ownership remains with Milestone 6 core models.
 
+Milestone 9 assurance models may classify, prioritise, group and report exceptions over M8 outputs. They must not reimplement M8 tariff, contract, allocation, revenue-event or outstanding-balance calculations.

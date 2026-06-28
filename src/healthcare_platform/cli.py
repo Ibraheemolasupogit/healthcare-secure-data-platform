@@ -8,6 +8,7 @@ from dataclasses import replace
 from datetime import date
 from pathlib import Path
 
+from healthcare_platform.assurance import write_evidence_pack
 from healthcare_platform.config import load_settings, snowflake_credentials_present
 from healthcare_platform.interoperability.config import (
     DEFAULT_CONFIG_PATH as DEFAULT_INTEROPERABILITY_CONFIG_PATH,
@@ -182,6 +183,12 @@ def build_parser() -> argparse.ArgumentParser:
     interop_commands.add_parser(
         "describe-contracts", help="print Snowflake raw-layer load contracts"
     )
+    assurance_evidence = subparsers.add_parser(
+        "assurance-evidence",
+        help="write a deterministic local Milestone 9 assurance evidence pack",
+    )
+    assurance_evidence.add_argument("--output-dir", type=Path, required=True)
+    assurance_evidence.add_argument("--overwrite", action="store_true")
     return parser
 
 
@@ -348,6 +355,16 @@ def _interoperability(args: argparse.Namespace) -> int:
     return 2
 
 
+def _assurance_evidence(args: argparse.Namespace) -> int:
+    pack = write_evidence_pack(args.output_dir, overwrite=args.overwrite)
+    print(f"output_dir: {pack.output_dir}")
+    print(f"manifest: {pack.manifest_path}")
+    print(f"inventory: {pack.inventory_path}")
+    print(f"summary: {pack.summary_path}")
+    print(f"checksums: {pack.checksum_path}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the CLI."""
     args = build_parser().parse_args(argv)
@@ -376,6 +393,8 @@ def main(argv: list[str] | None = None) -> int:
             return _snowflake_render(args)
         if args.command == "interoperability":
             return _interoperability(args)
+        if args.command == "assurance-evidence":
+            return _assurance_evidence(args)
     except (ValueError, OSError, json.JSONDecodeError) as error:
         print(f"error: {error}")
         return 2

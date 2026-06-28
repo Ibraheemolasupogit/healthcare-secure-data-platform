@@ -1,0 +1,134 @@
+version: 2
+models:
+  - name: reconciliation_control_result
+    description: Curated assurance control result. Grain is one control date, source system, entity, currency and rule.
+    config:
+      contract:
+        enforced: true
+    meta: &assurance_curated_meta
+      owner: analytics engineering
+      milestone: '9'
+      layer: curated_assurance
+      sensitivity: synthetic_financial_restricted
+      contract_status: declared_not_runtime_proven
+      model_grain: one control date, source system, entity type, currency and control rule
+    columns:
+      - name: reconciliation_control_key
+        data_type: varchar
+        data_tests: [not_null, unique, valid_sha256]
+      - name: reconciliation_status
+        data_type: varchar
+      - name: amount_variance
+        data_type: number
+      - name: currency
+        data_type: varchar
+  - name: reconciliation_exception
+    description: Curated consolidated assurance exception. Grain is one affected object and failed rule.
+    config:
+      contract:
+        enforced: true
+    meta: *assurance_curated_meta
+    columns:
+      - name: reconciliation_exception_key
+        data_type: varchar
+        data_tests: [not_null, unique, valid_sha256]
+      - name: exception_origin
+        data_type: varchar
+      - name: exception_type
+        data_type: varchar
+      - name: financial_value_at_risk
+        data_type: number
+  - name: exception_lifecycle_event
+    description: Curated synthetic exception lifecycle events. Grain is one lifecycle transition event.
+    config:
+      contract:
+        enforced: true
+    meta: *assurance_curated_meta
+    columns:
+      - name: exception_event_key
+        data_type: varchar
+        data_tests: [not_null, unique, valid_sha256]
+      - name: new_status
+        data_type: varchar
+  - name: exception_remediation_status
+    description: Current remediation state for each assurance exception.
+    config:
+      contract:
+        enforced: true
+    meta: *assurance_curated_meta
+    columns:
+      - name: reconciliation_exception_key
+        data_type: varchar
+        data_tests: [not_null, unique, valid_sha256]
+      - name: lifecycle_status
+        data_type: varchar
+  - name: open_exception_inventory
+    description: Reusable open exception inventory, not dashboard-specific.
+    config:
+      contract:
+        enforced: true
+    meta: *assurance_curated_meta
+    columns:
+      - name: reconciliation_exception_key
+        data_type: varchar
+        data_tests: [not_null, valid_sha256]
+  - name: high_priority_exception_inventory
+    description: Reusable P1/P2 exception inventory.
+    config:
+      contract:
+        enforced: true
+    meta: *assurance_curated_meta
+    columns:
+      - name: reconciliation_exception_key
+        data_type: varchar
+        data_tests: [not_null, valid_sha256]
+      - name: priority_band
+        data_type: varchar
+  - name: revenue_at_risk_summary
+    description: Revenue-at-risk summary with double-count prevention.
+    config:
+      contract:
+        enforced: true
+    meta: *assurance_curated_meta
+    columns:
+      - name: revenue_risk_summary_key
+        data_type: varchar
+        data_tests: [not_null, unique, valid_sha256]
+      - name: total_value_at_risk
+        data_type: number
+  - name: daily_assurance_summary
+    description: Daily reconciliation and exception summary.
+    config:
+      contract:
+        enforced: true
+    meta: *assurance_curated_meta
+    columns:
+      - name: daily_assurance_summary_key
+        data_type: varchar
+        data_tests: [not_null, unique, valid_sha256]
+      - name: assurance_status
+        data_type: varchar
+  - name: month_end_assurance
+    description: Deterministic period assurance status model; not formal financial close.
+    config:
+      contract:
+        enforced: true
+    meta: *assurance_curated_meta
+    columns:
+      - name: month_end_assurance_key
+        data_type: varchar
+        data_tests: [not_null, unique, valid_sha256]
+      - name: evidence_pack_id
+        data_type: varchar
+  - name: assurance_evidence_pack
+    description: Metadata interface for local assurance evidence packs.
+    config:
+      contract:
+        enforced: true
+    meta: *assurance_curated_meta
+    columns:
+      - name: assurance_evidence_pack_key
+        data_type: varchar
+        data_tests: [not_null, unique, valid_sha256]
+      - name: evidence_pack_id
+        data_type: varchar

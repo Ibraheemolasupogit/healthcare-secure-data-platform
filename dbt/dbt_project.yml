@@ -45,6 +45,9 @@ models:
       finance:
         +schema: finance
         +tags: ["milestone_8", "finance"]
+      assurance:
+        +schema: assurance
+        +tags: ["milestone_9", "assurance"]
     marts:
       +materialized: table
       +schema: mart
@@ -69,7 +72,14 @@ vars:
   raw_finance_database: HEDP_DEV_RAW
   raw_finance_schema: FINANCE
   billing_as_of_date: '2025-01-01'
+  assurance_as_of_date: '2025-01-01'
   governance_control_database: HEDP_DEV_GOVERNANCE
   governance_control_schema: CONTROL
   governance_data_quality_database: HEDP_DEV_GOVERNANCE
   governance_data_quality_schema: DATA_QUALITY
+
+seeds:
+  healthcare_secure_data_platform:
+    assurance:
+      +schema: assurance_config
+      +tags: ["milestone_9", "assurance_config"]

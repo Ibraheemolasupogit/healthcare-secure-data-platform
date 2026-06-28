@@ -1,0 +1,6 @@
+severity_rule_id,minimum_value_at_risk,maximum_value_at_risk,base_severity,critical_exception_flag,synthetic_patient_safety_flag
+SEV-INFO,0.00,0.00,INFORMATIONAL,false,false
+SEV-LOW,0.01,99.99,LOW,false,false
+SEV-MEDIUM,100.00,999.99,MEDIUM,false,false
+SEV-HIGH,1000.00,9999.99,HIGH,false,false
+SEV-CRITICAL,10000.00,999999999.99,CRITICAL,true,false

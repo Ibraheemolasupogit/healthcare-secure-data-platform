@@ -23,3 +23,6 @@ All notable changes will follow Keep a Changelog conventions. The project does n
 - Milestone 8 governed healthcare billing and finance dbt domain with source declarations,
   staging, intermediate calculation paths, dimensions, facts, controls, macros, guardrails,
   documentation, ADR and evidence.
+- Milestone 9 healthcare billing reconciliation and revenue assurance controls with tolerance
+  seeds, exception ownership, lifecycle, prioritisation, remediation status, revenue-at-risk
+  summaries, deterministic evidence packs, guardrails, documentation and ADR.

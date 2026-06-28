@@ -1,6 +1,6 @@
 # Source ownership
 
-Milestone 5 declares existing source contracts only. It does not invent new raw relations.
+Milestone 5 declares clinical/operational/interoperability/governance source contracts. Milestone 8 adds dbt declarations for the Milestone 7 billing and finance source contracts without inventing new raw relations.
 
 | Source group | Snowflake location | Relations | Status |
 |---|---|---:|---|
@@ -11,7 +11,9 @@ Milestone 5 declares existing source contracts only. It does not invent new raw 
 | `raw_quarantine` | `HEDP_DEV_RAW.QUARANTINE` | 1 | Milestone 4 static contract, not deployed |
 | `governance_control` | `HEDP_DEV_GOVERNANCE.CONTROL` | 3 | Milestone 4 static contract, not deployed |
 | `governance_data_quality` | `HEDP_DEV_GOVERNANCE.DATA_QUALITY` | 2 | local fixture/static contract |
+| `raw_billing` | `HEDP_DEV_RAW.BILLING` | 15 | Milestone 7 local fixture, planned RAW relation |
+| `raw_finance` | `HEDP_DEV_RAW.FINANCE` | 3 | Milestone 7 local fixture, planned RAW relation |
 
 Snowflake and Terraform retain ownership of databases and schemas. dbt owns declarations, freshness checks, staging SQL, conformed healthcare core SQL, tests, docs, and lineage. Python owns source generation and parser validation.
 
-Milestone 6 core models consume these staging relations only; they do not read sources directly.
+Milestone 6 core models consume their staging relations only; they do not read sources directly. Milestone 8 curated billing/finance models consume billing/finance staging and Milestone 6 core models through `ref()`. They do not read raw sources directly.

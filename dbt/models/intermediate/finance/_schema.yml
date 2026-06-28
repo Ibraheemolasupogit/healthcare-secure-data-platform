@@ -1,0 +1,78 @@
+version: 2
+models:
+  - name: int_finance__governed_outstanding_balance
+    description: M8 intermediate model `int_finance__governed_outstanding_balance` centralising one billing/fina.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: intermediate
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+      calculation_owner: dbt_milestone_8
+  - name: int_finance__daily_control_comparison
+    description: M8 intermediate model `int_finance__daily_control_comparison` centralising one billing/finance
+      .
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: intermediate
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+      calculation_owner: dbt_milestone_8
+  - name: int_finance__payment_allocations
+    description: M8 intermediate model `int_finance__payment_allocations` centralising one billing/finance
+      calcu.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: intermediate
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+      calculation_owner: dbt_milestone_8
+  - name: int_finance__refund_summary
+    description: M8 intermediate model `int_finance__refund_summary` centralising one billing/finance
+      calculatio.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: intermediate
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+      calculation_owner: dbt_milestone_8
+  - name: int_finance__signed_adjustments
+    description: M8 intermediate model `int_finance__signed_adjustments` centralising one billing/finance
+      calcul.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: intermediate
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+      calculation_owner: dbt_milestone_8
+  - name: int_finance__revenue_event_classification
+    description: M8 intermediate model `int_finance__revenue_event_classification` centralising one billing/fina.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: intermediate
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+      calculation_owner: dbt_milestone_8

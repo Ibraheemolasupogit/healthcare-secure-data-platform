@@ -2,7 +2,7 @@
 
 A production-style, synthetic-only Healthcare Enterprise Data Platform portfolio for clinical, operational, research and financial data engineering. Snowflake remains the target governed data platform and dbt remains the transformation, testing, documentation, lineage and business-logic centre of gravity.
 
-> **Status — Milestone 7 complete locally:** the synthetic generator now includes deterministic billing and finance source records with validation, manifests, samples and negative fixtures. Snowflake loading, live dbt execution, billing transformations, marts and later platform integrations remain planned.
+> **Status — Milestone 8 complete locally:** dbt now includes governed billing and finance source declarations, staging, reusable calculations, dimensions, facts and controls over the Milestone 7 source fixtures. Snowflake execution, revenue-assurance workflows, marts and later platform integrations remain planned.
 
 ## Why this project exists
 
@@ -23,7 +23,7 @@ Detailed boundaries are documented in [component responsibilities](docs/architec
 | Python synthetic platform | Deterministic source data, schemas, validation and provenance | **Implemented locally** for M2 clinical/operational/research domains and M7 billing/finance source domains |
 | Interoperability | Synthetic FHIR-inspired/HL7 generation, parsing, envelopes and quarantine | **Implemented locally for the bounded M4 subset** |
 | Snowflake | Governed central storage/compute, RAW-to-serving layers and access enforcement | **M3 foundation declared and statically validated; not deployed** |
-| dbt | Transformation, testing, documentation, lineage, dimensional models, contracts and business logic | **M5 sources/staging and M6 healthcare core implemented locally; marts planned** |
+| dbt | Transformation, testing, documentation, lineage, dimensional models, contracts and business logic | **M5 sources/staging, M6 healthcare core and M8 billing/finance domain implemented locally; marts planned** |
 | FHIR and HL7 | Source interoperability, validation, canonical mapping and quarantine | **Bounded synthetic FHIR-inspired and HL7 parsers implemented locally** |
 | Airflow | Cross-platform orchestration, retries, backfills and failure handling | **Placeholder only; planned** |
 | Dataiku | Governed analytics, feature engineering, ML, experiments and model monitoring | **Placeholder only; planned** |
@@ -40,7 +40,7 @@ Developers can install the Python package, lint SQL/YAML/Terraform, and validate
 
 The generator covers organisations, locations, providers, patients, encounters, admissions/discharges, outpatient appointments, waiting-list pathways, clinical events, pathology results, medication events, research consent and cohorts, audit activity, controlled data-quality events, and billing/finance source entities for payers, services, products, tariffs, contracts, claims, invoices, payments, refunds, adjustments, exceptions, revenue events, balances and control totals. The committed sample uses 100 patients and proportionate related records. See the [synthetic data model](docs/data-model/synthetic-data-model.md) and [billing source model](docs/data-model/billing-source-model.md).
 
-The billing and finance entities are source fixtures only. dbt billing models, revenue-recognition logic, finance marts and semantic/reporting outputs remain future work.
+The billing and finance source fixtures now feed governed dbt billing/finance dimensions, facts and controls. Revenue-recognition policy, finance marts, operational reconciliation workflows and semantic/reporting outputs remain future work.
 
 ## Data and security principles
 
@@ -59,8 +59,9 @@ The design follows least privilege, workload isolation, encryption in transit/at
 - **Complete locally:** Milestone 5 dbt sources, freshness and source-aligned staging layer.
 - **Complete locally:** Milestone 6 conformed healthcare core model.
 - **Complete locally:** Milestone 7 billing and finance synthetic source extension.
-- **Recommended next:** Milestone 8 billing and finance dbt domain.
-- **Planned:** Milestones 8–17 add billing/finance transformations, reconciliation, Airflow, Dataiku, feature store, Fabric/Power BI, executable governance, broader Terraform, multi-region recovery and portfolio evidence.
+- **Complete locally:** Milestone 8 governed billing and finance dbt domain.
+- **Recommended next:** Milestone 9 reconciliation and revenue assurance.
+- **Planned:** Milestones 9–17 add reconciliation, Airflow, Dataiku, feature store, Fabric/Power BI, executable governance, broader Terraform, multi-region recovery and portfolio evidence.
 
 The original 15-milestone plan has been transparently realigned into a 17-milestone dependency-led [roadmap](docs/roadmap/milestones.md). [ADR 0009](docs/decisions/0009-expand-to-healthcare-enterprise-platform.md) records why.
 
@@ -144,7 +145,7 @@ PYTHONPATH=src pytest tests/unit/test_dbt_milestone6.py
 
 The generator uses compact portfolio code sets rather than authoritative clinical terminology. Large-profile configuration exists but has not been executed; current relationship assembly is in-memory and must be partitioned before million-patient benchmarking. The Snowflake foundation has not been planned or applied against a live account, and there are no source loads, runtime-proven dbt builds, live security policies, dashboards, governed research workflows, or cloud deployment evidence.
 
-Current non-goals also include formal FHIR conformance, dbt billing transformations, revenue calculations, Airflow DAGs, Dataiku projects or models, feature-store implementation, Fabric/Power BI artifacts, broader platform Terraform and multi-region deployment. Target-state documentation does not turn these into implemented capabilities.
+Current non-goals also include formal FHIR conformance, formal revenue recognition, Milestone 9 revenue-assurance workflows, Airflow DAGs, Dataiku projects or models, feature-store implementation, Fabric/Power BI artifacts, broader platform Terraform and multi-region deployment. Target-state documentation does not turn these into implemented capabilities.
 
 ## Portfolio positioning
 

@@ -1,0 +1,282 @@
+version: 2
+models:
+  - name: finance_daily_control
+    description: M8 governed billing/finance model `finance_daily_control`. Grain is the source-aligned
+      business.
+    config:
+      contract:
+        enforced: true
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: curated_billing_finance
+      sensitivity: synthetic_financial_restricted
+      contract_status: declared_not_runtime_proven
+      model_grain: documented in model description
+    columns:
+      - name: finance_control_key
+        data_type: varchar
+        description: Stable SHA-256 surrogate key `finance_control_key`.
+        data_tests:
+          - not_null
+          - valid_sha256
+      - name: source_record_id
+        data_type: varchar
+        description: Source lineage record identifier.
+      - name: source_relation
+        data_type: varchar
+        description: Upstream source/staging relation.
+      - name: source_system
+        data_type: varchar
+        description: Source system label.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic-only marker.
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt model update timestamp.
+  - name: bridge_payment_allocation
+    description: M8 governed billing/finance model `bridge_payment_allocation`. Grain is the source-aligned
+      busi.
+    config:
+      contract:
+        enforced: true
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: curated_billing_finance
+      sensitivity: synthetic_financial_restricted
+      contract_status: declared_not_runtime_proven
+      model_grain: documented in model description
+    columns:
+      - name: invoice_key
+        data_type: varchar
+        description: Stable SHA-256 surrogate key `invoice_key`.
+        data_tests:
+          - not_null
+          - valid_sha256
+      - name: source_record_id
+        data_type: varchar
+        description: Source lineage record identifier.
+      - name: source_relation
+        data_type: varchar
+        description: Upstream source/staging relation.
+      - name: source_system
+        data_type: varchar
+        description: Source system label.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic-only marker.
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt model update timestamp.
+  - name: fct_adjustment
+    description: M8 governed billing/finance model `fct_adjustment`. Grain is the source-aligned business
+      object.
+    config:
+      contract:
+        enforced: true
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: curated_billing_finance
+      sensitivity: synthetic_financial_restricted
+      contract_status: declared_not_runtime_proven
+      model_grain: documented in model description
+    columns:
+      - name: claim_key
+        data_type: varchar
+        description: Stable SHA-256 surrogate key `claim_key`.
+        data_tests:
+          - not_null
+          - valid_sha256
+      - name: source_record_id
+        data_type: varchar
+        description: Source lineage record identifier.
+      - name: source_relation
+        data_type: varchar
+        description: Upstream source/staging relation.
+      - name: source_system
+        data_type: varchar
+        description: Source system label.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic-only marker.
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt model update timestamp.
+  - name: fct_outstanding_balance
+    description: M8 governed billing/finance model `fct_outstanding_balance`. Grain is the source-aligned
+      busine.
+    config:
+      contract:
+        enforced: true
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: curated_billing_finance
+      sensitivity: synthetic_financial_restricted
+      contract_status: declared_not_runtime_proven
+      model_grain: documented in model description
+    columns:
+      - name: invoice_key
+        data_type: varchar
+        description: Stable SHA-256 surrogate key `invoice_key`.
+        data_tests:
+          - not_null
+          - valid_sha256
+      - name: source_record_id
+        data_type: varchar
+        description: Source lineage record identifier.
+      - name: source_relation
+        data_type: varchar
+        description: Upstream source/staging relation.
+      - name: source_system
+        data_type: varchar
+        description: Source system label.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic-only marker.
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt model update timestamp.
+  - name: fct_payment
+    description: M8 governed billing/finance model `fct_payment`. Grain is the source-aligned business
+      object re.
+    config:
+      contract:
+        enforced: true
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: curated_billing_finance
+      sensitivity: synthetic_financial_restricted
+      contract_status: declared_not_runtime_proven
+      model_grain: documented in model description
+    columns:
+      - name: payer_key
+        data_type: varchar
+        description: Stable SHA-256 surrogate key `payer_key`.
+        data_tests:
+          - not_null
+          - valid_sha256
+      - name: source_record_id
+        data_type: varchar
+        description: Source lineage record identifier.
+      - name: source_relation
+        data_type: varchar
+        description: Upstream source/staging relation.
+      - name: source_system
+        data_type: varchar
+        description: Source system label.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic-only marker.
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt model update timestamp.
+  - name: fct_payment_attempt
+    description: M8 governed billing/finance model `fct_payment_attempt`. Grain is the source-aligned
+      business o.
+    config:
+      contract:
+        enforced: true
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: curated_billing_finance
+      sensitivity: synthetic_financial_restricted
+      contract_status: declared_not_runtime_proven
+      model_grain: documented in model description
+    columns:
+      - name: payer_key
+        data_type: varchar
+        description: Stable SHA-256 surrogate key `payer_key`.
+        data_tests:
+          - not_null
+          - valid_sha256
+      - name: source_record_id
+        data_type: varchar
+        description: Source lineage record identifier.
+      - name: source_relation
+        data_type: varchar
+        description: Upstream source/staging relation.
+      - name: source_system
+        data_type: varchar
+        description: Source system label.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic-only marker.
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt model update timestamp.
+  - name: fct_refund
+    description: M8 governed billing/finance model `fct_refund`. Grain is the source-aligned business
+      object rep.
+    config:
+      contract:
+        enforced: true
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: curated_billing_finance
+      sensitivity: synthetic_financial_restricted
+      contract_status: declared_not_runtime_proven
+      model_grain: documented in model description
+    columns:
+      - name: invoice_key
+        data_type: varchar
+        description: Stable SHA-256 surrogate key `invoice_key`.
+        data_tests:
+          - not_null
+          - valid_sha256
+      - name: source_record_id
+        data_type: varchar
+        description: Source lineage record identifier.
+      - name: source_relation
+        data_type: varchar
+        description: Upstream source/staging relation.
+      - name: source_system
+        data_type: varchar
+        description: Source system label.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic-only marker.
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt model update timestamp.
+  - name: fct_revenue_event
+    description: M8 governed billing/finance model `fct_revenue_event`. Grain is the source-aligned business
+      obj.
+    config:
+      contract:
+        enforced: true
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: curated_billing_finance
+      sensitivity: synthetic_financial_restricted
+      contract_status: declared_not_runtime_proven
+      model_grain: documented in model description
+    columns:
+      - name: billable_activity_key
+        data_type: varchar
+        description: Stable SHA-256 surrogate key `billable_activity_key`.
+        data_tests:
+          - not_null
+          - valid_sha256
+      - name: source_record_id
+        data_type: varchar
+        description: Source lineage record identifier.
+      - name: source_relation
+        data_type: varchar
+        description: Upstream source/staging relation.
+      - name: source_system
+        data_type: varchar
+        description: Source system label.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic-only marker.
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt model update timestamp.

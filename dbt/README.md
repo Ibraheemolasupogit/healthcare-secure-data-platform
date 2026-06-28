@@ -1,6 +1,6 @@
 # dbt foundation
 
-This now contains the Milestone 5 source/staging foundation and the Milestone 6 conformed healthcare core. It remains intentionally bounded: no billing, finance, marts, semantic models or downstream-platform logic are included.
+This now contains the Milestone 5 source/staging foundation, the Milestone 6 conformed healthcare core, and the Milestone 8 governed billing/finance domain. It remains intentionally bounded: no marts, semantic models, reconciliation workflows or downstream-platform logic are included.
 
 Models follow `stg_<source>__<entity>`, `int_<domain>__<purpose>`, `dim_<entity>`, `fct_<event>`, `mart_<domain>__<purpose>` and `sem_<subject>` naming. Each published model will document owner, description, grain, classification, allowed use, columns and upstream assumptions. SQL uses lower-case keywords and explicit column lists.
 
@@ -30,5 +30,14 @@ Implemented Milestone 6 assets:
 - conformed patient, organisation, location, provider, encounter, admission, appointment, pathway, clinical event, pathology result, medication event and consent models;
 - research eligibility foundation and core reconciliation outputs;
 - SHA-256 surrogate-key macro and core guardrail tests.
+
+Implemented Milestone 8 assets:
+
+- 18 billing/finance source declarations and source-aligned staging views;
+- tariff and contract matching, invoice/claim calculations, payment allocation, revenue-event classification, outstanding-balance and control intermediates;
+- payer, service, product, tariff and contract dimensions;
+- billable activity, claim, invoice, payment, refund, adjustment, revenue-event and outstanding-balance facts;
+- billing exception and finance daily-control models;
+- billing/finance guardrail tests and documentation.
 
 `dbt parse --profiles-dir . --no-partial-parse` validates structure without connecting to Snowflake. The placeholder profile must never be used for execution. Connected `dbt compile`, `dbt build`, `dbt source freshness` and `dbt docs generate` require a separate authorised Snowflake profile.

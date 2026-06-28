@@ -1,0 +1,1019 @@
+version: 2
+models:
+  - name: stg_billing__payers
+    description: Source-aligned staging view for M7 `payers`. Grain is one current source record after
+      deduplica.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: payer_id
+        description: '`payer_id` standardised for stg_billing__payers.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: payer_code
+        description: '`payer_code` standardised for stg_billing__payers.'
+        data_type: varchar
+      - name: payer_name
+        description: '`payer_name` standardised for stg_billing__payers.'
+        data_type: varchar
+      - name: payer_type
+        description: '`payer_type` standardised for stg_billing__payers.'
+        data_type: varchar
+      - name: organisation_id
+        description: '`organisation_id` standardised for stg_billing__payers.'
+        data_type: varchar
+      - name: active_flag
+        description: '`active_flag` standardised for stg_billing__payers.'
+        data_type: boolean
+      - name: valid_from
+        description: '`valid_from` standardised for stg_billing__payers.'
+        data_type: date
+      - name: valid_to
+        description: '`valid_to` standardised for stg_billing__payers.'
+        data_type: date
+      - name: source_system
+        description: '`source_system` standardised for stg_billing__payers.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_billing__payers.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_billing__services
+    description: Source-aligned staging view for M7 `services`. Grain is one current source record after
+      dedupli.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: service_id
+        description: '`service_id` standardised for stg_billing__services.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: service_code
+        description: '`service_code` standardised for stg_billing__services.'
+        data_type: varchar
+      - name: service_name
+        description: '`service_name` standardised for stg_billing__services.'
+        data_type: varchar
+      - name: service_category
+        description: '`service_category` standardised for stg_billing__services.'
+        data_type: varchar
+      - name: specialty
+        description: '`specialty` standardised for stg_billing__services.'
+        data_type: varchar
+      - name: billable_flag
+        description: '`billable_flag` standardised for stg_billing__services.'
+        data_type: boolean
+      - name: active_flag
+        description: '`active_flag` standardised for stg_billing__services.'
+        data_type: boolean
+      - name: valid_from
+        description: '`valid_from` standardised for stg_billing__services.'
+        data_type: date
+      - name: valid_to
+        description: '`valid_to` standardised for stg_billing__services.'
+        data_type: date
+      - name: source_system
+        description: '`source_system` standardised for stg_billing__services.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_billing__services.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_billing__products
+    description: Source-aligned staging view for M7 `products`. Grain is one current source record after
+      dedupli.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: product_id
+        description: '`product_id` standardised for stg_billing__products.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: product_code
+        description: '`product_code` standardised for stg_billing__products.'
+        data_type: varchar
+      - name: product_name
+        description: '`product_name` standardised for stg_billing__products.'
+        data_type: varchar
+      - name: product_category
+        description: '`product_category` standardised for stg_billing__products.'
+        data_type: varchar
+      - name: unit_of_measure
+        description: '`unit_of_measure` standardised for stg_billing__products.'
+        data_type: varchar
+      - name: billable_flag
+        description: '`billable_flag` standardised for stg_billing__products.'
+        data_type: boolean
+      - name: active_flag
+        description: '`active_flag` standardised for stg_billing__products.'
+        data_type: boolean
+      - name: valid_from
+        description: '`valid_from` standardised for stg_billing__products.'
+        data_type: date
+      - name: valid_to
+        description: '`valid_to` standardised for stg_billing__products.'
+        data_type: date
+      - name: source_system
+        description: '`source_system` standardised for stg_billing__products.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_billing__products.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_billing__tariffs
+    description: Source-aligned staging view for M7 `tariffs`. Grain is one current source record after
+      deduplic.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: tariff_id
+        description: '`tariff_id` standardised for stg_billing__tariffs.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: tariff_code
+        description: '`tariff_code` standardised for stg_billing__tariffs.'
+        data_type: varchar
+      - name: service_id
+        description: '`service_id` standardised for stg_billing__tariffs.'
+        data_type: varchar
+      - name: product_id
+        description: '`product_id` standardised for stg_billing__tariffs.'
+        data_type: varchar
+      - name: payer_type
+        description: '`payer_type` standardised for stg_billing__tariffs.'
+        data_type: varchar
+      - name: specialty
+        description: '`specialty` standardised for stg_billing__tariffs.'
+        data_type: varchar
+      - name: currency
+        description: '`currency` standardised for stg_billing__tariffs.'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              values:
+                - GBP
+      - name: unit_price
+        description: '`unit_price` standardised for stg_billing__tariffs.'
+        data_type: number(18,2)
+      - name: valid_from
+        description: '`valid_from` standardised for stg_billing__tariffs.'
+        data_type: date
+      - name: valid_to
+        description: '`valid_to` standardised for stg_billing__tariffs.'
+        data_type: date
+      - name: active_flag
+        description: '`active_flag` standardised for stg_billing__tariffs.'
+        data_type: boolean
+      - name: version
+        description: '`version` standardised for stg_billing__tariffs.'
+        data_type: number
+      - name: source_system
+        description: '`source_system` standardised for stg_billing__tariffs.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_billing__tariffs.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_billing__contracts
+    description: Source-aligned staging view for M7 `contracts`. Grain is one current source record after
+      dedupl.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: contract_id
+        description: '`contract_id` standardised for stg_billing__contracts.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: contract_code
+        description: '`contract_code` standardised for stg_billing__contracts.'
+        data_type: varchar
+      - name: payer_id
+        description: '`payer_id` standardised for stg_billing__contracts.'
+        data_type: varchar
+      - name: provider_organisation_id
+        description: '`provider_organisation_id` standardised for stg_billing__contracts.'
+        data_type: varchar
+      - name: contract_type
+        description: '`contract_type` standardised for stg_billing__contracts.'
+        data_type: varchar
+      - name: valid_from
+        description: '`valid_from` standardised for stg_billing__contracts.'
+        data_type: date
+      - name: valid_to
+        description: '`valid_to` standardised for stg_billing__contracts.'
+        data_type: date
+      - name: currency
+        description: '`currency` standardised for stg_billing__contracts.'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              values:
+                - GBP
+      - name: payment_terms_days
+        description: '`payment_terms_days` standardised for stg_billing__contracts.'
+        data_type: number
+      - name: pricing_basis
+        description: '`pricing_basis` standardised for stg_billing__contracts.'
+        data_type: varchar
+      - name: status
+        description: '`status` standardised for stg_billing__contracts.'
+        data_type: varchar
+      - name: source_system
+        description: '`source_system` standardised for stg_billing__contracts.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_billing__contracts.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_billing__billable_activity
+    description: Source-aligned staging view for M7 `billable_activity`. Grain is one current source record
+      afte.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: billable_activity_id
+        description: '`billable_activity_id` standardised for stg_billing__billable_activity.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: patient_id
+        description: '`patient_id` standardised for stg_billing__billable_activity.'
+        data_type: varchar
+      - name: encounter_id
+        description: '`encounter_id` standardised for stg_billing__billable_activity.'
+        data_type: varchar
+      - name: appointment_id
+        description: '`appointment_id` standardised for stg_billing__billable_activity.'
+        data_type: varchar
+      - name: clinical_event_id
+        description: '`clinical_event_id` standardised for stg_billing__billable_activity.'
+        data_type: varchar
+      - name: service_id
+        description: '`service_id` standardised for stg_billing__billable_activity.'
+        data_type: varchar
+      - name: product_id
+        description: '`product_id` standardised for stg_billing__billable_activity.'
+        data_type: varchar
+      - name: provider_id
+        description: '`provider_id` standardised for stg_billing__billable_activity.'
+        data_type: varchar
+      - name: organisation_id
+        description: '`organisation_id` standardised for stg_billing__billable_activity.'
+        data_type: varchar
+      - name: activity_datetime
+        description: '`activity_datetime` standardised for stg_billing__billable_activity.'
+        data_type: timestamp_tz
+      - name: quantity
+        description: '`quantity` standardised for stg_billing__billable_activity.'
+        data_type: number(18,2)
+      - name: unit_of_measure
+        description: '`unit_of_measure` standardised for stg_billing__billable_activity.'
+        data_type: varchar
+      - name: billing_status
+        description: '`billing_status` standardised for stg_billing__billable_activity.'
+        data_type: varchar
+      - name: source_system
+        description: '`source_system` standardised for stg_billing__billable_activity.'
+        data_type: varchar
+      - name: source_record_id
+        description: '`source_record_id` standardised for stg_billing__billable_activity.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_billing__billable_activity.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_billing__claims
+    description: Source-aligned staging view for M7 `claims`. Grain is one current source record after
+      deduplica.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: claim_id
+        description: '`claim_id` standardised for stg_billing__claims.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: claim_number
+        description: '`claim_number` standardised for stg_billing__claims.'
+        data_type: varchar
+      - name: patient_id
+        description: '`patient_id` standardised for stg_billing__claims.'
+        data_type: varchar
+      - name: encounter_id
+        description: '`encounter_id` standardised for stg_billing__claims.'
+        data_type: varchar
+      - name: payer_id
+        description: '`payer_id` standardised for stg_billing__claims.'
+        data_type: varchar
+      - name: contract_id
+        description: '`contract_id` standardised for stg_billing__claims.'
+        data_type: varchar
+      - name: claim_date
+        description: '`claim_date` standardised for stg_billing__claims.'
+        data_type: date
+      - name: service_period_start
+        description: '`service_period_start` standardised for stg_billing__claims.'
+        data_type: varchar
+      - name: service_period_end
+        description: '`service_period_end` standardised for stg_billing__claims.'
+        data_type: varchar
+      - name: claim_status
+        description: '`claim_status` standardised for stg_billing__claims.'
+        data_type: varchar
+      - name: currency
+        description: '`currency` standardised for stg_billing__claims.'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              values:
+                - GBP
+      - name: claimed_amount
+        description: '`claimed_amount` standardised for stg_billing__claims.'
+        data_type: number(18,2)
+      - name: submitted_at
+        description: '`submitted_at` standardised for stg_billing__claims.'
+        data_type: timestamp_tz
+      - name: adjudicated_at
+        description: '`adjudicated_at` standardised for stg_billing__claims.'
+        data_type: timestamp_tz
+      - name: rejection_code
+        description: '`rejection_code` standardised for stg_billing__claims.'
+        data_type: varchar
+      - name: source_system
+        description: '`source_system` standardised for stg_billing__claims.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_billing__claims.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_billing__claim_lines
+    description: Source-aligned staging view for M7 `claim_lines`. Grain is one current source record
+      after dedu.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: claim_line_id
+        description: '`claim_line_id` standardised for stg_billing__claim_lines.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: claim_id
+        description: '`claim_id` standardised for stg_billing__claim_lines.'
+        data_type: varchar
+      - name: billable_activity_id
+        description: '`billable_activity_id` standardised for stg_billing__claim_lines.'
+        data_type: varchar
+      - name: service_id
+        description: '`service_id` standardised for stg_billing__claim_lines.'
+        data_type: varchar
+      - name: product_id
+        description: '`product_id` standardised for stg_billing__claim_lines.'
+        data_type: varchar
+      - name: tariff_id
+        description: '`tariff_id` standardised for stg_billing__claim_lines.'
+        data_type: varchar
+      - name: quantity
+        description: '`quantity` standardised for stg_billing__claim_lines.'
+        data_type: number(18,2)
+      - name: unit_price
+        description: '`unit_price` standardised for stg_billing__claim_lines.'
+        data_type: number(18,2)
+      - name: line_amount
+        description: '`line_amount` standardised for stg_billing__claim_lines.'
+        data_type: number(18,2)
+      - name: line_status
+        description: '`line_status` standardised for stg_billing__claim_lines.'
+        data_type: varchar
+      - name: rejection_code
+        description: '`rejection_code` standardised for stg_billing__claim_lines.'
+        data_type: varchar
+      - name: source_system
+        description: '`source_system` standardised for stg_billing__claim_lines.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_billing__claim_lines.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_billing__invoices
+    description: Source-aligned staging view for M7 `invoices`. Grain is one current source record after
+      dedupli.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: invoice_id
+        description: '`invoice_id` standardised for stg_billing__invoices.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: invoice_number
+        description: '`invoice_number` standardised for stg_billing__invoices.'
+        data_type: varchar
+      - name: payer_id
+        description: '`payer_id` standardised for stg_billing__invoices.'
+        data_type: varchar
+      - name: patient_id
+        description: '`patient_id` standardised for stg_billing__invoices.'
+        data_type: varchar
+      - name: encounter_id
+        description: '`encounter_id` standardised for stg_billing__invoices.'
+        data_type: varchar
+      - name: contract_id
+        description: '`contract_id` standardised for stg_billing__invoices.'
+        data_type: varchar
+      - name: invoice_date
+        description: '`invoice_date` standardised for stg_billing__invoices.'
+        data_type: date
+      - name: due_date
+        description: '`due_date` standardised for stg_billing__invoices.'
+        data_type: date
+      - name: invoice_status
+        description: '`invoice_status` standardised for stg_billing__invoices.'
+        data_type: varchar
+      - name: currency
+        description: '`currency` standardised for stg_billing__invoices.'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              values:
+                - GBP
+      - name: subtotal_amount
+        description: '`subtotal_amount` standardised for stg_billing__invoices.'
+        data_type: number(18,2)
+      - name: tax_amount
+        description: '`tax_amount` standardised for stg_billing__invoices.'
+        data_type: number(18,2)
+      - name: total_amount
+        description: '`total_amount` standardised for stg_billing__invoices.'
+        data_type: number(18,2)
+      - name: source_system
+        description: '`source_system` standardised for stg_billing__invoices.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_billing__invoices.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_billing__invoice_lines
+    description: Source-aligned staging view for M7 `invoice_lines`. Grain is one current source record
+      after de.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: invoice_line_id
+        description: '`invoice_line_id` standardised for stg_billing__invoice_lines.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: invoice_id
+        description: '`invoice_id` standardised for stg_billing__invoice_lines.'
+        data_type: varchar
+      - name: billable_activity_id
+        description: '`billable_activity_id` standardised for stg_billing__invoice_lines.'
+        data_type: varchar
+      - name: claim_line_id
+        description: '`claim_line_id` standardised for stg_billing__invoice_lines.'
+        data_type: varchar
+      - name: service_id
+        description: '`service_id` standardised for stg_billing__invoice_lines.'
+        data_type: varchar
+      - name: product_id
+        description: '`product_id` standardised for stg_billing__invoice_lines.'
+        data_type: varchar
+      - name: tariff_id
+        description: '`tariff_id` standardised for stg_billing__invoice_lines.'
+        data_type: varchar
+      - name: description
+        description: '`description` standardised for stg_billing__invoice_lines.'
+        data_type: varchar
+      - name: quantity
+        description: '`quantity` standardised for stg_billing__invoice_lines.'
+        data_type: number(18,2)
+      - name: unit_price
+        description: '`unit_price` standardised for stg_billing__invoice_lines.'
+        data_type: number(18,2)
+      - name: net_amount
+        description: '`net_amount` standardised for stg_billing__invoice_lines.'
+        data_type: number(18,2)
+      - name: tax_amount
+        description: '`tax_amount` standardised for stg_billing__invoice_lines.'
+        data_type: number(18,2)
+      - name: gross_amount
+        description: '`gross_amount` standardised for stg_billing__invoice_lines.'
+        data_type: number(18,2)
+      - name: source_system
+        description: '`source_system` standardised for stg_billing__invoice_lines.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_billing__invoice_lines.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_billing__exceptions
+    description: Source-aligned staging view for M7 `billing_exceptions`. Grain is one current source
+      record aft.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: exception_id
+        description: '`exception_id` standardised for stg_billing__exceptions.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: exception_type
+        description: '`exception_type` standardised for stg_billing__exceptions.'
+        data_type: varchar
+      - name: source_system
+        description: '`source_system` standardised for stg_billing__exceptions.'
+        data_type: varchar
+      - name: source_record_id
+        description: '`source_record_id` standardised for stg_billing__exceptions.'
+        data_type: varchar
+      - name: patient_id
+        description: '`patient_id` standardised for stg_billing__exceptions.'
+        data_type: varchar
+      - name: encounter_id
+        description: '`encounter_id` standardised for stg_billing__exceptions.'
+        data_type: varchar
+      - name: billable_activity_id
+        description: '`billable_activity_id` standardised for stg_billing__exceptions.'
+        data_type: varchar
+      - name: claim_id
+        description: '`claim_id` standardised for stg_billing__exceptions.'
+        data_type: varchar
+      - name: invoice_id
+        description: '`invoice_id` standardised for stg_billing__exceptions.'
+        data_type: varchar
+      - name: payment_id
+        description: '`payment_id` standardised for stg_billing__exceptions.'
+        data_type: varchar
+      - name: severity
+        description: '`severity` standardised for stg_billing__exceptions.'
+        data_type: varchar
+      - name: financial_value_at_risk
+        description: '`financial_value_at_risk` standardised for stg_billing__exceptions.'
+        data_type: number(18,2)
+      - name: detected_at
+        description: '`detected_at` standardised for stg_billing__exceptions.'
+        data_type: timestamp_tz
+      - name: assigned_owner
+        description: '`assigned_owner` standardised for stg_billing__exceptions.'
+        data_type: varchar
+      - name: status
+        description: '`status` standardised for stg_billing__exceptions.'
+        data_type: varchar
+      - name: resolution_date
+        description: '`resolution_date` standardised for stg_billing__exceptions.'
+        data_type: date
+      - name: root_cause
+        description: '`root_cause` standardised for stg_billing__exceptions.'
+        data_type: varchar
+      - name: remediation_action
+        description: '`remediation_action` standardised for stg_billing__exceptions.'
+        data_type: varchar
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for stg_billing__exceptions.'
+        data_type: boolean
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.

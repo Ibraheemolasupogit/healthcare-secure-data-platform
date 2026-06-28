@@ -1,0 +1,25 @@
+{{ config(materialized='table', tags=['milestone_8', 'finance', 'fact', 'revenue_event']) }}
+select
+    {{ generate_healthcare_surrogate_key(['revenue_event_id']) }} as revenue_event_key,
+    {{ generate_healthcare_surrogate_key(['invoice_id']) }} as invoice_key,
+    {{ generate_healthcare_surrogate_key(['invoice_line_id']) }} as invoice_line_key,
+    {{ generate_healthcare_surrogate_key(['claim_id']) }} as claim_key,
+    {{ generate_healthcare_surrogate_key(['billable_activity_id']) }} as billable_activity_key,
+    revenue_event_id,
+    invoice_id,
+    invoice_line_id,
+    claim_id,
+    billable_activity_id,
+    event_type,
+    revenue_event_classification,
+    event_datetime,
+    amount as source_amount,
+    governed_signed_amount,
+    currency,
+    source_status,
+    source_record_id,
+    source_relation,
+    source_system,
+    synthetic_flag,
+    current_timestamp() as dbt_updated_at
+from {{ ref('int_finance__revenue_event_classification') }}

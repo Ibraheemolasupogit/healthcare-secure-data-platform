@@ -1,0 +1,1099 @@
+version: 2
+sources:
+  - name: raw_billing
+    database: '{{ var(''raw_billing_database'', ''HEDP_DEV_RAW'') }}'
+    schema: '{{ var(''raw_billing_schema'', ''BILLING'') }}'
+    description: raw_billing source group declared by Milestone 8 from Milestone 7 synthetic source contracts.
+    meta:
+      owner: billing platform engineering
+      loader: SYNTHETIC_MILESTONE_7
+      implementation_status: local_fixture_planned_raw
+      contract_status: source_contract
+      source_system: synthetic_billing_finance
+      contains_real_patient_data: false
+    tables:
+      - name: payers
+        identifier: PAYERS
+        description: Synthetic healthcare billing payers.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 30
+            period: day
+          error_after:
+            count: 90
+            period: day
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: payer_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - payer_id
+        columns:
+          - name: payer_id
+            data_type: varchar
+            description: Source column `payer_id` preserved from the Milestone 7 payers contract.
+            data_tests:
+              - not_null
+          - name: payer_code
+            data_type: varchar
+            description: Source column `payer_code` preserved from the Milestone 7 payers contract.
+          - name: payer_name
+            data_type: varchar
+            description: Source column `payer_name` preserved from the Milestone 7 payers contract.
+          - name: payer_type
+            data_type: varchar
+            description: Source column `payer_type` preserved from the Milestone 7 payers contract.
+          - name: organisation_id
+            data_type: varchar
+            description: Source column `organisation_id` preserved from the Milestone 7 payers contract.
+          - name: active_flag
+            data_type: boolean
+            description: Source column `active_flag` preserved from the Milestone 7 payers contract.
+          - name: valid_from
+            data_type: date
+            description: Source column `valid_from` preserved from the Milestone 7 payers contract.
+          - name: valid_to
+            data_type: date
+            description: Source column `valid_to` preserved from the Milestone 7 payers contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 payers contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 payers contract.
+      - name: services
+        identifier: SERVICES
+        description: Synthetic service catalogue.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 30
+            period: day
+          error_after:
+            count: 90
+            period: day
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: service_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - service_id
+        columns:
+          - name: service_id
+            data_type: varchar
+            description: Source column `service_id` preserved from the Milestone 7 services contract.
+            data_tests:
+              - not_null
+          - name: service_code
+            data_type: varchar
+            description: Source column `service_code` preserved from the Milestone 7 services contract.
+          - name: service_name
+            data_type: varchar
+            description: Source column `service_name` preserved from the Milestone 7 services contract.
+          - name: service_category
+            data_type: varchar
+            description: Source column `service_category` preserved from the Milestone 7 services contract.
+          - name: specialty
+            data_type: varchar
+            description: Source column `specialty` preserved from the Milestone 7 services contract.
+          - name: billable_flag
+            data_type: boolean
+            description: Source column `billable_flag` preserved from the Milestone 7 services contract.
+          - name: active_flag
+            data_type: boolean
+            description: Source column `active_flag` preserved from the Milestone 7 services contract.
+          - name: valid_from
+            data_type: date
+            description: Source column `valid_from` preserved from the Milestone 7 services contract.
+          - name: valid_to
+            data_type: date
+            description: Source column `valid_to` preserved from the Milestone 7 services contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 services contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 services contract.
+      - name: products
+        identifier: PRODUCTS
+        description: Synthetic product catalogue.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 30
+            period: day
+          error_after:
+            count: 90
+            period: day
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: product_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - product_id
+        columns:
+          - name: product_id
+            data_type: varchar
+            description: Source column `product_id` preserved from the Milestone 7 products contract.
+            data_tests:
+              - not_null
+          - name: product_code
+            data_type: varchar
+            description: Source column `product_code` preserved from the Milestone 7 products contract.
+          - name: product_name
+            data_type: varchar
+            description: Source column `product_name` preserved from the Milestone 7 products contract.
+          - name: product_category
+            data_type: varchar
+            description: Source column `product_category` preserved from the Milestone 7 products contract.
+          - name: unit_of_measure
+            data_type: varchar
+            description: Source column `unit_of_measure` preserved from the Milestone 7 products contract.
+          - name: billable_flag
+            data_type: boolean
+            description: Source column `billable_flag` preserved from the Milestone 7 products contract.
+          - name: active_flag
+            data_type: boolean
+            description: Source column `active_flag` preserved from the Milestone 7 products contract.
+          - name: valid_from
+            data_type: date
+            description: Source column `valid_from` preserved from the Milestone 7 products contract.
+          - name: valid_to
+            data_type: date
+            description: Source column `valid_to` preserved from the Milestone 7 products contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 products contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 products contract.
+      - name: tariffs
+        identifier: TARIFFS
+        description: Synthetic source tariff records.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 30
+            period: day
+          error_after:
+            count: 90
+            period: day
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: tariff_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - tariff_id
+        columns:
+          - name: tariff_id
+            data_type: varchar
+            description: Source column `tariff_id` preserved from the Milestone 7 tariffs contract.
+            data_tests:
+              - not_null
+          - name: tariff_code
+            data_type: varchar
+            description: Source column `tariff_code` preserved from the Milestone 7 tariffs contract.
+          - name: service_id
+            data_type: varchar
+            description: Source column `service_id` preserved from the Milestone 7 tariffs contract.
+          - name: product_id
+            data_type: varchar
+            description: Source column `product_id` preserved from the Milestone 7 tariffs contract.
+          - name: payer_type
+            data_type: varchar
+            description: Source column `payer_type` preserved from the Milestone 7 tariffs contract.
+          - name: specialty
+            data_type: varchar
+            description: Source column `specialty` preserved from the Milestone 7 tariffs contract.
+          - name: currency
+            data_type: varchar
+            description: Source column `currency` preserved from the Milestone 7 tariffs contract.
+            data_tests:
+              - accepted_values:
+                  values:
+                    - GBP
+          - name: unit_price
+            data_type: number(18,2)
+            description: Source column `unit_price` preserved from the Milestone 7 tariffs contract.
+          - name: valid_from
+            data_type: date
+            description: Source column `valid_from` preserved from the Milestone 7 tariffs contract.
+          - name: valid_to
+            data_type: date
+            description: Source column `valid_to` preserved from the Milestone 7 tariffs contract.
+          - name: active_flag
+            data_type: boolean
+            description: Source column `active_flag` preserved from the Milestone 7 tariffs contract.
+          - name: version
+            data_type: number
+            description: Source column `version` preserved from the Milestone 7 tariffs contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 tariffs contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 tariffs contract.
+      - name: contracts
+        identifier: CONTRACTS
+        description: Synthetic payer-provider contracts.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 30
+            period: day
+          error_after:
+            count: 90
+            period: day
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: contract_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - contract_id
+        columns:
+          - name: contract_id
+            data_type: varchar
+            description: Source column `contract_id` preserved from the Milestone 7 contracts contract.
+            data_tests:
+              - not_null
+          - name: contract_code
+            data_type: varchar
+            description: Source column `contract_code` preserved from the Milestone 7 contracts contract.
+          - name: payer_id
+            data_type: varchar
+            description: Source column `payer_id` preserved from the Milestone 7 contracts contract.
+          - name: provider_organisation_id
+            data_type: varchar
+            description: Source column `provider_organisation_id` preserved from the Milestone 7 contracts
+              contract.
+          - name: contract_type
+            data_type: varchar
+            description: Source column `contract_type` preserved from the Milestone 7 contracts contract.
+          - name: valid_from
+            data_type: date
+            description: Source column `valid_from` preserved from the Milestone 7 contracts contract.
+          - name: valid_to
+            data_type: date
+            description: Source column `valid_to` preserved from the Milestone 7 contracts contract.
+          - name: currency
+            data_type: varchar
+            description: Source column `currency` preserved from the Milestone 7 contracts contract.
+            data_tests:
+              - accepted_values:
+                  values:
+                    - GBP
+          - name: payment_terms_days
+            data_type: number
+            description: Source column `payment_terms_days` preserved from the Milestone 7 contracts contract.
+          - name: pricing_basis
+            data_type: varchar
+            description: Source column `pricing_basis` preserved from the Milestone 7 contracts contract.
+          - name: status
+            data_type: varchar
+            description: Source column `status` preserved from the Milestone 7 contracts contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 contracts contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 contracts contract.
+      - name: billable_activity
+        identifier: BILLABLE_ACTIVITY
+        description: Synthetic billable source activity linked to healthcare events.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 36
+            period: hour
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: billable_activity_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - billable_activity_id
+        columns:
+          - name: billable_activity_id
+            data_type: varchar
+            description: Source column `billable_activity_id` preserved from the Milestone 7 billable_activity
+              contract.
+            data_tests:
+              - not_null
+          - name: patient_id
+            data_type: varchar
+            description: Source column `patient_id` preserved from the Milestone 7 billable_activity contract.
+          - name: encounter_id
+            data_type: varchar
+            description: Source column `encounter_id` preserved from the Milestone 7 billable_activity
+              contract.
+          - name: appointment_id
+            data_type: varchar
+            description: Source column `appointment_id` preserved from the Milestone 7 billable_activity
+              contract.
+          - name: clinical_event_id
+            data_type: varchar
+            description: Source column `clinical_event_id` preserved from the Milestone 7 billable_activity
+              contract.
+          - name: service_id
+            data_type: varchar
+            description: Source column `service_id` preserved from the Milestone 7 billable_activity contract.
+          - name: product_id
+            data_type: varchar
+            description: Source column `product_id` preserved from the Milestone 7 billable_activity contract.
+          - name: provider_id
+            data_type: varchar
+            description: Source column `provider_id` preserved from the Milestone 7 billable_activity
+              contract.
+          - name: organisation_id
+            data_type: varchar
+            description: Source column `organisation_id` preserved from the Milestone 7 billable_activity
+              contract.
+          - name: activity_datetime
+            data_type: timestamp_tz
+            description: Source column `activity_datetime` preserved from the Milestone 7 billable_activity
+              contract.
+          - name: quantity
+            data_type: number(18,2)
+            description: Source column `quantity` preserved from the Milestone 7 billable_activity contract.
+          - name: unit_of_measure
+            data_type: varchar
+            description: Source column `unit_of_measure` preserved from the Milestone 7 billable_activity
+              contract.
+          - name: billing_status
+            data_type: varchar
+            description: Source column `billing_status` preserved from the Milestone 7 billable_activity
+              contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 billable_activity
+              contract.
+          - name: source_record_id
+            data_type: varchar
+            description: Source column `source_record_id` preserved from the Milestone 7 billable_activity
+              contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 billable_activity contract.
+      - name: claims
+        identifier: CLAIMS
+        description: Synthetic billing source dataset claims.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 24
+            period: hour
+          error_after:
+            count: 72
+            period: hour
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: claim_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - claim_id
+        columns:
+          - name: claim_id
+            data_type: varchar
+            description: Source column `claim_id` preserved from the Milestone 7 claims contract.
+            data_tests:
+              - not_null
+          - name: claim_number
+            data_type: varchar
+            description: Source column `claim_number` preserved from the Milestone 7 claims contract.
+          - name: patient_id
+            data_type: varchar
+            description: Source column `patient_id` preserved from the Milestone 7 claims contract.
+          - name: encounter_id
+            data_type: varchar
+            description: Source column `encounter_id` preserved from the Milestone 7 claims contract.
+          - name: payer_id
+            data_type: varchar
+            description: Source column `payer_id` preserved from the Milestone 7 claims contract.
+          - name: contract_id
+            data_type: varchar
+            description: Source column `contract_id` preserved from the Milestone 7 claims contract.
+          - name: claim_date
+            data_type: date
+            description: Source column `claim_date` preserved from the Milestone 7 claims contract.
+          - name: service_period_start
+            data_type: varchar
+            description: Source column `service_period_start` preserved from the Milestone 7 claims contract.
+          - name: service_period_end
+            data_type: varchar
+            description: Source column `service_period_end` preserved from the Milestone 7 claims contract.
+          - name: claim_status
+            data_type: varchar
+            description: Source column `claim_status` preserved from the Milestone 7 claims contract.
+          - name: currency
+            data_type: varchar
+            description: Source column `currency` preserved from the Milestone 7 claims contract.
+            data_tests:
+              - accepted_values:
+                  values:
+                    - GBP
+          - name: claimed_amount
+            data_type: number(18,2)
+            description: Source column `claimed_amount` preserved from the Milestone 7 claims contract.
+          - name: submitted_at
+            data_type: timestamp_tz
+            description: Source column `submitted_at` preserved from the Milestone 7 claims contract.
+          - name: adjudicated_at
+            data_type: timestamp_tz
+            description: Source column `adjudicated_at` preserved from the Milestone 7 claims contract.
+          - name: rejection_code
+            data_type: varchar
+            description: Source column `rejection_code` preserved from the Milestone 7 claims contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 claims contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 claims contract.
+      - name: claim_lines
+        identifier: CLAIM_LINES
+        description: Synthetic billing source dataset claim_lines.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 24
+            period: hour
+          error_after:
+            count: 72
+            period: hour
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: claim_line_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - claim_line_id
+        columns:
+          - name: claim_line_id
+            data_type: varchar
+            description: Source column `claim_line_id` preserved from the Milestone 7 claim_lines contract.
+            data_tests:
+              - not_null
+          - name: claim_id
+            data_type: varchar
+            description: Source column `claim_id` preserved from the Milestone 7 claim_lines contract.
+          - name: billable_activity_id
+            data_type: varchar
+            description: Source column `billable_activity_id` preserved from the Milestone 7 claim_lines
+              contract.
+          - name: service_id
+            data_type: varchar
+            description: Source column `service_id` preserved from the Milestone 7 claim_lines contract.
+          - name: product_id
+            data_type: varchar
+            description: Source column `product_id` preserved from the Milestone 7 claim_lines contract.
+          - name: tariff_id
+            data_type: varchar
+            description: Source column `tariff_id` preserved from the Milestone 7 claim_lines contract.
+          - name: quantity
+            data_type: number(18,2)
+            description: Source column `quantity` preserved from the Milestone 7 claim_lines contract.
+          - name: unit_price
+            data_type: number(18,2)
+            description: Source column `unit_price` preserved from the Milestone 7 claim_lines contract.
+          - name: line_amount
+            data_type: number(18,2)
+            description: Source column `line_amount` preserved from the Milestone 7 claim_lines contract.
+          - name: line_status
+            data_type: varchar
+            description: Source column `line_status` preserved from the Milestone 7 claim_lines contract.
+          - name: rejection_code
+            data_type: varchar
+            description: Source column `rejection_code` preserved from the Milestone 7 claim_lines contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 claim_lines contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 claim_lines contract.
+      - name: invoices
+        identifier: INVOICES
+        description: Synthetic billing source dataset invoices.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 24
+            period: hour
+          error_after:
+            count: 72
+            period: hour
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: invoice_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - invoice_id
+        columns:
+          - name: invoice_id
+            data_type: varchar
+            description: Source column `invoice_id` preserved from the Milestone 7 invoices contract.
+            data_tests:
+              - not_null
+          - name: invoice_number
+            data_type: varchar
+            description: Source column `invoice_number` preserved from the Milestone 7 invoices contract.
+          - name: payer_id
+            data_type: varchar
+            description: Source column `payer_id` preserved from the Milestone 7 invoices contract.
+          - name: patient_id
+            data_type: varchar
+            description: Source column `patient_id` preserved from the Milestone 7 invoices contract.
+          - name: encounter_id
+            data_type: varchar
+            description: Source column `encounter_id` preserved from the Milestone 7 invoices contract.
+          - name: contract_id
+            data_type: varchar
+            description: Source column `contract_id` preserved from the Milestone 7 invoices contract.
+          - name: invoice_date
+            data_type: date
+            description: Source column `invoice_date` preserved from the Milestone 7 invoices contract.
+          - name: due_date
+            data_type: date
+            description: Source column `due_date` preserved from the Milestone 7 invoices contract.
+          - name: invoice_status
+            data_type: varchar
+            description: Source column `invoice_status` preserved from the Milestone 7 invoices contract.
+          - name: currency
+            data_type: varchar
+            description: Source column `currency` preserved from the Milestone 7 invoices contract.
+            data_tests:
+              - accepted_values:
+                  values:
+                    - GBP
+          - name: subtotal_amount
+            data_type: number(18,2)
+            description: Source column `subtotal_amount` preserved from the Milestone 7 invoices contract.
+          - name: tax_amount
+            data_type: number(18,2)
+            description: Source column `tax_amount` preserved from the Milestone 7 invoices contract.
+          - name: total_amount
+            data_type: number(18,2)
+            description: Source column `total_amount` preserved from the Milestone 7 invoices contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 invoices contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 invoices contract.
+      - name: invoice_lines
+        identifier: INVOICE_LINES
+        description: Synthetic billing source dataset invoice_lines.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 24
+            period: hour
+          error_after:
+            count: 72
+            period: hour
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: invoice_line_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - invoice_line_id
+        columns:
+          - name: invoice_line_id
+            data_type: varchar
+            description: Source column `invoice_line_id` preserved from the Milestone 7 invoice_lines
+              contract.
+            data_tests:
+              - not_null
+          - name: invoice_id
+            data_type: varchar
+            description: Source column `invoice_id` preserved from the Milestone 7 invoice_lines contract.
+          - name: billable_activity_id
+            data_type: varchar
+            description: Source column `billable_activity_id` preserved from the Milestone 7 invoice_lines
+              contract.
+          - name: claim_line_id
+            data_type: varchar
+            description: Source column `claim_line_id` preserved from the Milestone 7 invoice_lines contract.
+          - name: service_id
+            data_type: varchar
+            description: Source column `service_id` preserved from the Milestone 7 invoice_lines contract.
+          - name: product_id
+            data_type: varchar
+            description: Source column `product_id` preserved from the Milestone 7 invoice_lines contract.
+          - name: tariff_id
+            data_type: varchar
+            description: Source column `tariff_id` preserved from the Milestone 7 invoice_lines contract.
+          - name: description
+            data_type: varchar
+            description: Source column `description` preserved from the Milestone 7 invoice_lines contract.
+          - name: quantity
+            data_type: number(18,2)
+            description: Source column `quantity` preserved from the Milestone 7 invoice_lines contract.
+          - name: unit_price
+            data_type: number(18,2)
+            description: Source column `unit_price` preserved from the Milestone 7 invoice_lines contract.
+          - name: net_amount
+            data_type: number(18,2)
+            description: Source column `net_amount` preserved from the Milestone 7 invoice_lines contract.
+          - name: tax_amount
+            data_type: number(18,2)
+            description: Source column `tax_amount` preserved from the Milestone 7 invoice_lines contract.
+          - name: gross_amount
+            data_type: number(18,2)
+            description: Source column `gross_amount` preserved from the Milestone 7 invoice_lines contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 invoice_lines contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 invoice_lines contract.
+      - name: payment_attempts
+        identifier: PAYMENT_ATTEMPTS
+        description: Synthetic billing source dataset payment_attempts.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 6
+            period: hour
+          error_after:
+            count: 24
+            period: hour
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: payment_attempt_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - payment_attempt_id
+        columns:
+          - name: payment_attempt_id
+            data_type: varchar
+            description: Source column `payment_attempt_id` preserved from the Milestone 7 payment_attempts
+              contract.
+            data_tests:
+              - not_null
+          - name: invoice_id
+            data_type: varchar
+            description: Source column `invoice_id` preserved from the Milestone 7 payment_attempts contract.
+          - name: payer_id
+            data_type: varchar
+            description: Source column `payer_id` preserved from the Milestone 7 payment_attempts contract.
+          - name: attempt_datetime
+            data_type: timestamp_tz
+            description: Source column `attempt_datetime` preserved from the Milestone 7 payment_attempts
+              contract.
+          - name: payment_method
+            data_type: varchar
+            description: Source column `payment_method` preserved from the Milestone 7 payment_attempts
+              contract.
+          - name: requested_amount
+            data_type: number(18,2)
+            description: Source column `requested_amount` preserved from the Milestone 7 payment_attempts
+              contract.
+          - name: attempt_status
+            data_type: varchar
+            description: Source column `attempt_status` preserved from the Milestone 7 payment_attempts
+              contract.
+          - name: failure_code
+            data_type: varchar
+            description: Source column `failure_code` preserved from the Milestone 7 payment_attempts
+              contract.
+          - name: gateway_reference
+            data_type: varchar
+            description: Source column `gateway_reference` preserved from the Milestone 7 payment_attempts
+              contract.
+          - name: idempotency_key
+            data_type: varchar
+            description: Source column `idempotency_key` preserved from the Milestone 7 payment_attempts
+              contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 payment_attempts
+              contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 payment_attempts contract.
+      - name: payments
+        identifier: PAYMENTS
+        description: Synthetic billing source dataset payments.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 6
+            period: hour
+          error_after:
+            count: 24
+            period: hour
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: payment_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - payment_id
+        columns:
+          - name: payment_id
+            data_type: varchar
+            description: Source column `payment_id` preserved from the Milestone 7 payments contract.
+            data_tests:
+              - not_null
+          - name: payment_attempt_id
+            data_type: varchar
+            description: Source column `payment_attempt_id` preserved from the Milestone 7 payments contract.
+          - name: invoice_id
+            data_type: varchar
+            description: Source column `invoice_id` preserved from the Milestone 7 payments contract.
+          - name: payer_id
+            data_type: varchar
+            description: Source column `payer_id` preserved from the Milestone 7 payments contract.
+          - name: payment_datetime
+            data_type: timestamp_tz
+            description: Source column `payment_datetime` preserved from the Milestone 7 payments contract.
+          - name: amount
+            data_type: number(18,2)
+            description: Source column `amount` preserved from the Milestone 7 payments contract.
+          - name: currency
+            data_type: varchar
+            description: Source column `currency` preserved from the Milestone 7 payments contract.
+            data_tests:
+              - accepted_values:
+                  values:
+                    - GBP
+          - name: payment_method
+            data_type: varchar
+            description: Source column `payment_method` preserved from the Milestone 7 payments contract.
+          - name: payment_status
+            data_type: varchar
+            description: Source column `payment_status` preserved from the Milestone 7 payments contract.
+          - name: external_reference
+            data_type: varchar
+            description: Source column `external_reference` preserved from the Milestone 7 payments contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 payments contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 payments contract.
+      - name: refunds
+        identifier: REFUNDS
+        description: Synthetic billing source dataset refunds.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 48
+            period: hour
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: refund_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - refund_id
+        columns:
+          - name: refund_id
+            data_type: varchar
+            description: Source column `refund_id` preserved from the Milestone 7 refunds contract.
+            data_tests:
+              - not_null
+          - name: payment_id
+            data_type: varchar
+            description: Source column `payment_id` preserved from the Milestone 7 refunds contract.
+          - name: invoice_id
+            data_type: varchar
+            description: Source column `invoice_id` preserved from the Milestone 7 refunds contract.
+          - name: refund_datetime
+            data_type: timestamp_tz
+            description: Source column `refund_datetime` preserved from the Milestone 7 refunds contract.
+          - name: refund_amount
+            data_type: number(18,2)
+            description: Source column `refund_amount` preserved from the Milestone 7 refunds contract.
+          - name: refund_reason
+            data_type: varchar
+            description: Source column `refund_reason` preserved from the Milestone 7 refunds contract.
+          - name: refund_status
+            data_type: varchar
+            description: Source column `refund_status` preserved from the Milestone 7 refunds contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 refunds contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 refunds contract.
+      - name: adjustments
+        identifier: ADJUSTMENTS
+        description: Synthetic billing source dataset adjustments.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 24
+            period: hour
+          error_after:
+            count: 72
+            period: hour
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: adjustment_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - adjustment_id
+        columns:
+          - name: adjustment_id
+            data_type: varchar
+            description: Source column `adjustment_id` preserved from the Milestone 7 adjustments contract.
+            data_tests:
+              - not_null
+          - name: invoice_id
+            data_type: varchar
+            description: Source column `invoice_id` preserved from the Milestone 7 adjustments contract.
+          - name: claim_id
+            data_type: varchar
+            description: Source column `claim_id` preserved from the Milestone 7 adjustments contract.
+          - name: adjustment_type
+            data_type: varchar
+            description: Source column `adjustment_type` preserved from the Milestone 7 adjustments contract.
+          - name: adjustment_reason
+            data_type: varchar
+            description: Source column `adjustment_reason` preserved from the Milestone 7 adjustments
+              contract.
+          - name: adjustment_datetime
+            data_type: timestamp_tz
+            description: Source column `adjustment_datetime` preserved from the Milestone 7 adjustments
+              contract.
+          - name: adjustment_amount
+            data_type: number(18,2)
+            description: Source column `adjustment_amount` preserved from the Milestone 7 adjustments
+              contract.
+          - name: currency
+            data_type: varchar
+            description: Source column `currency` preserved from the Milestone 7 adjustments contract.
+            data_tests:
+              - accepted_values:
+                  values:
+                    - GBP
+          - name: status
+            data_type: varchar
+            description: Source column `status` preserved from the Milestone 7 adjustments contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 adjustments contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 adjustments contract.
+      - name: billing_exceptions
+        identifier: BILLING_EXCEPTIONS
+        description: Synthetic billing source dataset billing_exceptions.
+        loaded_at_field: detected_at
+        freshness:
+          warn_after:
+            count: 24
+            period: hour
+          error_after:
+            count: 72
+            period: hour
+        meta:
+          owner: billing platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: exception_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - exception_id
+        columns:
+          - name: exception_id
+            data_type: varchar
+            description: Source column `exception_id` preserved from the Milestone 7 billing_exceptions
+              contract.
+            data_tests:
+              - not_null
+          - name: exception_type
+            data_type: varchar
+            description: Source column `exception_type` preserved from the Milestone 7 billing_exceptions
+              contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 billing_exceptions
+              contract.
+          - name: source_record_id
+            data_type: varchar
+            description: Source column `source_record_id` preserved from the Milestone 7 billing_exceptions
+              contract.
+          - name: patient_id
+            data_type: varchar
+            description: Source column `patient_id` preserved from the Milestone 7 billing_exceptions
+              contract.
+          - name: encounter_id
+            data_type: varchar
+            description: Source column `encounter_id` preserved from the Milestone 7 billing_exceptions
+              contract.
+          - name: billable_activity_id
+            data_type: varchar
+            description: Source column `billable_activity_id` preserved from the M7 billing_exceptions
+              contract.
+          - name: claim_id
+            data_type: varchar
+            description: Source column `claim_id` preserved from the Milestone 7 billing_exceptions contract.
+          - name: invoice_id
+            data_type: varchar
+            description: Source column `invoice_id` preserved from the Milestone 7 billing_exceptions
+              contract.
+          - name: payment_id
+            data_type: varchar
+            description: Source column `payment_id` preserved from the Milestone 7 billing_exceptions
+              contract.
+          - name: severity
+            data_type: varchar
+            description: Source column `severity` preserved from the Milestone 7 billing_exceptions contract.
+          - name: financial_value_at_risk
+            data_type: number(18,2)
+            description: Source column `financial_value_at_risk` preserved from the M7 billing_exceptions
+              contract.
+          - name: detected_at
+            data_type: timestamp_tz
+            description: Source column `detected_at` preserved from the Milestone 7 billing_exceptions
+              contract.
+          - name: assigned_owner
+            data_type: varchar
+            description: Source column `assigned_owner` preserved from the Milestone 7 billing_exceptions
+              contract.
+          - name: status
+            data_type: varchar
+            description: Source column `status` preserved from the Milestone 7 billing_exceptions contract.
+          - name: resolution_date
+            data_type: date
+            description: Source column `resolution_date` preserved from the Milestone 7 billing_exceptions
+              contract.
+          - name: root_cause
+            data_type: varchar
+            description: Source column `root_cause` preserved from the Milestone 7 billing_exceptions
+              contract.
+          - name: remediation_action
+            data_type: varchar
+            description: Source column `remediation_action` preserved from the Milestone 7 billing_exceptions
+              contract.
+          - name: synthetic_flag
+            data_type: boolean
+            description: Source column `synthetic_flag` preserved from the Milestone 7 billing_exceptions
+              contract.
+            data_tests:
+              - accepted_values:
+                  values:
+                    - true

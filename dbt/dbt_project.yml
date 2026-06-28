@@ -39,6 +39,12 @@ models:
       core:
         +schema: core
         +tags: ["milestone_6", "core"]
+      billing:
+        +schema: billing
+        +tags: ["milestone_8", "billing"]
+      finance:
+        +schema: finance
+        +tags: ["milestone_8", "finance"]
     marts:
       +materialized: table
       +schema: mart
@@ -58,6 +64,11 @@ vars:
   raw_quarantine_schema: QUARANTINE
   raw_interoperability_database: HEDP_DEV_RAW
   raw_interoperability_schema: INTEROPERABILITY
+  raw_billing_database: HEDP_DEV_RAW
+  raw_billing_schema: BILLING
+  raw_finance_database: HEDP_DEV_RAW
+  raw_finance_schema: FINANCE
+  billing_as_of_date: '2025-01-01'
   governance_control_database: HEDP_DEV_GOVERNANCE
   governance_control_schema: CONTROL
   governance_data_quality_database: HEDP_DEV_GOVERNANCE

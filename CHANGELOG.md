@@ -20,3 +20,6 @@ All notable changes will follow Keep a Changelog conventions. The project does n
 - Milestone 7 deterministic billing and finance synthetic source extension with source schemas,
   Decimal-safe lifecycle generation, validation, positive and negative fixtures, CLI helpers,
   static raw contract metadata, documentation and evidence.
+- Milestone 8 governed healthcare billing and finance dbt domain with source declarations,
+  staging, intermediate calculation paths, dimensions, facts, controls, macros, guardrails,
+  documentation, ADR and evidence.

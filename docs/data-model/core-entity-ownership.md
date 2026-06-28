@@ -18,4 +18,4 @@
 | Research eligibility foundation | `core_research_eligibility` | one patient/cohort eligibility row |
 | Reconciliation exceptions | `core_reconciliation_exceptions` | one surfaced exception |
 
-Downstream milestones must reuse these models rather than creating parallel patient, encounter, organisation or activity definitions.
+Downstream milestones must reuse these models rather than creating parallel patient, encounter, organisation or activity definitions. Milestone 8 billing models link to these core models for healthcare context and preserve unmatched references instead of rebuilding healthcare entities.

@@ -1,0 +1,105 @@
+version: 2
+models:
+  - name: int_billing__claim_line_calculations
+    description: M8 intermediate model `int_billing__claim_line_calculations` centralising one billing/finance
+      c.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: intermediate
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+      calculation_owner: dbt_milestone_8
+  - name: int_billing__claim_totals
+    description: M8 intermediate model `int_billing__claim_totals` centralising one billing/finance calculation
+      .
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: intermediate
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+      calculation_owner: dbt_milestone_8
+  - name: int_billing__detected_exceptions
+    description: M8 intermediate model `int_billing__detected_exceptions` centralising one billing/finance
+      calcu.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: intermediate
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+      calculation_owner: dbt_milestone_8
+  - name: int_billing__invoice_line_calculations
+    description: M8 intermediate model `int_billing__invoice_line_calculations` centralising one billing/finance.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: intermediate
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+      calculation_owner: dbt_milestone_8
+  - name: int_billing__invoice_totals
+    description: M8 intermediate model `int_billing__invoice_totals` centralising one billing/finance
+      calculatio.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: intermediate
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+      calculation_owner: dbt_milestone_8
+  - name: int_billing__selected_contract
+    description: M8 intermediate model `int_billing__selected_contract` centralising one billing/finance
+      calcula.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: intermediate
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+      calculation_owner: dbt_milestone_8
+  - name: int_billing__selected_tariff
+    description: M8 intermediate model `int_billing__selected_tariff` centralising one billing/finance
+      calculati.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: intermediate
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+      calculation_owner: dbt_milestone_8
+  - name: int_billing__tariff_candidates
+    description: M8 intermediate model `int_billing__tariff_candidates` centralising one billing/finance
+      calcula.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: intermediate
+      sensitivity: synthetic_financial_restricted
+      contract_status: internal_ephemeral
+      calculation_owner: dbt_milestone_8

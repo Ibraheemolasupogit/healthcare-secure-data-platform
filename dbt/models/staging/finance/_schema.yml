@@ -1,0 +1,608 @@
+version: 2
+models:
+  - name: stg_finance__payment_attempts
+    description: Source-aligned staging view for M7 `payment_attempts`. Grain is one current source record
+      after.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: payment_attempt_id
+        description: '`payment_attempt_id` standardised for stg_finance__payment_attempts.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: invoice_id
+        description: '`invoice_id` standardised for stg_finance__payment_attempts.'
+        data_type: varchar
+      - name: payer_id
+        description: '`payer_id` standardised for stg_finance__payment_attempts.'
+        data_type: varchar
+      - name: attempt_datetime
+        description: '`attempt_datetime` standardised for stg_finance__payment_attempts.'
+        data_type: timestamp_tz
+      - name: payment_method
+        description: '`payment_method` standardised for stg_finance__payment_attempts.'
+        data_type: varchar
+      - name: requested_amount
+        description: '`requested_amount` standardised for stg_finance__payment_attempts.'
+        data_type: number(18,2)
+      - name: attempt_status
+        description: '`attempt_status` standardised for stg_finance__payment_attempts.'
+        data_type: varchar
+      - name: failure_code
+        description: '`failure_code` standardised for stg_finance__payment_attempts.'
+        data_type: varchar
+      - name: gateway_reference
+        description: '`gateway_reference` standardised for stg_finance__payment_attempts.'
+        data_type: varchar
+      - name: idempotency_key
+        description: '`idempotency_key` standardised for stg_finance__payment_attempts.'
+        data_type: varchar
+      - name: source_system
+        description: '`source_system` standardised for stg_finance__payment_attempts.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_finance__payment_attempts.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_finance__outstanding_balances
+    description: Source-aligned staging view for M7 `outstanding_balances`. Grain is one current source
+      record a.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: balance_snapshot_id
+        description: '`balance_snapshot_id` standardised for stg_finance__outstanding_balances.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: invoice_id
+        description: '`invoice_id` standardised for stg_finance__outstanding_balances.'
+        data_type: varchar
+      - name: snapshot_date
+        description: '`snapshot_date` standardised for stg_finance__outstanding_balances.'
+        data_type: date
+      - name: invoiced_amount
+        description: '`invoiced_amount` standardised for stg_finance__outstanding_balances.'
+        data_type: number(18,2)
+      - name: payment_amount
+        description: '`payment_amount` standardised for stg_finance__outstanding_balances.'
+        data_type: number(18,2)
+      - name: refund_amount
+        description: '`refund_amount` standardised for stg_finance__outstanding_balances.'
+        data_type: number(18,2)
+      - name: adjustment_amount
+        description: '`adjustment_amount` standardised for stg_finance__outstanding_balances.'
+        data_type: number(18,2)
+      - name: outstanding_amount
+        description: '`outstanding_amount` standardised for stg_finance__outstanding_balances.'
+        data_type: number(18,2)
+      - name: ageing_bucket
+        description: '`ageing_bucket` standardised for stg_finance__outstanding_balances.'
+        data_type: varchar
+      - name: currency
+        description: '`currency` standardised for stg_finance__outstanding_balances.'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              values:
+                - GBP
+      - name: source_system
+        description: '`source_system` standardised for stg_finance__outstanding_balances.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_finance__outstanding_balances.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_finance__daily_control_totals
+    description: Source-aligned staging view for M7 `daily_control_totals`. Grain is one current source
+      record a.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: control_total_id
+        description: '`control_total_id` standardised for stg_finance__daily_control_totals.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: control_date
+        description: '`control_date` standardised for stg_finance__daily_control_totals.'
+        data_type: date
+      - name: source_system
+        description: '`source_system` standardised for stg_finance__daily_control_totals.'
+        data_type: varchar
+      - name: entity_type
+        description: '`entity_type` standardised for stg_finance__daily_control_totals.'
+        data_type: varchar
+      - name: record_count
+        description: '`record_count` standardised for stg_finance__daily_control_totals.'
+        data_type: number
+      - name: gross_amount
+        description: '`gross_amount` standardised for stg_finance__daily_control_totals.'
+        data_type: number(18,2)
+      - name: net_amount
+        description: '`net_amount` standardised for stg_finance__daily_control_totals.'
+        data_type: number(18,2)
+      - name: payment_amount
+        description: '`payment_amount` standardised for stg_finance__daily_control_totals.'
+        data_type: number(18,2)
+      - name: refund_amount
+        description: '`refund_amount` standardised for stg_finance__daily_control_totals.'
+        data_type: number(18,2)
+      - name: adjustment_amount
+        description: '`adjustment_amount` standardised for stg_finance__daily_control_totals.'
+        data_type: number(18,2)
+      - name: currency
+        description: '`currency` standardised for stg_finance__daily_control_totals.'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              values:
+                - GBP
+      - name: generated_at
+        description: '`generated_at` standardised for stg_finance__daily_control_totals.'
+        data_type: timestamp_tz
+      - name: checksum
+        description: '`checksum` standardised for stg_finance__daily_control_totals.'
+        data_type: varchar
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_finance__revenue_events
+    description: Source-aligned staging view for M7 `revenue_events`. Grain is one current source record
+      after d.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: revenue_event_id
+        description: '`revenue_event_id` standardised for stg_finance__revenue_events.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: invoice_id
+        description: '`invoice_id` standardised for stg_finance__revenue_events.'
+        data_type: varchar
+      - name: invoice_line_id
+        description: '`invoice_line_id` standardised for stg_finance__revenue_events.'
+        data_type: varchar
+      - name: claim_id
+        description: '`claim_id` standardised for stg_finance__revenue_events.'
+        data_type: varchar
+      - name: billable_activity_id
+        description: '`billable_activity_id` standardised for stg_finance__revenue_events.'
+        data_type: varchar
+      - name: event_type
+        description: '`event_type` standardised for stg_finance__revenue_events.'
+        data_type: varchar
+      - name: event_datetime
+        description: '`event_datetime` standardised for stg_finance__revenue_events.'
+        data_type: timestamp_tz
+      - name: amount
+        description: '`amount` standardised for stg_finance__revenue_events.'
+        data_type: number(18,2)
+      - name: currency
+        description: '`currency` standardised for stg_finance__revenue_events.'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              values:
+                - GBP
+      - name: source_status
+        description: '`source_status` standardised for stg_finance__revenue_events.'
+        data_type: varchar
+      - name: source_system
+        description: '`source_system` standardised for stg_finance__revenue_events.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_finance__revenue_events.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_finance__adjustments
+    description: Source-aligned staging view for M7 `adjustments`. Grain is one current source record
+      after dedu.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: adjustment_id
+        description: '`adjustment_id` standardised for stg_finance__adjustments.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: invoice_id
+        description: '`invoice_id` standardised for stg_finance__adjustments.'
+        data_type: varchar
+      - name: claim_id
+        description: '`claim_id` standardised for stg_finance__adjustments.'
+        data_type: varchar
+      - name: adjustment_type
+        description: '`adjustment_type` standardised for stg_finance__adjustments.'
+        data_type: varchar
+      - name: adjustment_reason
+        description: '`adjustment_reason` standardised for stg_finance__adjustments.'
+        data_type: varchar
+      - name: adjustment_datetime
+        description: '`adjustment_datetime` standardised for stg_finance__adjustments.'
+        data_type: timestamp_tz
+      - name: adjustment_amount
+        description: '`adjustment_amount` standardised for stg_finance__adjustments.'
+        data_type: number(18,2)
+      - name: currency
+        description: '`currency` standardised for stg_finance__adjustments.'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              values:
+                - GBP
+      - name: status
+        description: '`status` standardised for stg_finance__adjustments.'
+        data_type: varchar
+      - name: source_system
+        description: '`source_system` standardised for stg_finance__adjustments.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_finance__adjustments.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_finance__payments
+    description: Source-aligned staging view for M7 `payments`. Grain is one current source record after
+      dedupli.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: payment_id
+        description: '`payment_id` standardised for stg_finance__payments.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: payment_attempt_id
+        description: '`payment_attempt_id` standardised for stg_finance__payments.'
+        data_type: varchar
+      - name: invoice_id
+        description: '`invoice_id` standardised for stg_finance__payments.'
+        data_type: varchar
+      - name: payer_id
+        description: '`payer_id` standardised for stg_finance__payments.'
+        data_type: varchar
+      - name: payment_datetime
+        description: '`payment_datetime` standardised for stg_finance__payments.'
+        data_type: timestamp_tz
+      - name: amount
+        description: '`amount` standardised for stg_finance__payments.'
+        data_type: number(18,2)
+      - name: currency
+        description: '`currency` standardised for stg_finance__payments.'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              values:
+                - GBP
+      - name: payment_method
+        description: '`payment_method` standardised for stg_finance__payments.'
+        data_type: varchar
+      - name: payment_status
+        description: '`payment_status` standardised for stg_finance__payments.'
+        data_type: varchar
+      - name: external_reference
+        description: '`external_reference` standardised for stg_finance__payments.'
+        data_type: varchar
+      - name: source_system
+        description: '`source_system` standardised for stg_finance__payments.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_finance__payments.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.
+  - name: stg_finance__refunds
+    description: Source-aligned staging view for M7 `refunds`. Grain is one current source record after
+      deduplic.
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '8'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_financial_restricted
+      contains_conformed_entity: false
+    columns:
+      - name: refund_id
+        description: '`refund_id` standardised for stg_finance__refunds.'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+      - name: payment_id
+        description: '`payment_id` standardised for stg_finance__refunds.'
+        data_type: varchar
+      - name: invoice_id
+        description: '`invoice_id` standardised for stg_finance__refunds.'
+        data_type: varchar
+      - name: refund_datetime
+        description: '`refund_datetime` standardised for stg_finance__refunds.'
+        data_type: timestamp_tz
+      - name: refund_amount
+        description: '`refund_amount` standardised for stg_finance__refunds.'
+        data_type: number(18,2)
+      - name: refund_reason
+        description: '`refund_reason` standardised for stg_finance__refunds.'
+        data_type: varchar
+      - name: refund_status
+        description: '`refund_status` standardised for stg_finance__refunds.'
+        data_type: varchar
+      - name: source_system
+        description: '`source_system` standardised for stg_finance__refunds.'
+        data_type: varchar
+      - name: updated_at
+        description: '`updated_at` standardised for stg_finance__refunds.'
+        data_type: timestamp_tz
+      - name: source_system_standardised
+        data_type: varchar
+        description: Staging lineage field `source_system_standardised`.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Staging lineage field `synthetic_flag`.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging lineage field `source_record_id`.
+        data_tests:
+          - not_null
+      - name: source_relation
+        data_type: varchar
+        description: Staging lineage field `source_relation`.
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Staging lineage field `source_updated_at`.
+      - name: dbt_loaded_at
+        data_type: timestamp_tz
+        description: Staging lineage field `dbt_loaded_at`.
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        data_type: varchar
+        description: Staging lineage field `dbt_invocation_id`.
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        data_type: boolean
+        description: Staging lineage field `is_duplicate`.

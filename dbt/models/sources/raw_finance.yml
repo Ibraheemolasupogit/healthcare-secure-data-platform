@@ -1,0 +1,250 @@
+version: 2
+sources:
+  - name: raw_finance
+    database: '{{ var(''raw_finance_database'', ''HEDP_DEV_RAW'') }}'
+    schema: '{{ var(''raw_finance_schema'', ''FINANCE'') }}'
+    description: raw_finance source group declared by Milestone 8 from Milestone 7 synthetic source contracts.
+    meta:
+      owner: finance platform engineering
+      loader: SYNTHETIC_MILESTONE_7
+      implementation_status: local_fixture_planned_raw
+      contract_status: source_contract
+      source_system: synthetic_billing_finance
+      contains_real_patient_data: false
+    tables:
+      - name: revenue_events
+        identifier: REVENUE_EVENTS
+        description: Synthetic billing source dataset revenue_events.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 24
+            period: hour
+          error_after:
+            count: 72
+            period: hour
+        meta:
+          owner: finance platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: revenue_event_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - revenue_event_id
+        columns:
+          - name: revenue_event_id
+            data_type: varchar
+            description: Source column `revenue_event_id` preserved from the Milestone 7 revenue_events
+              contract.
+            data_tests:
+              - not_null
+          - name: invoice_id
+            data_type: varchar
+            description: Source column `invoice_id` preserved from the Milestone 7 revenue_events contract.
+          - name: invoice_line_id
+            data_type: varchar
+            description: Source column `invoice_line_id` preserved from the Milestone 7 revenue_events
+              contract.
+          - name: claim_id
+            data_type: varchar
+            description: Source column `claim_id` preserved from the Milestone 7 revenue_events contract.
+          - name: billable_activity_id
+            data_type: varchar
+            description: Source column `billable_activity_id` preserved from the Milestone 7 revenue_events
+              contract.
+          - name: event_type
+            data_type: varchar
+            description: Source column `event_type` preserved from the Milestone 7 revenue_events contract.
+          - name: event_datetime
+            data_type: timestamp_tz
+            description: Source column `event_datetime` preserved from the Milestone 7 revenue_events
+              contract.
+          - name: amount
+            data_type: number(18,2)
+            description: Source column `amount` preserved from the Milestone 7 revenue_events contract.
+          - name: currency
+            data_type: varchar
+            description: Source column `currency` preserved from the Milestone 7 revenue_events contract.
+            data_tests:
+              - accepted_values:
+                  values:
+                    - GBP
+          - name: source_status
+            data_type: varchar
+            description: Source column `source_status` preserved from the Milestone 7 revenue_events contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 revenue_events contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 revenue_events contract.
+      - name: outstanding_balances
+        identifier: OUTSTANDING_BALANCES
+        description: Synthetic billing source dataset outstanding_balances.
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 36
+            period: hour
+          error_after:
+            count: 72
+            period: hour
+        meta:
+          owner: finance platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: balance_snapshot_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - balance_snapshot_id
+        columns:
+          - name: balance_snapshot_id
+            data_type: varchar
+            description: Source column `balance_snapshot_id` preserved from the M7 outstanding_balances
+              contract.
+            data_tests:
+              - not_null
+          - name: invoice_id
+            data_type: varchar
+            description: Source column `invoice_id` preserved from the Milestone 7 outstanding_balances
+              contract.
+          - name: snapshot_date
+            data_type: date
+            description: Source column `snapshot_date` preserved from the Milestone 7 outstanding_balances
+              contract.
+          - name: invoiced_amount
+            data_type: number(18,2)
+            description: Source column `invoiced_amount` preserved from the Milestone 7 outstanding_balances
+              contract.
+          - name: payment_amount
+            data_type: number(18,2)
+            description: Source column `payment_amount` preserved from the Milestone 7 outstanding_balances
+              contract.
+          - name: refund_amount
+            data_type: number(18,2)
+            description: Source column `refund_amount` preserved from the Milestone 7 outstanding_balances
+              contract.
+          - name: adjustment_amount
+            data_type: number(18,2)
+            description: Source column `adjustment_amount` preserved from the Milestone 7 outstanding_balances
+              contract.
+          - name: outstanding_amount
+            data_type: number(18,2)
+            description: Source column `outstanding_amount` preserved from the M7 outstanding_balances
+              contract.
+          - name: ageing_bucket
+            data_type: varchar
+            description: Source column `ageing_bucket` preserved from the Milestone 7 outstanding_balances
+              contract.
+          - name: currency
+            data_type: varchar
+            description: Source column `currency` preserved from the Milestone 7 outstanding_balances
+              contract.
+            data_tests:
+              - accepted_values:
+                  values:
+                    - GBP
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 outstanding_balances
+              contract.
+          - name: updated_at
+            data_type: timestamp_tz
+            description: Source column `updated_at` preserved from the Milestone 7 outstanding_balances
+              contract.
+      - name: daily_control_totals
+        identifier: DAILY_CONTROL_TOTALS
+        description: Synthetic billing source dataset daily_control_totals.
+        loaded_at_field: generated_at
+        freshness:
+          warn_after:
+            count: 36
+            period: hour
+          error_after:
+            count: 72
+            period: hour
+        meta:
+          owner: finance platform engineering
+          sensitivity: synthetic_financial_restricted
+          primary_key: control_total_id
+          source_system: synthetic_billing_finance
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_8
+          synthetic_data: true
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - control_total_id
+        columns:
+          - name: control_total_id
+            data_type: varchar
+            description: Source column `control_total_id` preserved from the Milestone 7 daily_control_totals
+              contract.
+            data_tests:
+              - not_null
+          - name: control_date
+            data_type: date
+            description: Source column `control_date` preserved from the Milestone 7 daily_control_totals
+              contract.
+          - name: source_system
+            data_type: varchar
+            description: Source column `source_system` preserved from the Milestone 7 daily_control_totals
+              contract.
+          - name: entity_type
+            data_type: varchar
+            description: Source column `entity_type` preserved from the Milestone 7 daily_control_totals
+              contract.
+          - name: record_count
+            data_type: number
+            description: Source column `record_count` preserved from the Milestone 7 daily_control_totals
+              contract.
+          - name: gross_amount
+            data_type: number(18,2)
+            description: Source column `gross_amount` preserved from the Milestone 7 daily_control_totals
+              contract.
+          - name: net_amount
+            data_type: number(18,2)
+            description: Source column `net_amount` preserved from the Milestone 7 daily_control_totals
+              contract.
+          - name: payment_amount
+            data_type: number(18,2)
+            description: Source column `payment_amount` preserved from the Milestone 7 daily_control_totals
+              contract.
+          - name: refund_amount
+            data_type: number(18,2)
+            description: Source column `refund_amount` preserved from the Milestone 7 daily_control_totals
+              contract.
+          - name: adjustment_amount
+            data_type: number(18,2)
+            description: Source column `adjustment_amount` preserved from the Milestone 7 daily_control_totals
+              contract.
+          - name: currency
+            data_type: varchar
+            description: Source column `currency` preserved from the Milestone 7 daily_control_totals
+              contract.
+            data_tests:
+              - accepted_values:
+                  values:
+                    - GBP
+          - name: generated_at
+            data_type: timestamp_tz
+            description: Source column `generated_at` preserved from the Milestone 7 daily_control_totals
+              contract.
+          - name: checksum
+            data_type: varchar
+            description: Source column `checksum` preserved from the Milestone 7 daily_control_totals
+              contract.

@@ -1,0 +1,25 @@
+{{ config(materialized='table', tags=['milestone_8', 'finance', 'fact', 'outstanding_balance']) }}
+select
+    {{ generate_healthcare_surrogate_key(['balance_snapshot_id']) }} as balance_snapshot_key,
+    {{ generate_healthcare_surrogate_key(['invoice_id']) }} as invoice_key,
+    balance_snapshot_id,
+    invoice_id,
+    snapshot_date,
+    governed_total_amount,
+    valid_allocated_payment_amount,
+    valid_refund_amount,
+    signed_adjustment_amount,
+    governed_outstanding_amount,
+    source_outstanding_amount,
+    source_to_governed_variance_amount,
+    governed_ageing_bucket,
+    source_ageing_bucket,
+    credit_balance_flag,
+    balance_variance_flag,
+    currency,
+    source_record_id,
+    source_relation,
+    source_system,
+    synthetic_flag,
+    dbt_updated_at
+from {{ ref('int_finance__governed_outstanding_balance') }}

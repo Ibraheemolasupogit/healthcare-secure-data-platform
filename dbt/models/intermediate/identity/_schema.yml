@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: int_identity__patient_identifiers
+    description: >
+      Deterministic synthetic patient identity reconciliation across Milestone 2 patient IDs and
+      Milestone 4 patient identifier evidence. Grain is one source patient identifier per namespace.
+    meta:
+      owner: analytics engineering
+      milestone: '6'
+      layer: intermediate
+      contains_probabilistic_matching: false
+      downstream_model: core_patient_identity
+    columns:
+      - name: source_namespace
+        description: Source identifier namespace.
+        data_tests: [not_null]
+      - name: source_patient_identifier
+        description: Patient identifier as supplied by the source namespace.
+        data_tests: [not_null]
+      - name: canonical_patient_id
+        description: Deterministic canonical synthetic patient identifier.
+      - name: patient_key
+        description: Stable SHA-256 patient surrogate key.
+      - name: is_unmatched
+        description: True when no canonical patient identifier is available.
+      - name: is_conflicting
+        description: True when one source identifier maps to multiple canonical patients.
+  - name: int_identity__encounter_identifiers
+    description: >
+      Deterministic synthetic encounter identity reconciliation across Milestone 2 encounters and
+      Milestone 4 encounter identifier evidence. Grain is one source encounter identifier per namespace.
+    meta:
+      owner: analytics engineering
+      milestone: '6'
+      layer: intermediate
+      downstream_model: core_encounter
+    columns:
+      - name: source_namespace
+        description: Source identifier namespace.
+        data_tests: [not_null]
+      - name: source_encounter_identifier
+        description: Encounter identifier as supplied by the source namespace.
+        data_tests: [not_null]
+      - name: canonical_encounter_id
+        description: Deterministic canonical synthetic encounter identifier.
+      - name: encounter_key
+        description: Stable SHA-256 encounter surrogate key.
+      - name: is_unmatched
+        description: True when no canonical encounter identifier is available.
+      - name: is_conflicting
+        description: True when one source identifier maps to multiple canonical encounters.

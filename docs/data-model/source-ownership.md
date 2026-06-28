@@ -12,4 +12,6 @@ Milestone 5 declares existing source contracts only. It does not invent new raw 
 | `governance_control` | `HEDP_DEV_GOVERNANCE.CONTROL` | 3 | Milestone 4 static contract, not deployed |
 | `governance_data_quality` | `HEDP_DEV_GOVERNANCE.DATA_QUALITY` | 2 | local fixture/static contract |
 
-Snowflake and Terraform retain ownership of databases and schemas. dbt owns declarations, freshness checks, staging SQL, tests, docs, and lineage. Python owns source generation and parser validation.
+Snowflake and Terraform retain ownership of databases and schemas. dbt owns declarations, freshness checks, staging SQL, conformed healthcare core SQL, tests, docs, and lineage. Python owns source generation and parser validation.
+
+Milestone 6 core models consume these staging relations only; they do not read sources directly.

@@ -1,0 +1,91 @@
+version: 2
+models:
+  - name: core_reconciliation_exceptions
+    description: 'Curated reconciliation exceptions for unmatched identifiers, conflicting identifier
+      mappings and unresolved core relationships. Grain is one surfaced exception.
+
+      '
+    config:
+      contract:
+        enforced: true
+    meta:
+      owner: analytics engineering
+      milestone: '6'
+      layer: curated_core
+      sensitivity: synthetic_restricted
+      contract_status: declared_not_runtime_proven
+    columns:
+      - name: reconciliation_key
+        data_type: varchar
+        description: Stable exception key
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: exception_entity
+        data_type: varchar
+        description: Entity type with exception
+      - name: exception_record_id
+        data_type: varchar
+        description: Source record or identifier with exception
+      - name: exception_type
+        data_type: varchar
+        description: Exception type
+      - name: exception_namespace
+        data_type: varchar
+        description: Source namespace or missing entity
+      - name: canonical_identifier
+        data_type: varchar
+        description: Canonical or missing identifier
+      - name: source_record_id
+        data_type: varchar
+        description: Source record ID
+      - name: source_relation
+        data_type: varchar
+        description: Source relation
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt update timestamp
+  - name: core_reconciliation_row_counts
+    description: 'Curated source-to-core row-count reconciliation. Grain is one entity reconciliation
+      rule.
+
+      '
+    config:
+      contract:
+        enforced: true
+    meta:
+      owner: analytics engineering
+      milestone: '6'
+      layer: curated_core
+      sensitivity: synthetic_restricted
+      contract_status: declared_not_runtime_proven
+    columns:
+      - name: row_count_reconciliation_key
+        data_type: varchar
+        description: Stable row-count key
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: entity_name
+        data_type: varchar
+        description: Entity name
+      - name: staging_row_count
+        data_type: number
+        description: Staging row count
+      - name: core_row_count
+        data_type: number
+        description: Core row count
+      - name: row_count_difference
+        data_type: number
+        description: Difference between staging and core
+      - name: reconciliation_rule
+        data_type: varchar
+        description: Reconciliation rule
+      - name: reconciliation_status
+        data_type: varchar
+        description: Reconciliation status
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt update timestamp

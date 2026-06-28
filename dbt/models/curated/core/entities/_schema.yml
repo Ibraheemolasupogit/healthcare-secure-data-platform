@@ -1,0 +1,1044 @@
+version: 2
+models:
+  - name: core_patient_identity
+    description: 'Authoritative deterministic synthetic patient identity crosswalk. Grain is one source
+      patient identifier per namespace and canonical synthetic patient.
+
+      '
+    config:
+      contract:
+        enforced: true
+    meta: &id001
+      owner: analytics engineering
+      milestone: '6'
+      layer: curated_core
+      sensitivity: synthetic_restricted
+      contract_status: declared_not_runtime_proven
+      historical_behaviour: current_source_identity_mapping
+      future_downstream_consumers:
+        - milestone_7_plus
+    columns:
+      - name: patient_identity_key
+        data_type: varchar
+        description: Stable identity-row surrogate key.
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: patient_key
+        data_type: varchar
+        description: Stable conformed patient key.
+        data_tests:
+          - valid_sha256
+      - name: canonical_patient_id
+        data_type: varchar
+        description: Canonical synthetic patient identifier.
+      - name: source_namespace
+        data_type: varchar
+        description: Source namespace for the patient identifier.
+        data_tests:
+          - not_null
+      - name: source_patient_identifier
+        data_type: varchar
+        description: Source patient identifier.
+        data_tests:
+          - not_null
+      - name: source_record_id
+        data_type: varchar
+        description: Source lineage record identifier.
+      - name: source_relation
+        data_type: varchar
+        description: Upstream staging or intermediate relation.
+      - name: source_system
+        data_type: varchar
+        description: Source system label.
+      - name: source_updated_at
+        data_type: timestamp_tz
+        description: Source update timestamp where available.
+      - name: mapping_version
+        data_type: varchar
+        description: Mapping rule or parser version.
+      - name: mapping_status
+        data_type: varchar
+        description: Deterministic mapping status.
+      - name: is_unmatched
+        data_type: boolean
+        description: Whether the identifier did not resolve to a canonical patient.
+      - name: is_conflicting
+        data_type: boolean
+        description: Whether the identifier had conflicting mappings.
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt model update timestamp.
+  - name: core_patient
+    description: 'Authoritative conformed synthetic patient. Grain is one row per canonical synthetic
+      patient.
+
+      '
+    config:
+      contract:
+        enforced: true
+    meta: *id001
+    columns:
+      - name: patient_key
+        data_type: varchar
+        description: Stable SHA-256 patient surrogate key.
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: canonical_patient_id
+        data_type: varchar
+        description: Canonical synthetic patient identifier.
+        data_tests:
+          - not_null
+          - unique
+          - valid_synthetic_identifier:
+              prefix: PAT
+      - name: patient_pseudonym
+        data_type: varchar
+        description: Synthetic pseudonym.
+      - name: synthetic_nhs_number
+        data_type: varchar
+        description: Synthetic NHS-like identifier; not a real NHS number.
+      - name: birth_date
+        data_type: date
+        description: Synthetic birth date.
+      - name: sex_code
+        data_type: varchar
+        description: Synthetic sex code.
+      - name: ethnicity_code
+        data_type: varchar
+        description: Synthetic ethnicity code.
+      - name: postcode_sector
+        data_type: varchar
+        description: Synthetic postcode sector.
+      - name: registered_gp_organisation_key
+        data_type: varchar
+        description: Registered GP organisation surrogate key.
+      - name: registered_gp_organisation_id
+        data_type: varchar
+        description: Registered GP source organisation identifier.
+      - name: deceased_flag
+        data_type: boolean
+        description: Synthetic deceased flag.
+      - name: death_date
+        data_type: date
+        description: Synthetic death date when present.
+      - name: research_consent_status
+        data_type: varchar
+        description: Current research consent summary.
+        data_tests:
+          - accepted_values:
+              values:
+                - ACTIVE
+                - NOT_ACTIVE
+      - name: valid_from
+        data_type: timestamp_tz
+        description: Effective start from source record creation.
+      - name: valid_to
+        data_type: timestamp_tz
+        description: Effective end; null for current record.
+      - name: is_current
+        data_type: boolean
+        description: Current-record flag.
+      - name: source_system_count
+        data_type: number
+        description: Count of contributing source namespaces.
+      - name: source_record_count
+        data_type: number
+        description: Count of contributing source records.
+      - name: source_first_seen_at
+        data_type: timestamp_tz
+        description: Earliest contributing source timestamp.
+      - name: source_last_seen_at
+        data_type: timestamp_tz
+        description: Latest contributing source timestamp.
+      - name: source_record_id
+        data_type: varchar
+        description: Staging source record ID.
+      - name: source_relation
+        data_type: varchar
+        description: Upstream staging relation.
+      - name: source_system
+        data_type: varchar
+        description: Source system label.
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic-only flag.
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt model update timestamp.
+  - name: core_organisation
+    description: Authoritative conformed synthetic organisation. Grain is one row per organisation.
+    config:
+      contract:
+        enforced: true
+    meta: *id001
+    columns:
+      - name: organisation_key
+        data_type: varchar
+        description: Stable organisation key
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: canonical_organisation_id
+        data_type: varchar
+        description: Canonical organisation ID
+        data_tests:
+          - not_null
+          - unique
+      - name: organisation_code
+        data_type: varchar
+        description: Synthetic organisation code
+      - name: organisation_name
+        data_type: varchar
+        description: Synthetic organisation name
+      - name: organisation_type
+        data_type: varchar
+        description: Synthetic organisation type
+      - name: parent_organisation_key
+        data_type: varchar
+        description: Parent organisation key
+      - name: parent_organisation_id
+        data_type: varchar
+        description: Parent organisation ID
+      - name: region
+        data_type: varchar
+        description: Synthetic region
+      - name: active_flag
+        data_type: boolean
+        description: Active flag
+      - name: valid_from
+        data_type: date
+        description: Effective start
+      - name: valid_to
+        data_type: date
+        description: Effective end
+      - name: is_current
+        data_type: boolean
+        description: Current flag
+      - name: source_record_id
+        data_type: varchar
+        description: Source record ID
+      - name: source_relation
+        data_type: varchar
+        description: Source relation
+      - name: source_system
+        data_type: varchar
+        description: Source system
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic flag
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt update timestamp
+  - name: core_location
+    description: Authoritative conformed synthetic location. Grain is one row per location.
+    config:
+      contract:
+        enforced: true
+    meta: *id001
+    columns:
+      - name: location_key
+        data_type: varchar
+        description: Stable location key
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: canonical_location_id
+        data_type: varchar
+        description: Canonical location ID
+        data_tests:
+          - not_null
+          - unique
+      - name: organisation_key
+        data_type: varchar
+        description: Owning organisation key
+      - name: organisation_id
+        data_type: varchar
+        description: Owning organisation source ID
+      - name: organisation_type
+        data_type: varchar
+        description: Owning organisation type
+      - name: location_code
+        data_type: varchar
+        description: Synthetic location code
+      - name: location_name
+        data_type: varchar
+        description: Synthetic location name
+      - name: location_type
+        data_type: varchar
+        description: Location type
+      - name: specialty
+        data_type: varchar
+        description: Specialty
+      - name: active_flag
+        data_type: boolean
+        description: Active flag
+      - name: unresolved_organisation_flag
+        data_type: boolean
+        description: Whether owning organisation is unresolved
+      - name: source_record_id
+        data_type: varchar
+        description: Source record ID
+      - name: source_relation
+        data_type: varchar
+        description: Source relation
+      - name: source_system
+        data_type: varchar
+        description: Source system
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic flag
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt update timestamp
+  - name: core_provider
+    description: Authoritative conformed synthetic healthcare provider. Grain is one row per provider.
+    config:
+      contract:
+        enforced: true
+    meta: *id001
+    columns:
+      - name: provider_key
+        data_type: varchar
+        description: Stable provider key
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: canonical_provider_id
+        data_type: varchar
+        description: Canonical provider ID
+        data_tests:
+          - not_null
+          - unique
+      - name: organisation_key
+        data_type: varchar
+        description: Organisation key
+      - name: organisation_id
+        data_type: varchar
+        description: Organisation ID
+      - name: provider_label
+        data_type: varchar
+        description: Synthetic provider label
+      - name: provider_role
+        data_type: varchar
+        description: Provider role
+      - name: specialty
+        data_type: varchar
+        description: Specialty
+      - name: active_flag
+        data_type: boolean
+        description: Active flag
+      - name: valid_from
+        data_type: date
+        description: Effective start
+      - name: valid_to
+        data_type: date
+        description: Effective end
+      - name: is_current
+        data_type: boolean
+        description: Current flag
+      - name: unresolved_organisation_flag
+        data_type: boolean
+        description: Whether organisation is unresolved
+      - name: source_record_id
+        data_type: varchar
+        description: Source record ID
+      - name: source_relation
+        data_type: varchar
+        description: Source relation
+      - name: source_system
+        data_type: varchar
+        description: Source system
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic flag
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt update timestamp
+  - name: core_encounter
+    description: Authoritative conformed synthetic encounter. Grain is one row per encounter.
+    config:
+      contract:
+        enforced: true
+    meta: *id001
+    columns:
+      - name: encounter_key
+        data_type: varchar
+        description: Stable encounter key
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: canonical_encounter_id
+        data_type: varchar
+        description: Canonical encounter ID
+        data_tests:
+          - not_null
+          - unique
+      - name: patient_key
+        data_type: varchar
+        description: Patient key
+      - name: patient_id
+        data_type: varchar
+        description: Patient ID
+      - name: organisation_key
+        data_type: varchar
+        description: Organisation key
+      - name: organisation_id
+        data_type: varchar
+        description: Organisation ID
+      - name: location_key
+        data_type: varchar
+        description: Location key
+      - name: location_id
+        data_type: varchar
+        description: Location ID
+      - name: provider_key
+        data_type: varchar
+        description: Provider key
+      - name: provider_id
+        data_type: varchar
+        description: Provider ID
+      - name: encounter_type
+        data_type: varchar
+        description: Encounter type
+      - name: admission_method
+        data_type: varchar
+        description: Admission method
+      - name: start_datetime
+        data_type: timestamp_tz
+        description: Encounter start
+      - name: end_datetime
+        data_type: timestamp_tz
+        description: Encounter end
+      - name: encounter_status
+        data_type: varchar
+        description: Encounter status
+      - name: discharge_destination
+        data_type: varchar
+        description: Discharge destination
+      - name: primary_diagnosis_code
+        data_type: varchar
+        description: Synthetic primary diagnosis code
+      - name: source_system_count
+        data_type: number
+        description: Count of source namespaces
+      - name: source_record_count
+        data_type: number
+        description: Count of source records
+      - name: source_record_id
+        data_type: varchar
+        description: Source record ID
+      - name: source_relation
+        data_type: varchar
+        description: Source relation
+      - name: source_system
+        data_type: varchar
+        description: Source system
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic flag
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt update timestamp
+  - name: core_admission
+    description: Reusable conformed synthetic admission. Grain is one row per admission.
+    config:
+      contract:
+        enforced: true
+    meta: *id001
+    columns:
+      - name: admission_key
+        data_type: varchar
+        description: Stable admission key
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: canonical_admission_id
+        data_type: varchar
+        description: Canonical admission ID
+        data_tests:
+          - not_null
+          - unique
+      - name: encounter_key
+        data_type: varchar
+        description: Encounter key
+      - name: encounter_id
+        data_type: varchar
+        description: Encounter ID
+      - name: patient_key
+        data_type: varchar
+        description: Patient key
+      - name: patient_id
+        data_type: varchar
+        description: Patient ID
+      - name: ward_location_key
+        data_type: varchar
+        description: Ward location key
+      - name: ward_id
+        data_type: varchar
+        description: Ward/source location ID
+      - name: admission_datetime
+        data_type: timestamp_tz
+        description: Admission timestamp
+      - name: discharge_datetime
+        data_type: timestamp_tz
+        description: Discharge timestamp
+      - name: admission_method
+        data_type: varchar
+        description: Admission method
+      - name: discharge_method
+        data_type: varchar
+        description: Discharge method
+      - name: length_of_stay_days
+        data_type: number
+        description: Existing source length-of-stay value
+      - name: open_admission_flag
+        data_type: boolean
+        description: Whether admission is open
+      - name: readmission_flag
+        data_type: boolean
+        description: Existing source readmission flag
+      - name: prior_admission_id
+        data_type: varchar
+        description: Prior admission ID
+      - name: prior_admission_key
+        data_type: varchar
+        description: Prior admission key
+      - name: source_record_id
+        data_type: varchar
+        description: Source record ID
+      - name: source_relation
+        data_type: varchar
+        description: Source relation
+      - name: source_system
+        data_type: varchar
+        description: Source system
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic flag
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt update timestamp
+  - name: core_appointment
+    description: Reusable conformed synthetic appointment. Grain is one row per appointment.
+    config:
+      contract:
+        enforced: true
+    meta: *id001
+    columns:
+      - name: appointment_key
+        data_type: varchar
+        description: Stable appointment key
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: canonical_appointment_id
+        data_type: varchar
+        description: Canonical appointment ID
+        data_tests:
+          - not_null
+          - unique
+      - name: patient_key
+        data_type: varchar
+        description: Patient key
+      - name: patient_id
+        data_type: varchar
+        description: Patient ID
+      - name: organisation_key
+        data_type: varchar
+        description: Organisation key
+      - name: organisation_id
+        data_type: varchar
+        description: Organisation ID
+      - name: location_key
+        data_type: varchar
+        description: Location key
+      - name: location_id
+        data_type: varchar
+        description: Location ID
+      - name: provider_key
+        data_type: varchar
+        description: Provider key
+      - name: provider_id
+        data_type: varchar
+        description: Provider ID
+      - name: referral_event_key
+        data_type: varchar
+        description: Referral clinical-event key where present
+      - name: referral_id
+        data_type: varchar
+        description: Referral source ID
+      - name: appointment_datetime
+        data_type: timestamp_tz
+        description: Appointment timestamp
+      - name: booking_datetime
+        data_type: timestamp_tz
+        description: Booking timestamp
+      - name: appointment_type
+        data_type: varchar
+        description: Appointment type
+      - name: attendance_status
+        data_type: varchar
+        description: Attendance status
+      - name: cancellation_reason
+        data_type: varchar
+        description: Cancellation reason
+      - name: source_record_id
+        data_type: varchar
+        description: Source record ID
+      - name: source_relation
+        data_type: varchar
+        description: Source relation
+      - name: source_system
+        data_type: varchar
+        description: Source system
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic flag
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt update timestamp
+  - name: core_pathway
+    description: Reusable synthetic pathway. Grain is one row per pathway.
+    config:
+      contract:
+        enforced: true
+    meta: *id001
+    columns:
+      - name: pathway_key
+        data_type: varchar
+        description: Stable pathway key
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: canonical_pathway_id
+        data_type: varchar
+        description: Canonical pathway ID
+        data_tests:
+          - not_null
+          - unique
+      - name: patient_key
+        data_type: varchar
+        description: Patient key
+      - name: patient_id
+        data_type: varchar
+        description: Patient ID
+      - name: organisation_key
+        data_type: varchar
+        description: Organisation key
+      - name: organisation_id
+        data_type: varchar
+        description: Organisation ID
+      - name: pathway_type
+        data_type: varchar
+        description: Pathway type
+      - name: specialty
+        data_type: varchar
+        description: Specialty
+      - name: referral_date
+        data_type: date
+        description: Referral date
+      - name: clock_start_date
+        data_type: date
+        description: Clock start date
+      - name: pathway_status
+        data_type: varchar
+        description: Current source status
+      - name: current_stage
+        data_type: varchar
+        description: Current source stage
+      - name: target_date
+        data_type: date
+        description: Target date
+      - name: completion_date
+        data_type: date
+        description: Completion date
+      - name: waiting_days
+        data_type: number
+        description: Existing synthetic waiting-days value
+      - name: breach_flag
+        data_type: boolean
+        description: Existing synthetic breach flag
+      - name: source_record_id
+        data_type: varchar
+        description: Source record ID
+      - name: source_relation
+        data_type: varchar
+        description: Source relation
+      - name: source_system
+        data_type: varchar
+        description: Source system
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic flag
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt update timestamp
+  - name: core_clinical_event
+    description: Reusable synthetic clinical event. Grain is one row per clinical event.
+    config:
+      contract:
+        enforced: true
+    meta: *id001
+    columns:
+      - name: clinical_event_key
+        data_type: varchar
+        description: Stable event key
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: canonical_clinical_event_id
+        data_type: varchar
+        description: Canonical clinical event ID
+        data_tests:
+          - not_null
+          - unique
+      - name: patient_key
+        data_type: varchar
+        description: Patient key
+      - name: patient_id
+        data_type: varchar
+        description: Patient ID
+      - name: encounter_key
+        data_type: varchar
+        description: Encounter key
+      - name: encounter_id
+        data_type: varchar
+        description: Encounter ID
+      - name: provider_key
+        data_type: varchar
+        description: Provider key
+      - name: provider_id
+        data_type: varchar
+        description: Provider ID
+      - name: event_type
+        data_type: varchar
+        description: Event type
+      - name: event_code
+        data_type: varchar
+        description: Synthetic event code
+      - name: event_value
+        data_type: varchar
+        description: Event value
+      - name: event_unit
+        data_type: varchar
+        description: Event unit
+      - name: event_datetime
+        data_type: timestamp_tz
+        description: Event timestamp
+      - name: source_record_id
+        data_type: varchar
+        description: Source record ID
+      - name: source_relation
+        data_type: varchar
+        description: Source relation
+      - name: source_system
+        data_type: varchar
+        description: Source system
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic flag
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt update timestamp
+  - name: core_pathology_result
+    description: Reusable synthetic pathology result. Grain is one row per pathology result.
+    config:
+      contract:
+        enforced: true
+    meta: *id001
+    columns:
+      - name: pathology_result_key
+        data_type: varchar
+        description: Stable pathology key
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: canonical_pathology_result_id
+        data_type: varchar
+        description: Canonical pathology ID
+        data_tests:
+          - not_null
+          - unique
+      - name: patient_key
+        data_type: varchar
+        description: Patient key
+      - name: patient_id
+        data_type: varchar
+        description: Patient ID
+      - name: encounter_key
+        data_type: varchar
+        description: Encounter key
+      - name: encounter_id
+        data_type: varchar
+        description: Encounter ID
+      - name: requesting_provider_key
+        data_type: varchar
+        description: Requesting provider key
+      - name: requesting_provider_id
+        data_type: varchar
+        description: Requesting provider ID
+      - name: laboratory_organisation_key
+        data_type: varchar
+        description: Laboratory organisation key
+      - name: laboratory_organisation_id
+        data_type: varchar
+        description: Laboratory organisation ID
+      - name: test_code
+        data_type: varchar
+        description: Synthetic test code
+      - name: test_name
+        data_type: varchar
+        description: Synthetic test name
+      - name: result_value
+        data_type: number
+        description: Result value
+      - name: result_unit
+        data_type: varchar
+        description: Result unit
+      - name: reference_low
+        data_type: number
+        description: Reference low
+      - name: reference_high
+        data_type: number
+        description: Reference high
+      - name: abnormal_flag
+        data_type: boolean
+        description: Abnormal flag
+      - name: specimen_datetime
+        data_type: timestamp_tz
+        description: Specimen timestamp
+      - name: result_datetime
+        data_type: timestamp_tz
+        description: Result timestamp
+      - name: result_status
+        data_type: varchar
+        description: Result status
+      - name: source_record_id
+        data_type: varchar
+        description: Source record ID
+      - name: source_relation
+        data_type: varchar
+        description: Source relation
+      - name: source_system
+        data_type: varchar
+        description: Source system
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic flag
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt update timestamp
+  - name: core_medication_event
+    description: Reusable synthetic medication event. Grain is one row per medication event.
+    config:
+      contract:
+        enforced: true
+    meta: *id001
+    columns:
+      - name: medication_event_key
+        data_type: varchar
+        description: Stable medication event key
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: canonical_medication_event_id
+        data_type: varchar
+        description: Canonical medication event ID
+        data_tests:
+          - not_null
+          - unique
+      - name: patient_key
+        data_type: varchar
+        description: Patient key
+      - name: patient_id
+        data_type: varchar
+        description: Patient ID
+      - name: encounter_key
+        data_type: varchar
+        description: Encounter key
+      - name: encounter_id
+        data_type: varchar
+        description: Encounter ID
+      - name: provider_key
+        data_type: varchar
+        description: Provider key
+      - name: provider_id
+        data_type: varchar
+        description: Provider ID
+      - name: medication_code
+        data_type: varchar
+        description: Synthetic medication code
+      - name: medication_name
+        data_type: varchar
+        description: Synthetic medication name
+      - name: event_type
+        data_type: varchar
+        description: Medication event type
+      - name: dose
+        data_type: number
+        description: Dose
+      - name: dose_unit
+        data_type: varchar
+        description: Dose unit
+      - name: route
+        data_type: varchar
+        description: Route
+      - name: event_datetime
+        data_type: timestamp_tz
+        description: Event timestamp
+      - name: medication_event_status
+        data_type: varchar
+        description: Medication event status
+      - name: source_record_id
+        data_type: varchar
+        description: Source record ID
+      - name: source_relation
+        data_type: varchar
+        description: Source relation
+      - name: source_system
+        data_type: varchar
+        description: Source system
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic flag
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt update timestamp
+  - name: core_consent
+    description: Conformed synthetic consent. Grain is one row per consent record.
+    config:
+      contract:
+        enforced: true
+    meta: *id001
+    columns:
+      - name: consent_key
+        data_type: varchar
+        description: Stable consent key
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: canonical_consent_id
+        data_type: varchar
+        description: Canonical consent ID
+        data_tests:
+          - not_null
+          - unique
+      - name: patient_key
+        data_type: varchar
+        description: Patient key
+      - name: patient_id
+        data_type: varchar
+        description: Patient ID
+      - name: consent_type
+        data_type: varchar
+        description: Consent type
+      - name: consent_status
+        data_type: varchar
+        description: Consent status
+      - name: valid_from
+        data_type: date
+        description: Consent valid from
+      - name: valid_to
+        data_type: date
+        description: Consent valid to
+      - name: withdrawal_date
+        data_type: date
+        description: Withdrawal date
+      - name: research_use_allowed
+        data_type: boolean
+        description: Research-use flag
+      - name: is_current
+        data_type: boolean
+        description: Current flag
+      - name: source_record_id
+        data_type: varchar
+        description: Source record ID
+      - name: source_relation
+        data_type: varchar
+        description: Source relation
+      - name: source_system
+        data_type: varchar
+        description: Source system
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic flag
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt update timestamp
+  - name: core_research_eligibility
+    description: Reusable research eligibility foundation, not a cohort mart. Grain is patient by cohort.
+    config:
+      contract:
+        enforced: true
+    meta: *id001
+    columns:
+      - name: research_eligibility_key
+        data_type: varchar
+        description: Stable eligibility key
+        data_tests:
+          - not_null
+          - unique
+          - valid_sha256
+      - name: patient_key
+        data_type: varchar
+        description: Patient key
+      - name: canonical_patient_id
+        data_type: varchar
+        description: Canonical patient ID
+      - name: cohort_membership_id
+        data_type: varchar
+        description: Cohort membership ID
+      - name: cohort_id
+        data_type: varchar
+        description: Cohort ID
+      - name: cohort_name
+        data_type: varchar
+        description: Cohort name
+      - name: research_consent_status
+        data_type: varchar
+        description: Consent summary
+      - name: cohort_eligible_flag
+        data_type: boolean
+        description: Cohort eligibility flag
+      - name: research_eligible_flag
+        data_type: boolean
+        description: Synthetic eligibility flag
+      - name: eligibility_reason_code
+        data_type: varchar
+        description: Eligibility reason code
+      - name: inclusion_date
+        data_type: date
+        description: Inclusion date
+      - name: exclusion_date
+        data_type: date
+        description: Exclusion date
+      - name: source_record_id
+        data_type: varchar
+        description: Source record ID
+      - name: source_relation
+        data_type: varchar
+        description: Source relation
+      - name: source_system
+        data_type: varchar
+        description: Source system
+      - name: synthetic_flag
+        data_type: boolean
+        description: Synthetic flag
+      - name: dbt_updated_at
+        data_type: timestamp_tz
+        description: dbt update timestamp

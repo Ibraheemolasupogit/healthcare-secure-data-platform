@@ -36,6 +36,9 @@ models:
     curated:
       +materialized: table
       +schema: curated
+      core:
+        +schema: core
+        +tags: ["milestone_6", "core"]
     marts:
       +materialized: table
       +schema: mart

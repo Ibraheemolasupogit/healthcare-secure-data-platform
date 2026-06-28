@@ -15,3 +15,5 @@ All notable changes will follow Keep a Changelog conventions. The project does n
   identifier crosswalks, quarantine, raw contracts, samples, CLI, tests and evidence.
 - Milestone 5 dbt source declarations, freshness metadata, source-aligned staging views,
   staging utility macros, source/staging tests, local guardrails, documentation and evidence.
+- Milestone 6 conformed healthcare core dbt models, deterministic synthetic identity reconciliation,
+  SHA-256 surrogate keys, core reconciliation outputs, contracts, guardrail tests, documentation and ADR.

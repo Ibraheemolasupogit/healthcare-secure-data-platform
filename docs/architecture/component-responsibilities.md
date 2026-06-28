@@ -3,7 +3,7 @@
 | Component | Owns | Does not own | Current status |
 |---|---|---|---|
 | Snowflake | Persisted layers, warehouses, ingestion primitives, RBAC, policies, sharing, recovery, usage/cost telemetry | Transformation semantics or cross-platform orchestration | Foundation declared and statically validated; not deployed |
-| dbt | SQL transformations, source declarations/freshness, tests, contracts, snapshots, docs, lineage, exposures | File transport, BI visuals, user provisioning | M5 sources/freshness/staging implemented locally; conformed models planned |
+| dbt | SQL transformations, source declarations/freshness, tests, contracts, snapshots, docs, lineage, exposures | File transport, BI visuals, user provisioning | M5 sources/staging and M6 healthcare core implemented locally; marts planned |
 | Python | Synthetic generation, interoperability parsing/mapping, boundary validation and local diagnostics | Warehouse-scale transformations | Generator plus bounded FHIR-inspired/HL7 ingestion foundation implemented |
 | Airflow | Cross-system dependency coordination and recovery | Reimplementing dbt DAGs or Snowflake-local task graphs | Documented placeholder |
 | Dataiku | Governed research analysis against approved products | Master transformation layer or uncontrolled export | Workflow/design placeholder |

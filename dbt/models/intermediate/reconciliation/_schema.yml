@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: int_reconciliation__identifier_conflicts
+    description: >
+      Intermediate identity exceptions for unmatched or conflicting patient and encounter identifiers.
+    meta:
+      owner: analytics engineering
+      milestone: '6'
+      layer: intermediate
+      exception_type: identifier_reconciliation
+  - name: int_reconciliation__orphan_relationships
+    description: >
+      Intermediate relationship exceptions for unresolved patient, organisation, location or provider
+      references detected while preparing the healthcare core.
+    meta:
+      owner: analytics engineering
+      milestone: '6'
+      layer: intermediate
+      exception_type: orphan_relationship
+  - name: int_reconciliation__row_count_differences
+    description: >
+      Source-to-core row-count checks for one-to-one core entities. Differences are surfaced rather
+      than hidden.
+    meta:
+      owner: analytics engineering
+      milestone: '6'
+      layer: intermediate
+      exception_type: row_count_reconciliation

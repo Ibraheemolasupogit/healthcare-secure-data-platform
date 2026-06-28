@@ -69,9 +69,9 @@ The target uses environment-isolated databases and managed-access schemas, workl
 
 ## dbt modelling layers
 
-**Partially implemented (M5):** one dbt project parses without credentials and now declares existing RAW/GOVERNANCE source contracts with freshness metadata and source-aligned staging views. It intentionally contains no conformed entities, facts, dimensions, marts or billing models.
+**Partially implemented (M5–M6):** one dbt project parses without credentials, declares existing RAW/GOVERNANCE source contracts with freshness metadata, creates source-aligned staging views and now adds conformed healthcare core models. It intentionally contains no billing, finance, marts or semantic models.
 
-dbt owns source definitions/freshness, source-aligned staging, reusable intermediate logic, conformed healthcare dimensions/facts, billing/finance models, reconciliation controls, snapshots, incrementals, contracts, documentation, exposures, semantic definitions and shared business rules. Revenue, balances, tariffs, waiting time and consent must not be independently recalculated downstream. Milestone 5 implements only the source and staging boundary.
+dbt owns source definitions/freshness, source-aligned staging, reusable intermediate logic, conformed healthcare dimensions/facts, billing/finance models, reconciliation controls, snapshots, incrementals, contracts, documentation, exposures, semantic definitions and shared business rules. Revenue, balances, tariffs, waiting time and consent must not be independently recalculated downstream. Milestone 6 implements the conformed healthcare core only.
 
 ```mermaid
 flowchart LR
@@ -120,4 +120,4 @@ flowchart LR
 
 **Partially implemented:** Milestone 2 includes local manifests, checksums, validation reports and tests. Every future claim must link to redacted, reproducible evidence for a commit and environment.
 
-Current non-goals are live Snowflake execution, conformed dbt domain implementation, billing generation, Airflow DAGs, Dataiku workflows, ML models, feature-store code, Fabric/Power BI artifacts, broader Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing placeholders.
+Current non-goals are live Snowflake execution, billing generation, billing/finance dbt models, marts, Airflow DAGs, Dataiku workflows, ML models, feature-store code, Fabric/Power BI artifacts, broader Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing placeholders.

@@ -57,7 +57,7 @@ Source categories ultimately include EPR/PAS, laboratory, pharmacy, community/vi
 
 ## Interoperability and ingestion layer
 
-**Planned (M4):** validate synthetic FHIR resources and HL7-like messages; map identifiers and terminology to canonical source contracts; retain original payloads; route rejected messages with reason, rule version and correlation identifier to quarantine. Batch CSV/JSON remains a supported source path.
+**Implemented locally for the bounded M4 subset:** validate synthetic FHIR-inspired resources and HL7-like messages; map identifiers and terminology to canonical source contracts; retain original payloads; route rejected messages with reason, rule version and correlation identifier to quarantine. Batch CSV/JSON remains a supported source path.
 
 FHIR and HL7 own source interoperability, not warehouse business transformation. Formal conformance may be claimed only after a named validator/profile and repeatable evidence exist.
 
@@ -69,9 +69,9 @@ The target uses environment-isolated databases and managed-access schemas, workl
 
 ## dbt modelling layers
 
-**Placeholder only / planned (M5–9):** one dbt project parses without credentials and intentionally contains no fake domain models.
+**Partially implemented (M5):** one dbt project parses without credentials and now declares existing RAW/GOVERNANCE source contracts with freshness metadata and source-aligned staging views. It intentionally contains no conformed entities, facts, dimensions, marts or billing models.
 
-dbt owns source definitions/freshness, source-aligned staging, reusable intermediate logic, conformed healthcare dimensions/facts, billing/finance models, reconciliation controls, snapshots, incrementals, contracts, documentation, exposures, semantic definitions and shared business rules. Revenue, balances, tariffs, waiting time and consent must not be independently recalculated downstream.
+dbt owns source definitions/freshness, source-aligned staging, reusable intermediate logic, conformed healthcare dimensions/facts, billing/finance models, reconciliation controls, snapshots, incrementals, contracts, documentation, exposures, semantic definitions and shared business rules. Revenue, balances, tariffs, waiting time and consent must not be independently recalculated downstream. Milestone 5 implements only the source and staging boundary.
 
 ```mermaid
 flowchart LR
@@ -120,4 +120,4 @@ flowchart LR
 
 **Partially implemented:** Milestone 2 includes local manifests, checksums, validation reports and tests. Every future claim must link to redacted, reproducible evidence for a commit and environment.
 
-Current non-goals are Snowflake/dbt domain implementation, FHIR/HL7 parsing, billing generation, Airflow DAGs, Dataiku workflows, ML models, feature-store code, Fabric/Power BI artifacts, Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing placeholders.
+Current non-goals are live Snowflake execution, conformed dbt domain implementation, billing generation, Airflow DAGs, Dataiku workflows, ML models, feature-store code, Fabric/Power BI artifacts, broader Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing placeholders.

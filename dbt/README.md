@@ -1,6 +1,6 @@
 # dbt foundation
 
-This is a parseable skeleton, not an implemented transformation project. No fake domain models are included.
+This is now a Milestone 5 source and staging foundation. It remains intentionally source-aligned: no conformed domain models, facts, dimensions, marts, semantic models or billing logic are included.
 
 Models follow `stg_<source>__<entity>`, `int_<domain>__<purpose>`, `dim_<entity>`, `fct_<event>`, `mart_<domain>__<purpose>` and `sem_<subject>` naming. Each published model will document owner, description, grain, classification, allowed use, columns and upstream assumptions. SQL uses lower-case keywords and explicit column lists.
 
@@ -16,4 +16,12 @@ Future strategy:
 - **Slim CI:** defer until a trusted production manifest exists; run state-modified models plus downstream dependants in an isolated schema.
 - **Ownership:** every model has an accountable owner; CODEOWNERS and metadata enforcement arrive with implemented models.
 
-`dbt parse --profiles-dir . --no-partial-parse` validates structure without connecting to Snowflake. The placeholder profile must never be used for execution.
+Implemented Milestone 5 assets:
+
+- 23 source declarations across clinical, operational, audit, interoperability, quarantine and governance source groups.
+- Freshness metadata for every declared source relation.
+- 23 source-aligned staging views under `models/staging`.
+- Generic tests and staging macros for key uniqueness, checksum validation, safe casts, code normalisation and deterministic deduplication.
+- Model documentation and contract metadata with enforcement deferred until live Snowflake column types are proven.
+
+`dbt parse --profiles-dir . --no-partial-parse` validates structure without connecting to Snowflake. The placeholder profile must never be used for execution. Connected `dbt compile`, `dbt build`, `dbt source freshness` and `dbt docs generate` require a separate authorised Snowflake profile.

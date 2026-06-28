@@ -13,3 +13,5 @@ All notable changes will follow Keep a Changelog conventions. The project does n
   deterministic inventory, RBAC expectations, validation SQL, runbooks and static checks.
 - Milestone 4 deterministic FHIR-inspired and HL7 v2 ingestion foundation, canonical envelopes,
   identifier crosswalks, quarantine, raw contracts, samples, CLI, tests and evidence.
+- Milestone 5 dbt source declarations, freshness metadata, source-aligned staging views,
+  staging utility macros, source/staging tests, local guardrails, documentation and evidence.

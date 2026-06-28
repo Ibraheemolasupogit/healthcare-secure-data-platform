@@ -1,0 +1,830 @@
+version: 2
+models:
+  - name: stg_interoperability__fhir_resources
+    description: 'Source-aligned staging view for fhir_raw_payloads. Grain is one current source record
+      after deterministic deduplication. Static Milestone 4 FHIR-inspired raw payload contract; planned
+      Snowflake relation, committed local evidence only.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: ingestion_id
+        description: '`ingestion_id` standardised for the stg_interoperability__fhir_resources staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: resource_type
+        description: '`resource_type` standardised for the stg_interoperability__fhir_resources staging
+          interface.
+
+          '
+      - name: resource_id
+        description: '`resource_id` standardised for the stg_interoperability__fhir_resources staging
+          interface.
+
+          '
+      - name: payload
+        description: '`payload` standardised for the stg_interoperability__fhir_resources staging interface.
+
+          '
+      - name: payload_checksum
+        description: '`payload_checksum` standardised for the stg_interoperability__fhir_resources staging
+          interface.
+
+          '
+        data_tests:
+          - valid_sha256
+      - name: received_at
+        description: '`received_at` standardised for the stg_interoperability__fhir_resources staging
+          interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_interoperability__fhir_resources staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_system
+        description: '`source_system` standardised for the stg_interoperability__fhir_resources staging
+          interface.
+
+          '
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_interoperability__fhir_resources staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_interoperability__fhir_resources staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_interoperability__fhir_resources staging
+          interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_interoperability__fhir_resources staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_interoperability__fhir_resources staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_interoperability__fhir_resources staging
+          interface.
+
+          '
+  - name: stg_interoperability__hl7_messages
+    description: 'Source-aligned staging view for hl7_raw_messages. Grain is one current source record
+      after deterministic deduplication. Static Milestone 4 HL7 v2.5 raw message contract; planned Snowflake
+      relation, committed local evidence only.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: ingestion_id
+        description: '`ingestion_id` standardised for the stg_interoperability__hl7_messages staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: message_type
+        description: '`message_type` standardised for the stg_interoperability__hl7_messages staging interface.
+
+          '
+      - name: message_control_id
+        description: '`message_control_id` standardised for the stg_interoperability__hl7_messages staging
+          interface.
+
+          '
+      - name: raw_message
+        description: '`raw_message` standardised for the stg_interoperability__hl7_messages staging interface.
+
+          '
+      - name: payload_checksum
+        description: '`payload_checksum` standardised for the stg_interoperability__hl7_messages staging
+          interface.
+
+          '
+        data_tests:
+          - valid_sha256
+      - name: received_at
+        description: '`received_at` standardised for the stg_interoperability__hl7_messages staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_interoperability__hl7_messages staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_system
+        description: '`source_system` standardised for the stg_interoperability__hl7_messages staging
+          interface.
+
+          '
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_interoperability__hl7_messages staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_interoperability__hl7_messages staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_interoperability__hl7_messages staging
+          interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_interoperability__hl7_messages staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_interoperability__hl7_messages staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_interoperability__hl7_messages staging interface.
+
+          '
+  - name: stg_interoperability__identifier_crosswalks
+    description: 'Source-aligned staging view for identifier_crosswalks. Grain is one current source record
+      after deterministic deduplication. Milestone 4 source-to-canonical identifier crosswalk records.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: source_format
+        description: '`source_format` standardised for the stg_interoperability__identifier_crosswalks
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: identifier_type
+        description: '`identifier_type` standardised for the stg_interoperability__identifier_crosswalks
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_system
+        description: '`source_system` standardised for the stg_interoperability__identifier_crosswalks
+          staging interface.
+
+          '
+      - name: source_identifier
+        description: '`source_identifier` standardised for the stg_interoperability__identifier_crosswalks
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: canonical_identifier
+        description: '`canonical_identifier` standardised for the stg_interoperability__identifier_crosswalks
+          staging interface.
+
+          '
+      - name: mapping_rule_version
+        description: '`mapping_rule_version` standardised for the stg_interoperability__identifier_crosswalks
+          staging interface.
+
+          '
+      - name: mapping_status
+        description: '`mapping_status` standardised for the stg_interoperability__identifier_crosswalks
+          staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_interoperability__identifier_crosswalks
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_interoperability__identifier_crosswalks
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_interoperability__identifier_crosswalks
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_interoperability__identifier_crosswalks
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_interoperability__identifier_crosswalks
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_interoperability__identifier_crosswalks
+          staging interface.
+
+          '
+  - name: stg_interoperability__ingestion_envelopes
+    description: 'Source-aligned staging view for ingestion_envelopes. Grain is one current source record
+      after deterministic deduplication. Source-neutral Milestone 4 ingestion envelope audit records.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: ingestion_id
+        description: '`ingestion_id` standardised for the stg_interoperability__ingestion_envelopes staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: batch_id
+        description: '`batch_id` standardised for the stg_interoperability__ingestion_envelopes staging
+          interface.
+
+          '
+      - name: source_format
+        description: '`source_format` standardised for the stg_interoperability__ingestion_envelopes staging
+          interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_interoperability__ingestion_envelopes staging
+          interface.
+
+          '
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_message_type
+        description: '`source_message_type` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: source_patient_id
+        description: '`source_patient_id` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: source_encounter_id
+        description: '`source_encounter_id` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: canonical_patient_id
+        description: '`canonical_patient_id` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: canonical_encounter_id
+        description: '`canonical_encounter_id` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: canonical_mapping_status
+        description: '`canonical_mapping_status` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: validation_status
+        description: '`validation_status` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: validation_error_count
+        description: '`validation_error_count` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: warning_count
+        description: '`warning_count` standardised for the stg_interoperability__ingestion_envelopes staging
+          interface.
+
+          '
+      - name: payload_checksum
+        description: '`payload_checksum` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+        data_tests:
+          - valid_sha256
+      - name: raw_payload_path
+        description: '`raw_payload_path` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: correlation_id
+        description: '`correlation_id` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: event_timestamp
+        description: '`event_timestamp` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: received_timestamp
+        description: '`received_timestamp` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: parser_version
+        description: '`parser_version` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: schema_version
+        description: '`schema_version` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: payload_version
+        description: '`payload_version` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: environment
+        description: '`environment` standardised for the stg_interoperability__ingestion_envelopes staging
+          interface.
+
+          '
+      - name: quarantine_flag
+        description: '`quarantine_flag` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_interoperability__ingestion_envelopes staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_interoperability__ingestion_envelopes
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_interoperability__ingestion_envelopes staging
+          interface.
+
+          '
+  - name: stg_interoperability__ingestion_manifests
+    description: 'Source-aligned staging view for ingestion_manifests. Grain is one current source record
+      after deterministic deduplication. Milestone 4 ingestion-batch manifest controls.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: batch_id
+        description: '`batch_id` standardised for the stg_interoperability__ingestion_manifests staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_format
+        description: '`source_format` standardised for the stg_interoperability__ingestion_manifests staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: parser_version
+        description: '`parser_version` standardised for the stg_interoperability__ingestion_manifests
+          staging interface.
+
+          '
+      - name: schema_version
+        description: '`schema_version` standardised for the stg_interoperability__ingestion_manifests
+          staging interface.
+
+          '
+      - name: accepted_count
+        description: '`accepted_count` standardised for the stg_interoperability__ingestion_manifests
+          staging interface.
+
+          '
+      - name: rejected_count
+        description: '`rejected_count` standardised for the stg_interoperability__ingestion_manifests
+          staging interface.
+
+          '
+      - name: payload_checksums
+        description: '`payload_checksums` standardised for the stg_interoperability__ingestion_manifests
+          staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_interoperability__ingestion_manifests
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_system
+        description: '`source_system` standardised for the stg_interoperability__ingestion_manifests staging
+          interface.
+
+          '
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_interoperability__ingestion_manifests
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_interoperability__ingestion_manifests
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_interoperability__ingestion_manifests staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_interoperability__ingestion_manifests
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_interoperability__ingestion_manifests staging
+          interface.
+
+          '
+  - name: stg_interoperability__quarantine_records
+    description: 'Source-aligned staging view for quarantine_records. Grain is one current source record
+      after deterministic deduplication. Milestone 4 quarantined/rejected payload dispositions.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: quarantine_id
+        description: '`quarantine_id` standardised for the stg_interoperability__quarantine_records staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_format
+        description: '`source_format` standardised for the stg_interoperability__quarantine_records staging
+          interface.
+
+          '
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_interoperability__quarantine_records
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_message_type
+        description: '`source_message_type` standardised for the stg_interoperability__quarantine_records
+          staging interface.
+
+          '
+      - name: validation_errors
+        description: '`validation_errors` standardised for the stg_interoperability__quarantine_records
+          staging interface.
+
+          '
+      - name: warning_details
+        description: '`warning_details` standardised for the stg_interoperability__quarantine_records
+          staging interface.
+
+          '
+      - name: payload_checksum
+        description: '`payload_checksum` standardised for the stg_interoperability__quarantine_records
+          staging interface.
+
+          '
+        data_tests:
+          - valid_sha256
+      - name: raw_payload_path
+        description: '`raw_payload_path` standardised for the stg_interoperability__quarantine_records
+          staging interface.
+
+          '
+      - name: retry_eligible
+        description: '`retry_eligible` standardised for the stg_interoperability__quarantine_records staging
+          interface.
+
+          '
+      - name: disposition
+        description: '`disposition` standardised for the stg_interoperability__quarantine_records staging
+          interface.
+
+          '
+      - name: detected_at
+        description: '`detected_at` standardised for the stg_interoperability__quarantine_records staging
+          interface.
+
+          '
+      - name: parser_version
+        description: '`parser_version` standardised for the stg_interoperability__quarantine_records staging
+          interface.
+
+          '
+      - name: schema_version
+        description: '`schema_version` standardised for the stg_interoperability__quarantine_records staging
+          interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_interoperability__quarantine_records staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_system
+        description: '`source_system` standardised for the stg_interoperability__quarantine_records staging
+          interface.
+
+          '
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_interoperability__quarantine_records
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_interoperability__quarantine_records
+          staging interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_interoperability__quarantine_records staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_interoperability__quarantine_records
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_interoperability__quarantine_records staging
+          interface.
+
+          '
+  - name: stg_interoperability__terminology_mappings
+    description: 'Source-aligned staging view for terminology_mappings. Grain is one current source record
+      after deterministic deduplication. Synthetic terminology mapping controls for source-format normalisation.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: code_set
+        description: '`code_set` standardised for the stg_interoperability__terminology_mappings staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_code
+        description: '`source_code` standardised for the stg_interoperability__terminology_mappings staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: target_code
+        description: '`target_code` standardised for the stg_interoperability__terminology_mappings staging
+          interface.
+
+          '
+      - name: mapping_status
+        description: '`mapping_status` standardised for the stg_interoperability__terminology_mappings
+          staging interface.
+
+          '
+      - name: mapping_version
+        description: '`mapping_version` standardised for the stg_interoperability__terminology_mappings
+          staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_interoperability__terminology_mappings
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_system
+        description: '`source_system` standardised for the stg_interoperability__terminology_mappings
+          staging interface.
+
+          '
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_interoperability__terminology_mappings
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_interoperability__terminology_mappings
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_interoperability__terminology_mappings
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_interoperability__terminology_mappings
+          staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_interoperability__terminology_mappings staging
+          interface.
+
+          '

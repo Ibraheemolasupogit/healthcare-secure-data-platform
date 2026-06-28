@@ -12,6 +12,16 @@ macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 clean-targets: ["target", "dbt_packages"]
 
+quoting:
+  database: false
+  schema: false
+  identifier: false
+
+data_tests:
+  healthcare_secure_data_platform:
+    +store_failures: true
+    +schema: quality
+
 models:
   healthcare_secure_data_platform:
     +persist_docs:
@@ -35,3 +45,17 @@ models:
 
 vars:
   healthcare_platform_execution_mode: local
+  raw_clinical_database: HEDP_DEV_RAW
+  raw_clinical_schema: CLINICAL
+  raw_operational_database: HEDP_DEV_RAW
+  raw_operational_schema: OPERATIONAL
+  raw_audit_database: HEDP_DEV_RAW
+  raw_audit_schema: AUDIT
+  raw_quarantine_database: HEDP_DEV_RAW
+  raw_quarantine_schema: QUARANTINE
+  raw_interoperability_database: HEDP_DEV_RAW
+  raw_interoperability_schema: INTEROPERABILITY
+  governance_control_database: HEDP_DEV_GOVERNANCE
+  governance_control_schema: CONTROL
+  governance_data_quality_database: HEDP_DEV_GOVERNANCE
+  governance_data_quality_schema: DATA_QUALITY

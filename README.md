@@ -2,7 +2,7 @@
 
 A production-style, synthetic-only Healthcare Enterprise Data Platform portfolio for clinical, operational, research and financial data engineering. Snowflake remains the target governed data platform and dbt remains the transformation, testing, documentation, lineage and business-logic centre of gravity.
 
-> **Status — Milestone 4 complete locally:** deterministic FHIR-inspired resources and synthetic HL7 v2.5 messages are generated, parsed, validated, mapped and quarantined without credentials. Snowflake loading and formal standards conformance are not claimed. dbt models and later platform integrations remain planned.
+> **Status — Milestone 5 complete locally:** dbt now declares existing synthetic, FHIR/HL7, audit, quarantine and governance inputs as sources, adds freshness metadata, and creates source-aligned staging views with local parse/static validation. Snowflake loading, live dbt execution, conformed entities, marts and later platform integrations remain planned.
 
 ## Why this project exists
 
@@ -23,8 +23,8 @@ Detailed boundaries are documented in [component responsibilities](docs/architec
 | Python synthetic platform | Deterministic source data, schemas, validation and provenance | **Implemented locally** for M2 domains |
 | Interoperability | Synthetic FHIR-inspired/HL7 generation, parsing, envelopes and quarantine | **Implemented locally for the bounded M4 subset** |
 | Snowflake | Governed central storage/compute, RAW-to-serving layers and access enforcement | **M3 foundation declared and statically validated; not deployed** |
-| dbt | Transformation, testing, documentation, lineage, dimensional models, contracts and business logic | **Parseable skeleton only; planned** |
-| FHIR and HL7 | Source interoperability, validation, canonical mapping and quarantine | **FHIR-inspired fixture only; parsers planned** |
+| dbt | Transformation, testing, documentation, lineage, dimensional models, contracts and business logic | **M5 sources/freshness/staging implemented locally; core/marts planned** |
+| FHIR and HL7 | Source interoperability, validation, canonical mapping and quarantine | **Bounded synthetic FHIR-inspired and HL7 parsers implemented locally** |
 | Airflow | Cross-platform orchestration, retries, backfills and failure handling | **Placeholder only; planned** |
 | Dataiku | Governed analytics, feature engineering, ML, experiments and model monitoring | **Placeholder only; planned** |
 | Feature store | Governed reusable features, ownership, freshness, versions and point-in-time correctness | **Not implemented; planned** |
@@ -56,8 +56,9 @@ The design follows least privilege, workload isolation, encryption in transit/at
 - **Complete with documented limitations:** Milestone 2 deterministic synthetic healthcare generation.
 - **Complete locally; live evidence pending:** Milestone 3 Snowflake foundation.
 - **Complete locally:** Milestone 4 FHIR and HL7 ingestion foundation.
-- **Recommended next:** Milestone 5 dbt staging layer.
-- **Planned:** Milestones 5–17 add dbt healthcare core, billing/finance and reconciliation, Airflow, Dataiku, feature store, Fabric/Power BI, executable governance, broader Terraform, multi-region recovery and portfolio evidence.
+- **Complete locally:** Milestone 5 dbt sources, freshness and source-aligned staging layer.
+- **Recommended next:** Milestone 6 healthcare core model.
+- **Planned:** Milestones 6–17 add dbt healthcare core, billing/finance and reconciliation, Airflow, Dataiku, feature store, Fabric/Power BI, executable governance, broader Terraform, multi-region recovery and portfolio evidence.
 
 The original 15-milestone plan has been transparently realigned into a 17-milestone dependency-led [roadmap](docs/roadmap/milestones.md). [ADR 0009](docs/decisions/0009-expand-to-healthcare-enterprise-platform.md) records why.
 
@@ -69,7 +70,7 @@ The original 15-milestone plan has been transparently realigned into a 17-milest
 | `data/samples/interoperability` | Reviewed FHIR-inspired, HL7, envelope, crosswalk and manifest samples |
 | `config/synthetic` | Small, medium and large generation profiles |
 | `data/samples/small` | Reviewed 100-patient synthetic sample and evidence |
-| `dbt` | Transformation project conventions and future models |
+| `dbt` | Source declarations, freshness metadata, staging models, dbt tests and future governed transformations |
 | `snowflake` | Foundation contract, inventory and live-validation SQL |
 | `infrastructure` | Terraform modules/environments and Docker tooling |
 | `orchestration`, `dataiku`, `fabric` | Deliberately bounded downstream/cross-platform scaffolds |
@@ -118,11 +119,22 @@ healthcare-platform interoperability validate-fhir --input-dir /tmp/interoperabi
 healthcare-platform interoperability validate-hl7 --input-dir /tmp/interoperability/hl7
 ```
 
+Validate the dbt Milestone 5 layer locally:
+
+```bash
+cd dbt
+PATH="../.venv/bin:$PATH" dbt parse --profiles-dir . --no-partial-parse
+cd ..
+PYTHONPATH=src pytest tests/unit/test_dbt_milestone5.py
+```
+
+`dbt compile`, `dbt build`, `dbt source freshness` and `dbt docs generate` require an authorised Snowflake target; the committed placeholder profile is parse-only.
+
 ## Limitations
 
-The generator uses compact portfolio code sets rather than authoritative clinical terminology. Large-profile configuration exists but has not been executed; current relationship assembly is in-memory and must be partitioned before million-patient benchmarking. The Snowflake foundation has not been planned or applied against a live account, and there are no source loads, dbt domain models, live security policies, dashboards, governed research workflows, or cloud deployment evidence.
+The generator uses compact portfolio code sets rather than authoritative clinical terminology. Large-profile configuration exists but has not been executed; current relationship assembly is in-memory and must be partitioned before million-patient benchmarking. The Snowflake foundation has not been planned or applied against a live account, and there are no source loads, conformed dbt domain models, live security policies, dashboards, governed research workflows, or cloud deployment evidence.
 
-Current non-goals also include formal FHIR conformance, HL7 parsing, billing/finance generation, revenue calculations, Airflow DAGs, Dataiku projects or models, feature-store implementation, Fabric/Power BI artifacts, broader platform Terraform and multi-region deployment. Target-state documentation does not turn these into implemented capabilities.
+Current non-goals also include formal FHIR conformance, billing/finance generation, revenue calculations, Airflow DAGs, Dataiku projects or models, feature-store implementation, Fabric/Power BI artifacts, broader platform Terraform and multi-region deployment. Target-state documentation does not turn these into implemented capabilities.
 
 ## Portfolio positioning
 

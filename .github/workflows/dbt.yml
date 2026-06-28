@@ -19,9 +19,11 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - run: python -m pip install "dbt-core>=1.8,<1.9" "dbt-snowflake>=1.8,<1.9"
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pip install -e .
       - working-directory: dbt
         run: dbt parse --profiles-dir . --no-partial-parse
+      - run: pytest tests/unit/test_dbt_milestone5.py
       # Future integration job (protected environment only) will read:
       # SNOWFLAKE_ACCOUNT, SNOWFLAKE_USER, SNOWFLAKE_PRIVATE_KEY,
       # SNOWFLAKE_ROLE, SNOWFLAKE_WAREHOUSE and SNOWFLAKE_DATABASE.

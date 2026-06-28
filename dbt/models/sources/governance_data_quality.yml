@@ -1,0 +1,217 @@
+version: 2
+sources:
+  - name: governance_data_quality
+    database: '{{ var(''governance_data_quality_database'', ''HEDP_DEV_GOVERNANCE'') }}'
+    schema: '{{ var(''governance_data_quality_schema'', ''DATA_QUALITY'') }}'
+    description: 'Governance Data Quality source group declared by Milestone 5. Relations are source-aligned
+      raw contracts; dbt does not own raw loading.
+
+      '
+    meta:
+      owner: data quality engineering
+      loader: SYNTHETIC_MILESTONE_2_OR_INTEROP
+      implementation_status: local_fixture_static_contract
+      contract_status: source_contract
+      source_system: synthetic_healthcare_platform
+      contains_real_patient_data: false
+    tables:
+      - name: data_quality_events
+        identifier: DATA_QUALITY_EVENTS
+        description: 'Deterministic register of intentionally injected defects.
+
+          '
+        loaded_at_field: detected_at
+        freshness:
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 36
+            period: hour
+        meta:
+          owner: data quality engineering
+          sensitivity: synthetic_restricted
+          primary_key: quality_event_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_static_contract
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - quality_event_id
+        columns:
+          - name: quality_event_id
+            data_type: varchar
+            description: 'Source column `quality_event_id` preserved from the existing data_quality_events
+              contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: dataset_name
+            data_type: varchar
+            description: 'Source column `dataset_name` preserved from the existing data_quality_events
+              contract.
+
+              '
+          - name: rule_id
+            data_type: varchar
+            description: 'Source column `rule_id` preserved from the existing data_quality_events contract.
+
+              '
+          - name: rule_name
+            data_type: varchar
+            description: 'Source column `rule_name` preserved from the existing data_quality_events contract.
+
+              '
+          - name: severity
+            data_type: varchar
+            description: 'Source column `severity` preserved from the existing data_quality_events contract.
+
+              '
+          - name: record_identifier
+            data_type: varchar
+            description: 'Source column `record_identifier` preserved from the existing data_quality_events
+              contract.
+
+              '
+          - name: detected_at
+            data_type: timestamp_tz
+            description: 'Source column `detected_at` preserved from the existing data_quality_events
+              contract.
+
+              '
+          - name: status
+            data_type: varchar
+            description: 'Source column `status` preserved from the existing data_quality_events contract.
+
+              '
+          - name: resolution_action
+            data_type: varchar
+            description: 'Source column `resolution_action` preserved from the existing data_quality_events
+              contract.
+
+              '
+      - name: validation_results
+        identifier: VALIDATION_RESULTS
+        description: 'Milestone 4 parser validation result records and Milestone 2 data-quality feed pattern.
+
+          '
+        loaded_at_field: ingestion_id
+        freshness:
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 36
+            period: hour
+        meta:
+          owner: data quality engineering
+          sensitivity: synthetic_restricted
+          primary_key: ingestion_id, rule_code
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_static_contract
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - ingestion_id
+                - rule_code
+        columns:
+          - name: ingestion_id
+            data_type: varchar
+            description: 'Source column `ingestion_id` preserved from the existing validation_results
+              contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: source_format
+            data_type: varchar
+            description: 'Source column `source_format` preserved from the existing validation_results
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - accepted_values:
+                  values:
+                    - FHIR
+                    - HL7V2
+          - name: record_id
+            data_type: varchar
+            description: 'Source column `record_id` preserved from the existing validation_results contract.
+
+              '
+          - name: message_type
+            data_type: varchar
+            description: 'Source column `message_type` preserved from the existing validation_results
+              contract.
+
+              '
+          - name: rule_code
+            data_type: varchar
+            description: 'Source column `rule_code` preserved from the existing validation_results contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: level
+            data_type: varchar
+            description: 'Source column `level` preserved from the existing validation_results contract.
+
+              '
+          - name: message
+            data_type: varchar
+            description: 'Source column `message` preserved from the existing validation_results contract.
+
+              '
+          - name: parser_version
+            data_type: varchar
+            description: 'Source column `parser_version` preserved from the existing validation_results
+              contract.
+
+              '
+          - name: schema_version
+            data_type: varchar
+            description: 'Source column `schema_version` preserved from the existing validation_results
+              contract.
+
+              '
+          - name: validation_status
+            data_type: varchar
+            description: 'Source column `validation_status` preserved from the existing validation_results
+              contract.
+
+              '
+            data_tests:
+              - accepted_values:
+                  values:
+                    - ACCEPTED
+                    - ACCEPTED_WITH_WARNINGS
+                    - REJECTED
+                    - UNSUPPORTED
+          - name: payload_checksum
+            data_type: varchar
+            description: 'Source column `payload_checksum` preserved from the existing validation_results
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - valid_sha256
+          - name: synthetic_flag
+            data_type: varchar
+            description: 'Source column `synthetic_flag` preserved from the existing validation_results
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - accepted_values:
+                  values:
+                    - true

@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: install info generate-sample validate-sample interoperability-sample interoperability-validate snowflake-inventory snowflake-render snowflake-validate format lint type test yaml sql dbt-parse terraform-fmt terraform-validate secrets validate
+.PHONY: install info generate-sample validate-sample interoperability-sample interoperability-validate snowflake-inventory snowflake-render snowflake-validate format lint type test yaml sql dbt-parse dbt-static terraform-fmt terraform-validate secrets validate
 
 install:
 	$(PYTHON) -m pip install -r requirements-dev.txt
@@ -56,6 +56,9 @@ sql:
 dbt-parse:
 	cd dbt && dbt parse --profiles-dir . --no-partial-parse
 
+dbt-static:
+	PYTHONPATH=src pytest tests/unit/test_dbt_milestone5.py
+
 terraform-fmt:
 	terraform fmt -check -recursive infrastructure/terraform
 
@@ -70,5 +73,5 @@ terraform-validate:
 secrets:
 	@if command -v gitleaks >/dev/null; then gitleaks detect --no-git --redact; else echo "gitleaks not installed; CI performs the authoritative scan"; fi
 
-validate: lint type test yaml sql dbt-parse snowflake-validate interoperability-validate secrets
+validate: lint type test yaml sql dbt-parse dbt-static snowflake-validate interoperability-validate secrets
 	@echo "Core credential-free validation complete. Run terraform-fmt/validate when Terraform is installed."

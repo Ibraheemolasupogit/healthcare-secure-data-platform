@@ -1,0 +1,269 @@
+version: 2
+sources:
+  - name: governance_control
+    database: '{{ var(''governance_control_database'', ''HEDP_DEV_GOVERNANCE'') }}'
+    schema: '{{ var(''governance_control_schema'', ''CONTROL'') }}'
+    description: 'Governance Control source group declared by Milestone 5. Relations are source-aligned
+      raw contracts; dbt does not own raw loading.
+
+      '
+    meta:
+      owner: governance engineering
+      loader: SYNTHETIC_MILESTONE_4
+      implementation_status: static_contract_not_deployed
+      contract_status: source_contract
+      source_system: synthetic_healthcare_platform
+      contains_real_patient_data: false
+    tables:
+      - name: identifier_crosswalks
+        identifier: IDENTIFIER_CROSSWALKS
+        description: 'Milestone 4 source-to-canonical identifier crosswalk records.
+
+          '
+        loaded_at_field: source_identifier
+        freshness:
+          warn_after:
+            count: 30
+            period: day
+          error_after:
+            count: 90
+            period: day
+        meta:
+          owner: governance engineering
+          sensitivity: synthetic_restricted
+          primary_key: source_format, identifier_type, source_identifier
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: static_contract_not_deployed
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - source_format
+                - identifier_type
+                - source_identifier
+        columns:
+          - name: source_format
+            data_type: varchar
+            description: 'Source column `source_format` preserved from the existing identifier_crosswalks
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - accepted_values:
+                  values:
+                    - FHIR
+                    - HL7V2
+          - name: identifier_type
+            data_type: varchar
+            description: 'Source column `identifier_type` preserved from the existing identifier_crosswalks
+              contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: source_system
+            data_type: varchar
+            description: 'Source column `source_system` preserved from the existing identifier_crosswalks
+              contract.
+
+              '
+          - name: source_identifier
+            data_type: varchar
+            description: 'Source column `source_identifier` preserved from the existing identifier_crosswalks
+              contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: canonical_identifier
+            data_type: varchar
+            description: 'Source column `canonical_identifier` preserved from the existing identifier_crosswalks
+              contract.
+
+              '
+          - name: mapping_rule_version
+            data_type: varchar
+            description: 'Source column `mapping_rule_version` preserved from the existing identifier_crosswalks
+              contract.
+
+              '
+          - name: mapping_status
+            data_type: varchar
+            description: 'Source column `mapping_status` preserved from the existing identifier_crosswalks
+              contract.
+
+              '
+          - name: synthetic_flag
+            data_type: varchar
+            description: 'Source column `synthetic_flag` preserved from the existing identifier_crosswalks
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - accepted_values:
+                  values:
+                    - true
+      - name: ingestion_manifests
+        identifier: INGESTION_MANIFESTS
+        description: 'Milestone 4 ingestion-batch manifest controls.
+
+          '
+        loaded_at_field: batch_id
+        freshness:
+          warn_after:
+            count: 30
+            period: day
+          error_after:
+            count: 90
+            period: day
+        meta:
+          owner: governance engineering
+          sensitivity: synthetic_restricted
+          primary_key: batch_id, source_format
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: static_contract_not_deployed
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - batch_id
+                - source_format
+        columns:
+          - name: batch_id
+            data_type: varchar
+            description: 'Source column `batch_id` preserved from the existing ingestion_manifests contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: source_format
+            data_type: varchar
+            description: 'Source column `source_format` preserved from the existing ingestion_manifests
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - accepted_values:
+                  values:
+                    - FHIR
+                    - HL7V2
+          - name: parser_version
+            data_type: varchar
+            description: 'Source column `parser_version` preserved from the existing ingestion_manifests
+              contract.
+
+              '
+          - name: schema_version
+            data_type: varchar
+            description: 'Source column `schema_version` preserved from the existing ingestion_manifests
+              contract.
+
+              '
+          - name: accepted_count
+            data_type: varchar
+            description: 'Source column `accepted_count` preserved from the existing ingestion_manifests
+              contract.
+
+              '
+          - name: rejected_count
+            data_type: varchar
+            description: 'Source column `rejected_count` preserved from the existing ingestion_manifests
+              contract.
+
+              '
+          - name: payload_checksums
+            data_type: varchar
+            description: 'Source column `payload_checksums` preserved from the existing ingestion_manifests
+              contract.
+
+              '
+          - name: synthetic_flag
+            data_type: varchar
+            description: 'Source column `synthetic_flag` preserved from the existing ingestion_manifests
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - accepted_values:
+                  values:
+                    - true
+      - name: terminology_mappings
+        identifier: TERMINOLOGY_MAPPINGS
+        description: 'Synthetic terminology mapping controls for source-format normalisation.
+
+          '
+        loaded_at_field: source_code
+        freshness:
+          warn_after:
+            count: 30
+            period: day
+          error_after:
+            count: 90
+            period: day
+        meta:
+          owner: governance engineering
+          sensitivity: synthetic_restricted
+          primary_key: code_set, source_code
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: static_contract_not_deployed
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - code_set
+                - source_code
+        columns:
+          - name: code_set
+            data_type: varchar
+            description: 'Source column `code_set` preserved from the existing terminology_mappings contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: source_code
+            data_type: varchar
+            description: 'Source column `source_code` preserved from the existing terminology_mappings
+              contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: target_code
+            data_type: varchar
+            description: 'Source column `target_code` preserved from the existing terminology_mappings
+              contract.
+
+              '
+          - name: mapping_status
+            data_type: varchar
+            description: 'Source column `mapping_status` preserved from the existing terminology_mappings
+              contract.
+
+              '
+          - name: mapping_version
+            data_type: varchar
+            description: 'Source column `mapping_version` preserved from the existing terminology_mappings
+              contract.
+
+              '
+          - name: synthetic_flag
+            data_type: varchar
+            description: 'Source column `synthetic_flag` preserved from the existing terminology_mappings
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - accepted_values:
+                  values:
+                    - true

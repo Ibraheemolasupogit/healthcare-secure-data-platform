@@ -1,0 +1,169 @@
+version: 2
+sources:
+  - name: raw_interoperability
+    database: '{{ var(''raw_interoperability_database'', ''HEDP_DEV_RAW'') }}'
+    schema: '{{ var(''raw_interoperability_schema'', ''INTEROPERABILITY'') }}'
+    description: 'Raw Interoperability source group declared by Milestone 5. Relations are source-aligned
+      raw contracts; dbt does not own raw loading.
+
+      '
+    meta:
+      owner: interoperability engineering
+      loader: SYNTHETIC_MILESTONE_4
+      implementation_status: static_contract_not_deployed
+      contract_status: source_contract
+      source_system: synthetic_healthcare_platform
+      contains_real_patient_data: false
+    tables:
+      - name: fhir_raw_payloads
+        identifier: FHIR_RAW_PAYLOADS
+        description: 'Static Milestone 4 FHIR-inspired raw payload contract; planned Snowflake relation,
+          committed local evidence only.
+
+          '
+        loaded_at_field: received_at
+        freshness:
+          warn_after:
+            count: 2
+            period: hour
+          error_after:
+            count: 8
+            period: hour
+        meta:
+          owner: interoperability engineering
+          sensitivity: synthetic_restricted
+          primary_key: ingestion_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: static_contract_not_deployed
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - ingestion_id
+        columns:
+          - name: ingestion_id
+            data_type: varchar
+            description: 'Source column `ingestion_id` preserved from the existing fhir_raw_payloads contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: resource_type
+            data_type: varchar
+            description: 'Source column `resource_type` preserved from the existing fhir_raw_payloads
+              contract.
+
+              '
+          - name: resource_id
+            data_type: varchar
+            description: 'Source column `resource_id` preserved from the existing fhir_raw_payloads contract.
+
+              '
+          - name: payload
+            data_type: varchar
+            description: 'Source column `payload` preserved from the existing fhir_raw_payloads contract.
+
+              '
+          - name: payload_checksum
+            data_type: varchar
+            description: 'Source column `payload_checksum` preserved from the existing fhir_raw_payloads
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - valid_sha256
+          - name: received_at
+            data_type: varchar
+            description: 'Source column `received_at` preserved from the existing fhir_raw_payloads contract.
+
+              '
+          - name: synthetic_flag
+            data_type: varchar
+            description: 'Source column `synthetic_flag` preserved from the existing fhir_raw_payloads
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - accepted_values:
+                  values:
+                    - true
+      - name: hl7_raw_messages
+        identifier: HL7_RAW_MESSAGES
+        description: 'Static Milestone 4 HL7 v2.5 raw message contract; planned Snowflake relation, committed
+          local evidence only.
+
+          '
+        loaded_at_field: received_at
+        freshness:
+          warn_after:
+            count: 1
+            period: hour
+          error_after:
+            count: 4
+            period: hour
+        meta:
+          owner: interoperability engineering
+          sensitivity: synthetic_restricted
+          primary_key: ingestion_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: static_contract_not_deployed
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - ingestion_id
+        columns:
+          - name: ingestion_id
+            data_type: varchar
+            description: 'Source column `ingestion_id` preserved from the existing hl7_raw_messages contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: message_type
+            data_type: varchar
+            description: 'Source column `message_type` preserved from the existing hl7_raw_messages contract.
+
+              '
+          - name: message_control_id
+            data_type: varchar
+            description: 'Source column `message_control_id` preserved from the existing hl7_raw_messages
+              contract.
+
+              '
+          - name: raw_message
+            data_type: varchar
+            description: 'Source column `raw_message` preserved from the existing hl7_raw_messages contract.
+
+              '
+          - name: payload_checksum
+            data_type: varchar
+            description: 'Source column `payload_checksum` preserved from the existing hl7_raw_messages
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - valid_sha256
+          - name: received_at
+            data_type: varchar
+            description: 'Source column `received_at` preserved from the existing hl7_raw_messages contract.
+
+              '
+          - name: synthetic_flag
+            data_type: varchar
+            description: 'Source column `synthetic_flag` preserved from the existing hl7_raw_messages
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - accepted_values:
+                  values:
+                    - true

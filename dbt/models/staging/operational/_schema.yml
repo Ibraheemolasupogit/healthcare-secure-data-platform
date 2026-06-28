@@ -1,0 +1,637 @@
+version: 2
+models:
+  - name: stg_operational__appointments
+    description: 'Source-aligned staging view for appointments. Grain is one current source record after
+      deterministic deduplication. Synthetic outpatient appointments.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: appointment_id
+        description: '`appointment_id` standardised for the stg_operational__appointments staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: patient_id
+        description: '`patient_id` standardised for the stg_operational__appointments staging interface.
+
+          '
+      - name: organisation_id
+        description: '`organisation_id` standardised for the stg_operational__appointments staging interface.
+
+          '
+      - name: location_id
+        description: '`location_id` standardised for the stg_operational__appointments staging interface.
+
+          '
+      - name: provider_id
+        description: '`provider_id` standardised for the stg_operational__appointments staging interface.
+
+          '
+      - name: appointment_datetime
+        description: '`appointment_datetime` standardised for the stg_operational__appointments staging
+          interface.
+
+          '
+      - name: booking_datetime
+        description: '`booking_datetime` standardised for the stg_operational__appointments staging interface.
+
+          '
+      - name: appointment_type
+        description: '`appointment_type` standardised for the stg_operational__appointments staging interface.
+
+          '
+      - name: attendance_status
+        description: '`attendance_status` standardised for the stg_operational__appointments staging interface.
+
+          '
+      - name: cancellation_reason
+        description: '`cancellation_reason` standardised for the stg_operational__appointments staging
+          interface.
+
+          '
+      - name: referral_id
+        description: '`referral_id` standardised for the stg_operational__appointments staging interface.
+
+          '
+      - name: updated_at
+        description: '`updated_at` standardised for the stg_operational__appointments staging interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_operational__appointments staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_operational__appointments staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_operational__appointments staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_operational__appointments staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_operational__appointments staging interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_operational__appointments staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_operational__appointments staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_operational__appointments staging interface.
+
+          '
+  - name: stg_operational__locations
+    description: 'Source-aligned staging view for locations. Grain is one current source record after
+      deterministic deduplication. Synthetic healthcare delivery locations.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: location_id
+        description: '`location_id` standardised for the stg_operational__locations staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: organisation_id
+        description: '`organisation_id` standardised for the stg_operational__locations staging interface.
+
+          '
+      - name: location_code
+        description: '`location_code` standardised for the stg_operational__locations staging interface.
+
+          '
+      - name: location_name
+        description: '`location_name` standardised for the stg_operational__locations staging interface.
+
+          '
+      - name: location_type
+        description: '`location_type` standardised for the stg_operational__locations staging interface.
+
+          '
+      - name: specialty
+        description: '`specialty` standardised for the stg_operational__locations staging interface.
+
+          '
+      - name: active_flag
+        description: '`active_flag` standardised for the stg_operational__locations staging interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_operational__locations staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_operational__locations staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_operational__locations staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_operational__locations staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_operational__locations staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_operational__locations staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_operational__locations staging interface.
+
+          '
+  - name: stg_operational__organisations
+    description: 'Source-aligned staging view for organisations. Grain is one current source record after
+      deterministic deduplication. Synthetic healthcare organisations and hierarchy.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: organisation_id
+        description: '`organisation_id` standardised for the stg_operational__organisations staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: organisation_code
+        description: '`organisation_code` standardised for the stg_operational__organisations staging
+          interface.
+
+          '
+      - name: organisation_name
+        description: '`organisation_name` standardised for the stg_operational__organisations staging
+          interface.
+
+          '
+      - name: organisation_type
+        description: '`organisation_type` standardised for the stg_operational__organisations staging
+          interface.
+
+          '
+      - name: parent_organisation_id
+        description: '`parent_organisation_id` standardised for the stg_operational__organisations staging
+          interface.
+
+          '
+      - name: region
+        description: '`region` standardised for the stg_operational__organisations staging interface.
+
+          '
+      - name: active_flag
+        description: '`active_flag` standardised for the stg_operational__organisations staging interface.
+
+          '
+      - name: valid_from
+        description: '`valid_from` standardised for the stg_operational__organisations staging interface.
+
+          '
+      - name: valid_to
+        description: '`valid_to` standardised for the stg_operational__organisations staging interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_operational__organisations staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_operational__organisations staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_operational__organisations staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_operational__organisations staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_operational__organisations staging
+          interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_operational__organisations staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_operational__organisations staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_operational__organisations staging interface.
+
+          '
+  - name: stg_operational__pathways
+    description: 'Source-aligned staging view for pathways. Grain is one current source record after deterministic
+      deduplication. Synthetic referral-to-treatment pathways.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: pathway_id
+        description: '`pathway_id` standardised for the stg_operational__pathways staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: patient_id
+        description: '`patient_id` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: referral_date
+        description: '`referral_date` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: pathway_type
+        description: '`pathway_type` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: specialty
+        description: '`specialty` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: organisation_id
+        description: '`organisation_id` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: clock_start_date
+        description: '`clock_start_date` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: current_status
+        description: '`current_status` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: current_stage
+        description: '`current_stage` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: target_date
+        description: '`target_date` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: completion_date
+        description: '`completion_date` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: waiting_days
+        description: '`waiting_days` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: breach_flag
+        description: '`breach_flag` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: updated_at
+        description: '`updated_at` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_operational__pathways staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_operational__pathways staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_operational__pathways staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_operational__pathways staging interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_operational__pathways staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_operational__pathways staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_operational__pathways staging interface.
+
+          '
+  - name: stg_operational__providers
+    description: 'Source-aligned staging view for providers. Grain is one current source record after
+      deterministic deduplication. Synthetic providers without personal names.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: provider_id
+        description: '`provider_id` standardised for the stg_operational__providers staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: organisation_id
+        description: '`organisation_id` standardised for the stg_operational__providers staging interface.
+
+          '
+      - name: provider_label
+        description: '`provider_label` standardised for the stg_operational__providers staging interface.
+
+          '
+      - name: provider_role
+        description: '`provider_role` standardised for the stg_operational__providers staging interface.
+
+          '
+      - name: specialty
+        description: '`specialty` standardised for the stg_operational__providers staging interface.
+
+          '
+      - name: active_flag
+        description: '`active_flag` standardised for the stg_operational__providers staging interface.
+
+          '
+      - name: valid_from
+        description: '`valid_from` standardised for the stg_operational__providers staging interface.
+
+          '
+      - name: valid_to
+        description: '`valid_to` standardised for the stg_operational__providers staging interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_operational__providers staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_operational__providers staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_operational__providers staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_operational__providers staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_operational__providers staging interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_operational__providers staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_operational__providers staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_operational__providers staging interface.
+
+          '
+  - name: stg_operational__research_cohorts
+    description: 'Source-aligned staging view for research_cohorts. Grain is one current source record
+      after deterministic deduplication. Synthetic approved cohort membership.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: cohort_membership_id
+        description: '`cohort_membership_id` standardised for the stg_operational__research_cohorts staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: cohort_id
+        description: '`cohort_id` standardised for the stg_operational__research_cohorts staging interface.
+
+          '
+      - name: patient_id
+        description: '`patient_id` standardised for the stg_operational__research_cohorts staging interface.
+
+          '
+      - name: cohort_name
+        description: '`cohort_name` standardised for the stg_operational__research_cohorts staging interface.
+
+          '
+      - name: inclusion_date
+        description: '`inclusion_date` standardised for the stg_operational__research_cohorts staging
+          interface.
+
+          '
+      - name: exclusion_date
+        description: '`exclusion_date` standardised for the stg_operational__research_cohorts staging
+          interface.
+
+          '
+      - name: inclusion_reason
+        description: '`inclusion_reason` standardised for the stg_operational__research_cohorts staging
+          interface.
+
+          '
+      - name: eligible_flag
+        description: '`eligible_flag` standardised for the stg_operational__research_cohorts staging interface.
+
+          '
+      - name: consent_status_at_inclusion
+        description: '`consent_status_at_inclusion` standardised for the stg_operational__research_cohorts
+          staging interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_operational__research_cohorts staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_operational__research_cohorts staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_operational__research_cohorts staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_operational__research_cohorts staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_operational__research_cohorts staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_operational__research_cohorts staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_operational__research_cohorts staging interface.
+
+          '

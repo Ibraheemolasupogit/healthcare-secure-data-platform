@@ -1,0 +1,111 @@
+version: 2
+models:
+  - name: stg_audit__audit_events
+    description: 'Source-aligned staging view for audit_events. Grain is one current source record after
+      deterministic deduplication. Synthetic platform audit activity.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: audit_event_id
+        description: '`audit_event_id` standardised for the stg_audit__audit_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: actor_id
+        description: '`actor_id` standardised for the stg_audit__audit_events staging interface.
+
+          '
+      - name: actor_role
+        description: '`actor_role` standardised for the stg_audit__audit_events staging interface.
+
+          '
+      - name: action
+        description: '`action` standardised for the stg_audit__audit_events staging interface.
+
+          '
+      - name: object_type
+        description: '`object_type` standardised for the stg_audit__audit_events staging interface.
+
+          '
+      - name: object_id
+        description: '`object_id` standardised for the stg_audit__audit_events staging interface.
+
+          '
+      - name: event_datetime
+        description: '`event_datetime` standardised for the stg_audit__audit_events staging interface.
+
+          '
+      - name: outcome
+        description: '`outcome` standardised for the stg_audit__audit_events staging interface.
+
+          '
+      - name: source_component
+        description: '`source_component` standardised for the stg_audit__audit_events staging interface.
+
+          '
+      - name: environment
+        description: '`environment` standardised for the stg_audit__audit_events staging interface.
+
+          '
+      - name: correlation_id
+        description: '`correlation_id` standardised for the stg_audit__audit_events staging interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_audit__audit_events staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_audit__audit_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_audit__audit_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_audit__audit_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_audit__audit_events staging interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_audit__audit_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_audit__audit_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_audit__audit_events staging interface.
+
+          '

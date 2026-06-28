@@ -1,0 +1,674 @@
+version: 2
+sources:
+  - name: raw_clinical
+    database: '{{ var(''raw_clinical_database'', ''HEDP_DEV_RAW'') }}'
+    schema: '{{ var(''raw_clinical_schema'', ''CLINICAL'') }}'
+    description: 'Raw Clinical source group declared by Milestone 5. Relations are source-aligned raw
+      contracts; dbt does not own raw loading.
+
+      '
+    meta:
+      owner: clinical platform engineering
+      loader: SYNTHETIC_MILESTONE_2
+      implementation_status: local_fixture_planned_raw
+      contract_status: source_contract
+      source_system: synthetic_healthcare_platform
+      contains_real_patient_data: false
+    tables:
+      - name: admissions
+        identifier: ADMISSIONS
+        description: 'Synthetic inpatient admission and discharge episodes.
+
+          '
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 36
+            period: hour
+        meta:
+          owner: clinical platform engineering
+          sensitivity: synthetic_restricted
+          primary_key: admission_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - admission_id
+        columns:
+          - name: admission_id
+            data_type: varchar
+            description: 'Source column `admission_id` preserved from the existing admissions contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: encounter_id
+            data_type: varchar
+            description: 'Source column `encounter_id` preserved from the existing admissions contract.
+
+              '
+          - name: patient_id
+            data_type: varchar
+            description: 'Source column `patient_id` preserved from the existing admissions contract.
+
+              '
+          - name: admission_datetime
+            data_type: timestamp_tz
+            description: 'Source column `admission_datetime` preserved from the existing admissions contract.
+
+              '
+          - name: discharge_datetime
+            data_type: timestamp_tz
+            description: 'Source column `discharge_datetime` preserved from the existing admissions contract.
+
+              '
+          - name: admission_method
+            data_type: varchar
+            description: 'Source column `admission_method` preserved from the existing admissions contract.
+
+              '
+          - name: discharge_method
+            data_type: varchar
+            description: 'Source column `discharge_method` preserved from the existing admissions contract.
+
+              '
+          - name: ward_id
+            data_type: varchar
+            description: 'Source column `ward_id` preserved from the existing admissions contract.
+
+              '
+          - name: length_of_stay_days
+            data_type: number
+            description: 'Source column `length_of_stay_days` preserved from the existing admissions contract.
+
+              '
+          - name: readmission_flag
+            data_type: boolean
+            description: 'Source column `readmission_flag` preserved from the existing admissions contract.
+
+              '
+          - name: prior_admission_id
+            data_type: varchar
+            description: 'Source column `prior_admission_id` preserved from the existing admissions contract.
+
+              '
+          - name: updated_at
+            data_type: timestamp_tz
+            description: 'Source column `updated_at` preserved from the existing admissions contract.
+
+              '
+      - name: clinical_events
+        identifier: CLINICAL_EVENTS
+        description: 'Synthetic observations, diagnoses, procedures and referrals.
+
+          '
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 36
+            period: hour
+        meta:
+          owner: clinical platform engineering
+          sensitivity: synthetic_restricted
+          primary_key: clinical_event_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - clinical_event_id
+        columns:
+          - name: clinical_event_id
+            data_type: varchar
+            description: 'Source column `clinical_event_id` preserved from the existing clinical_events
+              contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: patient_id
+            data_type: varchar
+            description: 'Source column `patient_id` preserved from the existing clinical_events contract.
+
+              '
+          - name: encounter_id
+            data_type: varchar
+            description: 'Source column `encounter_id` preserved from the existing clinical_events contract.
+
+              '
+          - name: provider_id
+            data_type: varchar
+            description: 'Source column `provider_id` preserved from the existing clinical_events contract.
+
+              '
+          - name: event_type
+            data_type: varchar
+            description: 'Source column `event_type` preserved from the existing clinical_events contract.
+
+              '
+          - name: event_code
+            data_type: varchar
+            description: 'Source column `event_code` preserved from the existing clinical_events contract.
+
+              '
+          - name: event_value
+            data_type: varchar
+            description: 'Source column `event_value` preserved from the existing clinical_events contract.
+
+              '
+          - name: event_unit
+            data_type: varchar
+            description: 'Source column `event_unit` preserved from the existing clinical_events contract.
+
+              '
+          - name: event_datetime
+            data_type: timestamp_tz
+            description: 'Source column `event_datetime` preserved from the existing clinical_events contract.
+
+              '
+          - name: source_system
+            data_type: varchar
+            description: 'Source column `source_system` preserved from the existing clinical_events contract.
+
+              '
+          - name: updated_at
+            data_type: timestamp_tz
+            description: 'Source column `updated_at` preserved from the existing clinical_events contract.
+
+              '
+      - name: encounters
+        identifier: ENCOUNTERS
+        description: 'Synthetic care encounters.
+
+          '
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 6
+            period: hour
+          error_after:
+            count: 24
+            period: hour
+        meta:
+          owner: clinical platform engineering
+          sensitivity: synthetic_restricted
+          primary_key: encounter_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - encounter_id
+        columns:
+          - name: encounter_id
+            data_type: varchar
+            description: 'Source column `encounter_id` preserved from the existing encounters contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: patient_id
+            data_type: varchar
+            description: 'Source column `patient_id` preserved from the existing encounters contract.
+
+              '
+          - name: organisation_id
+            data_type: varchar
+            description: 'Source column `organisation_id` preserved from the existing encounters contract.
+
+              '
+          - name: location_id
+            data_type: varchar
+            description: 'Source column `location_id` preserved from the existing encounters contract.
+
+              '
+          - name: provider_id
+            data_type: varchar
+            description: 'Source column `provider_id` preserved from the existing encounters contract.
+
+              '
+          - name: encounter_type
+            data_type: varchar
+            description: 'Source column `encounter_type` preserved from the existing encounters contract.
+
+              '
+          - name: admission_method
+            data_type: varchar
+            description: 'Source column `admission_method` preserved from the existing encounters contract.
+
+              '
+          - name: start_datetime
+            data_type: timestamp_tz
+            description: 'Source column `start_datetime` preserved from the existing encounters contract.
+
+              '
+          - name: end_datetime
+            data_type: timestamp_tz
+            description: 'Source column `end_datetime` preserved from the existing encounters contract.
+
+              '
+          - name: status
+            data_type: varchar
+            description: 'Source column `status` preserved from the existing encounters contract.
+
+              '
+          - name: discharge_destination
+            data_type: varchar
+            description: 'Source column `discharge_destination` preserved from the existing encounters
+              contract.
+
+              '
+          - name: primary_diagnosis_code
+            data_type: varchar
+            description: 'Source column `primary_diagnosis_code` preserved from the existing encounters
+              contract.
+
+              '
+          - name: source_system
+            data_type: varchar
+            description: 'Source column `source_system` preserved from the existing encounters contract.
+
+              '
+          - name: updated_at
+            data_type: timestamp_tz
+            description: 'Source column `updated_at` preserved from the existing encounters contract.
+
+              '
+      - name: medication_events
+        identifier: MEDICATION_EVENTS
+        description: 'Synthetic medication lifecycle events.
+
+          '
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 6
+            period: hour
+          error_after:
+            count: 24
+            period: hour
+        meta:
+          owner: clinical platform engineering
+          sensitivity: synthetic_restricted
+          primary_key: medication_event_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - medication_event_id
+        columns:
+          - name: medication_event_id
+            data_type: varchar
+            description: 'Source column `medication_event_id` preserved from the existing medication_events
+              contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: patient_id
+            data_type: varchar
+            description: 'Source column `patient_id` preserved from the existing medication_events contract.
+
+              '
+          - name: encounter_id
+            data_type: varchar
+            description: 'Source column `encounter_id` preserved from the existing medication_events contract.
+
+              '
+          - name: provider_id
+            data_type: varchar
+            description: 'Source column `provider_id` preserved from the existing medication_events contract.
+
+              '
+          - name: medication_code
+            data_type: varchar
+            description: 'Source column `medication_code` preserved from the existing medication_events
+              contract.
+
+              '
+          - name: medication_name
+            data_type: varchar
+            description: 'Source column `medication_name` preserved from the existing medication_events
+              contract.
+
+              '
+          - name: event_type
+            data_type: varchar
+            description: 'Source column `event_type` preserved from the existing medication_events contract.
+
+              '
+          - name: dose
+            data_type: varchar
+            description: 'Source column `dose` preserved from the existing medication_events contract.
+
+              '
+          - name: dose_unit
+            data_type: varchar
+            description: 'Source column `dose_unit` preserved from the existing medication_events contract.
+
+              '
+          - name: route
+            data_type: varchar
+            description: 'Source column `route` preserved from the existing medication_events contract.
+
+              '
+          - name: event_datetime
+            data_type: timestamp_tz
+            description: 'Source column `event_datetime` preserved from the existing medication_events
+              contract.
+
+              '
+          - name: status
+            data_type: varchar
+            description: 'Source column `status` preserved from the existing medication_events contract.
+
+              '
+          - name: updated_at
+            data_type: timestamp_tz
+            description: 'Source column `updated_at` preserved from the existing medication_events contract.
+
+              '
+      - name: pathology_results
+        identifier: PATHOLOGY_RESULTS
+        description: 'Synthetic laboratory results with derived abnormal flags.
+
+          '
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 4
+            period: hour
+          error_after:
+            count: 12
+            period: hour
+        meta:
+          owner: clinical platform engineering
+          sensitivity: synthetic_restricted
+          primary_key: pathology_result_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - pathology_result_id
+        columns:
+          - name: pathology_result_id
+            data_type: varchar
+            description: 'Source column `pathology_result_id` preserved from the existing pathology_results
+              contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: patient_id
+            data_type: varchar
+            description: 'Source column `patient_id` preserved from the existing pathology_results contract.
+
+              '
+          - name: encounter_id
+            data_type: varchar
+            description: 'Source column `encounter_id` preserved from the existing pathology_results contract.
+
+              '
+          - name: requesting_provider_id
+            data_type: varchar
+            description: 'Source column `requesting_provider_id` preserved from the existing pathology_results
+              contract.
+
+              '
+          - name: laboratory_organisation_id
+            data_type: varchar
+            description: 'Source column `laboratory_organisation_id` preserved from the existing pathology_results
+              contract.
+
+              '
+          - name: test_code
+            data_type: varchar
+            description: 'Source column `test_code` preserved from the existing pathology_results contract.
+
+              '
+          - name: test_name
+            data_type: varchar
+            description: 'Source column `test_name` preserved from the existing pathology_results contract.
+
+              '
+          - name: result_value
+            data_type: varchar
+            description: 'Source column `result_value` preserved from the existing pathology_results contract.
+
+              '
+          - name: result_unit
+            data_type: varchar
+            description: 'Source column `result_unit` preserved from the existing pathology_results contract.
+
+              '
+          - name: reference_low
+            data_type: varchar
+            description: 'Source column `reference_low` preserved from the existing pathology_results
+              contract.
+
+              '
+          - name: reference_high
+            data_type: varchar
+            description: 'Source column `reference_high` preserved from the existing pathology_results
+              contract.
+
+              '
+          - name: abnormal_flag
+            data_type: boolean
+            description: 'Source column `abnormal_flag` preserved from the existing pathology_results
+              contract.
+
+              '
+          - name: specimen_datetime
+            data_type: timestamp_tz
+            description: 'Source column `specimen_datetime` preserved from the existing pathology_results
+              contract.
+
+              '
+          - name: result_datetime
+            data_type: timestamp_tz
+            description: 'Source column `result_datetime` preserved from the existing pathology_results
+              contract.
+
+              '
+          - name: status
+            data_type: varchar
+            description: 'Source column `status` preserved from the existing pathology_results contract.
+
+              '
+          - name: updated_at
+            data_type: timestamp_tz
+            description: 'Source column `updated_at` preserved from the existing pathology_results contract.
+
+              '
+      - name: patients
+        identifier: PATIENTS
+        description: 'Synthetic pseudonymised patient records without names or contact details.
+
+          '
+        loaded_at_field: record_updated_at
+        freshness:
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 36
+            period: hour
+        meta:
+          owner: clinical platform engineering
+          sensitivity: synthetic_restricted
+          primary_key: patient_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - patient_id
+        columns:
+          - name: patient_id
+            data_type: varchar
+            description: 'Source column `patient_id` preserved from the existing patients contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: patient_pseudonym
+            data_type: varchar
+            description: 'Source column `patient_pseudonym` preserved from the existing patients contract.
+
+              '
+          - name: synthetic_nhs_number
+            data_type: varchar
+            description: 'Source column `synthetic_nhs_number` preserved from the existing patients contract.
+
+              '
+          - name: birth_date
+            data_type: date
+            description: 'Source column `birth_date` preserved from the existing patients contract.
+
+              '
+          - name: sex
+            data_type: varchar
+            description: 'Source column `sex` preserved from the existing patients contract.
+
+              '
+          - name: ethnicity
+            data_type: varchar
+            description: 'Source column `ethnicity` preserved from the existing patients contract.
+
+              '
+          - name: postcode_sector
+            data_type: varchar
+            description: 'Source column `postcode_sector` preserved from the existing patients contract.
+
+              '
+          - name: registered_gp_organisation_id
+            data_type: varchar
+            description: 'Source column `registered_gp_organisation_id` preserved from the existing patients
+              contract.
+
+              '
+          - name: deceased_flag
+            data_type: boolean
+            description: 'Source column `deceased_flag` preserved from the existing patients contract.
+
+              '
+          - name: death_date
+            data_type: date
+            description: 'Source column `death_date` preserved from the existing patients contract.
+
+              '
+          - name: record_created_at
+            data_type: timestamp_tz
+            description: 'Source column `record_created_at` preserved from the existing patients contract.
+
+              '
+          - name: record_updated_at
+            data_type: timestamp_tz
+            description: 'Source column `record_updated_at` preserved from the existing patients contract.
+
+              '
+      - name: research_consent
+        identifier: RESEARCH_CONSENT
+        description: 'Synthetic research consent status.
+
+          '
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 36
+            period: hour
+        meta:
+          owner: clinical platform engineering
+          sensitivity: synthetic_restricted
+          primary_key: consent_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - consent_id
+        columns:
+          - name: consent_id
+            data_type: varchar
+            description: 'Source column `consent_id` preserved from the existing research_consent contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: patient_id
+            data_type: varchar
+            description: 'Source column `patient_id` preserved from the existing research_consent contract.
+
+              '
+          - name: consent_type
+            data_type: varchar
+            description: 'Source column `consent_type` preserved from the existing research_consent contract.
+
+              '
+          - name: consent_status
+            data_type: varchar
+            description: 'Source column `consent_status` preserved from the existing research_consent
+              contract.
+
+              '
+          - name: valid_from
+            data_type: date
+            description: 'Source column `valid_from` preserved from the existing research_consent contract.
+
+              '
+          - name: valid_to
+            data_type: date
+            description: 'Source column `valid_to` preserved from the existing research_consent contract.
+
+              '
+          - name: withdrawal_date
+            data_type: date
+            description: 'Source column `withdrawal_date` preserved from the existing research_consent
+              contract.
+
+              '
+          - name: research_use_allowed
+            data_type: boolean
+            description: 'Source column `research_use_allowed` preserved from the existing research_consent
+              contract.
+
+              '
+          - name: updated_at
+            data_type: timestamp_tz
+            description: 'Source column `updated_at` preserved from the existing research_consent contract.
+
+              '

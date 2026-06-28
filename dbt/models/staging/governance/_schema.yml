@@ -1,0 +1,236 @@
+version: 2
+models:
+  - name: stg_governance__data_quality_events
+    description: 'Source-aligned staging view for data_quality_events. Grain is one current source record
+      after deterministic deduplication. Deterministic register of intentionally injected defects.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: quality_event_id
+        description: '`quality_event_id` standardised for the stg_governance__data_quality_events staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dataset_name
+        description: '`dataset_name` standardised for the stg_governance__data_quality_events staging
+          interface.
+
+          '
+      - name: rule_id
+        description: '`rule_id` standardised for the stg_governance__data_quality_events staging interface.
+
+          '
+      - name: rule_name
+        description: '`rule_name` standardised for the stg_governance__data_quality_events staging interface.
+
+          '
+      - name: severity
+        description: '`severity` standardised for the stg_governance__data_quality_events staging interface.
+
+          '
+      - name: record_identifier
+        description: '`record_identifier` standardised for the stg_governance__data_quality_events staging
+          interface.
+
+          '
+      - name: detected_at
+        description: '`detected_at` standardised for the stg_governance__data_quality_events staging interface.
+
+          '
+      - name: status
+        description: '`status` standardised for the stg_governance__data_quality_events staging interface.
+
+          '
+      - name: resolution_action
+        description: '`resolution_action` standardised for the stg_governance__data_quality_events staging
+          interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_governance__data_quality_events staging
+          interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_governance__data_quality_events staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_governance__data_quality_events staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_governance__data_quality_events staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_governance__data_quality_events staging
+          interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_governance__data_quality_events staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_governance__data_quality_events staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_governance__data_quality_events staging
+          interface.
+
+          '
+  - name: stg_governance__validation_results
+    description: 'Source-aligned staging view for validation_results. Grain is one current source record
+      after deterministic deduplication. Milestone 4 parser validation result records and Milestone 2
+      data-quality feed pattern.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: ingestion_id
+        description: '`ingestion_id` standardised for the stg_governance__validation_results staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_format
+        description: '`source_format` standardised for the stg_governance__validation_results staging
+          interface.
+
+          '
+      - name: record_id
+        description: '`record_id` standardised for the stg_governance__validation_results staging interface.
+
+          '
+      - name: message_type
+        description: '`message_type` standardised for the stg_governance__validation_results staging interface.
+
+          '
+      - name: rule_code
+        description: '`rule_code` standardised for the stg_governance__validation_results staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: level
+        description: '`level` standardised for the stg_governance__validation_results staging interface.
+
+          '
+      - name: message
+        description: '`message` standardised for the stg_governance__validation_results staging interface.
+
+          '
+      - name: parser_version
+        description: '`parser_version` standardised for the stg_governance__validation_results staging
+          interface.
+
+          '
+      - name: schema_version
+        description: '`schema_version` standardised for the stg_governance__validation_results staging
+          interface.
+
+          '
+      - name: validation_status
+        description: '`validation_status` standardised for the stg_governance__validation_results staging
+          interface.
+
+          '
+      - name: payload_checksum
+        description: '`payload_checksum` standardised for the stg_governance__validation_results staging
+          interface.
+
+          '
+        data_tests:
+          - valid_sha256
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_governance__validation_results staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_system
+        description: '`source_system` standardised for the stg_governance__validation_results staging
+          interface.
+
+          '
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_governance__validation_results staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_governance__validation_results staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_governance__validation_results staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_governance__validation_results staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_governance__validation_results staging interface.
+
+          '

@@ -1,0 +1,812 @@
+version: 2
+models:
+  - name: stg_clinical__admissions
+    description: 'Source-aligned staging view for admissions. Grain is one current source record after
+      deterministic deduplication. Synthetic inpatient admission and discharge episodes.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: admission_id
+        description: '`admission_id` standardised for the stg_clinical__admissions staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: encounter_id
+        description: '`encounter_id` standardised for the stg_clinical__admissions staging interface.
+
+          '
+      - name: patient_id
+        description: '`patient_id` standardised for the stg_clinical__admissions staging interface.
+
+          '
+      - name: admission_datetime
+        description: '`admission_datetime` standardised for the stg_clinical__admissions staging interface.
+
+          '
+      - name: discharge_datetime
+        description: '`discharge_datetime` standardised for the stg_clinical__admissions staging interface.
+
+          '
+      - name: admission_method
+        description: '`admission_method` standardised for the stg_clinical__admissions staging interface.
+
+          '
+      - name: discharge_method
+        description: '`discharge_method` standardised for the stg_clinical__admissions staging interface.
+
+          '
+      - name: ward_id
+        description: '`ward_id` standardised for the stg_clinical__admissions staging interface.
+
+          '
+      - name: length_of_stay_days
+        description: '`length_of_stay_days` standardised for the stg_clinical__admissions staging interface.
+
+          '
+      - name: readmission_flag
+        description: '`readmission_flag` standardised for the stg_clinical__admissions staging interface.
+
+          '
+      - name: prior_admission_id
+        description: '`prior_admission_id` standardised for the stg_clinical__admissions staging interface.
+
+          '
+      - name: updated_at
+        description: '`updated_at` standardised for the stg_clinical__admissions staging interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_clinical__admissions staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_clinical__admissions staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_clinical__admissions staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_clinical__admissions staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_clinical__admissions staging interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_clinical__admissions staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_clinical__admissions staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_clinical__admissions staging interface.
+
+          '
+  - name: stg_clinical__clinical_events
+    description: 'Source-aligned staging view for clinical_events. Grain is one current source record
+      after deterministic deduplication. Synthetic observations, diagnoses, procedures and referrals.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: clinical_event_id
+        description: '`clinical_event_id` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: patient_id
+        description: '`patient_id` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+      - name: encounter_id
+        description: '`encounter_id` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+      - name: provider_id
+        description: '`provider_id` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+      - name: event_type
+        description: '`event_type` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+      - name: event_code
+        description: '`event_code` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+      - name: event_value
+        description: '`event_value` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+      - name: event_unit
+        description: '`event_unit` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+      - name: event_datetime
+        description: '`event_datetime` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+      - name: updated_at
+        description: '`updated_at` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_clinical__clinical_events staging interface.
+
+          '
+  - name: stg_clinical__encounters
+    description: 'Source-aligned staging view for encounters. Grain is one current source record after
+      deterministic deduplication. Synthetic care encounters.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: encounter_id
+        description: '`encounter_id` standardised for the stg_clinical__encounters staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: patient_id
+        description: '`patient_id` standardised for the stg_clinical__encounters staging interface.
+
+          '
+      - name: organisation_id
+        description: '`organisation_id` standardised for the stg_clinical__encounters staging interface.
+
+          '
+      - name: location_id
+        description: '`location_id` standardised for the stg_clinical__encounters staging interface.
+
+          '
+      - name: provider_id
+        description: '`provider_id` standardised for the stg_clinical__encounters staging interface.
+
+          '
+      - name: encounter_type
+        description: '`encounter_type` standardised for the stg_clinical__encounters staging interface.
+
+          '
+      - name: admission_method
+        description: '`admission_method` standardised for the stg_clinical__encounters staging interface.
+
+          '
+      - name: start_datetime
+        description: '`start_datetime` standardised for the stg_clinical__encounters staging interface.
+
+          '
+      - name: end_datetime
+        description: '`end_datetime` standardised for the stg_clinical__encounters staging interface.
+
+          '
+      - name: status
+        description: '`status` standardised for the stg_clinical__encounters staging interface.
+
+          '
+      - name: discharge_destination
+        description: '`discharge_destination` standardised for the stg_clinical__encounters staging interface.
+
+          '
+      - name: primary_diagnosis_code
+        description: '`primary_diagnosis_code` standardised for the stg_clinical__encounters staging interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_clinical__encounters staging interface.
+
+          '
+      - name: updated_at
+        description: '`updated_at` standardised for the stg_clinical__encounters staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_clinical__encounters staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_clinical__encounters staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_clinical__encounters staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_clinical__encounters staging interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_clinical__encounters staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_clinical__encounters staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_clinical__encounters staging interface.
+
+          '
+  - name: stg_clinical__medication_events
+    description: 'Source-aligned staging view for medication_events. Grain is one current source record
+      after deterministic deduplication. Synthetic medication lifecycle events.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: medication_event_id
+        description: '`medication_event_id` standardised for the stg_clinical__medication_events staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: patient_id
+        description: '`patient_id` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+      - name: encounter_id
+        description: '`encounter_id` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+      - name: provider_id
+        description: '`provider_id` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+      - name: medication_code
+        description: '`medication_code` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+      - name: medication_name
+        description: '`medication_name` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+      - name: event_type
+        description: '`event_type` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+      - name: dose
+        description: '`dose` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+      - name: dose_unit
+        description: '`dose_unit` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+      - name: route
+        description: '`route` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+      - name: event_datetime
+        description: '`event_datetime` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+      - name: status
+        description: '`status` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+      - name: updated_at
+        description: '`updated_at` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_clinical__medication_events staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_clinical__medication_events staging
+          interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_clinical__medication_events staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_clinical__medication_events staging interface.
+
+          '
+  - name: stg_clinical__pathology_results
+    description: 'Source-aligned staging view for pathology_results. Grain is one current source record
+      after deterministic deduplication. Synthetic laboratory results with derived abnormal flags.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: pathology_result_id
+        description: '`pathology_result_id` standardised for the stg_clinical__pathology_results staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: patient_id
+        description: '`patient_id` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+      - name: encounter_id
+        description: '`encounter_id` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+      - name: requesting_provider_id
+        description: '`requesting_provider_id` standardised for the stg_clinical__pathology_results staging
+          interface.
+
+          '
+      - name: laboratory_organisation_id
+        description: '`laboratory_organisation_id` standardised for the stg_clinical__pathology_results
+          staging interface.
+
+          '
+      - name: test_code
+        description: '`test_code` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+      - name: test_name
+        description: '`test_name` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+      - name: result_value
+        description: '`result_value` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+      - name: result_unit
+        description: '`result_unit` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+      - name: reference_low
+        description: '`reference_low` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+      - name: reference_high
+        description: '`reference_high` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+      - name: abnormal_flag
+        description: '`abnormal_flag` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+      - name: specimen_datetime
+        description: '`specimen_datetime` standardised for the stg_clinical__pathology_results staging
+          interface.
+
+          '
+      - name: result_datetime
+        description: '`result_datetime` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+      - name: status
+        description: '`status` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+      - name: updated_at
+        description: '`updated_at` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_clinical__pathology_results staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_clinical__pathology_results staging
+          interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_clinical__pathology_results staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_clinical__pathology_results staging interface.
+
+          '
+  - name: stg_clinical__patients
+    description: 'Source-aligned staging view for patients. Grain is one current source record after deterministic
+      deduplication. Synthetic pseudonymised patient records without names or contact details.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: patient_id
+        description: '`patient_id` standardised for the stg_clinical__patients staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: patient_pseudonym
+        description: '`patient_pseudonym` standardised for the stg_clinical__patients staging interface.
+
+          '
+      - name: synthetic_nhs_number
+        description: '`synthetic_nhs_number` standardised for the stg_clinical__patients staging interface.
+
+          '
+      - name: birth_date
+        description: '`birth_date` standardised for the stg_clinical__patients staging interface.
+
+          '
+      - name: sex
+        description: '`sex` standardised for the stg_clinical__patients staging interface.
+
+          '
+      - name: ethnicity
+        description: '`ethnicity` standardised for the stg_clinical__patients staging interface.
+
+          '
+      - name: postcode_sector
+        description: '`postcode_sector` standardised for the stg_clinical__patients staging interface.
+
+          '
+      - name: registered_gp_organisation_id
+        description: '`registered_gp_organisation_id` standardised for the stg_clinical__patients staging
+          interface.
+
+          '
+      - name: deceased_flag
+        description: '`deceased_flag` standardised for the stg_clinical__patients staging interface.
+
+          '
+      - name: death_date
+        description: '`death_date` standardised for the stg_clinical__patients staging interface.
+
+          '
+      - name: record_created_at
+        description: '`record_created_at` standardised for the stg_clinical__patients staging interface.
+
+          '
+      - name: record_updated_at
+        description: '`record_updated_at` standardised for the stg_clinical__patients staging interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_clinical__patients staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_clinical__patients staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_clinical__patients staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_clinical__patients staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_clinical__patients staging interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_clinical__patients staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_clinical__patients staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_clinical__patients staging interface.
+
+          '
+  - name: stg_clinical__research_consent
+    description: 'Source-aligned staging view for research_consent. Grain is one current source record
+      after deterministic deduplication. Synthetic research consent status.
+
+      '
+    config:
+      contract:
+        enforced: false
+    meta:
+      owner: analytics engineering
+      milestone: '5'
+      layer: staging
+      implementation_status: locally_parseable_planned_snowflake_execution
+      sensitivity: synthetic_restricted
+      downstream_milestone: milestone_6_core_models
+      contains_conformed_entity: false
+    columns:
+      - name: consent_id
+        description: '`consent_id` standardised for the stg_clinical__research_consent staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: patient_id
+        description: '`patient_id` standardised for the stg_clinical__research_consent staging interface.
+
+          '
+      - name: consent_type
+        description: '`consent_type` standardised for the stg_clinical__research_consent staging interface.
+
+          '
+      - name: consent_status
+        description: '`consent_status` standardised for the stg_clinical__research_consent staging interface.
+
+          '
+      - name: valid_from
+        description: '`valid_from` standardised for the stg_clinical__research_consent staging interface.
+
+          '
+      - name: valid_to
+        description: '`valid_to` standardised for the stg_clinical__research_consent staging interface.
+
+          '
+      - name: withdrawal_date
+        description: '`withdrawal_date` standardised for the stg_clinical__research_consent staging interface.
+
+          '
+      - name: research_use_allowed
+        description: '`research_use_allowed` standardised for the stg_clinical__research_consent staging
+          interface.
+
+          '
+      - name: updated_at
+        description: '`updated_at` standardised for the stg_clinical__research_consent staging interface.
+
+          '
+      - name: source_system
+        description: '`source_system` standardised for the stg_clinical__research_consent staging interface.
+
+          '
+      - name: synthetic_flag
+        description: '`synthetic_flag` standardised for the stg_clinical__research_consent staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - true
+      - name: source_record_id
+        description: '`source_record_id` standardised for the stg_clinical__research_consent staging interface.
+
+          '
+        data_tests:
+          - not_null
+          - unique
+      - name: source_relation
+        description: '`source_relation` standardised for the stg_clinical__research_consent staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: source_updated_at
+        description: '`source_updated_at` standardised for the stg_clinical__research_consent staging
+          interface.
+
+          '
+      - name: dbt_loaded_at
+        description: '`dbt_loaded_at` standardised for the stg_clinical__research_consent staging interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: dbt_invocation_id
+        description: '`dbt_invocation_id` standardised for the stg_clinical__research_consent staging
+          interface.
+
+          '
+        data_tests:
+          - not_null
+      - name: is_duplicate
+        description: '`is_duplicate` standardised for the stg_clinical__research_consent staging interface.
+
+          '

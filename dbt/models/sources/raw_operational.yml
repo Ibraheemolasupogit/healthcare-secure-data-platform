@@ -1,0 +1,497 @@
+version: 2
+sources:
+  - name: raw_operational
+    database: '{{ var(''raw_operational_database'', ''HEDP_DEV_RAW'') }}'
+    schema: '{{ var(''raw_operational_schema'', ''OPERATIONAL'') }}'
+    description: 'Raw Operational source group declared by Milestone 5. Relations are source-aligned raw
+      contracts; dbt does not own raw loading.
+
+      '
+    meta:
+      owner: operational platform engineering
+      loader: SYNTHETIC_MILESTONE_2
+      implementation_status: local_fixture_planned_raw
+      contract_status: source_contract
+      source_system: synthetic_healthcare_platform
+      contains_real_patient_data: false
+    tables:
+      - name: appointments
+        identifier: APPOINTMENTS
+        description: 'Synthetic outpatient appointments.
+
+          '
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 36
+            period: hour
+        meta:
+          owner: operational platform engineering
+          sensitivity: synthetic_restricted
+          primary_key: appointment_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - appointment_id
+        columns:
+          - name: appointment_id
+            data_type: varchar
+            description: 'Source column `appointment_id` preserved from the existing appointments contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: patient_id
+            data_type: varchar
+            description: 'Source column `patient_id` preserved from the existing appointments contract.
+
+              '
+          - name: organisation_id
+            data_type: varchar
+            description: 'Source column `organisation_id` preserved from the existing appointments contract.
+
+              '
+          - name: location_id
+            data_type: varchar
+            description: 'Source column `location_id` preserved from the existing appointments contract.
+
+              '
+          - name: provider_id
+            data_type: varchar
+            description: 'Source column `provider_id` preserved from the existing appointments contract.
+
+              '
+          - name: appointment_datetime
+            data_type: timestamp_tz
+            description: 'Source column `appointment_datetime` preserved from the existing appointments
+              contract.
+
+              '
+          - name: booking_datetime
+            data_type: timestamp_tz
+            description: 'Source column `booking_datetime` preserved from the existing appointments contract.
+
+              '
+          - name: appointment_type
+            data_type: varchar
+            description: 'Source column `appointment_type` preserved from the existing appointments contract.
+
+              '
+          - name: attendance_status
+            data_type: varchar
+            description: 'Source column `attendance_status` preserved from the existing appointments contract.
+
+              '
+          - name: cancellation_reason
+            data_type: varchar
+            description: 'Source column `cancellation_reason` preserved from the existing appointments
+              contract.
+
+              '
+          - name: referral_id
+            data_type: varchar
+            description: 'Source column `referral_id` preserved from the existing appointments contract.
+
+              '
+          - name: updated_at
+            data_type: timestamp_tz
+            description: 'Source column `updated_at` preserved from the existing appointments contract.
+
+              '
+      - name: locations
+        identifier: LOCATIONS
+        description: 'Synthetic healthcare delivery locations.
+
+          '
+        loaded_at_field: loaded_at
+        freshness:
+          warn_after:
+            count: 30
+            period: day
+          error_after:
+            count: 90
+            period: day
+        meta:
+          owner: operational platform engineering
+          sensitivity: synthetic_restricted
+          primary_key: location_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - location_id
+        columns:
+          - name: location_id
+            data_type: varchar
+            description: 'Source column `location_id` preserved from the existing locations contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: organisation_id
+            data_type: varchar
+            description: 'Source column `organisation_id` preserved from the existing locations contract.
+
+              '
+          - name: location_code
+            data_type: varchar
+            description: 'Source column `location_code` preserved from the existing locations contract.
+
+              '
+          - name: location_name
+            data_type: varchar
+            description: 'Source column `location_name` preserved from the existing locations contract.
+
+              '
+          - name: location_type
+            data_type: varchar
+            description: 'Source column `location_type` preserved from the existing locations contract.
+
+              '
+          - name: specialty
+            data_type: varchar
+            description: 'Source column `specialty` preserved from the existing locations contract.
+
+              '
+          - name: active_flag
+            data_type: boolean
+            description: 'Source column `active_flag` preserved from the existing locations contract.
+
+              '
+      - name: organisations
+        identifier: ORGANISATIONS
+        description: 'Synthetic healthcare organisations and hierarchy.
+
+          '
+        loaded_at_field: valid_from
+        freshness:
+          warn_after:
+            count: 30
+            period: day
+          error_after:
+            count: 90
+            period: day
+        meta:
+          owner: operational platform engineering
+          sensitivity: synthetic_restricted
+          primary_key: organisation_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - organisation_id
+        columns:
+          - name: organisation_id
+            data_type: varchar
+            description: 'Source column `organisation_id` preserved from the existing organisations contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: organisation_code
+            data_type: varchar
+            description: 'Source column `organisation_code` preserved from the existing organisations
+              contract.
+
+              '
+          - name: organisation_name
+            data_type: varchar
+            description: 'Source column `organisation_name` preserved from the existing organisations
+              contract.
+
+              '
+          - name: organisation_type
+            data_type: varchar
+            description: 'Source column `organisation_type` preserved from the existing organisations
+              contract.
+
+              '
+          - name: parent_organisation_id
+            data_type: varchar
+            description: 'Source column `parent_organisation_id` preserved from the existing organisations
+              contract.
+
+              '
+          - name: region
+            data_type: varchar
+            description: 'Source column `region` preserved from the existing organisations contract.
+
+              '
+          - name: active_flag
+            data_type: boolean
+            description: 'Source column `active_flag` preserved from the existing organisations contract.
+
+              '
+          - name: valid_from
+            data_type: date
+            description: 'Source column `valid_from` preserved from the existing organisations contract.
+
+              '
+          - name: valid_to
+            data_type: date
+            description: 'Source column `valid_to` preserved from the existing organisations contract.
+
+              '
+      - name: pathways
+        identifier: PATHWAYS
+        description: 'Synthetic referral-to-treatment pathways.
+
+          '
+        loaded_at_field: updated_at
+        freshness:
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 36
+            period: hour
+        meta:
+          owner: operational platform engineering
+          sensitivity: synthetic_restricted
+          primary_key: pathway_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - pathway_id
+        columns:
+          - name: pathway_id
+            data_type: varchar
+            description: 'Source column `pathway_id` preserved from the existing pathways contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: patient_id
+            data_type: varchar
+            description: 'Source column `patient_id` preserved from the existing pathways contract.
+
+              '
+          - name: referral_date
+            data_type: date
+            description: 'Source column `referral_date` preserved from the existing pathways contract.
+
+              '
+          - name: pathway_type
+            data_type: varchar
+            description: 'Source column `pathway_type` preserved from the existing pathways contract.
+
+              '
+          - name: specialty
+            data_type: varchar
+            description: 'Source column `specialty` preserved from the existing pathways contract.
+
+              '
+          - name: organisation_id
+            data_type: varchar
+            description: 'Source column `organisation_id` preserved from the existing pathways contract.
+
+              '
+          - name: clock_start_date
+            data_type: date
+            description: 'Source column `clock_start_date` preserved from the existing pathways contract.
+
+              '
+          - name: current_status
+            data_type: varchar
+            description: 'Source column `current_status` preserved from the existing pathways contract.
+
+              '
+          - name: current_stage
+            data_type: varchar
+            description: 'Source column `current_stage` preserved from the existing pathways contract.
+
+              '
+          - name: target_date
+            data_type: date
+            description: 'Source column `target_date` preserved from the existing pathways contract.
+
+              '
+          - name: completion_date
+            data_type: date
+            description: 'Source column `completion_date` preserved from the existing pathways contract.
+
+              '
+          - name: waiting_days
+            data_type: number
+            description: 'Source column `waiting_days` preserved from the existing pathways contract.
+
+              '
+          - name: breach_flag
+            data_type: boolean
+            description: 'Source column `breach_flag` preserved from the existing pathways contract.
+
+              '
+          - name: updated_at
+            data_type: timestamp_tz
+            description: 'Source column `updated_at` preserved from the existing pathways contract.
+
+              '
+      - name: providers
+        identifier: PROVIDERS
+        description: 'Synthetic providers without personal names.
+
+          '
+        loaded_at_field: valid_from
+        freshness:
+          warn_after:
+            count: 30
+            period: day
+          error_after:
+            count: 90
+            period: day
+        meta:
+          owner: operational platform engineering
+          sensitivity: synthetic_restricted
+          primary_key: provider_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - provider_id
+        columns:
+          - name: provider_id
+            data_type: varchar
+            description: 'Source column `provider_id` preserved from the existing providers contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: organisation_id
+            data_type: varchar
+            description: 'Source column `organisation_id` preserved from the existing providers contract.
+
+              '
+          - name: provider_label
+            data_type: varchar
+            description: 'Source column `provider_label` preserved from the existing providers contract.
+
+              '
+          - name: provider_role
+            data_type: varchar
+            description: 'Source column `provider_role` preserved from the existing providers contract.
+
+              '
+          - name: specialty
+            data_type: varchar
+            description: 'Source column `specialty` preserved from the existing providers contract.
+
+              '
+          - name: active_flag
+            data_type: boolean
+            description: 'Source column `active_flag` preserved from the existing providers contract.
+
+              '
+          - name: valid_from
+            data_type: date
+            description: 'Source column `valid_from` preserved from the existing providers contract.
+
+              '
+          - name: valid_to
+            data_type: date
+            description: 'Source column `valid_to` preserved from the existing providers contract.
+
+              '
+      - name: research_cohorts
+        identifier: RESEARCH_COHORTS
+        description: 'Synthetic approved cohort membership.
+
+          '
+        loaded_at_field: inclusion_date
+        freshness:
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 36
+            period: hour
+        meta:
+          owner: operational platform engineering
+          sensitivity: synthetic_restricted
+          primary_key: cohort_membership_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: local_fixture_planned_raw
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - cohort_membership_id
+        columns:
+          - name: cohort_membership_id
+            data_type: varchar
+            description: 'Source column `cohort_membership_id` preserved from the existing research_cohorts
+              contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: cohort_id
+            data_type: varchar
+            description: 'Source column `cohort_id` preserved from the existing research_cohorts contract.
+
+              '
+          - name: patient_id
+            data_type: varchar
+            description: 'Source column `patient_id` preserved from the existing research_cohorts contract.
+
+              '
+          - name: cohort_name
+            data_type: varchar
+            description: 'Source column `cohort_name` preserved from the existing research_cohorts contract.
+
+              '
+          - name: inclusion_date
+            data_type: date
+            description: 'Source column `inclusion_date` preserved from the existing research_cohorts
+              contract.
+
+              '
+          - name: exclusion_date
+            data_type: date
+            description: 'Source column `exclusion_date` preserved from the existing research_cohorts
+              contract.
+
+              '
+          - name: inclusion_reason
+            data_type: varchar
+            description: 'Source column `inclusion_reason` preserved from the existing research_cohorts
+              contract.
+
+              '
+          - name: eligible_flag
+            data_type: boolean
+            description: 'Source column `eligible_flag` preserved from the existing research_cohorts contract.
+
+              '
+          - name: consent_status_at_inclusion
+            data_type: varchar
+            description: 'Source column `consent_status_at_inclusion` preserved from the existing research_cohorts
+              contract.
+
+              '

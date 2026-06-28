@@ -1,0 +1,142 @@
+version: 2
+sources:
+  - name: raw_quarantine
+    database: '{{ var(''raw_quarantine_database'', ''HEDP_DEV_RAW'') }}'
+    schema: '{{ var(''raw_quarantine_schema'', ''QUARANTINE'') }}'
+    description: 'Raw Quarantine source group declared by Milestone 5. Relations are source-aligned raw
+      contracts; dbt does not own raw loading.
+
+      '
+    meta:
+      owner: interoperability engineering
+      loader: SYNTHETIC_MILESTONE_4
+      implementation_status: static_contract_not_deployed
+      contract_status: source_contract
+      source_system: synthetic_healthcare_platform
+      contains_real_patient_data: false
+    tables:
+      - name: quarantine_records
+        identifier: QUARANTINE_RECORDS
+        description: 'Milestone 4 quarantined/rejected payload dispositions.
+
+          '
+        loaded_at_field: detected_at
+        freshness:
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 36
+            period: hour
+        meta:
+          owner: interoperability engineering
+          sensitivity: synthetic_restricted
+          primary_key: quarantine_id
+          source_system: synthetic
+          schema_version: 1.0.0
+          implementation_status: static_contract_not_deployed
+          contract_status: declared
+          milestone_owner: milestone_5
+        data_tests:
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - quarantine_id
+        columns:
+          - name: quarantine_id
+            data_type: varchar
+            description: 'Source column `quarantine_id` preserved from the existing quarantine_records
+              contract.
+
+              '
+            data_tests:
+              - not_null
+          - name: source_format
+            data_type: varchar
+            description: 'Source column `source_format` preserved from the existing quarantine_records
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - accepted_values:
+                  values:
+                    - FHIR
+                    - HL7V2
+          - name: source_record_id
+            data_type: varchar
+            description: 'Source column `source_record_id` preserved from the existing quarantine_records
+              contract.
+
+              '
+          - name: source_message_type
+            data_type: varchar
+            description: 'Source column `source_message_type` preserved from the existing quarantine_records
+              contract.
+
+              '
+          - name: validation_errors
+            data_type: varchar
+            description: 'Source column `validation_errors` preserved from the existing quarantine_records
+              contract.
+
+              '
+          - name: warning_details
+            data_type: varchar
+            description: 'Source column `warning_details` preserved from the existing quarantine_records
+              contract.
+
+              '
+          - name: payload_checksum
+            data_type: varchar
+            description: 'Source column `payload_checksum` preserved from the existing quarantine_records
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - valid_sha256
+          - name: raw_payload_path
+            data_type: varchar
+            description: 'Source column `raw_payload_path` preserved from the existing quarantine_records
+              contract.
+
+              '
+          - name: retry_eligible
+            data_type: varchar
+            description: 'Source column `retry_eligible` preserved from the existing quarantine_records
+              contract.
+
+              '
+          - name: disposition
+            data_type: varchar
+            description: 'Source column `disposition` preserved from the existing quarantine_records contract.
+
+              '
+          - name: detected_at
+            data_type: varchar
+            description: 'Source column `detected_at` preserved from the existing quarantine_records contract.
+
+              '
+          - name: parser_version
+            data_type: varchar
+            description: 'Source column `parser_version` preserved from the existing quarantine_records
+              contract.
+
+              '
+          - name: schema_version
+            data_type: varchar
+            description: 'Source column `schema_version` preserved from the existing quarantine_records
+              contract.
+
+              '
+          - name: synthetic_flag
+            data_type: varchar
+            description: 'Source column `synthetic_flag` preserved from the existing quarantine_records
+              contract.
+
+              '
+            data_tests:
+              - not_null
+              - accepted_values:
+                  values:
+                    - true

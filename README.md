@@ -2,7 +2,7 @@
 
 A production-style, synthetic-only Healthcare Enterprise Data Platform portfolio for clinical, operational, research and financial data engineering. Snowflake remains the target governed data platform and dbt remains the transformation, testing, documentation, lineage and business-logic centre of gravity.
 
-> **Status — Milestone 14 complete locally:** dbt includes governed billing/finance, assurance and offline feature models; Airflow provides local-first orchestration; Dataiku has governed analytics/MLOps blueprints; the feature store has reusable registry, point-in-time retrieval and local reference evidence; Fabric/Power BI have governed consumption metadata; and the platform now has a central governance/security-control registry with local policy simulation. Snowflake execution, live policy enforcement, live Fabric/Power BI deployment and later integrations remain planned.
+> **Status — Milestone 15 complete locally:** dbt includes governed billing/finance, assurance and offline feature models; Airflow provides local-first orchestration; Dataiku has governed analytics/MLOps blueprints; the feature store has reusable registry and point-in-time evidence; Fabric/Power BI have governed consumption metadata; governance/security controls are centrally registered; and protected CI/CD, promotion, deployment-control and evidence foundations now exist locally. Snowflake execution, live policy enforcement, live deployment and later integrations remain planned.
 
 ## Why this project exists
 
@@ -30,6 +30,7 @@ Detailed boundaries are documented in [component responsibilities](docs/architec
 | Feature store | Governed reusable features, ownership, freshness, versions and point-in-time correctness | **Implemented locally as an offline M12 foundation** |
 | Fabric and Power BI | Certified semantic consumption and operational/financial/executive reporting | **M13 metadata blueprint implemented locally; not deployed or refreshed** |
 | Terraform | Repeatable infrastructure, identity, storage, networking, secrets and monitoring | **Snowflake foundation module implemented; no apply performed** |
+| CI/CD and deployment controls | PR validation, promotion gates, plan/apply boundaries, evidence, drift and rollback metadata | **M15 local protected-delivery foundation implemented; no live apply performed** |
 | Governance/security | RBAC, masking, pseudonymisation, row access, consent, retention, audit and compliance-claim controls | **M14 central registry, local simulation and evidence implemented; not live-enforced** |
 
 ## Local-first development
@@ -66,8 +67,8 @@ The design follows least privilege, workload isolation, encryption in transit/at
 - **Complete locally:** Milestone 12 governed offline healthcare feature store.
 - **Complete locally:** Milestone 13 Fabric and Power BI governed consumption layer.
 - **Complete locally:** Milestone 14 enterprise governance, security, privacy and compliance-control foundation.
-- **Recommended next:** Milestone 15 CI/CD, protected delivery and deployment evidence.
-- **Planned:** Milestones 15–17 add broader Terraform, multi-region recovery and portfolio evidence.
+- **Complete locally:** Milestone 15 protected CI/CD, environment promotion, infrastructure delivery and deployment-control foundation.
+- **Planned:** Milestones 16–17 add multi-region recovery and portfolio evidence polish.
 
 The original 15-milestone plan has been transparently realigned into a 17-milestone dependency-led [roadmap](docs/roadmap/milestones.md). [ADR 0009](docs/decisions/0009-expand-to-healthcare-enterprise-platform.md) records why.
 
@@ -88,6 +89,7 @@ The original 15-milestone plan has been transparently realigned into a 17-milest
 | `fabric` | Microsoft Fabric workspace, connection, deployment and governance blueprints |
 | `powerbi` | Power BI semantic model, contracts, reports, theme, validation and reference catalogues |
 | `governance` | Central governance/security registry, platform mappings and deterministic evidence |
+| `deployment` | Protected CI/CD, promotion, deployment-control registry and deterministic evidence |
 | `docs` | Architecture, ADRs, governance, security, roadmap, learning and evidence |
 | `tests` | Unit and integration tests, including determinism and integrity |
 | `.github/workflows` | Credential-free quality gates |
@@ -185,11 +187,22 @@ PYTHONPATH=src python -m healthcare_platform.cli feature-store build-reference \
 PYTHONPATH=src pytest tests/unit/test_feature_store_milestone12.py
 ```
 
+Validate Milestone 15 deployment controls locally:
+
+```bash
+PYTHONPATH=src python -m healthcare_platform.cli deployment validate
+PYTHONPATH=src python -m healthcare_platform.cli deployment generate-evidence \
+  --output-dir deployment/reference --overwrite
+PYTHONPATH=src python -m healthcare_platform.cli deployment verify-evidence \
+  --output-dir deployment/reference
+PYTHONPATH=src pytest tests/unit/test_deployment_milestone15.py
+```
+
 ## Limitations
 
 The generator uses compact portfolio code sets rather than authoritative clinical terminology. Large-profile configuration exists but has not been executed; current relationship assembly is in-memory and must be partitioned before million-patient benchmarking. The Snowflake foundation has not been planned or applied against a live account, and there are no source loads, runtime-proven dbt builds, live security policies, dashboards, governed research workflows, or cloud deployment evidence.
 
-Current non-goals also include formal FHIR conformance, formal revenue recognition, production Airflow deployment, live Dataiku execution, online feature serving, external notification integrations, Fabric/Power BI artifacts, broader platform Terraform and multi-region deployment. Target-state documentation does not turn these into implemented capabilities.
+Current non-goals also include formal FHIR conformance, formal revenue recognition, production Airflow deployment, live Dataiku execution, online feature serving, external notification integrations, live Fabric/Power BI deployment, Terraform apply, automatic production rollback and multi-region deployment. Target-state documentation does not turn these into implemented capabilities.
 
 ## Portfolio positioning
 

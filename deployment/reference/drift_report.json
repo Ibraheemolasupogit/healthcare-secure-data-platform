@@ -1,0 +1,14 @@
+{
+  "added": [
+    "HEDP_DEV_UNUSED_LEGACY_ROLE"
+  ],
+  "automatic_remediation": false,
+  "changed": [
+    "HEDP_DEV_ANALYTICS_WH_CHANGED"
+  ],
+  "limitations": "Local file-based simulation; no live infrastructure queried.",
+  "mode": "local_file_simulation",
+  "removed": [],
+  "severity": "MEDIUM",
+  "status": "DRIFT_DETECTED"
+}

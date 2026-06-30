@@ -18,3 +18,7 @@ tenant validated and not certified.
 
 Milestone 14 maps RLS, OLS, sensitivity, export, certification and model-output controls
 to the central governance registry. Power BI does not own independent governance truth.
+
+Milestone 15 deployment controls require semantic model, measure, KPI, RLS/OLS,
+sensitivity, report and accessibility validation before promotion. No Power BI service
+publication, refresh or certification is performed.

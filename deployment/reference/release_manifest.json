@@ -1,0 +1,62 @@
+{
+  "approval_status": "NOT_REQUESTED",
+  "artifacts": [
+    {
+      "artifact_id": "python_test_report",
+      "checksum_required": true,
+      "retention": "ci_artifact_retention",
+      "source_path": "pytest"
+    },
+    {
+      "artifact_id": "terraform_validation_report",
+      "checksum_required": true,
+      "retention": "deployment_evidence_retention",
+      "source_path": "deployment/reference/terraform_validation_report.json"
+    },
+    {
+      "artifact_id": "release_manifest",
+      "checksum_required": true,
+      "retention": "deployment_evidence_retention",
+      "source_path": "deployment/reference/release_manifest.json"
+    },
+    {
+      "artifact_id": "deployment_manifests",
+      "checksum_required": true,
+      "retention": "deployment_evidence_retention",
+      "source_path": "deployment/reference/deployment_manifest_*.json"
+    },
+    {
+      "artifact_id": "governance_validation_report",
+      "checksum_required": true,
+      "retention": "deployment_evidence_retention",
+      "source_path": "governance/reference/validation_report.json"
+    }
+  ],
+  "branch": "main",
+  "commit_sha": "d6c7da89e8228c5f21de2c3b337e3b63c9bdebc5",
+  "created_at": "2026-06-28T00:00:00Z",
+  "deployment_status": "NOT_DEPLOYED",
+  "environments_targeted": [
+    "DEV",
+    "TEST",
+    "PROD"
+  ],
+  "governance_validation_status": true,
+  "known_limitations": [
+    "No live credentials used.",
+    "No Terraform apply executed.",
+    "No production deployment occurred."
+  ],
+  "milestone": 15,
+  "release_id": "m15-local-reference",
+  "repository": "healthcare-secure-data-platform",
+  "rollback_version": "previous_reviewed_release_manifest",
+  "synthetic_only": true,
+  "test_status": "passed_locally_when_make_validate_succeeds",
+  "tool_versions": {
+    "python": "local",
+    "registry_version": "1.0.0",
+    "terraform_required": "1.8.5"
+  },
+  "version": "0.15.0-local"
+}

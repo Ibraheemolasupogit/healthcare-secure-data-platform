@@ -1,0 +1,14 @@
+{
+  "checks": {
+    "environment_allowed": true,
+    "governance_registry_invoked": true,
+    "governance_registry_valid": true,
+    "missing_policy_mapping_fails_closed": true,
+    "purpose_allowed": true,
+    "separation_of_duties_validated": true,
+    "service_identity_allowed": true,
+    "unsupported_claims_blocked": true
+  },
+  "limitations": "Local static policy-gate evaluation; not a live deployment approval.",
+  "valid": true
+}

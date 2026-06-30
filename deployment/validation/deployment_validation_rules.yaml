@@ -1,0 +1,14 @@
+version: 1.0.0
+rules:
+  - rule_id: credential_free_pr_validation
+    description: Pull-request workflows must not require live cloud credentials.
+  - rule_id: no_automatic_production_apply
+    description: Production apply must be disabled unless explicit approval and credentials exist.
+  - rule_id: plan_before_apply
+    description: Apply must verify plan checksum, commit, environment and approval metadata.
+  - rule_id: promotion_order
+    description: Promotion order is DEV then TEST then PROD.
+  - rule_id: governance_gate_invoked
+    description: Deployment validation invokes the Milestone 14 governance registry.
+  - rule_id: deterministic_evidence
+    description: Local evidence files must be checksummed and reproducible.

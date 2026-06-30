@@ -1,6 +1,8 @@
 # Snowflake deployment runbook
 
-Local validation is the default. A connected plan or apply is optional Milestone 3 evidence and must run only in an isolated Snowflake account with explicit approval.
+Local validation is the default. Milestone 15 adds a protected plan-before-apply and
+deployment-evidence boundary. A connected plan or apply is optional future evidence and
+must run only in an isolated Snowflake account with explicit approval.
 
 ## Preconditions
 
@@ -9,6 +11,8 @@ Local validation is the default. A connected plan or apply is optional Milestone
 3. Create or approve a deployment identity with the required `ACCOUNTADMIN`, `SECURITYADMIN` and `SYSADMIN` role access. Prefer key-pair or workload identity authentication.
 4. Supply authentication through Snowflake provider environment variables or an approved profile. Never add secrets to Terraform variables or files.
 5. Require protected-environment approval for TEST and PROD. Apply one environment at a time, starting with DEV.
+6. Verify the release manifest, plan metadata, plan checksum, commit SHA, environment,
+   approval status and service identity before any connected execution.
 
 ## Review and apply
 

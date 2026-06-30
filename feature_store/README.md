@@ -20,3 +20,7 @@ Milestone 13 consumes feature-set version metadata in Power BI specifications. I
 Milestone 14 governance mapping validates feature owners, sensitivity, approved consumers,
 purpose, point-in-time rules, lifecycle, export classification, retention and model
 lineage. Online serving remains deferred.
+
+Milestone 15 deployment controls require registry validation, feature-set compatibility,
+consumer compatibility, deprecation checks and exact feature-registry version continuity
+before promotion. Online-store deployment remains out of scope.

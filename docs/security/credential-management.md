@@ -11,3 +11,8 @@ Airflow Milestone 10 DAGs do not embed credentials or pass secrets in command st
 Fabric and Power BI Milestone 13 artefacts are blueprints only. Tenant IDs, workspace GUIDs, real user emails, gateways, secrets, passwords, tokens and connection strings are prohibited in repository metadata.
 
 Milestone 14 centralises the secrets-management boundary in the governance registry. Service identities use reference-only credential metadata, interactive login is prohibited for service identities, and production secrets remain outside the repository in an approved secret manager. No live vault, key-management infrastructure or identity-provider enforcement is implemented.
+
+Milestone 15 keeps pull-request validation credential-free. Future protected deployment
+jobs may reference environment secrets only after explicit approval, but no secret values,
+account identifiers, tenant IDs, private keys, certificates, tokens, connection strings or
+passwords are stored in the repository or generated evidence.

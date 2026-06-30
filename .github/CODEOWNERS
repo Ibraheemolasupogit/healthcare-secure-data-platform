@@ -1,0 +1,17 @@
+# Milestone 15 CODEOWNERS blueprint.
+# Real GitHub team slugs are intentionally not invented in this repository.
+# Organisations should replace these comments with valid team handles before enforcing
+# CODEOWNERS review:
+#
+# /infrastructure/terraform/  platform-engineering security
+# /snowflake/                 platform-engineering security
+# /dbt/                       analytics-engineering
+# /orchestration/             data-engineering
+# /dataiku/                   data-science model-governance
+# /feature_store/             data-science analytics-engineering
+# /fabric/                    bi-platform analytics-engineering
+# /powerbi/                   bi-platform analytics-engineering
+# /governance/                security data-governance
+# /deployment/                platform-engineering security
+# /.github/workflows/         platform-engineering security
+

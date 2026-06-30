@@ -1,0 +1,12 @@
+{
+  "apply_status": "NOT_EXECUTED",
+  "artifact_count": 5,
+  "deployment_status": "NOT_DEPLOYED",
+  "environment_count": 3,
+  "errors": [],
+  "rollback_target_count": 7,
+  "service_identity_count": 7,
+  "valid": true,
+  "warnings": [],
+  "workflow_count": 7
+}

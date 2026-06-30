@@ -24,3 +24,6 @@ PYTHONPATH=src python -m healthcare_platform.cli governance validate-registry
 PYTHONPATH=src python -m healthcare_platform.cli governance generate-evidence --overwrite
 PYTHONPATH=src python -m healthcare_platform.cli governance verify-evidence
 ```
+
+Milestone 15 deployment controls invoke this registry as a policy gate. Deployment workflows
+must call the validator rather than copying governance policy semantics into workflow YAML.

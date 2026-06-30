@@ -118,9 +118,15 @@ request handling and compliance certification remain outside the local registry.
 
 ## CI/CD and infrastructure provisioning
 
-**Partially implemented:** credential-free GitHub Actions lint Python, YAML, SQL, Terraform, Markdown, dbt structure and secrets. Docker supplies local reproducibility. Terraform validates a no-resource module and records an inactive provider example.
+**Implemented locally as protected-delivery foundation (M15):** credential-free GitHub
+Actions validate Python, YAML, SQL, Terraform, Markdown, dbt structure, secrets,
+governance and deployment controls. The repository defines DEV → TEST → PROD promotion,
+plan-before-apply metadata, environment approvals, service-identity boundaries, release
+and deployment manifests, drift simulation, rollback design and checksum evidence.
 
-**Planned (M3, M15, M17):** protected integration environments, short-lived authentication, Terraform remote state/plan/apply controls, dbt Slim CI, policy/security tests, release promotion, rollback evidence and repeatable identity/storage/networking/secrets/monitoring provisioning.
+No live apply, GitHub environment administration or cloud deployment is claimed. Future
+work may add authorised protected environments, short-lived authentication, live plan/apply
+evidence, dbt Slim CI, and repeatable broader platform provisioning.
 
 ## Multi-region design
 
@@ -130,4 +136,4 @@ request handling and compliance certification remain outside the local registry.
 
 **Partially implemented:** Milestone 2 includes local manifests, checksums, validation reports and tests. Every future claim must link to redacted, reproducible evidence for a commit and environment.
 
-Current non-goals are live Snowflake execution, formal revenue recognition, production Airflow deployment, live Dataiku execution, production ML approval, online feature serving, live Fabric/Power BI deployment or refresh, live governance enforcement, formal compliance certification, broader Terraform resources, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing metadata blueprints.
+Current non-goals are live Snowflake execution, formal revenue recognition, production Airflow deployment, live Dataiku execution, production ML approval, online feature serving, live Fabric/Power BI deployment or refresh, live governance enforcement, formal compliance certification, Terraform apply, automatic production rollback, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing metadata blueprints.

@@ -29,3 +29,7 @@ Milestone 13 downstream consumption: Power BI may consume governed prediction-ou
 Milestone 14 governance mapping records Dataiku trusted inputs, acceptable/prohibited
 uses, human approval, feature-set version, prediction classification, export policy and
 audit-event requirements. No live Dataiku access change is made.
+
+Milestone 15 deployment controls require project bundle identifiers, model approval status,
+feature-set versions, model-card completeness and output-contract validation before any
+connected promotion. No live Dataiku API call is added.

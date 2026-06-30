@@ -1,0 +1,41 @@
+name: Deployment controls
+
+on:
+  pull_request:
+    paths:
+      - "deployment/**"
+      - "governance/**"
+      - "src/healthcare_platform/deployment/**"
+      - "tests/unit/test_deployment_milestone15.py"
+      - ".github/workflows/deployment-controls.yml"
+  push:
+    branches: [main]
+    paths:
+      - "deployment/**"
+      - "governance/**"
+      - "src/healthcare_platform/deployment/**"
+      - "tests/unit/test_deployment_milestone15.py"
+      - ".github/workflows/deployment-controls.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pip install -e .
+      - run: healthcare-platform governance validate-registry
+      - run: healthcare-platform deployment validate
+      - run: healthcare-platform deployment evaluate-policy-gates
+      - run: healthcare-platform deployment detect-drift
+      - run: healthcare-platform deployment generate-evidence --output-dir deployment/reference --overwrite
+      - run: healthcare-platform deployment verify-evidence --output-dir deployment/reference
+      - run: pytest tests/unit/test_deployment_milestone15.py

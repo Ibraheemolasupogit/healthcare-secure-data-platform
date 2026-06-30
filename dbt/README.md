@@ -59,4 +59,8 @@ Milestone 14 governance mapping references curated and externally consumed dbt m
 owner, sensitivity, contract status, lineage, retention and export-policy coverage. dbt
 continues to own transformation logic and model grains.
 
+Milestone 15 deployment controls require dbt parse/static checks in pull requests, exact
+manifest checksum continuity for connected promotion, and protected approval before any
+connected dbt build. No connected dbt execution is added here.
+
 `dbt parse --profiles-dir . --no-partial-parse` validates structure without connecting to Snowflake. The placeholder profile must never be used for execution. Connected `dbt compile`, `dbt build`, `dbt source freshness` and `dbt docs generate` require a separate authorised Snowflake profile.

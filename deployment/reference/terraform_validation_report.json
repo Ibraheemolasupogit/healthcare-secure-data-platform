@@ -1,0 +1,29 @@
+{
+  "backend_disabled_for_local_validation": true,
+  "environments": [
+    {
+      "apply_status": "NOT_EXECUTED",
+      "environment": "DEV",
+      "lock_file_present": true,
+      "path": "infrastructure/terraform/environments/dev",
+      "plan_status": "NOT_CREATED_NO_LIVE_CREDENTIALS"
+    },
+    {
+      "apply_status": "NOT_EXECUTED",
+      "environment": "TEST",
+      "lock_file_present": true,
+      "path": "infrastructure/terraform/environments/test",
+      "plan_status": "NOT_CREATED_NO_LIVE_CREDENTIALS"
+    },
+    {
+      "apply_status": "NOT_EXECUTED",
+      "environment": "PROD",
+      "lock_file_present": true,
+      "path": "infrastructure/terraform/environments/prod",
+      "plan_status": "NOT_CREATED_NO_LIVE_CREDENTIALS"
+    }
+  ],
+  "limitations": "Real plan/apply requires protected credentials and approval.",
+  "status": "STATICALLY_VALIDATED",
+  "terraform_available_locally": null
+}

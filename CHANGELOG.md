@@ -42,3 +42,6 @@ All notable changes will follow Keep a Changelog conventions. The project does n
 - Milestone 14 enterprise governance, security, privacy and compliance-control foundation
   with central registry, access simulation, masking/row/object/export/retention/audit
   controls, platform mappings, evidence outputs, guardrails and ADR.
+- Milestone 15 protected CI/CD, environment promotion, infrastructure delivery and
+  deployment-control foundation with GitHub Actions guardrails, release/deployment
+  manifests, policy gates, drift simulation, rollback metadata, evidence outputs and ADR.

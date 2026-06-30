@@ -25,3 +25,7 @@ not refreshed and not certified.
 
 Milestone 14 maps workspace roles, sharing, sensitivity and refresh identity expectations
 to the central governance registry. No live tenant security configuration is performed.
+
+Milestone 15 deployment controls require workspace/artefact versioning, environment
+approval, connection rebinding evidence, refresh validation evidence and rollback
+references before any live Fabric promotion. No tenant deployment is performed.

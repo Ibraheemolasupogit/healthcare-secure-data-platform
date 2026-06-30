@@ -12,3 +12,11 @@ updates:
     directory: /infrastructure/terraform/environments/dev
     schedule:
       interval: monthly
+  - package-ecosystem: terraform
+    directory: /infrastructure/terraform/environments/test
+    schedule:
+      interval: monthly
+  - package-ecosystem: terraform
+    directory: /infrastructure/terraform/environments/prod
+    schedule:
+      interval: monthly

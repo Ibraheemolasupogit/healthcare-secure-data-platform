@@ -25,3 +25,7 @@ done
 ```
 
 Initialization downloads a provider but validation requires no Snowflake login. A plan or apply is a connected, protected operation and must follow the [deployment runbook](../../docs/operations/snowflake-deployment.md). Each environment requires an encrypted remote backend with locking, versioning, access logging and isolated apply authority before live use.
+
+Milestone 15 adds local release/deployment manifests, plan metadata requirements,
+environment-promotion rules, drift simulation and rollback design. It does not run
+Terraform apply or provision remote state.

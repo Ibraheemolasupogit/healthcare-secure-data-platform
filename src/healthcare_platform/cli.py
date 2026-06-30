@@ -13,6 +13,16 @@ import yaml  # type: ignore[import-untyped]
 from healthcare_platform.assurance import write_evidence_pack
 from healthcare_platform.config import load_settings, snowflake_credentials_present
 from healthcare_platform.dataiku import run_reference_pipeline
+from healthcare_platform.deployment import (
+    build_deployment_evidence,
+    detect_drift,
+    evaluate_policy_gates,
+    load_deployment_registry,
+    validate_deployment_controls,
+)
+from healthcare_platform.deployment import (
+    verify_evidence as verify_deployment_evidence,
+)
 from healthcare_platform.feature_store import build_reference_outputs, validate_registry
 from healthcare_platform.governance import (
     build_governance_evidence,
@@ -312,6 +322,28 @@ def build_parser() -> argparse.ArgumentParser:
     )
     verify_governance.add_argument("--output-dir", type=Path, default=Path("governance/reference"))
     governance_commands.add_parser("coverage-report", help="show governance coverage counts")
+    deployment = subparsers.add_parser(
+        "deployment",
+        help="validate local deployment-control metadata and evidence",
+    )
+    deployment_commands = deployment.add_subparsers(dest="deployment_command", required=True)
+    deployment_commands.add_parser("validate", help="validate deployment-control registry")
+    deployment_commands.add_parser("evaluate-policy-gates", help="evaluate local policy gates")
+    deployment_commands.add_parser("detect-drift", help="run local deterministic drift simulation")
+    deployment_commands.add_parser("generate-release", help="print local release metadata")
+    deployment_commands.add_parser("generate-manifests", help="print local deployment manifests")
+    deployment_commands.add_parser("validate-plan-metadata", help="validate static plan contract")
+    generate_deployment = deployment_commands.add_parser(
+        "generate-evidence", help="generate deterministic local deployment evidence"
+    )
+    generate_deployment.add_argument(
+        "--output-dir", type=Path, default=Path("deployment/reference")
+    )
+    generate_deployment.add_argument("--overwrite", action="store_true")
+    verify_deployment = deployment_commands.add_parser(
+        "verify-evidence", help="verify deployment evidence checksums"
+    )
+    verify_deployment.add_argument("--output-dir", type=Path, default=Path("deployment/reference"))
     return parser
 
 
@@ -635,6 +667,52 @@ def _governance(args: argparse.Namespace) -> int:
     return 2
 
 
+def _deployment(args: argparse.Namespace) -> int:
+    if args.deployment_command == "validate":
+        result = validate_deployment_controls()
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["valid"] else 1
+    if args.deployment_command == "evaluate-policy-gates":
+        result = evaluate_policy_gates()
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["valid"] else 1
+    if args.deployment_command == "detect-drift":
+        result = detect_drift()
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] in {"NO_DRIFT", "DRIFT_DETECTED"} else 1
+    if args.deployment_command == "generate-release":
+        registry = load_deployment_registry()
+        print(json.dumps(registry["release"], indent=2, sort_keys=True))
+        return 0
+    if args.deployment_command == "generate-manifests":
+        registry = load_deployment_registry()
+        print(json.dumps(registry["environments"], indent=2, sort_keys=True))
+        return 0
+    if args.deployment_command == "validate-plan-metadata":
+        registry = load_deployment_registry()
+        result = {
+            "valid": True,
+            "required_fields": registry["terraform"]["plan_metadata_required"],
+            "apply_jobs_enabled": registry["promotion"]["apply_jobs_enabled"],
+            "production_auto_apply": registry["promotion"]["production_auto_apply"],
+            "limitations": "Static plan contract only; no Terraform plan was created.",
+        }
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if args.deployment_command == "generate-evidence":
+        evidence = build_deployment_evidence(args.output_dir, overwrite=args.overwrite)
+        print(f"output_dir: {evidence.output_dir}")
+        print(f"validation_report: {evidence.validation_report}")
+        print(f"release_manifest: {evidence.release_manifest}")
+        print(f"checksums: {evidence.checksums}")
+        return 0
+    if args.deployment_command == "verify-evidence":
+        result = verify_deployment_evidence(args.output_dir)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["valid"] else 1
+    return 2
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the CLI."""
     args = build_parser().parse_args(argv)
@@ -673,6 +751,8 @@ def main(argv: list[str] | None = None) -> int:
             return _powerbi(args)
         if args.command == "governance":
             return _governance(args)
+        if args.command == "deployment":
+            return _deployment(args)
     except (ValueError, OSError, json.JSONDecodeError) as error:
         print(f"error: {error}")
         return 2

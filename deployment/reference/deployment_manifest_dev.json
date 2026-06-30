@@ -1,0 +1,31 @@
+{
+  "actor_type": "service_identity_when_approved",
+  "airflow_bundle": "dag_bundle_checksum_required_before_deployment",
+  "apply_status": "NOT_EXECUTED",
+  "approval_references": [
+    "platform_engineering"
+  ],
+  "dataiku_bundle": "project_bundle_identifier_required_before_deployment",
+  "dbt_artifacts": "manifest_checksum_required_before_connected_execution",
+  "deployment_id": "m15-dev-not-executed",
+  "end_time": null,
+  "environment": "DEV",
+  "evidence_references": [
+    "deployment/reference/validation_report.json"
+  ],
+  "feature_store_version": "feature_registry_version_required_before_deployment",
+  "limitations": "Local manifest only; no apply or live deployment executed.",
+  "plan_artifact": "terraform_plan_dev.tfplan",
+  "plan_checksum": "not_created_no_live_credentials_dev",
+  "powerbi_artifact_version": "semantic_model_artifact_version_required_before_deployment",
+  "release_id": "m15-local-reference",
+  "resource_changes": {
+    "create": 0,
+    "delete": 0,
+    "replace": 0,
+    "update": 0
+  },
+  "rollback_reference": "deployment/reference/rollback_plan.md",
+  "service_identity": "svc_terraform_dev",
+  "start_time": null
+}

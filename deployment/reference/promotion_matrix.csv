@@ -1,0 +1,4 @@
+environment,order,terraform_path,github_environment,service_identity,apply_status
+DEV,1,infrastructure/terraform/environments/dev,hedp-dev,svc_terraform_dev,NOT_EXECUTED
+TEST,2,infrastructure/terraform/environments/test,hedp-test,svc_terraform_test,NOT_EXECUTED
+PROD,3,infrastructure/terraform/environments/prod,hedp-prod,svc_terraform_prod,NOT_EXECUTED

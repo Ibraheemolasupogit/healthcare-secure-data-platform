@@ -1,0 +1,294 @@
+version: 1.0.0
+milestone: 15
+status: STATICALLY_VALIDATED
+deployment_status: NOT_DEPLOYED
+apply_status: NOT_EXECUTED
+live_credentials_required: false
+ci_provider: GitHub Actions
+repository: healthcare-secure-data-platform
+release:
+  release_id: m15-local-reference
+  version: 0.15.0-local
+  tag_patterns:
+    milestone: m15
+    release_candidate: rc-0.15.x
+    production: v0.15.x
+  strategy: semantic_version_with_milestone_tags
+  synthetic_only: true
+  deployment_status: NOT_DEPLOYED
+branch_protection:
+  branch: main
+  required_pull_request: true
+  required_status_checks:
+    - Python quality
+    - dbt structure
+    - Documentation and YAML
+    - SQL lint
+    - Terraform validation
+    - Secret scan
+    - Deployment controls
+  require_up_to_date_branch: true
+  require_conversation_resolution: true
+  require_codeowners_review: true
+  force_push: prohibited
+  branch_deletion: prohibited
+  administrator_bypass: restricted_by_organisation_policy
+  live_configuration_status: blueprint_only
+workflows:
+  - workflow_id: python-quality
+    path: .github/workflows/python.yml
+    triggers: [pull_request, push_main]
+    purpose: credential_free_platform_validation
+    permissions: {contents: read}
+    requires_credentials: false
+    invokes_make_target: validate_subset
+    production_apply: false
+  - workflow_id: dbt-structure
+    path: .github/workflows/dbt.yml
+    triggers: [pull_request, push_main]
+    purpose: dbt_parse_and_static_tests
+    permissions: {contents: read}
+    requires_credentials: false
+    production_apply: false
+  - workflow_id: docs-yaml
+    path: .github/workflows/docs.yml
+    triggers: [pull_request, push_main]
+    purpose: markdown_and_yaml_validation
+    permissions: {contents: read}
+    requires_credentials: false
+    production_apply: false
+  - workflow_id: sql-lint
+    path: .github/workflows/sql.yml
+    triggers: [pull_request, push_main]
+    purpose: snowflake_static_validation_and_sql_lint
+    permissions: {contents: read}
+    requires_credentials: false
+    production_apply: false
+  - workflow_id: terraform-validation
+    path: .github/workflows/terraform.yml
+    triggers: [pull_request, push_main, workflow_dispatch]
+    purpose: terraform_format_init_without_backend_validate_and_plan_contract
+    permissions: {contents: read}
+    requires_credentials: false
+    production_apply: false
+  - workflow_id: secret-scan
+    path: .github/workflows/secret-scan.yml
+    triggers: [pull_request, push_main]
+    purpose: secret_scanning
+    permissions: {contents: read}
+    requires_credentials: false
+    production_apply: false
+  - workflow_id: deployment-controls
+    path: .github/workflows/deployment-controls.yml
+    triggers: [pull_request, push_main, workflow_dispatch]
+    purpose: release_manifest_policy_gate_drift_and_evidence_validation
+    permissions: {contents: read}
+    requires_credentials: false
+    production_apply: false
+environments:
+  - environment: DEV
+    order: 1
+    terraform_path: infrastructure/terraform/environments/dev
+    github_environment: hedp-dev
+    required_reviewers: [platform_engineering]
+    wait_timer_minutes: 0
+    branch_restrictions: feature_or_main
+    service_identity: svc_terraform_dev
+    apply_status: NOT_EXECUTED
+  - environment: TEST
+    order: 2
+    terraform_path: infrastructure/terraform/environments/test
+    github_environment: hedp-test
+    required_reviewers: [platform_engineering, data_governance]
+    wait_timer_minutes: 15
+    branch_restrictions: main_only
+    service_identity: svc_terraform_test
+    apply_status: NOT_EXECUTED
+  - environment: PROD
+    order: 3
+    terraform_path: infrastructure/terraform/environments/prod
+    github_environment: hedp-prod
+    required_reviewers: [platform_engineering, security_admin, data_governance]
+    wait_timer_minutes: 30
+    branch_restrictions: protected_release_tag
+    service_identity: svc_terraform_prod
+    separate_reviewer_required: true
+    apply_status: NOT_EXECUTED
+promotion:
+  order: [DEV, TEST, PROD]
+  exact_commit_required: true
+  exact_artifact_required: true
+  no_self_approval: true
+  failed_validation_blocks_promotion: true
+  production_auto_apply: false
+  apply_jobs_enabled: false
+terraform:
+  authoritative_owner: infrastructure/terraform
+  required_version: "1.8.5"
+  provider_lock_required: true
+  backend_disabled_for_local_validation: true
+  remote_state_design:
+    separate_state_per_environment: true
+    locking_required: true
+    encryption_required: true
+    versioning_required: true
+    access_audit_required: true
+    no_state_in_repository: true
+    no_local_production_state: true
+  plan_metadata_required:
+    - commit_sha
+    - environment
+    - terraform_version
+    - provider_versions
+    - variable_set_id
+    - plan_checksum
+    - plan_created_at
+    - plan_expires_at
+    - approval_status
+  plan_review_controls:
+    destructive_changes_escalate: true
+    wildcard_grants_blocked: true
+    public_access_blocked: true
+    environment_mismatch_blocked: true
+    missing_tags_blocked: true
+    sensitive_output_blocked: true
+service_identities:
+  - service_id: svc_terraform_dev
+    environment: DEV
+    purpose: terraform_plan_and_approved_apply
+    interactive_login: prohibited
+    credential_storage: protected_github_environment_secret
+    deployment_status: not_configured_locally
+  - service_id: svc_terraform_test
+    environment: TEST
+    purpose: terraform_plan_and_approved_apply
+    interactive_login: prohibited
+    credential_storage: protected_github_environment_secret
+    deployment_status: not_configured_locally
+  - service_id: svc_terraform_prod
+    environment: PROD
+    purpose: terraform_plan_and_approved_apply
+    interactive_login: prohibited
+    credential_storage: protected_github_environment_secret
+    deployment_status: not_configured_locally
+  - service_id: svc_dbt_connected
+    environment: TEST_PROD
+    purpose: approved_dbt_connected_execution
+    interactive_login: prohibited
+    credential_storage: protected_github_environment_secret
+    deployment_status: not_configured_locally
+  - service_id: svc_airflow_deploy
+    environment: TEST_PROD
+    purpose: approved_airflow_bundle_deployment
+    interactive_login: prohibited
+    credential_storage: protected_github_environment_secret
+    deployment_status: not_configured_locally
+  - service_id: svc_dataiku_deploy
+    environment: TEST_PROD
+    purpose: approved_dataiku_bundle_promotion
+    interactive_login: prohibited
+    credential_storage: protected_github_environment_secret
+    deployment_status: not_configured_locally
+  - service_id: svc_fabric_powerbi_deploy
+    environment: TEST_PROD
+    purpose: approved_fabric_powerbi_promotion
+    interactive_login: prohibited
+    credential_storage: protected_github_environment_secret
+    deployment_status: not_configured_locally
+policy_gates:
+  governance_registry_invoked: true
+  service_identity_allowed: true
+  purpose_allowed: true
+  environment_allowed: true
+  separation_of_duties_validated: true
+  unsupported_claims_blocked: true
+  missing_policy_mapping_fails_closed: true
+platform_controls:
+  dbt:
+    pr_validation: dbt_parse_and_static_tests
+    connected_execution_status: not_executed
+    promotion_control: exact_manifest_checksum
+  airflow:
+    pr_validation: dag_metadata_and_guardrail_tests
+    connected_execution_status: not_deployed
+    promotion_control: dag_bundle_checksum
+  dataiku:
+    pr_validation: blueprint_and_model_card_tests
+    connected_execution_status: not_deployed
+    promotion_control: project_bundle_identifier
+  feature_store:
+    pr_validation: registry_and_point_in_time_tests
+    connected_execution_status: offline_only
+    promotion_control: feature_set_version
+  fabric_powerbi:
+    pr_validation: semantic_model_report_security_tests
+    connected_execution_status: not_deployed
+    promotion_control: semantic_model_artifact_version
+artifact_inventory:
+  - artifact_id: python_test_report
+    source_path: pytest
+    checksum_required: true
+    retention: ci_artifact_retention
+  - artifact_id: terraform_validation_report
+    source_path: deployment/reference/terraform_validation_report.json
+    checksum_required: true
+    retention: deployment_evidence_retention
+  - artifact_id: release_manifest
+    source_path: deployment/reference/release_manifest.json
+    checksum_required: true
+    retention: deployment_evidence_retention
+  - artifact_id: deployment_manifests
+    source_path: deployment/reference/deployment_manifest_*.json
+    checksum_required: true
+    retention: deployment_evidence_retention
+  - artifact_id: governance_validation_report
+    source_path: governance/reference/validation_report.json
+    checksum_required: true
+    retention: deployment_evidence_retention
+drift:
+  mode: local_file_simulation
+  automatic_remediation: false
+  owner: platform_engineering
+  expected_resources:
+    - HEDP_DEV_RAW
+    - HEDP_DEV_CURATED
+    - HEDP_DEV_ANALYTICS_WH
+  observed_resources:
+    - HEDP_DEV_RAW
+    - HEDP_DEV_CURATED
+    - HEDP_DEV_ANALYTICS_WH_CHANGED
+    - HEDP_DEV_UNUSED_LEGACY_ROLE
+rollback:
+  automatic_rollback_enabled: false
+  approval_required: true
+  evidence_required: true
+  targets:
+    - platform: terraform
+      rollback_target: previous_reviewed_plan
+      compatibility_required: state_and_provider_version_review
+    - platform: dbt
+      rollback_target: previous_manifest_checksum
+      compatibility_required: downstream_contract_review
+    - platform: airflow
+      rollback_target: previous_dag_bundle
+      compatibility_required: scheduler_import_validation
+    - platform: dataiku
+      rollback_target: previous_project_bundle
+      compatibility_required: model_output_contract_review
+    - platform: feature_store
+      rollback_target: previous_feature_registry_version
+      compatibility_required: consumer_compatibility_review
+    - platform: fabric_powerbi
+      rollback_target: previous_semantic_model_and_report_bundle
+      compatibility_required: refresh_and_security_review
+    - platform: governance
+      rollback_target: previous_policy_registry_version
+      compatibility_required: policy_gate_review
+unsupported_deployment_claim_patterns:
+  - production deployed
+  - apply succeeded
+  - drift monitoring is live
+  - automatic production rollback
+  - kubernetes deployed
+  - multi-region deployment complete
+  - disaster recovery implemented

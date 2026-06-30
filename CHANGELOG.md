@@ -48,3 +48,7 @@ All notable changes will follow Keep a Changelog conventions. The project does n
 - Milestone 16 multi-region resilience and recovery design with symbolic regions,
   residency policies, recovery tiers, dependency graph, failover/failback controls,
   local simulation, recovery evidence outputs, guardrails and ADR.
+- Milestone 17 operational observability, incident readiness and recovery-drill
+  automation with service health metadata, SLIs, synthetic SLOs, error budgets,
+  incident taxonomy, disabled alert-routing blueprints, runbooks, drill scenarios,
+  local simulations, evidence outputs, guardrails and ADR.

@@ -26,3 +26,8 @@ publication, refresh or certification is performed.
 Milestone 16 recovery controls restore semantic-model metadata, reports, RLS/OLS and
 sensitivity mapping before refresh is re-enabled. No Power BI service recovery is
 performed.
+## Milestone 17 operations boundary
+
+Operational readiness consumes Power BI report, semantic model, security and
+refresh metadata as local health checks and synthetic SLO inputs. It does not
+publish reports, refresh datasets or create live alert subscriptions.

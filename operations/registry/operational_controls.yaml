@@ -1,0 +1,1669 @@
+version: 1.0.0
+milestone: 17
+status: STATICALLY_VALIDATED
+connected_status: NOT_CONNECTED
+monitoring_status: LOCAL_SIMULATION_ONLY
+alerting_status: DISABLED
+incident_response_status: LOCAL_SIMULATION_ONLY
+production_slo_commitment: false
+automatic_remediation_enabled: false
+automatic_production_drills_enabled: false
+live_integrations:
+  siem: disabled
+  pagerduty: disabled
+  slack: disabled
+  teams: disabled
+  email: disabled
+  servicenow: disabled
+  cloud_monitoring: disabled
+limitations:
+  - Synthetic telemetry only.
+  - No live alerts, tickets, on-call paging, dashboards or cloud monitoring.
+  - Synthetic SLO targets are not production commitments.
+  - No clinical assurance or operational resilience certification is claimed.
+health_model:
+  states:
+    - HEALTHY
+    - DEGRADED
+    - UNHEALTHY
+    - UNKNOWN
+    - MAINTENANCE
+    - NOT_APPLICABLE
+  precedence:
+    - UNHEALTHY
+    - DEGRADED
+    - UNKNOWN
+    - MAINTENANCE
+    - HEALTHY
+    - NOT_APPLICABLE
+  inputs:
+    - dependency_availability
+    - freshness
+    - data_quality
+    - contract_status
+    - job_status
+    - control_status
+    - drift_status
+    - evidence_integrity
+    - recovery_readiness
+  live_health_claim: false
+incident_lifecycle:
+  states:
+    - DETECTED
+    - TRIAGED
+    - ASSIGNED
+    - INVESTIGATING
+    - MITIGATING
+    - MONITORING
+    - RESOLVED
+    - CLOSED
+    - FALSE_POSITIVE
+    - ACCEPTED_RISK
+    - REOPENED
+  transitions:
+    DETECTED: [TRIAGED, FALSE_POSITIVE]
+    TRIAGED: [ASSIGNED, ACCEPTED_RISK]
+    ASSIGNED: [INVESTIGATING]
+    INVESTIGATING: [MITIGATING, ACCEPTED_RISK]
+    MITIGATING: [MONITORING]
+    MONITORING: [RESOLVED, REOPENED]
+    RESOLVED: [CLOSED, REOPENED]
+    REOPENED: [INVESTIGATING]
+    FALSE_POSITIVE: [CLOSED]
+    ACCEPTED_RISK: [CLOSED, REOPENED]
+    CLOSED: []
+severity_model:
+  levels:
+    - severity_id: SEV_1_CRITICAL
+      escalation_required: true
+      affected_tiers:
+        - TIER_0_CRITICAL_CONTROL_PLANE
+        - TIER_1_CRITICAL_DATA_SERVICES
+      blast_radius: platform_or_domain_wide
+      governance_impact: critical
+      user_facing_impact: high
+    - severity_id: SEV_2_HIGH
+      escalation_required: true
+      affected_tiers:
+        - TIER_1_CRITICAL_DATA_SERVICES
+        - TIER_2_ANALYTICS_AND_ASSURANCE
+      blast_radius: domain_or_multi_service
+      governance_impact: high
+      user_facing_impact: medium
+    - severity_id: SEV_3_MEDIUM
+      escalation_required: true
+      affected_tiers:
+        - TIER_2_ANALYTICS_AND_ASSURANCE
+        - TIER_3_REPORTING_AND_ML
+      blast_radius: service_or_product
+      governance_impact: moderate
+      user_facing_impact: low
+    - severity_id: SEV_4_LOW
+      escalation_required: false
+      affected_tiers:
+        - TIER_3_REPORTING_AND_ML
+        - TIER_4_NON_CRITICAL_REFERENCE
+      blast_radius: limited
+      governance_impact: low
+      user_facing_impact: minimal
+    - severity_id: SEV_5_INFORMATIONAL
+      escalation_required: false
+      affected_tiers:
+        - TIER_4_NON_CRITICAL_REFERENCE
+      blast_radius: informational
+      governance_impact: none
+      user_facing_impact: none
+  clinical_severity_claim: false
+incident_categories:
+  - DATA_FRESHNESS
+  - DATA_QUALITY
+  - CONTRACT_FAILURE
+  - PIPELINE_FAILURE
+  - ACCESS_CONTROL
+  - SECURITY_EVENT
+  - BILLING_CONTROL
+  - MODEL_GOVERNANCE
+  - FEATURE_FRESHNESS
+  - SEMANTIC_REFRESH
+  - DEPLOYMENT_DRIFT
+  - RECOVERY_READINESS
+  - EVIDENCE_INTEGRITY
+  - CONFIGURATION_ERROR
+services:
+  - service_id: governance_registry
+    name: Governance registry
+    owner_role: DATA_GOVERNANCE_STEWARD
+    business_owner_role: SECURITY_ADMIN
+    recovery_tier: TIER_0_CRITICAL_CONTROL_PLANE
+    criticality: critical
+    dependencies: []
+    environment: all
+    health_checks:
+      - chk_governance_registry_checksum
+      - chk_governance_policy_resolution
+      - chk_governance_sensitive_field_coverage
+    sli_refs: [sli_governance_validation_success]
+    slo_refs: [slo_governance_validation_100]
+    runbook_refs: [rb_governance_checksum_mismatch]
+    incident_routing_group: DATA_GOVERNANCE
+    audit_event_ref: aud_policy_change
+    lifecycle_status: active_metadata_contract
+    synthetic_only: true
+  - service_id: cicd_controls
+    name: Protected CI/CD controls
+    owner_role: PLATFORM_ENGINEERING
+    business_owner_role: RELEASE_MANAGER
+    recovery_tier: TIER_0_CRITICAL_CONTROL_PLANE
+    criticality: critical
+    dependencies: [governance_registry]
+    environment: all
+    health_checks:
+      - chk_release_manifest_integrity
+      - chk_deployment_manifest_integrity
+      - chk_drift_report_status
+    sli_refs: [sli_deployment_validation_success]
+    slo_refs: [slo_deployment_validation_99]
+    runbook_refs: [rb_deployment_drift]
+    incident_routing_group: PLATFORM_ENGINEERING
+    audit_event_ref: aud_evidence_generation
+    lifecycle_status: active_metadata_contract
+    synthetic_only: true
+  - service_id: terraform_delivery
+    name: Terraform delivery contract
+    owner_role: PLATFORM_ENGINEERING
+    business_owner_role: PLATFORM_OWNER
+    recovery_tier: TIER_1_CRITICAL_DATA_SERVICES
+    criticality: high
+    dependencies: [governance_registry, cicd_controls]
+    environment: dev_test_prod
+    health_checks:
+      - chk_terraform_plan_metadata
+      - chk_drift_report_status
+      - chk_rollback_reference
+    sli_refs: [sli_deployment_validation_success]
+    slo_refs: [slo_deployment_validation_99]
+    runbook_refs: [rb_deployment_drift]
+    incident_routing_group: PLATFORM_ENGINEERING
+    audit_event_ref: aud_evidence_generation
+    lifecycle_status: blueprint_only
+    synthetic_only: true
+  - service_id: snowflake_platform
+    name: Snowflake platform foundation
+    owner_role: PLATFORM_ENGINEERING
+    business_owner_role: DATA_PLATFORM_OWNER
+    recovery_tier: TIER_1_CRITICAL_DATA_SERVICES
+    criticality: critical
+    dependencies: [governance_registry, terraform_delivery]
+    environment: dev_test_prod
+    health_checks:
+      - chk_snowflake_contract_available
+      - chk_snowflake_rbac_metadata
+      - chk_snowflake_inventory_intact
+      - chk_snowflake_no_destructive_drift
+      - chk_recovery_registry_valid
+    sli_refs: [sli_contract_validation_success, sli_recovery_readiness_rate]
+    slo_refs: [slo_contract_validation_99, slo_recovery_drill_95]
+    runbook_refs: [rb_recovery_readiness_failure]
+    incident_routing_group: PLATFORM_ENGINEERING
+    audit_event_ref: aud_evidence_generation
+    lifecycle_status: static_foundation
+    synthetic_only: true
+  - service_id: dbt_staging
+    name: dbt staging and contracts
+    owner_role: ANALYTICS_ENGINEERING
+    business_owner_role: DATA_PRODUCT_OWNER
+    recovery_tier: TIER_1_CRITICAL_DATA_SERVICES
+    criticality: high
+    dependencies: [snowflake_platform, governance_registry]
+    environment: dev_test_prod
+    health_checks:
+      - chk_dbt_parse_status
+      - chk_dbt_contract_coverage
+      - chk_dbt_freshness_metadata
+      - chk_dbt_model_graph_integrity
+      - chk_dbt_artifact_checksum
+    sli_refs:
+      - sli_pipeline_success_rate
+      - sli_contract_validation_success
+      - sli_data_freshness_delay
+    slo_refs: [slo_pipeline_success_99, slo_contract_validation_99]
+    runbook_refs: [rb_dbt_contract_failure, rb_stale_data]
+    incident_routing_group: ANALYTICS_ENGINEERING
+    audit_event_ref: aud_evidence_generation
+    lifecycle_status: active_metadata_contract
+    synthetic_only: true
+  - service_id: healthcare_core
+    name: Healthcare core data products
+    owner_role: ANALYTICS_ENGINEERING
+    business_owner_role: CLINICAL_DATA_OWNER
+    recovery_tier: TIER_1_CRITICAL_DATA_SERVICES
+    criticality: high
+    dependencies: [dbt_staging, governance_registry]
+    environment: dev_test_prod
+    health_checks:
+      - chk_core_contract_status
+      - chk_core_data_quality
+      - chk_core_freshness
+    sli_refs: [sli_test_pass_rate, sli_data_freshness_delay]
+    slo_refs: [slo_pipeline_success_99]
+    runbook_refs: [rb_pipeline_failure, rb_stale_data]
+    incident_routing_group: DATA_ENGINEERING
+    audit_event_ref: aud_sensitive_object_access
+    lifecycle_status: governed_data_product
+    synthetic_only: true
+  - service_id: billing_finance
+    name: Billing and finance marts
+    owner_role: FINANCE_ANALYTICS
+    business_owner_role: REVENUE_OWNER
+    recovery_tier: TIER_2_ANALYTICS_AND_ASSURANCE
+    criticality: high
+    dependencies: [dbt_staging, healthcare_core]
+    environment: dev_test_prod
+    health_checks:
+      - chk_billing_reconciliation
+      - chk_billing_quality_controls
+      - chk_billing_freshness
+    sli_refs:
+      - sli_reconciliation_control_pass_rate
+      - sli_unresolved_critical_exception_count
+    slo_refs: [slo_reconciliation_99]
+    runbook_refs:
+      - rb_reconciliation_control_failure
+      - rb_pipeline_failure
+    incident_routing_group: REVENUE_ASSURANCE
+    audit_event_ref: aud_evidence_generation
+    lifecycle_status: governed_data_product
+    synthetic_only: true
+  - service_id: assurance_controls
+    name: Assurance controls and evidence
+    owner_role: REVENUE_ASSURANCE
+    business_owner_role: FINANCE_ANALYTICS
+    recovery_tier: TIER_2_ANALYTICS_AND_ASSURANCE
+    criticality: high
+    dependencies: [billing_finance, governance_registry]
+    environment: dev_test_prod
+    health_checks:
+      - chk_assurance_exception_inventory
+      - chk_assurance_evidence_checksum
+      - chk_assurance_lifecycle_metadata
+    sli_refs:
+      - sli_reconciliation_control_pass_rate
+      - sli_evidence_checksum_success
+    slo_refs: [slo_evidence_checksum_100, slo_reconciliation_99]
+    runbook_refs:
+      - rb_reconciliation_control_failure
+      - rb_evidence_checksum_failure
+    incident_routing_group: REVENUE_ASSURANCE
+    audit_event_ref: aud_evidence_generation
+    lifecycle_status: active_metadata_contract
+    synthetic_only: true
+  - service_id: airflow_orchestration
+    name: Airflow orchestration
+    owner_role: DATA_ENGINEERING
+    business_owner_role: DATA_PLATFORM_OWNER
+    recovery_tier: TIER_2_ANALYTICS_AND_ASSURANCE
+    criticality: high
+    dependencies: [dbt_staging, assurance_controls]
+    environment: local_dev
+    health_checks:
+      - chk_airflow_dag_import
+      - chk_airflow_task_dependencies
+      - chk_airflow_connected_mode_disabled
+      - chk_airflow_run_manifest
+      - chk_airflow_failure_callback_metadata
+    sli_refs: [sli_pipeline_success_rate]
+    slo_refs: [slo_pipeline_success_99]
+    runbook_refs: [rb_pipeline_failure]
+    incident_routing_group: DATA_ENGINEERING
+    audit_event_ref: aud_evidence_generation
+    lifecycle_status: local_blueprint
+    synthetic_only: true
+  - service_id: dataiku_analytics
+    name: Dataiku analytics and model blueprint
+    owner_role: DATA_SCIENCE
+    business_owner_role: MODEL_OWNER
+    recovery_tier: TIER_3_REPORTING_AND_ML
+    criticality: medium
+    dependencies: [feature_store, governance_registry]
+    environment: local_reference
+    health_checks:
+      - chk_dataiku_trusted_inputs
+      - chk_dataiku_model_approval
+      - chk_dataiku_feature_set_version
+      - chk_dataiku_model_card
+      - chk_dataiku_prediction_contract
+    sli_refs: [sli_model_output_validation_rate]
+    slo_refs: [slo_model_output_validation_98]
+    runbook_refs: [rb_model_output_validation_failure]
+    incident_routing_group: DATA_SCIENCE
+    audit_event_ref: aud_model_approval
+    lifecycle_status: local_reference
+    synthetic_only: true
+  - service_id: feature_store
+    name: Governed offline feature store
+    owner_role: DATA_SCIENCE
+    business_owner_role: FEATURE_STORE_OWNER
+    recovery_tier: TIER_2_ANALYTICS_AND_ASSURANCE
+    criticality: high
+    dependencies: [healthcare_core, governance_registry]
+    environment: local_reference
+    health_checks:
+      - chk_feature_registry_valid
+      - chk_feature_point_in_time_metadata
+      - chk_feature_freshness_state
+      - chk_feature_consumer_compatibility
+      - chk_feature_retrieval_evidence
+    sli_refs: [sli_feature_freshness_rate]
+    slo_refs: [slo_feature_freshness_98]
+    runbook_refs: [rb_feature_freshness_failure]
+    incident_routing_group: DATA_SCIENCE
+    audit_event_ref: aud_feature_approval
+    lifecycle_status: local_reference
+    synthetic_only: true
+  - service_id: fabric_semantic_model
+    name: Fabric semantic model
+    owner_role: BI_ANALYTICS
+    business_owner_role: ANALYTICS_OWNER
+    recovery_tier: TIER_3_REPORTING_AND_ML
+    criticality: medium
+    dependencies: [healthcare_core, billing_finance, governance_registry]
+    environment: local_metadata
+    health_checks:
+      - chk_fabric_semantic_metadata
+      - chk_fabric_relationship_integrity
+      - chk_fabric_measure_kpi_integrity
+      - chk_fabric_rls_ols_metadata
+    sli_refs: [sli_semantic_refresh_success_rate]
+    slo_refs: [slo_semantic_refresh_99]
+    runbook_refs: [rb_powerbi_refresh_failure]
+    incident_routing_group: BI_ANALYTICS
+    audit_event_ref: aud_semantic_model_promotion
+    lifecycle_status: local_metadata
+    synthetic_only: true
+  - service_id: powerbi_reports
+    name: Power BI report portfolio
+    owner_role: BI_ANALYTICS
+    business_owner_role: ANALYTICS_OWNER
+    recovery_tier: TIER_3_REPORTING_AND_ML
+    criticality: medium
+    dependencies: [fabric_semantic_model, governance_registry]
+    environment: local_metadata
+    health_checks:
+      - chk_powerbi_refresh_contract
+      - chk_powerbi_report_specification
+      - chk_powerbi_security_metadata
+    sli_refs: [sli_semantic_refresh_success_rate]
+    slo_refs: [slo_semantic_refresh_99]
+    runbook_refs: [rb_powerbi_refresh_failure]
+    incident_routing_group: BI_ANALYTICS
+    audit_event_ref: aud_semantic_model_promotion
+    lifecycle_status: local_metadata
+    synthetic_only: true
+  - service_id: recovery_evidence_service
+    name: Recovery evidence service
+    owner_role: RECOVERY_COORDINATION
+    business_owner_role: PLATFORM_OWNER
+    recovery_tier: TIER_0_CRITICAL_CONTROL_PLANE
+    criticality: critical
+    dependencies: [governance_registry, cicd_controls]
+    environment: local_reference
+    health_checks:
+      - chk_recovery_registry_valid
+      - chk_recovery_evidence_checksum
+      - chk_recovery_manifest_integrity
+    sli_refs:
+      - sli_recovery_readiness_rate
+      - sli_mean_simulated_recovery_time
+      - sli_simulated_rpo_compliance_rate
+    slo_refs: [slo_recovery_drill_95]
+    runbook_refs:
+      - rb_recovery_readiness_failure
+      - rb_regional_recovery_drill
+    incident_routing_group: RECOVERY_COORDINATION
+    audit_event_ref: aud_evidence_generation
+    lifecycle_status: local_reference
+    synthetic_only: true
+health_checks:
+  - check_id: chk_snowflake_contract_available
+    service_id: snowflake_platform
+    input_type: contract_status
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: snowflake/config/foundation.json
+  - check_id: chk_snowflake_rbac_metadata
+    service_id: snowflake_platform
+    input_type: control_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: snowflake/roles/040_roles.sql
+  - check_id: chk_snowflake_inventory_intact
+    service_id: snowflake_platform
+    input_type: evidence_integrity
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: snowflake/inventory/foundation.json
+  - check_id: chk_snowflake_no_destructive_drift
+    service_id: snowflake_platform
+    input_type: drift_status
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: deployment/reference/drift_report.json
+  - check_id: chk_dbt_parse_status
+    service_id: dbt_staging
+    input_type: job_status
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: dbt/dbt_project.yml
+  - check_id: chk_dbt_contract_coverage
+    service_id: dbt_staging
+    input_type: contract_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: dbt/models
+  - check_id: chk_dbt_freshness_metadata
+    service_id: dbt_staging
+    input_type: freshness
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: dbt/models/sources
+  - check_id: chk_dbt_model_graph_integrity
+    service_id: dbt_staging
+    input_type: dependency_availability
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: dbt/models
+  - check_id: chk_dbt_artifact_checksum
+    service_id: dbt_staging
+    input_type: evidence_integrity
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: dbt/target
+  - check_id: chk_airflow_dag_import
+    service_id: airflow_orchestration
+    input_type: job_status
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: orchestration/airflow/dags
+  - check_id: chk_airflow_task_dependencies
+    service_id: airflow_orchestration
+    input_type: dependency_availability
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: orchestration/airflow/dags
+  - check_id: chk_airflow_connected_mode_disabled
+    service_id: airflow_orchestration
+    input_type: control_status
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: orchestration/README.md
+  - check_id: chk_airflow_run_manifest
+    service_id: airflow_orchestration
+    input_type: evidence_integrity
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: docs/operations/orchestration-evidence.md
+  - check_id: chk_airflow_failure_callback_metadata
+    service_id: airflow_orchestration
+    input_type: control_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: orchestration/airflow/include/callbacks.py
+  - check_id: chk_dataiku_trusted_inputs
+    service_id: dataiku_analytics
+    input_type: contract_status
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: dataiku/projects/healthcare_analytics/datasets/trusted_inputs.yaml
+  - check_id: chk_dataiku_model_approval
+    service_id: dataiku_analytics
+    input_type: control_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: dataiku/projects/healthcare_analytics/governance/approval_gates.yaml
+  - check_id: chk_dataiku_feature_set_version
+    service_id: dataiku_analytics
+    input_type: contract_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: dataiku/projects/healthcare_analytics/features/billing_exception_features.yaml
+  - check_id: chk_dataiku_model_card
+    service_id: dataiku_analytics
+    input_type: evidence_integrity
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: dataiku/projects/healthcare_analytics/models/model_card.md
+  - check_id: chk_dataiku_prediction_contract
+    service_id: dataiku_analytics
+    input_type: contract_status
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: dataiku/contracts/prediction_output_contract.yaml
+  - check_id: chk_feature_registry_valid
+    service_id: feature_store
+    input_type: contract_status
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: feature_store/registry
+  - check_id: chk_feature_point_in_time_metadata
+    service_id: feature_store
+    input_type: contract_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: feature_store/contracts/historical_retrieval_contract.yaml
+  - check_id: chk_feature_freshness_state
+    service_id: feature_store
+    input_type: freshness
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: feature_store/reference/outputs/validation_report.json
+  - check_id: chk_feature_consumer_compatibility
+    service_id: feature_store
+    input_type: contract_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: feature_store/registry/consumers.yaml
+  - check_id: chk_feature_retrieval_evidence
+    service_id: feature_store
+    input_type: evidence_integrity
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: feature_store/reference/outputs/checksums.sha256
+  - check_id: chk_fabric_semantic_metadata
+    service_id: fabric_semantic_model
+    input_type: contract_status
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: powerbi/reference/semantic_model_manifest.json
+  - check_id: chk_fabric_relationship_integrity
+    service_id: fabric_semantic_model
+    input_type: dependency_availability
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: powerbi/reference/relationship_catalogue.csv
+  - check_id: chk_fabric_measure_kpi_integrity
+    service_id: fabric_semantic_model
+    input_type: contract_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: powerbi/reference/measure_catalogue.csv
+  - check_id: chk_fabric_rls_ols_metadata
+    service_id: fabric_semantic_model
+    input_type: control_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: powerbi/reference/security_role_catalogue.csv
+  - check_id: chk_powerbi_refresh_contract
+    service_id: powerbi_reports
+    input_type: freshness
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: powerbi/reference/refresh_catalogue.csv
+  - check_id: chk_powerbi_report_specification
+    service_id: powerbi_reports
+    input_type: contract_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: powerbi/reference/report_catalogue.csv
+  - check_id: chk_powerbi_security_metadata
+    service_id: powerbi_reports
+    input_type: control_status
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: powerbi/reference/security_role_catalogue.csv
+  - check_id: chk_governance_registry_checksum
+    service_id: governance_registry
+    input_type: evidence_integrity
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: governance/reference/checksums.sha256
+  - check_id: chk_governance_policy_resolution
+    service_id: governance_registry
+    input_type: control_status
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: governance/registry
+  - check_id: chk_governance_sensitive_field_coverage
+    service_id: governance_registry
+    input_type: control_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: governance/reference/sensitive_field_coverage.csv
+  - check_id: chk_core_contract_status
+    service_id: healthcare_core
+    input_type: contract_status
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: dbt/models/curated/core/entities/_schema.yml
+  - check_id: chk_core_data_quality
+    service_id: healthcare_core
+    input_type: data_quality
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: dbt/models/curated/core/reconciliation
+  - check_id: chk_core_freshness
+    service_id: healthcare_core
+    input_type: freshness
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: dbt/models/sources
+  - check_id: chk_billing_reconciliation
+    service_id: billing_finance
+    input_type: data_quality
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: dbt/models/curated/finance/controls
+  - check_id: chk_billing_quality_controls
+    service_id: billing_finance
+    input_type: control_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: dbt/seeds/assurance
+  - check_id: chk_billing_freshness
+    service_id: billing_finance
+    input_type: freshness
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: dbt/models/sources/raw_finance.yml
+  - check_id: chk_assurance_exception_inventory
+    service_id: assurance_controls
+    input_type: control_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: dbt/models/curated/assurance/exceptions
+  - check_id: chk_assurance_evidence_checksum
+    service_id: assurance_controls
+    input_type: evidence_integrity
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: docs/operations/assurance-evidence-pack.md
+  - check_id: chk_assurance_lifecycle_metadata
+    service_id: assurance_controls
+    input_type: control_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: dbt/seeds/assurance/assurance_lifecycle_transitions.csv
+  - check_id: chk_release_manifest_integrity
+    service_id: cicd_controls
+    input_type: evidence_integrity
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: deployment/reference/release_manifest.json
+  - check_id: chk_deployment_manifest_integrity
+    service_id: cicd_controls
+    input_type: evidence_integrity
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: deployment/reference/deployment_manifest_prod.json
+  - check_id: chk_drift_report_status
+    service_id: cicd_controls
+    input_type: drift_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: deployment/reference/drift_report.json
+  - check_id: chk_terraform_plan_metadata
+    service_id: terraform_delivery
+    input_type: contract_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: infrastructure/terraform
+  - check_id: chk_rollback_reference
+    service_id: terraform_delivery
+    input_type: control_status
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: deployment/reference/rollback_plan.md
+  - check_id: chk_recovery_registry_valid
+    service_id: recovery_evidence_service
+    input_type: recovery_readiness
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: recovery/registry/recovery_controls.yaml
+  - check_id: chk_recovery_evidence_checksum
+    service_id: recovery_evidence_service
+    input_type: evidence_integrity
+    baseline_state: HEALTHY
+    failure_state: UNHEALTHY
+    source_ref: recovery/reference/checksums.sha256
+  - check_id: chk_recovery_manifest_integrity
+    service_id: recovery_evidence_service
+    input_type: evidence_integrity
+    baseline_state: HEALTHY
+    failure_state: DEGRADED
+    source_ref: recovery/reference/recovery_manifest.json
+slis:
+  - sli_id: sli_pipeline_success_rate
+    service_id: airflow_orchestration
+    description: Synthetic pipeline success rate across local orchestration contracts.
+    numerator: successful_synthetic_pipeline_runs
+    denominator: attempted_synthetic_pipeline_runs
+    unit: percentage
+    calculation_window: 30d
+    data_source: local_run_manifest_fixture
+    owner: DATA_ENGINEERING
+    limitations: No live scheduler metrics are collected.
+    implementation_status: metadata_only
+  - sli_id: sli_governance_validation_success
+    service_id: governance_registry
+    description: Percentage of local governance registry validations passing.
+    numerator: passing_governance_validations
+    denominator: evaluated_governance_validations
+    unit: percentage
+    calculation_window: release_candidate
+    data_source: governance_reference_outputs
+    owner: DATA_GOVERNANCE
+    limitations: No live policy engine is queried.
+    implementation_status: metadata_only
+  - sli_id: sli_data_freshness_delay
+    service_id: dbt_staging
+    description: Maximum synthetic source freshness delay.
+    numerator: records_within_freshness_target
+    denominator: records_evaluated
+    unit: percentage
+    calculation_window: 24h
+    data_source: dbt_source_freshness_metadata
+    owner: ANALYTICS_ENGINEERING
+    limitations: Uses local fixtures only.
+    implementation_status: metadata_only
+  - sli_id: sli_contract_validation_success
+    service_id: dbt_staging
+    description: Percentage of local contract validations passing.
+    numerator: passing_contract_validations
+    denominator: total_contract_validations
+    unit: percentage
+    calculation_window: 30d
+    data_source: local_validation_reports
+    owner: ANALYTICS_ENGINEERING
+    limitations: No live warehouse contracts are queried.
+    implementation_status: metadata_only
+  - sli_id: sli_test_pass_rate
+    service_id: healthcare_core
+    description: Test pass rate from credential-free local validation.
+    numerator: passing_tests
+    denominator: total_tests
+    unit: percentage
+    calculation_window: commit
+    data_source: pytest_fixture
+    owner: PLATFORM_ENGINEERING
+    limitations: Local tests are not production monitoring.
+    implementation_status: local_simulation
+  - sli_id: sli_reconciliation_control_pass_rate
+    service_id: assurance_controls
+    description: Synthetic reconciliation-control pass rate.
+    numerator: passing_reconciliation_controls
+    denominator: evaluated_reconciliation_controls
+    unit: percentage
+    calculation_window: business_day
+    data_source: assurance_reference_outputs
+    owner: REVENUE_ASSURANCE
+    limitations: No live finance ledger is queried.
+    implementation_status: metadata_only
+  - sli_id: sli_unresolved_critical_exception_count
+    service_id: billing_finance
+    description: Count of unresolved critical synthetic assurance exceptions.
+    numerator: unresolved_critical_exceptions
+    denominator: not_applicable
+    unit: count
+    calculation_window: business_day
+    data_source: assurance_exception_fixture
+    owner: REVENUE_ASSURANCE
+    limitations: Fixture count only.
+    implementation_status: metadata_only
+  - sli_id: sli_feature_freshness_rate
+    service_id: feature_store
+    description: Percentage of feature views within synthetic freshness target.
+    numerator: fresh_feature_views
+    denominator: evaluated_feature_views
+    unit: percentage
+    calculation_window: 24h
+    data_source: feature_store_reference_outputs
+    owner: DATA_SCIENCE
+    limitations: Offline fixture only.
+    implementation_status: metadata_only
+  - sli_id: sli_model_output_validation_rate
+    service_id: dataiku_analytics
+    description: Percentage of synthetic model outputs matching the output contract.
+    numerator: validated_model_outputs
+    denominator: generated_model_outputs
+    unit: percentage
+    calculation_window: scenario_run
+    data_source: dataiku_reference_outputs
+    owner: DATA_SCIENCE
+    limitations: No live model endpoint exists.
+    implementation_status: metadata_only
+  - sli_id: sli_semantic_refresh_success_rate
+    service_id: powerbi_reports
+    description: Synthetic semantic refresh contract success rate.
+    numerator: successful_refresh_contracts
+    denominator: evaluated_refresh_contracts
+    unit: percentage
+    calculation_window: 30d
+    data_source: powerbi_reference_outputs
+    owner: BI_ANALYTICS
+    limitations: No Fabric or Power BI API call is made.
+    implementation_status: metadata_only
+  - sli_id: sli_deployment_validation_success
+    service_id: cicd_controls
+    description: Percentage of local deployment-control validations passing.
+    numerator: passing_deployment_controls
+    denominator: evaluated_deployment_controls
+    unit: percentage
+    calculation_window: release_candidate
+    data_source: deployment_reference_outputs
+    owner: PLATFORM_ENGINEERING
+    limitations: No live deployment is performed.
+    implementation_status: metadata_only
+  - sli_id: sli_evidence_checksum_success
+    service_id: assurance_controls
+    description: Percentage of critical evidence files with matching checksums.
+    numerator: valid_evidence_checksums
+    denominator: checked_evidence_files
+    unit: percentage
+    calculation_window: evidence_generation
+    data_source: local_checksum_manifests
+    owner: PLATFORM_ENGINEERING
+    limitations: Local evidence only.
+    implementation_status: local_simulation
+  - sli_id: sli_recovery_readiness_rate
+    service_id: recovery_evidence_service
+    description: Percentage of local recovery readiness checks passing.
+    numerator: passing_recovery_checks
+    denominator: evaluated_recovery_checks
+    unit: percentage
+    calculation_window: drill_run
+    data_source: recovery_reference_outputs
+    owner: RECOVERY_COORDINATION
+    limitations: No live failover is executed.
+    implementation_status: local_simulation
+  - sli_id: sli_mean_simulated_recovery_time
+    service_id: recovery_evidence_service
+    description: Mean deterministic simulated recovery duration.
+    numerator: total_simulated_recovery_minutes
+    denominator: simulated_drill_count
+    unit: minutes
+    calculation_window: drill_run
+    data_source: recovery_drill_simulation
+    owner: RECOVERY_COORDINATION
+    limitations: Simulation only.
+    implementation_status: local_simulation
+  - sli_id: sli_simulated_rpo_compliance_rate
+    service_id: recovery_evidence_service
+    description: Percentage of simulated drills within RPO target.
+    numerator: drills_within_rpo_target
+    denominator: simulated_drill_count
+    unit: percentage
+    calculation_window: drill_run
+    data_source: recovery_drill_simulation
+    owner: RECOVERY_COORDINATION
+    limitations: Simulation only.
+    implementation_status: local_simulation
+slos:
+  - slo_id: slo_pipeline_success_99
+    sli_ref: sli_pipeline_success_rate
+    target: 99
+    window: 30d
+    warning_threshold: 99.2
+    failure_threshold: 99
+    owner: DATA_ENGINEERING
+    review_cadence: monthly
+    breach_consequence: open_triage_and_review_runbook
+    synthetic_target: true
+    limitations: Not a production SLO commitment.
+  - slo_id: slo_governance_validation_100
+    sli_ref: sli_governance_validation_success
+    target: 100
+    window: release_candidate
+    warning_threshold: 100
+    failure_threshold: 100
+    owner: DATA_GOVERNANCE
+    review_cadence: each_release
+    breach_consequence: block_promotion_until_policy_integrity_restored
+    synthetic_target: true
+    limitations: Local governance evidence only.
+  - slo_id: slo_evidence_checksum_100
+    sli_ref: sli_evidence_checksum_success
+    target: 100
+    window: evidence_generation
+    warning_threshold: 100
+    failure_threshold: 100
+    owner: PLATFORM_ENGINEERING
+    review_cadence: each_evidence_generation
+    breach_consequence: regenerate_or_investigate_reference_outputs
+    synthetic_target: true
+    limitations: Local checksums only.
+  - slo_id: slo_feature_freshness_98
+    sli_ref: sli_feature_freshness_rate
+    target: 98
+    window: 24h
+    warning_threshold: 98.5
+    failure_threshold: 98
+    owner: DATA_SCIENCE
+    review_cadence: monthly
+    breach_consequence: inspect_feature_freshness_runbook
+    synthetic_target: true
+    limitations: Offline feature-store fixtures only.
+  - slo_id: slo_semantic_refresh_99
+    sli_ref: sli_semantic_refresh_success_rate
+    target: 99
+    window: 30d
+    warning_threshold: 99.2
+    failure_threshold: 99
+    owner: BI_ANALYTICS
+    review_cadence: monthly
+    breach_consequence: inspect_refresh_contract_runbook
+    synthetic_target: true
+    limitations: No Fabric or Power BI refresh is executed.
+  - slo_id: slo_recovery_drill_95
+    sli_ref: sli_recovery_readiness_rate
+    target: 95
+    window: quarterly
+    warning_threshold: 96
+    failure_threshold: 95
+    owner: RECOVERY_COORDINATION
+    review_cadence: quarterly
+    breach_consequence: recovery_readiness_review_required
+    synthetic_target: true
+    limitations: Local recovery-drill simulation only.
+  - slo_id: slo_deployment_validation_99
+    sli_ref: sli_deployment_validation_success
+    target: 99
+    window: release_candidate
+    warning_threshold: 99.2
+    failure_threshold: 99
+    owner: PLATFORM_ENGINEERING
+    review_cadence: each_release
+    breach_consequence: block_unreviewed_promotion
+    synthetic_target: true
+    limitations: No live apply is executed.
+  - slo_id: slo_contract_validation_99
+    sli_ref: sli_contract_validation_success
+    target: 99
+    window: release_candidate
+    warning_threshold: 99.2
+    failure_threshold: 99
+    owner: ANALYTICS_ENGINEERING
+    review_cadence: each_release
+    breach_consequence: contract_owner_review
+    synthetic_target: true
+    limitations: Local metadata only.
+  - slo_id: slo_reconciliation_99
+    sli_ref: sli_reconciliation_control_pass_rate
+    target: 99
+    window: business_day
+    warning_threshold: 99.2
+    failure_threshold: 99
+    owner: REVENUE_ASSURANCE
+    review_cadence: monthly
+    breach_consequence: revenue_assurance_review
+    synthetic_target: true
+    limitations: Synthetic assurance controls only.
+  - slo_id: slo_model_output_validation_98
+    sli_ref: sli_model_output_validation_rate
+    target: 98
+    window: scenario_run
+    warning_threshold: 98.5
+    failure_threshold: 98
+    owner: DATA_SCIENCE
+    review_cadence: monthly
+    breach_consequence: model_owner_review
+    synthetic_target: true
+    limitations: Local model-output contract only.
+error_budgets:
+  - budget_id: eb_pipeline_success_30d
+    slo_ref: slo_pipeline_success_99
+    target: 99
+    allowed_failure_budget: 1
+    consumed_budget: 0.4
+    remaining_budget: 0.6
+    evaluation_window: 30d
+    breach_status: within_budget
+    action_guidance: Continue synthetic monitoring review.
+  - budget_id: eb_evidence_checksum
+    slo_ref: slo_evidence_checksum_100
+    target: 100
+    allowed_failure_budget: 0
+    consumed_budget: 0
+    remaining_budget: 0
+    evaluation_window: evidence_generation
+    breach_status: within_budget
+    action_guidance: Any checksum mismatch blocks evidence acceptance.
+  - budget_id: eb_recovery_drill
+    slo_ref: slo_recovery_drill_95
+    target: 95
+    allowed_failure_budget: 5
+    consumed_budget: 0
+    remaining_budget: 5
+    evaluation_window: quarterly
+    breach_status: within_budget
+    action_guidance: Review failed drills before production-readiness claims.
+alert_routes:
+  - route_id: route_data_freshness_high
+    incident_type: DATA_FRESHNESS
+    severity: SEV_2_HIGH
+    primary_owner: DATA_ENGINEERING
+    secondary_owner: ANALYTICS_ENGINEERING
+    escalation_window: 30m
+    approval_requirement: data_product_owner
+    runbook: rb_stale_data
+    audit_event: aud_evidence_generation
+    notification_status: disabled
+    live_integration_status: disabled
+  - route_id: route_data_quality_high
+    incident_type: DATA_QUALITY
+    severity: SEV_2_HIGH
+    primary_owner: DATA_ENGINEERING
+    secondary_owner: DATA_GOVERNANCE
+    escalation_window: 1h
+    approval_requirement: data_product_owner
+    runbook: rb_pipeline_failure
+    audit_event: aud_evidence_generation
+    notification_status: disabled
+    live_integration_status: disabled
+  - route_id: route_pipeline_failure_high
+    incident_type: PIPELINE_FAILURE
+    severity: SEV_2_HIGH
+    primary_owner: DATA_ENGINEERING
+    secondary_owner: PLATFORM_ENGINEERING
+    escalation_window: 30m
+    approval_requirement: platform_owner
+    runbook: rb_pipeline_failure
+    audit_event: aud_evidence_generation
+    notification_status: disabled
+    live_integration_status: disabled
+  - route_id: route_contract_failure_medium
+    incident_type: CONTRACT_FAILURE
+    severity: SEV_3_MEDIUM
+    primary_owner: ANALYTICS_ENGINEERING
+    secondary_owner: DATA_GOVERNANCE
+    escalation_window: 4h
+    approval_requirement: contract_owner
+    runbook: rb_dbt_contract_failure
+    audit_event: aud_evidence_generation
+    notification_status: disabled
+    live_integration_status: disabled
+  - route_id: route_access_control_critical
+    incident_type: ACCESS_CONTROL
+    severity: SEV_1_CRITICAL
+    primary_owner: SECURITY_OPERATIONS
+    secondary_owner: DATA_GOVERNANCE
+    escalation_window: 15m
+    approval_requirement: security_admin
+    runbook: rb_governance_checksum_mismatch
+    audit_event: aud_policy_change
+    notification_status: disabled
+    live_integration_status: disabled
+  - route_id: route_security_event_critical
+    incident_type: SECURITY_EVENT
+    severity: SEV_1_CRITICAL
+    primary_owner: SECURITY_OPERATIONS
+    secondary_owner: PLATFORM_ENGINEERING
+    escalation_window: 15m
+    approval_requirement: security_admin
+    runbook: rb_governance_checksum_mismatch
+    audit_event: aud_privileged_role_use
+    notification_status: disabled
+    live_integration_status: disabled
+  - route_id: route_billing_control_high
+    incident_type: BILLING_CONTROL
+    severity: SEV_2_HIGH
+    primary_owner: REVENUE_ASSURANCE
+    secondary_owner: FINANCE_ANALYTICS
+    escalation_window: 1h
+    approval_requirement: finance_owner
+    runbook: rb_reconciliation_control_failure
+    audit_event: aud_evidence_generation
+    notification_status: disabled
+    live_integration_status: disabled
+  - route_id: route_model_governance_medium
+    incident_type: MODEL_GOVERNANCE
+    severity: SEV_3_MEDIUM
+    primary_owner: DATA_SCIENCE
+    secondary_owner: DATA_GOVERNANCE
+    escalation_window: 4h
+    approval_requirement: model_owner
+    runbook: rb_model_output_validation_failure
+    audit_event: aud_model_approval
+    notification_status: disabled
+    live_integration_status: disabled
+  - route_id: route_feature_freshness_medium
+    incident_type: FEATURE_FRESHNESS
+    severity: SEV_3_MEDIUM
+    primary_owner: DATA_SCIENCE
+    secondary_owner: ANALYTICS_ENGINEERING
+    escalation_window: 4h
+    approval_requirement: feature_store_owner
+    runbook: rb_feature_freshness_failure
+    audit_event: aud_feature_approval
+    notification_status: disabled
+    live_integration_status: disabled
+  - route_id: route_semantic_refresh_medium
+    incident_type: SEMANTIC_REFRESH
+    severity: SEV_3_MEDIUM
+    primary_owner: BI_ANALYTICS
+    secondary_owner: ANALYTICS_ENGINEERING
+    escalation_window: 4h
+    approval_requirement: bi_owner
+    runbook: rb_powerbi_refresh_failure
+    audit_event: aud_semantic_model_promotion
+    notification_status: disabled
+    live_integration_status: disabled
+  - route_id: route_deployment_drift_high
+    incident_type: DEPLOYMENT_DRIFT
+    severity: SEV_2_HIGH
+    primary_owner: PLATFORM_ENGINEERING
+    secondary_owner: SECURITY_OPERATIONS
+    escalation_window: 30m
+    approval_requirement: release_manager
+    runbook: rb_deployment_drift
+    audit_event: aud_evidence_generation
+    notification_status: disabled
+    live_integration_status: disabled
+  - route_id: route_recovery_readiness_critical
+    incident_type: RECOVERY_READINESS
+    severity: SEV_1_CRITICAL
+    primary_owner: RECOVERY_COORDINATION
+    secondary_owner: PLATFORM_ENGINEERING
+    escalation_window: 15m
+    approval_requirement: recovery_owner
+    runbook: rb_recovery_readiness_failure
+    audit_event: aud_evidence_generation
+    notification_status: disabled
+    live_integration_status: disabled
+  - route_id: route_evidence_integrity_critical
+    incident_type: EVIDENCE_INTEGRITY
+    severity: SEV_1_CRITICAL
+    primary_owner: PLATFORM_ENGINEERING
+    secondary_owner: DATA_GOVERNANCE
+    escalation_window: 15m
+    approval_requirement: evidence_owner
+    runbook: rb_evidence_checksum_failure
+    audit_event: aud_evidence_generation
+    notification_status: disabled
+    live_integration_status: disabled
+  - route_id: route_configuration_error_medium
+    incident_type: CONFIGURATION_ERROR
+    severity: SEV_3_MEDIUM
+    primary_owner: PLATFORM_ENGINEERING
+    secondary_owner: ANALYTICS_ENGINEERING
+    escalation_window: 4h
+    approval_requirement: platform_owner
+    runbook: rb_pipeline_failure
+    audit_event: aud_evidence_generation
+    notification_status: disabled
+    live_integration_status: disabled
+runbooks:
+  - runbook_id: rb_pipeline_failure
+    trigger: PIPELINE_FAILURE
+    owner: DATA_ENGINEERING
+    prerequisites: [governance_registry_available, local_run_manifest_available]
+    diagnostic_steps:
+      - Inspect DAG and task dependency metadata.
+      - Confirm connected execution remains disabled by default.
+    containment: Pause promotion of affected data products.
+    recovery_steps: Re-run local validation after metadata fix.
+    validation: pipeline_health_checks_return_HEALTHY
+    escalation: PLATFORM_ENGINEERING
+    rollback: Use Milestone 15 rollback reference if release metadata is affected.
+    evidence: operations/reference/incident_simulation.json
+    limitations: Local runbook only; no production automation.
+    execution_status: local_guidance_only
+  - runbook_id: rb_stale_data
+    trigger: DATA_FRESHNESS
+    owner: DATA_ENGINEERING
+    prerequisites: [freshness_metadata_available]
+    diagnostic_steps:
+      - Compare synthetic freshness delay with SLO target.
+      - Identify upstream stale dependency.
+    containment: Label affected data product DEGRADED.
+    recovery_steps: Refresh metadata fixture or block promotion.
+    validation: freshness_health_checks_return_HEALTHY
+    escalation: ANALYTICS_ENGINEERING
+    rollback: Not applicable to local freshness metadata.
+    evidence: operations/reference/health_report.json
+    limitations: No live source freshness is queried.
+    execution_status: local_guidance_only
+  - runbook_id: rb_dbt_contract_failure
+    trigger: CONTRACT_FAILURE
+    owner: ANALYTICS_ENGINEERING
+    prerequisites: [dbt_parse_metadata_available]
+    diagnostic_steps:
+      - Inspect parse and schema contract evidence.
+      - Identify changed model or source contract.
+    containment: Block affected model promotion.
+    recovery_steps: Restore compatible contract or update downstream metadata.
+    validation: dbt_parse_and_contract_checks_pass
+    escalation: DATA_GOVERNANCE
+    rollback: Use release rollback reference when caused by promotion.
+    evidence: operations/reference/incident_simulation.json
+    limitations: No live dbt job is executed by the runbook.
+    execution_status: local_guidance_only
+  - runbook_id: rb_reconciliation_control_failure
+    trigger: BILLING_CONTROL
+    owner: REVENUE_ASSURANCE
+    prerequisites: [assurance_rules_available]
+    diagnostic_steps:
+      - Inspect failed reconciliation-control metadata.
+      - Confirm exception severity and owner.
+    containment: Mark finance assurance output DEGRADED.
+    recovery_steps: Resolve control input or accept documented risk.
+    validation: reconciliation_control_pass_rate_within_target
+    escalation: FINANCE_ANALYTICS
+    rollback: Not automatic; release rollback follows Milestone 15.
+    evidence: operations/reference/post_incident_review.md
+    limitations: Synthetic assurance data only.
+    execution_status: local_guidance_only
+  - runbook_id: rb_governance_checksum_mismatch
+    trigger: ACCESS_CONTROL
+    owner: DATA_GOVERNANCE
+    prerequisites: [governance_reference_checksums_available]
+    diagnostic_steps:
+      - Verify policy checksum mismatch source.
+      - Confirm no sensitive payload is embedded in evidence.
+    containment: Fail closed until policy integrity is restored.
+    recovery_steps: Regenerate governance evidence from trusted registry.
+    validation: governance_checksum_and_policy_resolution_pass
+    escalation: SECURITY_OPERATIONS
+    rollback: Restore last accepted governance registry version.
+    evidence: operations/reference/incident_simulation.json
+    limitations: Does not alter live access controls.
+    execution_status: local_guidance_only
+  - runbook_id: rb_feature_freshness_failure
+    trigger: FEATURE_FRESHNESS
+    owner: DATA_SCIENCE
+    prerequisites: [feature_registry_available]
+    diagnostic_steps:
+      - Inspect freshness and point-in-time metadata.
+      - Identify stale feature consumers.
+    containment: Mark affected feature consumers DEGRADED.
+    recovery_steps: Rebuild local reference output after owner review.
+    validation: feature_freshness_rate_within_target
+    escalation: FEATURE_STORE_OWNER
+    rollback: Restore accepted feature registry version.
+    evidence: operations/reference/health_report.json
+    limitations: Offline feature fixtures only.
+    execution_status: local_guidance_only
+  - runbook_id: rb_model_output_validation_failure
+    trigger: MODEL_GOVERNANCE
+    owner: DATA_SCIENCE
+    prerequisites: [model_card_and_prediction_contract_available]
+    diagnostic_steps:
+      - Inspect model card completeness.
+      - Validate prediction-output contract metadata.
+    containment: Block model promotion or scoring package acceptance.
+    recovery_steps: Correct contract or model-card metadata.
+    validation: model_output_validation_rate_within_target
+    escalation: DATA_GOVERNANCE
+    rollback: Restore accepted model registry version.
+    evidence: operations/reference/incident_simulation.json
+    limitations: No live model endpoint is invoked.
+    execution_status: local_guidance_only
+  - runbook_id: rb_powerbi_refresh_failure
+    trigger: SEMANTIC_REFRESH
+    owner: BI_ANALYTICS
+    prerequisites: [semantic_model_manifest_available]
+    diagnostic_steps:
+      - Inspect semantic model and refresh metadata.
+      - Confirm RLS/OLS metadata remains intact.
+    containment: Disable refresh acceptance in local metadata.
+    recovery_steps: Restore semantic model contract or report specification.
+    validation: semantic_refresh_success_rate_within_target
+    escalation: ANALYTICS_ENGINEERING
+    rollback: Restore accepted semantic model reference output.
+    evidence: operations/reference/health_report.json
+    limitations: No Fabric or Power BI API call is made.
+    execution_status: local_guidance_only
+  - runbook_id: rb_deployment_drift
+    trigger: DEPLOYMENT_DRIFT
+    owner: PLATFORM_ENGINEERING
+    prerequisites: [deployment_drift_report_available]
+    diagnostic_steps:
+      - Inspect drift report and deployment manifest.
+      - Confirm rollback reference exists.
+    containment: Block promotion until drift disposition is recorded.
+    recovery_steps: Regenerate plan metadata or rollback per Milestone 15.
+    validation: deployment_validation_success_within_target
+    escalation: RELEASE_MANAGER
+    rollback: Milestone 15 rollback plan.
+    evidence: deployment/reference/drift_report.json
+    limitations: No live Terraform apply is executed.
+    execution_status: local_guidance_only
+  - runbook_id: rb_recovery_readiness_failure
+    trigger: RECOVERY_READINESS
+    owner: RECOVERY_COORDINATION
+    prerequisites: [recovery_registry_and_evidence_available]
+    diagnostic_steps:
+      - Validate recovery registry.
+      - Inspect recovery evidence checksums.
+    containment: Block recovery-readiness claim.
+    recovery_steps: Restore Milestone 16 evidence integrity.
+    validation: recovery_readiness_rate_within_target
+    escalation: PLATFORM_ENGINEERING
+    rollback: Restore accepted recovery registry and evidence.
+    evidence: recovery/reference/recovery_validation_report.json
+    limitations: No live failover is executed.
+    execution_status: local_guidance_only
+  - runbook_id: rb_evidence_checksum_failure
+    trigger: EVIDENCE_INTEGRITY
+    owner: PLATFORM_ENGINEERING
+    prerequisites: [checksum_manifest_available]
+    diagnostic_steps:
+      - Recompute local checksums.
+      - Identify changed or missing evidence file.
+    containment: Reject evidence pack until checksum mismatch is resolved.
+    recovery_steps: Regenerate deterministic evidence after owner approval.
+    validation: checksum_verification_passes
+    escalation: DATA_GOVERNANCE
+    rollback: Restore last accepted evidence bundle.
+    evidence: operations/reference/checksums.sha256
+    limitations: Local evidence only.
+    execution_status: local_guidance_only
+  - runbook_id: rb_regional_recovery_drill
+    trigger: RECOVERY_READINESS
+    owner: RECOVERY_COORDINATION
+    prerequisites: [manual_approval, recovery_registry_available]
+    diagnostic_steps:
+      - Load Milestone 16 recovery sequence.
+      - Verify governance and deployment controls first.
+    containment: Keep drill local and synthetic.
+    recovery_steps: Simulate recovery ordering and validate RTO/RPO metadata.
+    validation: drill_status_DRILL_PASSED_or_READY_WITH_APPROVAL
+    escalation: PLATFORM_ENGINEERING
+    rollback: No live rollback; simulation reset only.
+    evidence: operations/reference/drill_simulation.json
+    limitations: No live failover, failback, DNS, account or cloud action.
+    execution_status: local_simulation_only
+drills:
+  - drill_id: drill_primary_region_outage
+    scenario: primary_region_unavailable
+    services:
+      - governance_registry
+      - cicd_controls
+      - snowflake_platform
+      - dbt_staging
+      - recovery_evidence_service
+    recovery_tier: TIER_1_CRITICAL_DATA_SERVICES
+    synthetic_start_condition: primary_region_marked_unavailable
+    success_criteria:
+      - governance_controls_validated_first
+      - manual_approval_recorded
+      - simulated_rto_within_target
+      - simulated_rpo_within_target
+    rto_target_minutes: 120
+    rpo_target_minutes: 60
+    required_approvals: [security_admin, platform_owner, recovery_owner]
+    expected_runbook: rb_regional_recovery_drill
+    evidence_outputs:
+      - operations/reference/drill_simulation.json
+      - operations/reference/post_incident_review.md
+    schedule_metadata:
+      frequency: quarterly
+      next_review_window: 2026-Q3
+      allowed_environment: local_simulation
+      maximum_concurrency: 1
+      approval_requirement: manual
+      data_isolation: synthetic_only
+      evidence_retention: ret_audit_records
+      automatic_execution: false
+    owner: RECOVERY_COORDINATION
+    limitations: No live failover is performed.
+  - drill_id: drill_snowflake_unavailable
+    scenario: snowflake_unavailable
+    services: [snowflake_platform, dbt_staging, healthcare_core]
+    recovery_tier: TIER_1_CRITICAL_DATA_SERVICES
+    synthetic_start_condition: snowflake_contract_unavailable
+    success_criteria:
+      - consumers_marked_degraded_or_unhealthy
+      - platform_route_resolves
+      - no_cloud_query_performed
+    rto_target_minutes: 120
+    rpo_target_minutes: 60
+    required_approvals: [platform_owner]
+    expected_runbook: rb_recovery_readiness_failure
+    evidence_outputs: [operations/reference/drill_simulation.json]
+    schedule_metadata:
+      frequency: semi_annual
+      next_review_window: 2026-Q4
+      allowed_environment: local_simulation
+      maximum_concurrency: 1
+      approval_requirement: manual
+      data_isolation: synthetic_only
+      evidence_retention: ret_audit_records
+      automatic_execution: false
+    owner: PLATFORM_ENGINEERING
+    limitations: No Snowflake connection is attempted.
+  - drill_id: drill_dbt_artifact_mismatch
+    scenario: dbt_artifact_checksum_mismatch
+    services: [dbt_staging, healthcare_core, billing_finance]
+    recovery_tier: TIER_1_CRITICAL_DATA_SERVICES
+    synthetic_start_condition: dbt_checksum_mismatch
+    success_criteria:
+      - contract_route_resolves
+      - runbook_selected
+      - promotion_blocked_in_metadata
+    rto_target_minutes: 120
+    rpo_target_minutes: 60
+    required_approvals: [analytics_owner]
+    expected_runbook: rb_dbt_contract_failure
+    evidence_outputs: [operations/reference/drill_simulation.json]
+    schedule_metadata:
+      frequency: quarterly
+      next_review_window: 2026-Q3
+      allowed_environment: local_simulation
+      maximum_concurrency: 1
+      approval_requirement: manual
+      data_isolation: synthetic_only
+      evidence_retention: ret_audit_records
+      automatic_execution: false
+    owner: ANALYTICS_ENGINEERING
+    limitations: No live dbt run is executed.
+  - drill_id: drill_airflow_dag_mismatch
+    scenario: airflow_dag_mismatch
+    services: [airflow_orchestration, dbt_staging]
+    recovery_tier: TIER_2_ANALYTICS_AND_ASSURANCE
+    synthetic_start_condition: dag_dependency_mismatch
+    success_criteria:
+      - airflow_service_degraded
+      - pipeline_route_resolves
+      - connected_mode_remains_disabled
+    rto_target_minutes: 240
+    rpo_target_minutes: 120
+    required_approvals: [data_engineering_owner]
+    expected_runbook: rb_pipeline_failure
+    evidence_outputs: [operations/reference/drill_simulation.json]
+    schedule_metadata:
+      frequency: quarterly
+      next_review_window: 2026-Q3
+      allowed_environment: local_simulation
+      maximum_concurrency: 1
+      approval_requirement: manual
+      data_isolation: synthetic_only
+      evidence_retention: ret_audit_records
+      automatic_execution: false
+    owner: DATA_ENGINEERING
+    limitations: No Airflow scheduler is started.
+  - drill_id: drill_governance_checksum_mismatch
+    scenario: governance_checksum_mismatch
+    services: [governance_registry, cicd_controls, recovery_evidence_service]
+    recovery_tier: TIER_0_CRITICAL_CONTROL_PLANE
+    synthetic_start_condition: governance_checksum_mismatch
+    success_criteria:
+      - fail_closed
+      - sev_1_classified
+      - security_route_resolves
+    rto_target_minutes: 30
+    rpo_target_minutes: 15
+    required_approvals: [security_admin, data_governance_owner]
+    expected_runbook: rb_governance_checksum_mismatch
+    evidence_outputs:
+      - operations/reference/incident_simulation.json
+      - operations/reference/drill_simulation.json
+    schedule_metadata:
+      frequency: quarterly
+      next_review_window: 2026-Q3
+      allowed_environment: local_simulation
+      maximum_concurrency: 1
+      approval_requirement: manual
+      data_isolation: synthetic_only
+      evidence_retention: ret_audit_records
+      automatic_execution: false
+    owner: DATA_GOVERNANCE
+    limitations: No live access policy is changed.
+  - drill_id: drill_feature_registry_mismatch
+    scenario: feature_registry_mismatch
+    services: [feature_store, dataiku_analytics]
+    recovery_tier: TIER_2_ANALYTICS_AND_ASSURANCE
+    synthetic_start_condition: feature_registry_checksum_mismatch
+    success_criteria:
+      - feature_consumers_marked_degraded
+      - feature_route_resolves
+      - no_online_store_claim
+    rto_target_minutes: 240
+    rpo_target_minutes: 120
+    required_approvals: [feature_store_owner]
+    expected_runbook: rb_feature_freshness_failure
+    evidence_outputs: [operations/reference/drill_simulation.json]
+    schedule_metadata:
+      frequency: semi_annual
+      next_review_window: 2026-Q4
+      allowed_environment: local_simulation
+      maximum_concurrency: 1
+      approval_requirement: manual
+      data_isolation: synthetic_only
+      evidence_retention: ret_feature_materialisations
+      automatic_execution: false
+    owner: DATA_SCIENCE
+    limitations: Offline feature metadata only.
+  - drill_id: drill_semantic_model_metadata_mismatch
+    scenario: semantic_model_metadata_mismatch
+    services: [fabric_semantic_model, powerbi_reports]
+    recovery_tier: TIER_3_REPORTING_AND_ML
+    synthetic_start_condition: semantic_metadata_checksum_mismatch
+    success_criteria:
+      - bi_route_resolves
+      - refresh_acceptance_blocked
+      - no_live_powerbi_call
+    rto_target_minutes: 720
+    rpo_target_minutes: 240
+    required_approvals: [bi_owner]
+    expected_runbook: rb_powerbi_refresh_failure
+    evidence_outputs: [operations/reference/drill_simulation.json]
+    schedule_metadata:
+      frequency: annual
+      next_review_window: 2027-Q1
+      allowed_environment: local_simulation
+      maximum_concurrency: 1
+      approval_requirement: manual
+      data_isolation: synthetic_only
+      evidence_retention: ret_powerbi_extracts
+      automatic_execution: false
+    owner: BI_ANALYTICS
+    limitations: No Fabric or Power BI API call is made.
+  - drill_id: drill_deployment_drift
+    scenario: deployment_drift
+    services: [cicd_controls, terraform_delivery]
+    recovery_tier: TIER_0_CRITICAL_CONTROL_PLANE
+    synthetic_start_condition: destructive_drift_fixture
+    success_criteria:
+      - deployment_route_resolves
+      - promotion_blocked
+      - rollback_reference_present
+    rto_target_minutes: 30
+    rpo_target_minutes: 15
+    required_approvals: [release_manager]
+    expected_runbook: rb_deployment_drift
+    evidence_outputs: [operations/reference/drill_simulation.json]
+    schedule_metadata:
+      frequency: quarterly
+      next_review_window: 2026-Q3
+      allowed_environment: local_simulation
+      maximum_concurrency: 1
+      approval_requirement: manual
+      data_isolation: synthetic_only
+      evidence_retention: ret_audit_records
+      automatic_execution: false
+    owner: PLATFORM_ENGINEERING
+    limitations: No Terraform apply or rollback is executed.
+  - drill_id: drill_stale_recovery_point
+    scenario: stale_recovery_point
+    services: [recovery_evidence_service, snowflake_platform]
+    recovery_tier: TIER_1_CRITICAL_DATA_SERVICES
+    synthetic_start_condition: recovery_point_age_exceeds_rpo
+    success_criteria:
+      - rpo_breach_detected
+      - failover_not_recommended
+      - manual_approval_required
+    rto_target_minutes: 120
+    rpo_target_minutes: 60
+    required_approvals: [recovery_owner, platform_owner]
+    expected_runbook: rb_recovery_readiness_failure
+    evidence_outputs: [operations/reference/drill_simulation.json]
+    schedule_metadata:
+      frequency: semi_annual
+      next_review_window: 2026-Q4
+      allowed_environment: local_simulation
+      maximum_concurrency: 1
+      approval_requirement: manual
+      data_isolation: synthetic_only
+      evidence_retention: ret_audit_records
+      automatic_execution: false
+    owner: RECOVERY_COORDINATION
+    limitations: Uses Milestone 16 metadata only.
+  - drill_id: drill_failed_failback_validation
+    scenario: failed_failback_validation
+    services: [recovery_evidence_service, governance_registry, cicd_controls]
+    recovery_tier: TIER_0_CRITICAL_CONTROL_PLANE
+    synthetic_start_condition: failback_validation_fails
+    success_criteria:
+      - failback_blocked
+      - governance_review_required
+      - no_automatic_failback
+    rto_target_minutes: 30
+    rpo_target_minutes: 15
+    required_approvals: [security_admin, recovery_owner]
+    expected_runbook: rb_regional_recovery_drill
+    evidence_outputs:
+      - operations/reference/drill_simulation.json
+      - operations/reference/post_incident_review.md
+    schedule_metadata:
+      frequency: annual
+      next_review_window: 2027-Q1
+      allowed_environment: local_simulation
+      maximum_concurrency: 1
+      approval_requirement: manual
+      data_isolation: synthetic_only
+      evidence_retention: ret_audit_records
+      automatic_execution: false
+    owner: RECOVERY_COORDINATION
+    limitations: No live failback is executed.
+simulation_scenarios:
+  incident:
+    scenario_id: governance_checksum_mismatch
+    category: ACCESS_CONTROL
+    affected_services: [governance_registry, cicd_controls, recovery_evidence_service]
+    failed_checks: [chk_governance_registry_checksum]
+    duration_minutes: 35
+    data_sensitivity: RESTRICTED
+    financial_value_at_risk: low
+    user_facing_impact: medium
+    recovery_readiness: blocked
+    expected_severity: SEV_1_CRITICAL
+    expected_route: route_access_control_critical
+    expected_runbook: rb_governance_checksum_mismatch
+    contains_patient_payload: false
+    synthetic: true
+  drill:
+    scenario_id: primary_region_outage
+    drill_id: drill_primary_region_outage
+    failed_checks:
+      - chk_snowflake_contract_available
+      - chk_recovery_registry_valid
+    affected_services:
+      - snowflake_platform
+      - dbt_staging
+      - healthcare_core
+      - recovery_evidence_service
+    simulated_duration_minutes: 110
+    recovery_point_age_minutes: 45
+    expected_status: DRILL_READY_WITH_APPROVAL
+    cloud_action_performed: false
+    automatic_execution: false
+    synthetic: true

@@ -24,3 +24,6 @@ PYTHONPATH=src python -m healthcare_platform.cli recovery generate-evidence --ov
 PYTHONPATH=src python -m healthcare_platform.cli recovery verify-evidence
 ```
 
+Operations controls reference this recovery registry for service tiers, RTO/RPO metadata,
+recovery scenarios and drill sequencing. Operations drill simulation does not rewrite
+recovery logic, execute live failover or claim production resilience.

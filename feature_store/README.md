@@ -27,3 +27,8 @@ before promotion. Online-store deployment remains out of scope.
 
 Milestone 16 recovery controls restore the registry before rebuilding offline feature views
 and validating point-in-time correctness. Online-store recovery remains out of scope.
+## Milestone 17 operations boundary
+
+Operational readiness consumes feature registry, point-in-time, freshness,
+consumer-compatibility and retrieval-evidence metadata as local health checks.
+It does not add online serving, live telemetry or alert delivery.

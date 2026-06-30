@@ -1,0 +1,28 @@
+{
+  "clinical_assurance_claim": false,
+  "external_integrations": false,
+  "files": [
+    "service_registry.json",
+    "health_check_catalogue.csv",
+    "sli_catalogue.csv",
+    "slo_catalogue.csv",
+    "incident_taxonomy.json",
+    "alert_routing.csv",
+    "runbook_catalogue.csv",
+    "drill_catalogue.json",
+    "health_report.json",
+    "incident_simulation.json",
+    "drill_simulation.json",
+    "post_incident_review.md",
+    "validation_report.json",
+    "validation_report.md"
+  ],
+  "generated_at": "2026-06-30T00:00:00Z",
+  "git_commit": "b6ad4e6d1fbf935ea9b6f3ebed14c60a36668cca",
+  "live_alerts": false,
+  "live_monitoring": false,
+  "local_simulation": true,
+  "milestone": 17,
+  "production_slo_commitment": false,
+  "synthetic": true
+}

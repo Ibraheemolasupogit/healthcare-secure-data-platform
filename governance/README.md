@@ -31,3 +31,7 @@ must call the validator rather than copying governance policy semantics into wor
 Milestone 16 recovery controls restore governance first and fail closed until policy
 checksums, versions and access-control metadata are validated. No live enforcement or
 regional policy deployment is claimed.
+
+Milestone 17 operations controls reference governance audit events, evidence retention,
+privileged escalation and unsupported-claim boundaries. They do not duplicate governance
+policy semantics or enable live access-policy enforcement.

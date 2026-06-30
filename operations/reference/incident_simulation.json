@@ -1,0 +1,76 @@
+{
+  "affected_services": [
+    "governance_registry",
+    "cicd_controls",
+    "recovery_evidence_service"
+  ],
+  "category": "ACCESS_CONTROL",
+  "contains_patient_payload": false,
+  "escalation_required": true,
+  "expected_severity": "SEV_1_CRITICAL",
+  "health_snapshot": {
+    "airflow_orchestration": "DEGRADED",
+    "assurance_controls": "DEGRADED",
+    "billing_finance": "DEGRADED",
+    "cicd_controls": "DEGRADED",
+    "dataiku_analytics": "DEGRADED",
+    "dbt_staging": "DEGRADED",
+    "fabric_semantic_model": "DEGRADED",
+    "feature_store": "DEGRADED",
+    "governance_registry": "UNHEALTHY",
+    "healthcare_core": "DEGRADED",
+    "powerbi_reports": "DEGRADED",
+    "recovery_evidence_service": "DEGRADED",
+    "snowflake_platform": "DEGRADED",
+    "terraform_delivery": "DEGRADED"
+  },
+  "incident_id": "INC-SYN-20260630-001",
+  "lifecycle_path": [
+    "DETECTED",
+    "TRIAGED",
+    "ASSIGNED",
+    "INVESTIGATING",
+    "MITIGATING",
+    "MONITORING"
+  ],
+  "lifecycle_transitions_valid": true,
+  "limitations": "Local simulation only; no alert delivery or ticket creation.",
+  "live_alert_created": false,
+  "route": {
+    "approval_requirement": "security_admin",
+    "audit_event": "aud_policy_change",
+    "escalation_window": "15m",
+    "incident_type": "ACCESS_CONTROL",
+    "live_integration_status": "disabled",
+    "notification_status": "disabled",
+    "primary_owner": "SECURITY_OPERATIONS",
+    "route_id": "route_access_control_critical",
+    "runbook": "rb_governance_checksum_mismatch",
+    "secondary_owner": "DATA_GOVERNANCE",
+    "severity": "SEV_1_CRITICAL"
+  },
+  "runbook": {
+    "containment": "Fail closed until policy integrity is restored.",
+    "diagnostic_steps": [
+      "Verify policy checksum mismatch source.",
+      "Confirm no sensitive payload is embedded in evidence."
+    ],
+    "escalation": "SECURITY_OPERATIONS",
+    "evidence": "operations/reference/incident_simulation.json",
+    "execution_status": "local_guidance_only",
+    "limitations": "Does not alter live access controls.",
+    "owner": "DATA_GOVERNANCE",
+    "prerequisites": [
+      "governance_reference_checksums_available"
+    ],
+    "recovery_steps": "Regenerate governance evidence from trusted registry.",
+    "rollback": "Restore last accepted governance registry version.",
+    "runbook_id": "rb_governance_checksum_mismatch",
+    "trigger": "ACCESS_CONTROL",
+    "validation": "governance_checksum_and_policy_resolution_pass"
+  },
+  "scenario_id": "governance_checksum_mismatch",
+  "severity": "SEV_1_CRITICAL",
+  "synthetic": true,
+  "ticket_created": false
+}

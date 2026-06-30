@@ -1,0 +1,11 @@
+slo_id,sli_ref,target,window,warning_threshold,failure_threshold,owner,review_cadence,breach_consequence,synthetic_target,limitations
+slo_pipeline_success_99,sli_pipeline_success_rate,99,30d,99.2,99,DATA_ENGINEERING,monthly,open_triage_and_review_runbook,True,Not a production SLO commitment.
+slo_governance_validation_100,sli_governance_validation_success,100,release_candidate,100,100,DATA_GOVERNANCE,each_release,block_promotion_until_policy_integrity_restored,True,Local governance evidence only.
+slo_evidence_checksum_100,sli_evidence_checksum_success,100,evidence_generation,100,100,PLATFORM_ENGINEERING,each_evidence_generation,regenerate_or_investigate_reference_outputs,True,Local checksums only.
+slo_feature_freshness_98,sli_feature_freshness_rate,98,24h,98.5,98,DATA_SCIENCE,monthly,inspect_feature_freshness_runbook,True,Offline feature-store fixtures only.
+slo_semantic_refresh_99,sli_semantic_refresh_success_rate,99,30d,99.2,99,BI_ANALYTICS,monthly,inspect_refresh_contract_runbook,True,No Fabric or Power BI refresh is executed.
+slo_recovery_drill_95,sli_recovery_readiness_rate,95,quarterly,96,95,RECOVERY_COORDINATION,quarterly,recovery_readiness_review_required,True,Local recovery-drill simulation only.
+slo_deployment_validation_99,sli_deployment_validation_success,99,release_candidate,99.2,99,PLATFORM_ENGINEERING,each_release,block_unreviewed_promotion,True,No live apply is executed.
+slo_contract_validation_99,sli_contract_validation_success,99,release_candidate,99.2,99,ANALYTICS_ENGINEERING,each_release,contract_owner_review,True,Local metadata only.
+slo_reconciliation_99,sli_reconciliation_control_pass_rate,99,business_day,99.2,99,REVENUE_ASSURANCE,monthly,revenue_assurance_review,True,Synthetic assurance controls only.
+slo_model_output_validation_98,sli_model_output_validation_rate,98,scenario_run,98.5,98,DATA_SCIENCE,monthly,model_owner_review,True,Local model-output contract only.

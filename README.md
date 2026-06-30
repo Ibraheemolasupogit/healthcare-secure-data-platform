@@ -2,7 +2,7 @@
 
 A production-style, synthetic-only Healthcare Enterprise Data Platform portfolio for clinical, operational, research and financial data engineering. Snowflake remains the target governed data platform and dbt remains the transformation, testing, documentation, lineage and business-logic centre of gravity.
 
-> **Status — Milestone 16 complete locally:** dbt includes governed billing/finance, assurance and offline feature models; Airflow provides local-first orchestration; Dataiku has governed analytics/MLOps blueprints; the feature store has reusable registry and point-in-time evidence; Fabric/Power BI have governed consumption metadata; governance/security and protected deployment controls are centrally registered; and a symbolic multi-region recovery design with local simulation now exists. Snowflake execution, live failover, live policy enforcement, live deployment and later integrations remain planned.
+> **Status — Milestone 17 complete locally:** dbt includes governed billing/finance, assurance and offline feature models; Airflow provides local-first orchestration; Dataiku has governed analytics/MLOps blueprints; the feature store has reusable registry and point-in-time evidence; Fabric/Power BI have governed consumption metadata; governance/security, protected deployment controls, symbolic recovery design and operational-readiness controls are centrally registered with local simulation evidence. Snowflake execution, live monitoring, live alerting, live failover, live policy enforcement, live deployment and later integrations remain planned.
 
 ## Why this project exists
 
@@ -33,6 +33,7 @@ Detailed boundaries are documented in [component responsibilities](docs/architec
 | CI/CD and deployment controls | PR validation, promotion gates, plan/apply boundaries, evidence, drift and rollback metadata | **M15 local protected-delivery foundation implemented; no live apply performed** |
 | Governance/security | RBAC, masking, pseudonymisation, row access, consent, retention, audit and compliance-claim controls | **M14 central registry, local simulation and evidence implemented; not live-enforced** |
 | Recovery/resilience | Regional roles, residency rules, recovery tiers, dependency order, failover/failback design and local simulation | **M16 symbolic active/passive recovery design implemented locally; not deployed or live tested** |
+| Operational readiness | Service health, SLIs/SLOs, incident taxonomy, routing, runbooks and recovery-drill simulation | **M17 metadata-first observability and drill controls implemented locally; no live monitoring or alerting** |
 
 ## Local-first development
 
@@ -70,7 +71,8 @@ The design follows least privilege, workload isolation, encryption in transit/at
 - **Complete locally:** Milestone 14 enterprise governance, security, privacy and compliance-control foundation.
 - **Complete locally:** Milestone 15 protected CI/CD, environment promotion, infrastructure delivery and deployment-control foundation.
 - **Complete locally:** Milestone 16 multi-region resilience, recovery and disaster-recovery design.
-- **Planned:** Milestone 17 adds portfolio evidence polish.
+- **Complete locally:** Milestone 17 operational observability, incident readiness and recovery-drill automation.
+- **Planned:** Future live monitoring, alerting or production deployment work requires a later explicit milestone.
 
 The original 15-milestone plan has been transparently realigned into a 17-milestone dependency-led [roadmap](docs/roadmap/milestones.md). [ADR 0009](docs/decisions/0009-expand-to-healthcare-enterprise-platform.md) records why.
 
@@ -93,6 +95,7 @@ The original 15-milestone plan has been transparently realigned into a 17-milest
 | `governance` | Central governance/security registry, platform mappings and deterministic evidence |
 | `deployment` | Protected CI/CD, promotion, deployment-control registry and deterministic evidence |
 | `recovery` | Symbolic multi-region recovery registry, local simulation and deterministic evidence |
+| `operations` | Operational-readiness registry, local health/incident/drill simulation and deterministic evidence |
 | `docs` | Architecture, ADRs, governance, security, roadmap, learning and evidence |
 | `tests` | Unit and integration tests, including determinism and integrity |
 | `.github/workflows` | Credential-free quality gates |
@@ -213,11 +216,25 @@ PYTHONPATH=src python -m healthcare_platform.cli recovery verify-evidence \
 PYTHONPATH=src pytest tests/unit/test_recovery_milestone16.py
 ```
 
+Validate Milestone 17 operations readiness locally:
+
+```bash
+PYTHONPATH=src python -m healthcare_platform.cli operations validate-registry
+PYTHONPATH=src python -m healthcare_platform.cli operations evaluate-health
+PYTHONPATH=src python -m healthcare_platform.cli operations simulate-incident
+PYTHONPATH=src python -m healthcare_platform.cli operations simulate-drill
+PYTHONPATH=src python -m healthcare_platform.cli operations generate-evidence \
+  --output-dir operations/reference --overwrite
+PYTHONPATH=src python -m healthcare_platform.cli operations verify-evidence \
+  --output-dir operations/reference
+PYTHONPATH=src pytest tests/unit/test_operations_milestone17.py
+```
+
 ## Limitations
 
 The generator uses compact portfolio code sets rather than authoritative clinical terminology. Large-profile configuration exists but has not been executed; current relationship assembly is in-memory and must be partitioned before million-patient benchmarking. The Snowflake foundation has not been planned or applied against a live account, and there are no source loads, runtime-proven dbt builds, live security policies, dashboards, governed research workflows, or cloud deployment evidence.
 
-Current non-goals also include formal FHIR conformance, formal revenue recognition, production Airflow deployment, live Dataiku execution, online feature serving, external notification integrations, live Fabric/Power BI deployment, Terraform apply, live failover, automatic production rollback and multi-region deployment. Target-state documentation does not turn these into implemented capabilities.
+Current non-goals also include formal FHIR conformance, formal revenue recognition, production Airflow deployment, live Dataiku execution, online feature serving, external notification integrations, live monitoring, live alerting, live incident ticketing, live Fabric/Power BI deployment, Terraform apply, live failover, automatic remediation, automatic production rollback and multi-region deployment. Target-state documentation does not turn these into implemented capabilities.
 
 ## Portfolio positioning
 

@@ -1,0 +1,405 @@
+{
+  "checks": [
+    {
+      "check_id": "chk_governance_registry_checksum",
+      "live_probe": false,
+      "service_id": "governance_registry",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_governance_policy_resolution",
+      "live_probe": false,
+      "service_id": "governance_registry",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_governance_sensitive_field_coverage",
+      "live_probe": false,
+      "service_id": "governance_registry",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_release_manifest_integrity",
+      "live_probe": false,
+      "service_id": "cicd_controls",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_deployment_manifest_integrity",
+      "live_probe": false,
+      "service_id": "cicd_controls",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_drift_report_status",
+      "live_probe": false,
+      "service_id": "cicd_controls",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_recovery_registry_valid",
+      "live_probe": false,
+      "service_id": "recovery_evidence_service",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_recovery_evidence_checksum",
+      "live_probe": false,
+      "service_id": "recovery_evidence_service",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_recovery_manifest_integrity",
+      "live_probe": false,
+      "service_id": "recovery_evidence_service",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_terraform_plan_metadata",
+      "live_probe": false,
+      "service_id": "terraform_delivery",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_drift_report_status",
+      "live_probe": false,
+      "service_id": "terraform_delivery",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_rollback_reference",
+      "live_probe": false,
+      "service_id": "terraform_delivery",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_snowflake_contract_available",
+      "live_probe": false,
+      "service_id": "snowflake_platform",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_snowflake_rbac_metadata",
+      "live_probe": false,
+      "service_id": "snowflake_platform",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_snowflake_inventory_intact",
+      "live_probe": false,
+      "service_id": "snowflake_platform",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_snowflake_no_destructive_drift",
+      "live_probe": false,
+      "service_id": "snowflake_platform",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_recovery_registry_valid",
+      "live_probe": false,
+      "service_id": "snowflake_platform",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_dbt_parse_status",
+      "live_probe": false,
+      "service_id": "dbt_staging",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_dbt_contract_coverage",
+      "live_probe": false,
+      "service_id": "dbt_staging",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_dbt_freshness_metadata",
+      "live_probe": false,
+      "service_id": "dbt_staging",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_dbt_model_graph_integrity",
+      "live_probe": false,
+      "service_id": "dbt_staging",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_dbt_artifact_checksum",
+      "live_probe": false,
+      "service_id": "dbt_staging",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_core_contract_status",
+      "live_probe": false,
+      "service_id": "healthcare_core",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_core_data_quality",
+      "live_probe": false,
+      "service_id": "healthcare_core",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_core_freshness",
+      "live_probe": false,
+      "service_id": "healthcare_core",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_billing_reconciliation",
+      "live_probe": false,
+      "service_id": "billing_finance",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_billing_quality_controls",
+      "live_probe": false,
+      "service_id": "billing_finance",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_billing_freshness",
+      "live_probe": false,
+      "service_id": "billing_finance",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_assurance_exception_inventory",
+      "live_probe": false,
+      "service_id": "assurance_controls",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_assurance_evidence_checksum",
+      "live_probe": false,
+      "service_id": "assurance_controls",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_assurance_lifecycle_metadata",
+      "live_probe": false,
+      "service_id": "assurance_controls",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_airflow_dag_import",
+      "live_probe": false,
+      "service_id": "airflow_orchestration",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_airflow_task_dependencies",
+      "live_probe": false,
+      "service_id": "airflow_orchestration",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_airflow_connected_mode_disabled",
+      "live_probe": false,
+      "service_id": "airflow_orchestration",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_airflow_run_manifest",
+      "live_probe": false,
+      "service_id": "airflow_orchestration",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_airflow_failure_callback_metadata",
+      "live_probe": false,
+      "service_id": "airflow_orchestration",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_fabric_semantic_metadata",
+      "live_probe": false,
+      "service_id": "fabric_semantic_model",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_fabric_relationship_integrity",
+      "live_probe": false,
+      "service_id": "fabric_semantic_model",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_fabric_measure_kpi_integrity",
+      "live_probe": false,
+      "service_id": "fabric_semantic_model",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_fabric_rls_ols_metadata",
+      "live_probe": false,
+      "service_id": "fabric_semantic_model",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_feature_registry_valid",
+      "live_probe": false,
+      "service_id": "feature_store",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_feature_point_in_time_metadata",
+      "live_probe": false,
+      "service_id": "feature_store",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_feature_freshness_state",
+      "live_probe": false,
+      "service_id": "feature_store",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_feature_consumer_compatibility",
+      "live_probe": false,
+      "service_id": "feature_store",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_feature_retrieval_evidence",
+      "live_probe": false,
+      "service_id": "feature_store",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_dataiku_trusted_inputs",
+      "live_probe": false,
+      "service_id": "dataiku_analytics",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_dataiku_model_approval",
+      "live_probe": false,
+      "service_id": "dataiku_analytics",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_dataiku_feature_set_version",
+      "live_probe": false,
+      "service_id": "dataiku_analytics",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_dataiku_model_card",
+      "live_probe": false,
+      "service_id": "dataiku_analytics",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_dataiku_prediction_contract",
+      "live_probe": false,
+      "service_id": "dataiku_analytics",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_powerbi_refresh_contract",
+      "live_probe": false,
+      "service_id": "powerbi_reports",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_powerbi_report_specification",
+      "live_probe": false,
+      "service_id": "powerbi_reports",
+      "state": "HEALTHY",
+      "synthetic": true
+    },
+    {
+      "check_id": "chk_powerbi_security_metadata",
+      "live_probe": false,
+      "service_id": "powerbi_reports",
+      "state": "HEALTHY",
+      "synthetic": true
+    }
+  ],
+  "failed_checks": [],
+  "generated_at": "2026-06-30T00:00:00Z",
+  "limitations": "Local deterministic health evaluation only.",
+  "live_monitoring": false,
+  "overall_state": "HEALTHY",
+  "service_states": {
+    "airflow_orchestration": "HEALTHY",
+    "assurance_controls": "HEALTHY",
+    "billing_finance": "HEALTHY",
+    "cicd_controls": "HEALTHY",
+    "dataiku_analytics": "HEALTHY",
+    "dbt_staging": "HEALTHY",
+    "fabric_semantic_model": "HEALTHY",
+    "feature_store": "HEALTHY",
+    "governance_registry": "HEALTHY",
+    "healthcare_core": "HEALTHY",
+    "powerbi_reports": "HEALTHY",
+    "recovery_evidence_service": "HEALTHY",
+    "snowflake_platform": "HEALTHY",
+    "terraform_delivery": "HEALTHY"
+  },
+  "state_precedence": [
+    "UNHEALTHY",
+    "DEGRADED",
+    "UNKNOWN",
+    "MAINTENANCE",
+    "HEALTHY",
+    "NOT_APPLICABLE"
+  ],
+  "synthetic": true
+}

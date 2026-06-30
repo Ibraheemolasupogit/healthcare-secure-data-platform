@@ -112,9 +112,15 @@ request handling and compliance certification remain outside the local registry.
 
 ## Quality, observability and operational assurance
 
-**Implemented locally:** generator validation, deterministic manifests/checksums, negative-test registration and CI quality gates.
+**Implemented locally through M17:** generator validation, deterministic manifests/checksums,
+negative-test registration, CI quality gates, service catalogue, health states, health
+checks, SLIs, synthetic SLO targets, metadata-only error budgets, incident taxonomy,
+alert-routing blueprints, runbooks, recovery-drill catalogue, deterministic health,
+incident and drill simulations, post-incident review structure and checksum evidence.
 
-**Planned incrementally:** FHIR/HL7 rejection metrics, dbt freshness/contracts/artifacts, Snowflake query/access/load/task and cost telemetry, billing control totals, Airflow/Dataiku/Fabric outcomes, feature freshness, SLOs, alerts and runbooks. Monitoring observes owners; it does not redefine domain truth.
+No live monitoring, alerting, SIEM, ticketing, on-call integration, automatic remediation,
+production SLO enforcement or clinical assurance claim is implemented. Monitoring observes
+owners; it does not redefine domain truth.
 
 ## CI/CD and infrastructure provisioning
 
@@ -140,4 +146,4 @@ restore or failover exercise is claimed.
 
 **Partially implemented:** Milestone 2 includes local manifests, checksums, validation reports and tests. Every future claim must link to redacted, reproducible evidence for a commit and environment.
 
-Current non-goals are live Snowflake execution, formal revenue recognition, production Airflow deployment, live Dataiku execution, production ML approval, online feature serving, live Fabric/Power BI deployment or refresh, live governance enforcement, formal compliance certification, Terraform apply, live failover, automatic production rollback, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing metadata blueprints.
+Current non-goals are live Snowflake execution, formal revenue recognition, production Airflow deployment, live Dataiku execution, production ML approval, online feature serving, live Fabric/Power BI deployment or refresh, live governance enforcement, live monitoring, live alerting, live ticketing, formal compliance certification, Terraform apply, live failover, automatic remediation, automatic production rollback, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing metadata blueprints.

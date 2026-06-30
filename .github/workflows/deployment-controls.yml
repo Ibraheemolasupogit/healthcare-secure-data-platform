@@ -5,16 +5,28 @@ on:
     paths:
       - "deployment/**"
       - "governance/**"
+      - "operations/**"
+      - "recovery/**"
       - "src/healthcare_platform/deployment/**"
+      - "src/healthcare_platform/operations/**"
+      - "src/healthcare_platform/recovery/**"
       - "tests/unit/test_deployment_milestone15.py"
+      - "tests/unit/test_operations_milestone17.py"
+      - "tests/unit/test_recovery_milestone16.py"
       - ".github/workflows/deployment-controls.yml"
   push:
     branches: [main]
     paths:
       - "deployment/**"
       - "governance/**"
+      - "operations/**"
+      - "recovery/**"
       - "src/healthcare_platform/deployment/**"
+      - "src/healthcare_platform/operations/**"
+      - "src/healthcare_platform/recovery/**"
       - "tests/unit/test_deployment_milestone15.py"
+      - "tests/unit/test_operations_milestone17.py"
+      - "tests/unit/test_recovery_milestone16.py"
       - ".github/workflows/deployment-controls.yml"
   workflow_dispatch:
 
@@ -40,5 +52,12 @@ jobs:
       - run: healthcare-platform deployment verify-evidence --output-dir deployment/reference
       - run: healthcare-platform recovery validate-registry
       - run: healthcare-platform recovery simulate-failover
+      - run: healthcare-platform operations validate-registry
+      - run: healthcare-platform operations evaluate-health
+      - run: healthcare-platform operations simulate-incident
+      - run: healthcare-platform operations simulate-drill
+      - run: healthcare-platform operations generate-evidence --output-dir operations/reference --overwrite
+      - run: healthcare-platform operations verify-evidence --output-dir operations/reference
       - run: pytest tests/unit/test_deployment_milestone15.py
       - run: pytest tests/unit/test_recovery_milestone16.py
+      - run: pytest tests/unit/test_operations_milestone17.py

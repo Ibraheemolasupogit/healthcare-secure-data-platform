@@ -1,0 +1,16 @@
+{
+  "alerting_status": "DISABLED",
+  "connected_status": "NOT_CONNECTED",
+  "drill_count": 10,
+  "errors": [],
+  "health_check_count": 51,
+  "incident_category_count": 14,
+  "monitoring_status": "LOCAL_SIMULATION_ONLY",
+  "route_count": 14,
+  "runbook_count": 12,
+  "service_count": 14,
+  "sli_count": 15,
+  "slo_count": 10,
+  "valid": true,
+  "warnings": []
+}

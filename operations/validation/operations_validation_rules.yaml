@@ -1,0 +1,62 @@
+version: 1.0.0
+milestone: 17
+rule_sets:
+  registry:
+    - unique_service_ids
+    - unique_health_check_ids
+    - unique_sli_ids
+    - unique_slo_ids
+    - unique_incident_categories
+    - unique_drill_ids
+    - owners_present
+    - dependencies_resolve
+    - policy_references_resolve
+    - recovery_tiers_resolve
+  health:
+    - controlled_states_only
+    - deterministic_precedence
+    - dependency_failure_degrades_consumers
+    - unknown_never_promotes_to_healthy
+    - evidence_checksum_failure_detected
+  slo:
+    - synthetic_target_flag_required
+    - threshold_order_required
+    - error_budget_within_bounds
+    - no_production_commitment_language
+  incident:
+    - category_route_resolves
+    - runbook_resolves
+    - lifecycle_transitions_valid
+    - critical_incidents_require_escalation
+    - no_patient_payload_in_evidence
+  drill:
+    - scenario_resolves
+    - dependency_order_valid
+    - approval_required
+    - rto_rpo_evaluation_required
+    - no_cloud_action
+    - no_automatic_production_execution
+  boundaries:
+    - no_siem_deployment
+    - no_alert_delivery_integrations
+    - no_cloud_monitoring_deployment
+    - no_automatic_remediation
+    - no_live_failover
+    - no_later_milestone_work
+unsupported_claim_patterns:
+  - production monitoring is live
+  - pagerduty enabled
+  - slack alerts enabled
+  - teams alerts enabled
+  - servicenow ticket created
+  - production slo is guaranteed
+  - automatic remediation enabled
+  - live failover executed
+  - clinical assurance certified
+credential_patterns:
+  - api_key
+  - webhook_url
+  - password
+  - secret_access_key
+  - tenant_id
+  - client_secret

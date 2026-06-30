@@ -1,0 +1,378 @@
+[
+  {
+    "drill_id": "drill_primary_region_outage",
+    "evidence_outputs": [
+      "operations/reference/drill_simulation.json",
+      "operations/reference/post_incident_review.md"
+    ],
+    "expected_runbook": "rb_regional_recovery_drill",
+    "limitations": "No live failover is performed.",
+    "owner": "RECOVERY_COORDINATION",
+    "recovery_tier": "TIER_1_CRITICAL_DATA_SERVICES",
+    "required_approvals": [
+      "security_admin",
+      "platform_owner",
+      "recovery_owner"
+    ],
+    "rpo_target_minutes": 60,
+    "rto_target_minutes": 120,
+    "scenario": "primary_region_unavailable",
+    "schedule_metadata": {
+      "allowed_environment": "local_simulation",
+      "approval_requirement": "manual",
+      "automatic_execution": false,
+      "data_isolation": "synthetic_only",
+      "evidence_retention": "ret_audit_records",
+      "frequency": "quarterly",
+      "maximum_concurrency": 1,
+      "next_review_window": "2026-Q3"
+    },
+    "services": [
+      "governance_registry",
+      "cicd_controls",
+      "snowflake_platform",
+      "dbt_staging",
+      "recovery_evidence_service"
+    ],
+    "success_criteria": [
+      "governance_controls_validated_first",
+      "manual_approval_recorded",
+      "simulated_rto_within_target",
+      "simulated_rpo_within_target"
+    ],
+    "synthetic_start_condition": "primary_region_marked_unavailable"
+  },
+  {
+    "drill_id": "drill_snowflake_unavailable",
+    "evidence_outputs": [
+      "operations/reference/drill_simulation.json"
+    ],
+    "expected_runbook": "rb_recovery_readiness_failure",
+    "limitations": "No Snowflake connection is attempted.",
+    "owner": "PLATFORM_ENGINEERING",
+    "recovery_tier": "TIER_1_CRITICAL_DATA_SERVICES",
+    "required_approvals": [
+      "platform_owner"
+    ],
+    "rpo_target_minutes": 60,
+    "rto_target_minutes": 120,
+    "scenario": "snowflake_unavailable",
+    "schedule_metadata": {
+      "allowed_environment": "local_simulation",
+      "approval_requirement": "manual",
+      "automatic_execution": false,
+      "data_isolation": "synthetic_only",
+      "evidence_retention": "ret_audit_records",
+      "frequency": "semi_annual",
+      "maximum_concurrency": 1,
+      "next_review_window": "2026-Q4"
+    },
+    "services": [
+      "snowflake_platform",
+      "dbt_staging",
+      "healthcare_core"
+    ],
+    "success_criteria": [
+      "consumers_marked_degraded_or_unhealthy",
+      "platform_route_resolves",
+      "no_cloud_query_performed"
+    ],
+    "synthetic_start_condition": "snowflake_contract_unavailable"
+  },
+  {
+    "drill_id": "drill_dbt_artifact_mismatch",
+    "evidence_outputs": [
+      "operations/reference/drill_simulation.json"
+    ],
+    "expected_runbook": "rb_dbt_contract_failure",
+    "limitations": "No live dbt run is executed.",
+    "owner": "ANALYTICS_ENGINEERING",
+    "recovery_tier": "TIER_1_CRITICAL_DATA_SERVICES",
+    "required_approvals": [
+      "analytics_owner"
+    ],
+    "rpo_target_minutes": 60,
+    "rto_target_minutes": 120,
+    "scenario": "dbt_artifact_checksum_mismatch",
+    "schedule_metadata": {
+      "allowed_environment": "local_simulation",
+      "approval_requirement": "manual",
+      "automatic_execution": false,
+      "data_isolation": "synthetic_only",
+      "evidence_retention": "ret_audit_records",
+      "frequency": "quarterly",
+      "maximum_concurrency": 1,
+      "next_review_window": "2026-Q3"
+    },
+    "services": [
+      "dbt_staging",
+      "healthcare_core",
+      "billing_finance"
+    ],
+    "success_criteria": [
+      "contract_route_resolves",
+      "runbook_selected",
+      "promotion_blocked_in_metadata"
+    ],
+    "synthetic_start_condition": "dbt_checksum_mismatch"
+  },
+  {
+    "drill_id": "drill_airflow_dag_mismatch",
+    "evidence_outputs": [
+      "operations/reference/drill_simulation.json"
+    ],
+    "expected_runbook": "rb_pipeline_failure",
+    "limitations": "No Airflow scheduler is started.",
+    "owner": "DATA_ENGINEERING",
+    "recovery_tier": "TIER_2_ANALYTICS_AND_ASSURANCE",
+    "required_approvals": [
+      "data_engineering_owner"
+    ],
+    "rpo_target_minutes": 120,
+    "rto_target_minutes": 240,
+    "scenario": "airflow_dag_mismatch",
+    "schedule_metadata": {
+      "allowed_environment": "local_simulation",
+      "approval_requirement": "manual",
+      "automatic_execution": false,
+      "data_isolation": "synthetic_only",
+      "evidence_retention": "ret_audit_records",
+      "frequency": "quarterly",
+      "maximum_concurrency": 1,
+      "next_review_window": "2026-Q3"
+    },
+    "services": [
+      "airflow_orchestration",
+      "dbt_staging"
+    ],
+    "success_criteria": [
+      "airflow_service_degraded",
+      "pipeline_route_resolves",
+      "connected_mode_remains_disabled"
+    ],
+    "synthetic_start_condition": "dag_dependency_mismatch"
+  },
+  {
+    "drill_id": "drill_governance_checksum_mismatch",
+    "evidence_outputs": [
+      "operations/reference/incident_simulation.json",
+      "operations/reference/drill_simulation.json"
+    ],
+    "expected_runbook": "rb_governance_checksum_mismatch",
+    "limitations": "No live access policy is changed.",
+    "owner": "DATA_GOVERNANCE",
+    "recovery_tier": "TIER_0_CRITICAL_CONTROL_PLANE",
+    "required_approvals": [
+      "security_admin",
+      "data_governance_owner"
+    ],
+    "rpo_target_minutes": 15,
+    "rto_target_minutes": 30,
+    "scenario": "governance_checksum_mismatch",
+    "schedule_metadata": {
+      "allowed_environment": "local_simulation",
+      "approval_requirement": "manual",
+      "automatic_execution": false,
+      "data_isolation": "synthetic_only",
+      "evidence_retention": "ret_audit_records",
+      "frequency": "quarterly",
+      "maximum_concurrency": 1,
+      "next_review_window": "2026-Q3"
+    },
+    "services": [
+      "governance_registry",
+      "cicd_controls",
+      "recovery_evidence_service"
+    ],
+    "success_criteria": [
+      "fail_closed",
+      "sev_1_classified",
+      "security_route_resolves"
+    ],
+    "synthetic_start_condition": "governance_checksum_mismatch"
+  },
+  {
+    "drill_id": "drill_feature_registry_mismatch",
+    "evidence_outputs": [
+      "operations/reference/drill_simulation.json"
+    ],
+    "expected_runbook": "rb_feature_freshness_failure",
+    "limitations": "Offline feature metadata only.",
+    "owner": "DATA_SCIENCE",
+    "recovery_tier": "TIER_2_ANALYTICS_AND_ASSURANCE",
+    "required_approvals": [
+      "feature_store_owner"
+    ],
+    "rpo_target_minutes": 120,
+    "rto_target_minutes": 240,
+    "scenario": "feature_registry_mismatch",
+    "schedule_metadata": {
+      "allowed_environment": "local_simulation",
+      "approval_requirement": "manual",
+      "automatic_execution": false,
+      "data_isolation": "synthetic_only",
+      "evidence_retention": "ret_feature_materialisations",
+      "frequency": "semi_annual",
+      "maximum_concurrency": 1,
+      "next_review_window": "2026-Q4"
+    },
+    "services": [
+      "feature_store",
+      "dataiku_analytics"
+    ],
+    "success_criteria": [
+      "feature_consumers_marked_degraded",
+      "feature_route_resolves",
+      "no_online_store_claim"
+    ],
+    "synthetic_start_condition": "feature_registry_checksum_mismatch"
+  },
+  {
+    "drill_id": "drill_semantic_model_metadata_mismatch",
+    "evidence_outputs": [
+      "operations/reference/drill_simulation.json"
+    ],
+    "expected_runbook": "rb_powerbi_refresh_failure",
+    "limitations": "No Fabric or Power BI API call is made.",
+    "owner": "BI_ANALYTICS",
+    "recovery_tier": "TIER_3_REPORTING_AND_ML",
+    "required_approvals": [
+      "bi_owner"
+    ],
+    "rpo_target_minutes": 240,
+    "rto_target_minutes": 720,
+    "scenario": "semantic_model_metadata_mismatch",
+    "schedule_metadata": {
+      "allowed_environment": "local_simulation",
+      "approval_requirement": "manual",
+      "automatic_execution": false,
+      "data_isolation": "synthetic_only",
+      "evidence_retention": "ret_powerbi_extracts",
+      "frequency": "annual",
+      "maximum_concurrency": 1,
+      "next_review_window": "2027-Q1"
+    },
+    "services": [
+      "fabric_semantic_model",
+      "powerbi_reports"
+    ],
+    "success_criteria": [
+      "bi_route_resolves",
+      "refresh_acceptance_blocked",
+      "no_live_powerbi_call"
+    ],
+    "synthetic_start_condition": "semantic_metadata_checksum_mismatch"
+  },
+  {
+    "drill_id": "drill_deployment_drift",
+    "evidence_outputs": [
+      "operations/reference/drill_simulation.json"
+    ],
+    "expected_runbook": "rb_deployment_drift",
+    "limitations": "No Terraform apply or rollback is executed.",
+    "owner": "PLATFORM_ENGINEERING",
+    "recovery_tier": "TIER_0_CRITICAL_CONTROL_PLANE",
+    "required_approvals": [
+      "release_manager"
+    ],
+    "rpo_target_minutes": 15,
+    "rto_target_minutes": 30,
+    "scenario": "deployment_drift",
+    "schedule_metadata": {
+      "allowed_environment": "local_simulation",
+      "approval_requirement": "manual",
+      "automatic_execution": false,
+      "data_isolation": "synthetic_only",
+      "evidence_retention": "ret_audit_records",
+      "frequency": "quarterly",
+      "maximum_concurrency": 1,
+      "next_review_window": "2026-Q3"
+    },
+    "services": [
+      "cicd_controls",
+      "terraform_delivery"
+    ],
+    "success_criteria": [
+      "deployment_route_resolves",
+      "promotion_blocked",
+      "rollback_reference_present"
+    ],
+    "synthetic_start_condition": "destructive_drift_fixture"
+  },
+  {
+    "drill_id": "drill_stale_recovery_point",
+    "evidence_outputs": [
+      "operations/reference/drill_simulation.json"
+    ],
+    "expected_runbook": "rb_recovery_readiness_failure",
+    "limitations": "Uses Milestone 16 metadata only.",
+    "owner": "RECOVERY_COORDINATION",
+    "recovery_tier": "TIER_1_CRITICAL_DATA_SERVICES",
+    "required_approvals": [
+      "recovery_owner",
+      "platform_owner"
+    ],
+    "rpo_target_minutes": 60,
+    "rto_target_minutes": 120,
+    "scenario": "stale_recovery_point",
+    "schedule_metadata": {
+      "allowed_environment": "local_simulation",
+      "approval_requirement": "manual",
+      "automatic_execution": false,
+      "data_isolation": "synthetic_only",
+      "evidence_retention": "ret_audit_records",
+      "frequency": "semi_annual",
+      "maximum_concurrency": 1,
+      "next_review_window": "2026-Q4"
+    },
+    "services": [
+      "recovery_evidence_service",
+      "snowflake_platform"
+    ],
+    "success_criteria": [
+      "rpo_breach_detected",
+      "failover_not_recommended",
+      "manual_approval_required"
+    ],
+    "synthetic_start_condition": "recovery_point_age_exceeds_rpo"
+  },
+  {
+    "drill_id": "drill_failed_failback_validation",
+    "evidence_outputs": [
+      "operations/reference/drill_simulation.json",
+      "operations/reference/post_incident_review.md"
+    ],
+    "expected_runbook": "rb_regional_recovery_drill",
+    "limitations": "No live failback is executed.",
+    "owner": "RECOVERY_COORDINATION",
+    "recovery_tier": "TIER_0_CRITICAL_CONTROL_PLANE",
+    "required_approvals": [
+      "security_admin",
+      "recovery_owner"
+    ],
+    "rpo_target_minutes": 15,
+    "rto_target_minutes": 30,
+    "scenario": "failed_failback_validation",
+    "schedule_metadata": {
+      "allowed_environment": "local_simulation",
+      "approval_requirement": "manual",
+      "automatic_execution": false,
+      "data_isolation": "synthetic_only",
+      "evidence_retention": "ret_audit_records",
+      "frequency": "annual",
+      "maximum_concurrency": 1,
+      "next_review_window": "2027-Q1"
+    },
+    "services": [
+      "recovery_evidence_service",
+      "governance_registry",
+      "cicd_controls"
+    ],
+    "success_criteria": [
+      "failback_blocked",
+      "governance_review_required",
+      "no_automatic_failback"
+    ],
+    "synthetic_start_condition": "failback_validation_fails"
+  }
+]

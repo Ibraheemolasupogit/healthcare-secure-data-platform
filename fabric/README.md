@@ -33,3 +33,8 @@ references before any live Fabric promotion. No tenant deployment is performed.
 Milestone 16 recovery controls document workspace recreation, connection rebinding,
 sensitivity restoration and refresh-disabled-until-validated behaviour. No tenant recovery
 is performed.
+## Milestone 17 operations boundary
+
+Operational readiness consumes Fabric/Power BI semantic-model, relationship,
+measure, KPI, RLS/OLS and refresh-contract metadata as local health checks. It
+does not call Fabric or Power BI APIs or create live refresh alerts.

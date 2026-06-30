@@ -26,6 +26,7 @@ jobs:
       - run: healthcare-platform governance validate-registry
       - run: healthcare-platform deployment validate
       - run: healthcare-platform recovery validate-registry
+      - run: healthcare-platform operations validate-registry
       - run: healthcare-platform interoperability validate-fhir --input-dir data/samples/interoperability/fhir
       - run: healthcare-platform interoperability validate-hl7 --input-dir data/samples/interoperability/hl7
       - name: Expected FHIR failures

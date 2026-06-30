@@ -1,0 +1,133 @@
+{
+  "categories": [
+    "DATA_FRESHNESS",
+    "DATA_QUALITY",
+    "CONTRACT_FAILURE",
+    "PIPELINE_FAILURE",
+    "ACCESS_CONTROL",
+    "SECURITY_EVENT",
+    "BILLING_CONTROL",
+    "MODEL_GOVERNANCE",
+    "FEATURE_FRESHNESS",
+    "SEMANTIC_REFRESH",
+    "DEPLOYMENT_DRIFT",
+    "RECOVERY_READINESS",
+    "EVIDENCE_INTEGRITY",
+    "CONFIGURATION_ERROR"
+  ],
+  "clinical_severity_claim": false,
+  "lifecycle": {
+    "states": [
+      "DETECTED",
+      "TRIAGED",
+      "ASSIGNED",
+      "INVESTIGATING",
+      "MITIGATING",
+      "MONITORING",
+      "RESOLVED",
+      "CLOSED",
+      "FALSE_POSITIVE",
+      "ACCEPTED_RISK",
+      "REOPENED"
+    ],
+    "transitions": {
+      "ACCEPTED_RISK": [
+        "CLOSED",
+        "REOPENED"
+      ],
+      "ASSIGNED": [
+        "INVESTIGATING"
+      ],
+      "CLOSED": [],
+      "DETECTED": [
+        "TRIAGED",
+        "FALSE_POSITIVE"
+      ],
+      "FALSE_POSITIVE": [
+        "CLOSED"
+      ],
+      "INVESTIGATING": [
+        "MITIGATING",
+        "ACCEPTED_RISK"
+      ],
+      "MITIGATING": [
+        "MONITORING"
+      ],
+      "MONITORING": [
+        "RESOLVED",
+        "REOPENED"
+      ],
+      "REOPENED": [
+        "INVESTIGATING"
+      ],
+      "RESOLVED": [
+        "CLOSED",
+        "REOPENED"
+      ],
+      "TRIAGED": [
+        "ASSIGNED",
+        "ACCEPTED_RISK"
+      ]
+    }
+  },
+  "severity_model": {
+    "clinical_severity_claim": false,
+    "levels": [
+      {
+        "affected_tiers": [
+          "TIER_0_CRITICAL_CONTROL_PLANE",
+          "TIER_1_CRITICAL_DATA_SERVICES"
+        ],
+        "blast_radius": "platform_or_domain_wide",
+        "escalation_required": true,
+        "governance_impact": "critical",
+        "severity_id": "SEV_1_CRITICAL",
+        "user_facing_impact": "high"
+      },
+      {
+        "affected_tiers": [
+          "TIER_1_CRITICAL_DATA_SERVICES",
+          "TIER_2_ANALYTICS_AND_ASSURANCE"
+        ],
+        "blast_radius": "domain_or_multi_service",
+        "escalation_required": true,
+        "governance_impact": "high",
+        "severity_id": "SEV_2_HIGH",
+        "user_facing_impact": "medium"
+      },
+      {
+        "affected_tiers": [
+          "TIER_2_ANALYTICS_AND_ASSURANCE",
+          "TIER_3_REPORTING_AND_ML"
+        ],
+        "blast_radius": "service_or_product",
+        "escalation_required": true,
+        "governance_impact": "moderate",
+        "severity_id": "SEV_3_MEDIUM",
+        "user_facing_impact": "low"
+      },
+      {
+        "affected_tiers": [
+          "TIER_3_REPORTING_AND_ML",
+          "TIER_4_NON_CRITICAL_REFERENCE"
+        ],
+        "blast_radius": "limited",
+        "escalation_required": false,
+        "governance_impact": "low",
+        "severity_id": "SEV_4_LOW",
+        "user_facing_impact": "minimal"
+      },
+      {
+        "affected_tiers": [
+          "TIER_4_NON_CRITICAL_REFERENCE"
+        ],
+        "blast_radius": "informational",
+        "escalation_required": false,
+        "governance_impact": "none",
+        "severity_id": "SEV_5_INFORMATIONAL",
+        "user_facing_impact": "none"
+      }
+    ]
+  },
+  "synthetic": true
+}

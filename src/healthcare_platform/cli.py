@@ -53,6 +53,18 @@ from healthcare_platform.interoperability.service import (
     validate_corpus,
 )
 from healthcare_platform.logging_config import configure_logging
+from healthcare_platform.operations import (
+    build_operations_evidence,
+    describe_drill,
+    evaluate_health,
+    load_operations_registry,
+    simulate_drill,
+    simulate_incident,
+    validate_operations_registry,
+)
+from healthcare_platform.operations import (
+    verify_evidence as verify_operations_evidence,
+)
 from healthcare_platform.powerbi import (
     build_reference_outputs as build_powerbi_reference_outputs,
 )
@@ -382,6 +394,33 @@ def build_parser() -> argparse.ArgumentParser:
         "verify-evidence", help="verify recovery evidence checksums"
     )
     verify_recovery.add_argument("--output-dir", type=Path, default=Path("recovery/reference"))
+    operations = subparsers.add_parser(
+        "operations",
+        help="validate local operational-readiness controls and simulations",
+    )
+    operations_commands = operations.add_subparsers(dest="operations_command", required=True)
+    operations_commands.add_parser("validate-registry", help="validate operations registry")
+    operations_commands.add_parser("list-services", help="list registered operational services")
+    operations_commands.add_parser("list-slos", help="list synthetic SLO targets")
+    operations_commands.add_parser("list-drills", help="list local recovery drills")
+    describe_operations_drill = operations_commands.add_parser(
+        "describe-drill", help="describe one recovery-drill definition"
+    )
+    describe_operations_drill.add_argument("drill_id")
+    operations_commands.add_parser("evaluate-health", help="evaluate local synthetic health")
+    operations_commands.add_parser("simulate-incident", help="simulate local incident triage")
+    operations_commands.add_parser("simulate-drill", help="simulate local recovery drill")
+    generate_operations = operations_commands.add_parser(
+        "generate-evidence", help="generate deterministic local operations evidence"
+    )
+    generate_operations.add_argument(
+        "--output-dir", type=Path, default=Path("operations/reference")
+    )
+    generate_operations.add_argument("--overwrite", action="store_true")
+    verify_operations = operations_commands.add_parser(
+        "verify-evidence", help="verify operations evidence checksums"
+    )
+    verify_operations.add_argument("--output-dir", type=Path, default=Path("operations/reference"))
     return parser
 
 
@@ -795,6 +834,61 @@ def _recovery(args: argparse.Namespace) -> int:
     return 2
 
 
+def _operations(args: argparse.Namespace) -> int:
+    if args.operations_command == "validate-registry":
+        result = validate_operations_registry()
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["valid"] else 1
+    if args.operations_command == "list-services":
+        registry = load_operations_registry()
+        for service in registry["services"]:
+            print(f"{service['service_id']}: {service['recovery_tier']} / {service['criticality']}")
+        return 0
+    if args.operations_command == "list-slos":
+        registry = load_operations_registry()
+        for slo in registry["slos"]:
+            print(f"{slo['slo_id']}: {slo['target']}% over {slo['window']}")
+        return 0
+    if args.operations_command == "list-drills":
+        registry = load_operations_registry()
+        for drill in registry["drills"]:
+            print(f"{drill['drill_id']}: {drill['scenario']}")
+        return 0
+    if args.operations_command == "describe-drill":
+        drill = describe_drill(args.drill_id)
+        if drill is None:
+            print(f"error: unknown operations drill {args.drill_id}")
+            return 1
+        print(json.dumps(drill, indent=2, sort_keys=True))
+        return 0
+    if args.operations_command == "evaluate-health":
+        result = evaluate_health()
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["overall_state"] in {"HEALTHY", "DEGRADED"} else 1
+    if args.operations_command == "simulate-incident":
+        result = simulate_incident()
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if args.operations_command == "simulate-drill":
+        result = simulate_drill()
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] != "DRILL_FAILED" else 1
+    if args.operations_command == "generate-evidence":
+        evidence = build_operations_evidence(args.output_dir, overwrite=args.overwrite)
+        print(f"output_dir: {evidence.output_dir}")
+        print(f"validation_report: {evidence.validation_report}")
+        print(f"health_report: {evidence.health_report}")
+        print(f"incident_simulation: {evidence.incident_simulation}")
+        print(f"drill_simulation: {evidence.drill_simulation}")
+        print(f"checksums: {evidence.checksums}")
+        return 0
+    if args.operations_command == "verify-evidence":
+        result = verify_operations_evidence(args.output_dir)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["valid"] else 1
+    return 2
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the CLI."""
     args = build_parser().parse_args(argv)
@@ -837,6 +931,8 @@ def main(argv: list[str] | None = None) -> int:
             return _deployment(args)
         if args.command == "recovery":
             return _recovery(args)
+        if args.command == "operations":
+            return _operations(args)
     except (ValueError, OSError, json.JSONDecodeError) as error:
         print(f"error: {error}")
         return 2

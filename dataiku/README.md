@@ -37,3 +37,8 @@ connected promotion. No live Dataiku API call is added.
 Milestone 16 recovery controls document project bundle, code-environment, model registry,
 approved model, feature-set and scenario-state restoration. No live Dataiku restore is
 performed.
+## Milestone 17 operations boundary
+
+Operational readiness consumes Dataiku trusted-input, approval, feature-set,
+model-card and prediction-output contract metadata as local health checks. It
+does not connect to a live Dataiku instance or create model-monitoring alerts.

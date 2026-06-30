@@ -24,3 +24,7 @@ PYTHONPATH=src python -m healthcare_platform.cli deployment verify-evidence
 Milestone 16 recovery controls reuse M15 release manifests, deployment manifests, plan
 metadata, approval gates and rollback references. Stale plans must never be reused during
 recovery.
+
+Milestone 17 operations controls use deployment manifests, drift reports, rollback
+references and evidence checksums as health signals. They do not perform live apply,
+rollback, alert delivery or automatic remediation.

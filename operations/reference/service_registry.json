@@ -1,0 +1,460 @@
+[
+  {
+    "audit_event_ref": "aud_policy_change",
+    "business_owner_role": "SECURITY_ADMIN",
+    "criticality": "critical",
+    "dependencies": [],
+    "environment": "all",
+    "health_checks": [
+      "chk_governance_registry_checksum",
+      "chk_governance_policy_resolution",
+      "chk_governance_sensitive_field_coverage"
+    ],
+    "incident_routing_group": "DATA_GOVERNANCE",
+    "lifecycle_status": "active_metadata_contract",
+    "name": "Governance registry",
+    "owner_role": "DATA_GOVERNANCE_STEWARD",
+    "recovery_tier": "TIER_0_CRITICAL_CONTROL_PLANE",
+    "runbook_refs": [
+      "rb_governance_checksum_mismatch"
+    ],
+    "service_id": "governance_registry",
+    "sli_refs": [
+      "sli_governance_validation_success"
+    ],
+    "slo_refs": [
+      "slo_governance_validation_100"
+    ],
+    "synthetic_only": true
+  },
+  {
+    "audit_event_ref": "aud_evidence_generation",
+    "business_owner_role": "RELEASE_MANAGER",
+    "criticality": "critical",
+    "dependencies": [
+      "governance_registry"
+    ],
+    "environment": "all",
+    "health_checks": [
+      "chk_release_manifest_integrity",
+      "chk_deployment_manifest_integrity",
+      "chk_drift_report_status"
+    ],
+    "incident_routing_group": "PLATFORM_ENGINEERING",
+    "lifecycle_status": "active_metadata_contract",
+    "name": "Protected CI/CD controls",
+    "owner_role": "PLATFORM_ENGINEERING",
+    "recovery_tier": "TIER_0_CRITICAL_CONTROL_PLANE",
+    "runbook_refs": [
+      "rb_deployment_drift"
+    ],
+    "service_id": "cicd_controls",
+    "sli_refs": [
+      "sli_deployment_validation_success"
+    ],
+    "slo_refs": [
+      "slo_deployment_validation_99"
+    ],
+    "synthetic_only": true
+  },
+  {
+    "audit_event_ref": "aud_evidence_generation",
+    "business_owner_role": "PLATFORM_OWNER",
+    "criticality": "high",
+    "dependencies": [
+      "governance_registry",
+      "cicd_controls"
+    ],
+    "environment": "dev_test_prod",
+    "health_checks": [
+      "chk_terraform_plan_metadata",
+      "chk_drift_report_status",
+      "chk_rollback_reference"
+    ],
+    "incident_routing_group": "PLATFORM_ENGINEERING",
+    "lifecycle_status": "blueprint_only",
+    "name": "Terraform delivery contract",
+    "owner_role": "PLATFORM_ENGINEERING",
+    "recovery_tier": "TIER_1_CRITICAL_DATA_SERVICES",
+    "runbook_refs": [
+      "rb_deployment_drift"
+    ],
+    "service_id": "terraform_delivery",
+    "sli_refs": [
+      "sli_deployment_validation_success"
+    ],
+    "slo_refs": [
+      "slo_deployment_validation_99"
+    ],
+    "synthetic_only": true
+  },
+  {
+    "audit_event_ref": "aud_evidence_generation",
+    "business_owner_role": "DATA_PLATFORM_OWNER",
+    "criticality": "critical",
+    "dependencies": [
+      "governance_registry",
+      "terraform_delivery"
+    ],
+    "environment": "dev_test_prod",
+    "health_checks": [
+      "chk_snowflake_contract_available",
+      "chk_snowflake_rbac_metadata",
+      "chk_snowflake_inventory_intact",
+      "chk_snowflake_no_destructive_drift",
+      "chk_recovery_registry_valid"
+    ],
+    "incident_routing_group": "PLATFORM_ENGINEERING",
+    "lifecycle_status": "static_foundation",
+    "name": "Snowflake platform foundation",
+    "owner_role": "PLATFORM_ENGINEERING",
+    "recovery_tier": "TIER_1_CRITICAL_DATA_SERVICES",
+    "runbook_refs": [
+      "rb_recovery_readiness_failure"
+    ],
+    "service_id": "snowflake_platform",
+    "sli_refs": [
+      "sli_contract_validation_success",
+      "sli_recovery_readiness_rate"
+    ],
+    "slo_refs": [
+      "slo_contract_validation_99",
+      "slo_recovery_drill_95"
+    ],
+    "synthetic_only": true
+  },
+  {
+    "audit_event_ref": "aud_evidence_generation",
+    "business_owner_role": "DATA_PRODUCT_OWNER",
+    "criticality": "high",
+    "dependencies": [
+      "snowflake_platform",
+      "governance_registry"
+    ],
+    "environment": "dev_test_prod",
+    "health_checks": [
+      "chk_dbt_parse_status",
+      "chk_dbt_contract_coverage",
+      "chk_dbt_freshness_metadata",
+      "chk_dbt_model_graph_integrity",
+      "chk_dbt_artifact_checksum"
+    ],
+    "incident_routing_group": "ANALYTICS_ENGINEERING",
+    "lifecycle_status": "active_metadata_contract",
+    "name": "dbt staging and contracts",
+    "owner_role": "ANALYTICS_ENGINEERING",
+    "recovery_tier": "TIER_1_CRITICAL_DATA_SERVICES",
+    "runbook_refs": [
+      "rb_dbt_contract_failure",
+      "rb_stale_data"
+    ],
+    "service_id": "dbt_staging",
+    "sli_refs": [
+      "sli_pipeline_success_rate",
+      "sli_contract_validation_success",
+      "sli_data_freshness_delay"
+    ],
+    "slo_refs": [
+      "slo_pipeline_success_99",
+      "slo_contract_validation_99"
+    ],
+    "synthetic_only": true
+  },
+  {
+    "audit_event_ref": "aud_sensitive_object_access",
+    "business_owner_role": "CLINICAL_DATA_OWNER",
+    "criticality": "high",
+    "dependencies": [
+      "dbt_staging",
+      "governance_registry"
+    ],
+    "environment": "dev_test_prod",
+    "health_checks": [
+      "chk_core_contract_status",
+      "chk_core_data_quality",
+      "chk_core_freshness"
+    ],
+    "incident_routing_group": "DATA_ENGINEERING",
+    "lifecycle_status": "governed_data_product",
+    "name": "Healthcare core data products",
+    "owner_role": "ANALYTICS_ENGINEERING",
+    "recovery_tier": "TIER_1_CRITICAL_DATA_SERVICES",
+    "runbook_refs": [
+      "rb_pipeline_failure",
+      "rb_stale_data"
+    ],
+    "service_id": "healthcare_core",
+    "sli_refs": [
+      "sli_test_pass_rate",
+      "sli_data_freshness_delay"
+    ],
+    "slo_refs": [
+      "slo_pipeline_success_99"
+    ],
+    "synthetic_only": true
+  },
+  {
+    "audit_event_ref": "aud_evidence_generation",
+    "business_owner_role": "REVENUE_OWNER",
+    "criticality": "high",
+    "dependencies": [
+      "dbt_staging",
+      "healthcare_core"
+    ],
+    "environment": "dev_test_prod",
+    "health_checks": [
+      "chk_billing_reconciliation",
+      "chk_billing_quality_controls",
+      "chk_billing_freshness"
+    ],
+    "incident_routing_group": "REVENUE_ASSURANCE",
+    "lifecycle_status": "governed_data_product",
+    "name": "Billing and finance marts",
+    "owner_role": "FINANCE_ANALYTICS",
+    "recovery_tier": "TIER_2_ANALYTICS_AND_ASSURANCE",
+    "runbook_refs": [
+      "rb_reconciliation_control_failure",
+      "rb_pipeline_failure"
+    ],
+    "service_id": "billing_finance",
+    "sli_refs": [
+      "sli_reconciliation_control_pass_rate",
+      "sli_unresolved_critical_exception_count"
+    ],
+    "slo_refs": [
+      "slo_reconciliation_99"
+    ],
+    "synthetic_only": true
+  },
+  {
+    "audit_event_ref": "aud_evidence_generation",
+    "business_owner_role": "FINANCE_ANALYTICS",
+    "criticality": "high",
+    "dependencies": [
+      "billing_finance",
+      "governance_registry"
+    ],
+    "environment": "dev_test_prod",
+    "health_checks": [
+      "chk_assurance_exception_inventory",
+      "chk_assurance_evidence_checksum",
+      "chk_assurance_lifecycle_metadata"
+    ],
+    "incident_routing_group": "REVENUE_ASSURANCE",
+    "lifecycle_status": "active_metadata_contract",
+    "name": "Assurance controls and evidence",
+    "owner_role": "REVENUE_ASSURANCE",
+    "recovery_tier": "TIER_2_ANALYTICS_AND_ASSURANCE",
+    "runbook_refs": [
+      "rb_reconciliation_control_failure",
+      "rb_evidence_checksum_failure"
+    ],
+    "service_id": "assurance_controls",
+    "sli_refs": [
+      "sli_reconciliation_control_pass_rate",
+      "sli_evidence_checksum_success"
+    ],
+    "slo_refs": [
+      "slo_evidence_checksum_100",
+      "slo_reconciliation_99"
+    ],
+    "synthetic_only": true
+  },
+  {
+    "audit_event_ref": "aud_evidence_generation",
+    "business_owner_role": "DATA_PLATFORM_OWNER",
+    "criticality": "high",
+    "dependencies": [
+      "dbt_staging",
+      "assurance_controls"
+    ],
+    "environment": "local_dev",
+    "health_checks": [
+      "chk_airflow_dag_import",
+      "chk_airflow_task_dependencies",
+      "chk_airflow_connected_mode_disabled",
+      "chk_airflow_run_manifest",
+      "chk_airflow_failure_callback_metadata"
+    ],
+    "incident_routing_group": "DATA_ENGINEERING",
+    "lifecycle_status": "local_blueprint",
+    "name": "Airflow orchestration",
+    "owner_role": "DATA_ENGINEERING",
+    "recovery_tier": "TIER_2_ANALYTICS_AND_ASSURANCE",
+    "runbook_refs": [
+      "rb_pipeline_failure"
+    ],
+    "service_id": "airflow_orchestration",
+    "sli_refs": [
+      "sli_pipeline_success_rate"
+    ],
+    "slo_refs": [
+      "slo_pipeline_success_99"
+    ],
+    "synthetic_only": true
+  },
+  {
+    "audit_event_ref": "aud_model_approval",
+    "business_owner_role": "MODEL_OWNER",
+    "criticality": "medium",
+    "dependencies": [
+      "feature_store",
+      "governance_registry"
+    ],
+    "environment": "local_reference",
+    "health_checks": [
+      "chk_dataiku_trusted_inputs",
+      "chk_dataiku_model_approval",
+      "chk_dataiku_feature_set_version",
+      "chk_dataiku_model_card",
+      "chk_dataiku_prediction_contract"
+    ],
+    "incident_routing_group": "DATA_SCIENCE",
+    "lifecycle_status": "local_reference",
+    "name": "Dataiku analytics and model blueprint",
+    "owner_role": "DATA_SCIENCE",
+    "recovery_tier": "TIER_3_REPORTING_AND_ML",
+    "runbook_refs": [
+      "rb_model_output_validation_failure"
+    ],
+    "service_id": "dataiku_analytics",
+    "sli_refs": [
+      "sli_model_output_validation_rate"
+    ],
+    "slo_refs": [
+      "slo_model_output_validation_98"
+    ],
+    "synthetic_only": true
+  },
+  {
+    "audit_event_ref": "aud_feature_approval",
+    "business_owner_role": "FEATURE_STORE_OWNER",
+    "criticality": "high",
+    "dependencies": [
+      "healthcare_core",
+      "governance_registry"
+    ],
+    "environment": "local_reference",
+    "health_checks": [
+      "chk_feature_registry_valid",
+      "chk_feature_point_in_time_metadata",
+      "chk_feature_freshness_state",
+      "chk_feature_consumer_compatibility",
+      "chk_feature_retrieval_evidence"
+    ],
+    "incident_routing_group": "DATA_SCIENCE",
+    "lifecycle_status": "local_reference",
+    "name": "Governed offline feature store",
+    "owner_role": "DATA_SCIENCE",
+    "recovery_tier": "TIER_2_ANALYTICS_AND_ASSURANCE",
+    "runbook_refs": [
+      "rb_feature_freshness_failure"
+    ],
+    "service_id": "feature_store",
+    "sli_refs": [
+      "sli_feature_freshness_rate"
+    ],
+    "slo_refs": [
+      "slo_feature_freshness_98"
+    ],
+    "synthetic_only": true
+  },
+  {
+    "audit_event_ref": "aud_semantic_model_promotion",
+    "business_owner_role": "ANALYTICS_OWNER",
+    "criticality": "medium",
+    "dependencies": [
+      "healthcare_core",
+      "billing_finance",
+      "governance_registry"
+    ],
+    "environment": "local_metadata",
+    "health_checks": [
+      "chk_fabric_semantic_metadata",
+      "chk_fabric_relationship_integrity",
+      "chk_fabric_measure_kpi_integrity",
+      "chk_fabric_rls_ols_metadata"
+    ],
+    "incident_routing_group": "BI_ANALYTICS",
+    "lifecycle_status": "local_metadata",
+    "name": "Fabric semantic model",
+    "owner_role": "BI_ANALYTICS",
+    "recovery_tier": "TIER_3_REPORTING_AND_ML",
+    "runbook_refs": [
+      "rb_powerbi_refresh_failure"
+    ],
+    "service_id": "fabric_semantic_model",
+    "sli_refs": [
+      "sli_semantic_refresh_success_rate"
+    ],
+    "slo_refs": [
+      "slo_semantic_refresh_99"
+    ],
+    "synthetic_only": true
+  },
+  {
+    "audit_event_ref": "aud_semantic_model_promotion",
+    "business_owner_role": "ANALYTICS_OWNER",
+    "criticality": "medium",
+    "dependencies": [
+      "fabric_semantic_model",
+      "governance_registry"
+    ],
+    "environment": "local_metadata",
+    "health_checks": [
+      "chk_powerbi_refresh_contract",
+      "chk_powerbi_report_specification",
+      "chk_powerbi_security_metadata"
+    ],
+    "incident_routing_group": "BI_ANALYTICS",
+    "lifecycle_status": "local_metadata",
+    "name": "Power BI report portfolio",
+    "owner_role": "BI_ANALYTICS",
+    "recovery_tier": "TIER_3_REPORTING_AND_ML",
+    "runbook_refs": [
+      "rb_powerbi_refresh_failure"
+    ],
+    "service_id": "powerbi_reports",
+    "sli_refs": [
+      "sli_semantic_refresh_success_rate"
+    ],
+    "slo_refs": [
+      "slo_semantic_refresh_99"
+    ],
+    "synthetic_only": true
+  },
+  {
+    "audit_event_ref": "aud_evidence_generation",
+    "business_owner_role": "PLATFORM_OWNER",
+    "criticality": "critical",
+    "dependencies": [
+      "governance_registry",
+      "cicd_controls"
+    ],
+    "environment": "local_reference",
+    "health_checks": [
+      "chk_recovery_registry_valid",
+      "chk_recovery_evidence_checksum",
+      "chk_recovery_manifest_integrity"
+    ],
+    "incident_routing_group": "RECOVERY_COORDINATION",
+    "lifecycle_status": "local_reference",
+    "name": "Recovery evidence service",
+    "owner_role": "RECOVERY_COORDINATION",
+    "recovery_tier": "TIER_0_CRITICAL_CONTROL_PLANE",
+    "runbook_refs": [
+      "rb_recovery_readiness_failure",
+      "rb_regional_recovery_drill"
+    ],
+    "service_id": "recovery_evidence_service",
+    "sli_refs": [
+      "sli_recovery_readiness_rate",
+      "sli_mean_simulated_recovery_time",
+      "sli_simulated_rpo_compliance_rate"
+    ],
+    "slo_refs": [
+      "slo_recovery_drill_95"
+    ],
+    "synthetic_only": true
+  }
+]

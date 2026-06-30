@@ -1,0 +1,80 @@
+{
+  "affected_services": [
+    "governance_registry",
+    "cicd_controls",
+    "snowflake_platform",
+    "dbt_staging",
+    "recovery_evidence_service"
+  ],
+  "approval_required": true,
+  "automatic_execution": false,
+  "cloud_action_performed": false,
+  "drill_id": "drill_primary_region_outage",
+  "expected_status": "DRILL_READY_WITH_APPROVAL",
+  "health_snapshot": {
+    "airflow_orchestration": "DEGRADED",
+    "assurance_controls": "DEGRADED",
+    "billing_finance": "DEGRADED",
+    "cicd_controls": "HEALTHY",
+    "dataiku_analytics": "DEGRADED",
+    "dbt_staging": "DEGRADED",
+    "fabric_semantic_model": "DEGRADED",
+    "feature_store": "DEGRADED",
+    "governance_registry": "HEALTHY",
+    "healthcare_core": "DEGRADED",
+    "powerbi_reports": "DEGRADED",
+    "recovery_evidence_service": "UNHEALTHY",
+    "snowflake_platform": "UNHEALTHY",
+    "terraform_delivery": "HEALTHY"
+  },
+  "limitations": "Local recovery-drill simulation only; no cloud action performed.",
+  "live_failover_executed": false,
+  "recovery_point_age_minutes": 45,
+  "required_approvals": [
+    "security_admin",
+    "platform_owner",
+    "recovery_owner"
+  ],
+  "route": {
+    "approval_requirement": "recovery_owner",
+    "audit_event": "aud_evidence_generation",
+    "escalation_window": "15m",
+    "incident_type": "RECOVERY_READINESS",
+    "live_integration_status": "disabled",
+    "notification_status": "disabled",
+    "primary_owner": "RECOVERY_COORDINATION",
+    "route_id": "route_recovery_readiness_critical",
+    "runbook": "rb_recovery_readiness_failure",
+    "secondary_owner": "PLATFORM_ENGINEERING",
+    "severity": "SEV_1_CRITICAL"
+  },
+  "rpo_met": true,
+  "rpo_target_minutes": 60,
+  "rto_met": true,
+  "rto_target_minutes": 120,
+  "runbook": {
+    "containment": "Keep drill local and synthetic.",
+    "diagnostic_steps": [
+      "Load Milestone 16 recovery sequence.",
+      "Verify governance and deployment controls first."
+    ],
+    "escalation": "PLATFORM_ENGINEERING",
+    "evidence": "operations/reference/drill_simulation.json",
+    "execution_status": "local_simulation_only",
+    "limitations": "No live failover, failback, DNS, account or cloud action.",
+    "owner": "RECOVERY_COORDINATION",
+    "prerequisites": [
+      "manual_approval",
+      "recovery_registry_available"
+    ],
+    "recovery_steps": "Simulate recovery ordering and validate RTO/RPO metadata.",
+    "rollback": "No live rollback; simulation reset only.",
+    "runbook_id": "rb_regional_recovery_drill",
+    "trigger": "RECOVERY_READINESS",
+    "validation": "drill_status_DRILL_PASSED_or_READY_WITH_APPROVAL"
+  },
+  "scenario": "primary_region_unavailable",
+  "simulated_duration_minutes": 110,
+  "status": "DRILL_READY_WITH_APPROVAL",
+  "synthetic": true
+}

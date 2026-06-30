@@ -27,3 +27,4 @@ ADRs use: status/date, context, decision, consequences, alternatives, and valida
 | 0021 | Protected CI/CD and deployment-control ownership |
 | 0022 | Active/passive recovery strategy |
 | 0023 | Metadata-first operational observability |
+| 0024 | Final platform integration and local release-readiness |

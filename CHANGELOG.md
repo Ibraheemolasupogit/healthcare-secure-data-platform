@@ -52,3 +52,7 @@ All notable changes will follow Keep a Changelog conventions. The project does n
   automation with service health metadata, SLIs, synthetic SLOs, error budgets,
   incident taxonomy, disabled alert-routing blueprints, runbooks, drill scenarios,
   local simulations, evidence outputs, guardrails and ADR.
+- Milestone 18 enterprise integration validation and portfolio release-readiness
+  with a deterministic golden path, capability and technology matrices, ownership
+  matrix, consolidated evidence index, claim validation, local v1.0 release
+  manifest, recruiter summary, engineering review guide, demo script and ADR.

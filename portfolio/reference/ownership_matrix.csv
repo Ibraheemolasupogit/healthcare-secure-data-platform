@@ -1,0 +1,17 @@
+domain,primary_owner,owns,does_not_own,overlap_resolution
+ingestion,Interoperability service,Python/Snowflake raw contracts,dbt transformations,Primary owner is authoritative; overlays reference rather than replace it.
+interoperability,FHIR/HL7 contracts,config/interoperability,formal conformance,Primary owner is authoritative; overlays reference rather than replace it.
+snowflake_infrastructure,Snowflake foundation,snowflake and terraform,business logic,Primary owner is authoritative; overlays reference rather than replace it.
+dbt_transformations,dbt,staging/intermediate/curated models,orchestration,Primary owner is authoritative; overlays reference rather than replace it.
+healthcare_core,dbt healthcare core,conformed healthcare entities,billing calculations,Primary owner is authoritative; overlays reference rather than replace it.
+billing_and_finance,dbt billing/finance,finance facts and controls,BI semantic recreation,Primary owner is authoritative; overlays reference rather than replace it.
+assurance,dbt assurance layer,reconciliation and exceptions,finance close certification,Primary owner is authoritative; overlays reference rather than replace it.
+orchestration,Airflow,cross-platform scheduling metadata,dbt graph semantics,Primary owner is authoritative; overlays reference rather than replace it.
+dataiku,Dataiku blueprint,ML workflow and model cards,warehouse transformations,Primary owner is authoritative; overlays reference rather than replace it.
+feature_store,Feature store,offline features and retrieval,online serving,Primary owner is authoritative; overlays reference rather than replace it.
+fabric_powerbi,Fabric and Power BI,semantic consumption and reports,curated transformations,Primary owner is authoritative; overlays reference rather than replace it.
+governance,Governance registry,policy metadata and access simulation,platform ownership replacement,Primary owner is authoritative; overlays reference rather than replace it.
+deployment,Deployment controls,promotion gates and drift simulation,live apply,Primary owner is authoritative; overlays reference rather than replace it.
+recovery,Recovery registry,recovery tiers and failover design,live failover,Primary owner is authoritative; overlays reference rather than replace it.
+operations,Operations registry,"health, incidents and drills",live alerting,Primary owner is authoritative; overlays reference rather than replace it.
+evidence,Portfolio evidence,final evidence and release manifest,fabricated live proof,Primary owner is authoritative; overlays reference rather than replace it.

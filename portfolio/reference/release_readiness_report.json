@@ -1,0 +1,11 @@
+{
+  "connected_service_status": "NOT_CONNECTED",
+  "deployment_status": "NOT_DEPLOYED",
+  "limitations": [
+    "No cloud credentials or live platform connections.",
+    "No production, compliance, clinical, monitoring or resilience claim."
+  ],
+  "release_status": "PORTFOLIO_RELEASE_READY_WITH_LIMITATIONS",
+  "status": "READY_FOR_PORTFOLIO_REVIEW",
+  "synthetic": true
+}

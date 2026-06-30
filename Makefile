@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: install info generate-sample validate-sample interoperability-sample interoperability-validate snowflake-inventory snowflake-render snowflake-validate airflow-static dataiku-reference dataiku-static feature-store-reference feature-store-static powerbi-reference powerbi-static governance-reference governance-static deployment-reference deployment-static recovery-reference recovery-static operations-reference operations-static format lint type test yaml sql dbt-parse dbt-static terraform-fmt terraform-validate secrets validate
+.PHONY: install info generate-sample validate-sample interoperability-sample interoperability-validate snowflake-inventory snowflake-render snowflake-validate airflow-static dataiku-reference dataiku-static feature-store-reference feature-store-static powerbi-reference powerbi-static governance-reference governance-static deployment-reference deployment-static recovery-reference recovery-static operations-reference operations-static portfolio-reference portfolio-static format lint type test yaml sql dbt-parse dbt-static terraform-fmt terraform-validate secrets validate
 
 install:
 	$(PYTHON) -m pip install -r requirements-dev.txt
@@ -112,6 +112,13 @@ operations-reference:
 operations-static:
 	PYTHONPATH=src pytest tests/unit/test_operations_milestone17.py
 
+portfolio-reference:
+	PYTHONPATH=src $(PYTHON) -m healthcare_platform.cli demo generate-evidence --output-dir portfolio/reference --overwrite
+	PYTHONPATH=src $(PYTHON) -m healthcare_platform.cli demo verify-evidence --output-dir portfolio/reference
+
+portfolio-static:
+	PYTHONPATH=src pytest tests/unit/test_portfolio_milestone18.py
+
 terraform-fmt:
 	terraform fmt -check -recursive infrastructure/terraform
 
@@ -126,5 +133,5 @@ terraform-validate:
 secrets:
 	@if command -v gitleaks >/dev/null; then gitleaks detect --no-git --redact; else echo "gitleaks not installed; CI performs the authoritative scan"; fi
 
-validate: lint type test yaml sql dbt-parse dbt-static airflow-static dataiku-static feature-store-static powerbi-static governance-static deployment-static recovery-static operations-static snowflake-validate interoperability-validate secrets
+validate: lint type test yaml sql dbt-parse dbt-static airflow-static dataiku-static feature-store-static powerbi-static governance-static deployment-static recovery-static operations-static portfolio-static snowflake-validate interoperability-validate secrets
 	@echo "Core credential-free validation complete. Run terraform-fmt/validate when Terraform is installed."

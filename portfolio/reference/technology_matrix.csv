@@ -1,0 +1,16 @@
+technology,purpose,repository_location,implementation_status,validation,evidence,live_status,limitations
+Python,"CLI, generators, validators, evidence builders",src/healthcare_platform,implemented_local,ruff/mypy/pytest,pytest coverage,not_live,Local execution only
+SQL,Warehouse contracts and dbt models,"snowflake, dbt/models",contract_defined,sqlfluff/dbt parse,dbt target parse output,not_live,No live warehouse build
+Snowflake,Target governed data platform,"snowflake, infrastructure/terraform",static_blueprint,static foundation validation,snowflake/inventory/foundation.json,not_deployed,No account connection
+dbt,"Transformations, contracts, tests and lineage",dbt,implemented_local,dbt parse and unit tests,docs/evidence/milestone-5-evidence.md,parse_only,No live build
+Airflow,Cross-platform orchestration contracts,orchestration,static_blueprint,DAG guardrails,docs/evidence/milestone-10-evidence.md,not_deployed,No scheduler started
+Dataiku,Analytics and MLOps blueprint,dataiku,static_blueprint,reference workflow tests,dataiku/projects/healthcare_analytics/reference_outputs/checksums.sha256,not_deployed,No live instance
+Microsoft Fabric,Workspace and deployment metadata,fabric,static_blueprint,metadata validation,docs/evidence/milestone-13-evidence.md,not_deployed,No tenant
+Power BI,Semantic model and report specs,powerbi,static_blueprint,reference metadata validation,powerbi/reference/checksums.sha256,not_deployed,No refresh
+Terraform,Infrastructure delivery contracts,infrastructure/terraform,contract_defined,fmt/validate when installed,deployment/reference/terraform_validation_report.json,not_applied,No apply
+GitHub Actions,Credential-free CI guardrails,.github/workflows,implemented_local,workflow and test validation,.github/workflows/python.yml,not_deploying,No protected env admin
+FHIR,FHIR-inspired synthetic resources,data/samples/interoperability/fhir,implemented_local,local validator,data/samples/interoperability/fhir/validation/fhir_validation_report.json,not_live,Not formal conformance
+HL7,Synthetic HL7 v2 messages,data/samples/interoperability/hl7,implemented_local,local validator,data/samples/interoperability/hl7/validation/hl7_validation_report.json,not_live,Not live interface
+YAML,Registries and metadata contracts,"governance, deployment, recovery, operations",implemented_local,yamllint and registry validators,operations/reference/validation_report.json,local_only,Metadata only
+JSON,Manifests and evidence,*/reference,implemented_local,checksum verification,portfolio/reference/checksums.sha256,local_only,Synthetic evidence
+Docker Compose,Local validation wrapper,compose.yml,contract_defined,docker compose config,compose.yml,local_only,No production container platform

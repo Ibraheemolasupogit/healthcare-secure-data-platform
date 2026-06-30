@@ -1,0 +1,25 @@
+{
+  "lineage_summary": [
+    "synthetic source",
+    "interoperability payload",
+    "Snowflake raw contract",
+    "dbt staging",
+    "healthcare core",
+    "billing/finance",
+    "assurance",
+    "feature views",
+    "Dataiku analytical dataset",
+    "prediction output",
+    "Power BI semantic model",
+    "report specification"
+  ],
+  "narrative": "synthetic sources -> interoperability -> Snowflake -> dbt -> Airflow/Dataiku/feature store/Power BI -> governance/deployment/recovery/operations",
+  "new_major_platform_added": false,
+  "overlays": [
+    "governance",
+    "deployment",
+    "recovery",
+    "operations"
+  ],
+  "valid": true
+}

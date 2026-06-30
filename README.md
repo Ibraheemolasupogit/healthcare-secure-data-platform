@@ -2,7 +2,7 @@
 
 A production-style, synthetic-only Healthcare Enterprise Data Platform portfolio for clinical, operational, research and financial data engineering. Snowflake remains the target governed data platform and dbt remains the transformation, testing, documentation, lineage and business-logic centre of gravity.
 
-> **Status — Milestone 17 complete locally:** dbt includes governed billing/finance, assurance and offline feature models; Airflow provides local-first orchestration; Dataiku has governed analytics/MLOps blueprints; the feature store has reusable registry and point-in-time evidence; Fabric/Power BI have governed consumption metadata; governance/security, protected deployment controls, symbolic recovery design and operational-readiness controls are centrally registered with local simulation evidence. Snowflake execution, live monitoring, live alerting, live failover, live policy enforcement, live deployment and later integrations remain planned.
+> **Status — Milestone 18 complete locally:** the repository now presents one integrated, reviewer-friendly Healthcare Enterprise Data Platform portfolio with a deterministic golden-path demo, consolidated evidence index, final capability/technology/ownership matrices, claim controls, and a local v1.0 release-readiness manifest. Snowflake execution, live monitoring, live alerting, live failover, live policy enforcement, live deployment and later integrations remain planned.
 
 ## Why this project exists
 
@@ -15,6 +15,8 @@ Files and JSON land immutably in **RAW**; dbt standardises them in **STAGING**, 
 Python now generates synthetic data and validates its structure and relationships. Future FHIR/HL7 and batch ingestion will validate and map source messages before Snowflake RAW. Airflow will coordinate cross-platform work only; Snowflake Tasks and dbt remain responsible for their own scheduling domains. Dataiku will consume governed products for collaborative analytics and ML. A governed feature store will register reusable, point-in-time-correct features. Fabric and Power BI will consume certified semantic products rather than recreate transformation logic. Terraform will provision infrastructure, and GitHub Actions will enforce quality and security gates.
 
 Detailed boundaries are documented in [component responsibilities](docs/architecture/component-responsibilities.md), the [target-state architecture](docs/architecture/target-state-architecture.md), and the [repository realignment plan](docs/architecture/repository-realignment-plan.md).
+
+The final end-to-end story is documented in [end-to-end platform](docs/architecture/end-to-end-platform.md), with reviewer navigation in the [engineering review guide](docs/portfolio/engineering-review-guide.md), a hiring-manager summary in the [recruiter summary](docs/portfolio/recruiter-summary.md), and the demo flow in the [portfolio demo script](docs/portfolio/demo-script.md).
 
 ## Implementation status by capability
 
@@ -34,6 +36,7 @@ Detailed boundaries are documented in [component responsibilities](docs/architec
 | Governance/security | RBAC, masking, pseudonymisation, row access, consent, retention, audit and compliance-claim controls | **M14 central registry, local simulation and evidence implemented; not live-enforced** |
 | Recovery/resilience | Regional roles, residency rules, recovery tiers, dependency order, failover/failback design and local simulation | **M16 symbolic active/passive recovery design implemented locally; not deployed or live tested** |
 | Operational readiness | Service health, SLIs/SLOs, incident taxonomy, routing, runbooks and recovery-drill simulation | **M17 metadata-first observability and drill controls implemented locally; no live monitoring or alerting** |
+| Portfolio release-readiness | Golden path, capability/technology/ownership matrices, evidence index, claim validation and local v1.0 release manifest | **M18 final portfolio integration implemented locally; no GitHub release or live deployment created** |
 
 ## Local-first development
 
@@ -72,9 +75,10 @@ The design follows least privilege, workload isolation, encryption in transit/at
 - **Complete locally:** Milestone 15 protected CI/CD, environment promotion, infrastructure delivery and deployment-control foundation.
 - **Complete locally:** Milestone 16 multi-region resilience, recovery and disaster-recovery design.
 - **Complete locally:** Milestone 17 operational observability, incident readiness and recovery-drill automation.
+- **Complete locally:** Milestone 18 enterprise integration validation, portfolio demonstration and v1.0 release-readiness.
 - **Planned:** Future live monitoring, alerting or production deployment work requires a later explicit milestone.
 
-The original 15-milestone plan has been transparently realigned into a 17-milestone dependency-led [roadmap](docs/roadmap/milestones.md). [ADR 0009](docs/decisions/0009-expand-to-healthcare-enterprise-platform.md) records why.
+The original 15-milestone plan has been transparently realigned into an 18-milestone dependency-led [roadmap](docs/roadmap/milestones.md). [ADR 0009](docs/decisions/0009-expand-to-healthcare-enterprise-platform.md) records the expansion; [ADR 0024](docs/decisions/0024-final-platform-integration-release-readiness.md) records the final local release-readiness boundary.
 
 ## Repository map
 
@@ -96,6 +100,7 @@ The original 15-milestone plan has been transparently realigned into a 17-milest
 | `deployment` | Protected CI/CD, promotion, deployment-control registry and deterministic evidence |
 | `recovery` | Symbolic multi-region recovery registry, local simulation and deterministic evidence |
 | `operations` | Operational-readiness registry, local health/incident/drill simulation and deterministic evidence |
+| `portfolio` | Final integration, golden-path, evidence index and local release-readiness outputs |
 | `docs` | Architecture, ADRs, governance, security, roadmap, learning and evidence |
 | `tests` | Unit and integration tests, including determinism and integrity |
 | `.github/workflows` | Credential-free quality gates |
@@ -229,6 +234,21 @@ PYTHONPATH=src python -m healthcare_platform.cli operations verify-evidence \
   --output-dir operations/reference
 PYTHONPATH=src pytest tests/unit/test_operations_milestone17.py
 ```
+
+Run the Milestone 18 golden path and final evidence locally:
+
+```bash
+PYTHONPATH=src python -m healthcare_platform.cli demo validate
+PYTHONPATH=src python -m healthcare_platform.cli demo run-golden-path
+PYTHONPATH=src python -m healthcare_platform.cli demo generate-evidence \
+  --output-dir portfolio/reference --overwrite
+PYTHONPATH=src python -m healthcare_platform.cli demo verify-evidence \
+  --output-dir portfolio/reference
+PYTHONPATH=src pytest tests/unit/test_portfolio_milestone18.py
+```
+
+The golden path is deterministic, credential-free and local. It labels static
+and simulated steps and returns non-zero on validation failure.
 
 ## Limitations
 

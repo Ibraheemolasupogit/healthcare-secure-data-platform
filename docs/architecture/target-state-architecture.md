@@ -142,6 +142,13 @@ mappings, failover criteria, failback controls, local simulations, recovery mani
 checksum evidence are defined. No live region, Snowflake replication, DNS change, platform
 restore or failover exercise is claimed.
 
+## Portfolio integration and release-readiness
+
+**Implemented locally (M18):** the portfolio layer consolidates the platform story, golden
+path, capability matrix, technology matrix, ownership matrix, evidence index, claim
+validation, reviewer navigation and local v1.0 release-readiness manifest. It is a local
+portfolio release simulation, not a GitHub release, production deployment or certification.
+
 ## Evidence and current non-goals
 
 **Partially implemented:** Milestone 2 includes local manifests, checksums, validation reports and tests. Every future claim must link to redacted, reproducible evidence for a commit and environment.

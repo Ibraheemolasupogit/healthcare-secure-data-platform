@@ -1,0 +1,71 @@
+{
+  "artefact_inventory": [
+    "data/samples/small/validation_report.json",
+    "data/samples/interoperability/manifests/checksums.sha256",
+    "snowflake/inventory/foundation.json",
+    "docs/evidence/milestone-6-evidence.md",
+    "docs/evidence/milestone-8-evidence.md",
+    "docs/evidence/milestone-9-evidence.md",
+    "docs/evidence/milestone-10-evidence.md",
+    "dataiku/projects/healthcare_analytics/reference_outputs/checksums.sha256",
+    "feature_store/reference/outputs/checksums.sha256",
+    "powerbi/reference/checksums.sha256",
+    "governance/reference/checksums.sha256",
+    "deployment/reference/checksums.sha256",
+    "recovery/reference/checksums.sha256",
+    "operations/reference/checksums.sha256",
+    "portfolio/reference/checksums.sha256"
+  ],
+  "branch": "main",
+  "checksum_references": [
+    "portfolio/reference/checksums.sha256"
+  ],
+  "commit_sha": "45e0a6780cc3d17f9038500aff6b7fcc207bea02",
+  "compatibility_notes": "Credential-free local validation on Python 3.11+.",
+  "component_versions": {
+    "portfolio_release": "v1.0-local",
+    "python_package": "0.2.0"
+  },
+  "connected_service_status": "NOT_CONNECTED",
+  "coverage": "reported by pytest coverage during validation",
+  "deferred_work": [
+    "live Snowflake deployment",
+    "live monitoring and alert routing",
+    "formal compliance or clinical validation"
+  ],
+  "deployment_status": "NOT_DEPLOYED",
+  "included_milestones": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18
+  ],
+  "known_limitations": [
+    "No cloud credentials or live platform connections.",
+    "No production, compliance, clinical, monitoring or resilience claim."
+  ],
+  "milestone": 18,
+  "release_date": "2026-06-30",
+  "release_id": "LOCAL-V1.0-PORTFOLIO",
+  "release_readiness_status": "PORTFOLIO_RELEASE_READY_WITH_LIMITATIONS",
+  "rollback_reference": "deployment/reference/rollback_plan.md",
+  "security_scan_status": "gitleaks optional locally; CI authoritative when installed",
+  "synthetic_only": true,
+  "test_count": 175,
+  "validation_status": "PASSED",
+  "version": "v1.0-local"
+}

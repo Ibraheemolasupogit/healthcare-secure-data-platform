@@ -65,6 +65,15 @@ from healthcare_platform.operations import (
 from healthcare_platform.operations import (
     verify_evidence as verify_operations_evidence,
 )
+from healthcare_platform.portfolio import (
+    build_portfolio_evidence,
+    run_golden_path,
+    show_capabilities,
+    validate_portfolio,
+)
+from healthcare_platform.portfolio import (
+    verify_evidence as verify_portfolio_evidence,
+)
 from healthcare_platform.powerbi import (
     build_reference_outputs as build_powerbi_reference_outputs,
 )
@@ -421,6 +430,24 @@ def build_parser() -> argparse.ArgumentParser:
         "verify-evidence", help="verify operations evidence checksums"
     )
     verify_operations.add_argument("--output-dir", type=Path, default=Path("operations/reference"))
+    demo = subparsers.add_parser(
+        "demo",
+        help="run portfolio golden-path and release-readiness checks",
+    )
+    demo_commands = demo.add_subparsers(dest="demo_command", required=True)
+    demo_commands.add_parser("run-golden-path", help="run deterministic local golden path")
+    demo_commands.add_parser("validate", help="validate final portfolio metadata")
+    demo_commands.add_parser("show-capabilities", help="show final capability matrix")
+    demo_commands.add_parser("release-readiness", help="show release-readiness status")
+    generate_demo = demo_commands.add_parser(
+        "generate-evidence", help="generate deterministic portfolio evidence"
+    )
+    generate_demo.add_argument("--output-dir", type=Path, default=Path("portfolio/reference"))
+    generate_demo.add_argument("--overwrite", action="store_true")
+    verify_demo = demo_commands.add_parser(
+        "verify-evidence", help="verify portfolio evidence checksums"
+    )
+    verify_demo.add_argument("--output-dir", type=Path, default=Path("portfolio/reference"))
     return parser
 
 
@@ -889,6 +916,43 @@ def _operations(args: argparse.Namespace) -> int:
     return 2
 
 
+def _demo(args: argparse.Namespace) -> int:
+    if args.demo_command == "run-golden-path":
+        result = run_golden_path()
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["final_readiness_status"] != "VALIDATION_FAILED" else 1
+    if args.demo_command == "validate":
+        result = validate_portfolio()
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["valid"] else 1
+    if args.demo_command == "show-capabilities":
+        print(json.dumps(show_capabilities(), indent=2, sort_keys=True))
+        return 0
+    if args.demo_command == "release-readiness":
+        result = validate_portfolio()
+        readiness = {
+            "release_status": result["release_status"],
+            "connected_service_status": result["connected_service_status"],
+            "deployment_status": result["deployment_status"],
+            "valid": result["valid"],
+        }
+        print(json.dumps(readiness, indent=2, sort_keys=True))
+        return 0 if result["valid"] else 1
+    if args.demo_command == "generate-evidence":
+        evidence = build_portfolio_evidence(args.output_dir, overwrite=args.overwrite)
+        print(f"output_dir: {evidence.output_dir}")
+        print(f"validation_report: {evidence.validation_report}")
+        print(f"golden_path_report: {evidence.golden_path_report}")
+        print(f"release_manifest: {evidence.release_manifest}")
+        print(f"checksums: {evidence.checksums}")
+        return 0
+    if args.demo_command == "verify-evidence":
+        result = verify_portfolio_evidence(args.output_dir)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["valid"] else 1
+    return 2
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the CLI."""
     args = build_parser().parse_args(argv)
@@ -933,6 +997,8 @@ def main(argv: list[str] | None = None) -> int:
             return _recovery(args)
         if args.command == "operations":
             return _operations(args)
+        if args.command == "demo":
+            return _demo(args)
     except (ValueError, OSError, json.JSONDecodeError) as error:
         print(f"error: {error}")
         return 2

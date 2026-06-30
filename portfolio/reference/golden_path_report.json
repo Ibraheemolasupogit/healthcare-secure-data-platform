@@ -1,0 +1,910 @@
+{
+  "commit_sha": "45e0a6780cc3d17f9038500aff6b7fcc207bea02",
+  "components_validated": [
+    "airflow",
+    "assurance",
+    "dataiku",
+    "dbt",
+    "deployment",
+    "feature_store",
+    "governance",
+    "interoperability",
+    "operations",
+    "portfolio",
+    "powerbi",
+    "recovery",
+    "snowflake",
+    "synthetic"
+  ],
+  "connected_service_status": "NOT_CONNECTED",
+  "deployment_status": "NOT_DEPLOYED",
+  "end_time": "2026-06-30T00:00:00Z",
+  "evidence_generated": [
+    "portfolio/reference"
+  ],
+  "final_readiness_status": "READY_FOR_PORTFOLIO_REVIEW",
+  "known_limitations": [
+    "No cloud credentials or live platform connections.",
+    "No production, compliance, clinical, monitoring or resilience claim."
+  ],
+  "local": true,
+  "run_id": "GOLDEN-PATH-LOCAL-V1",
+  "simulation_status": "LOCAL_SIMULATION_ONLY",
+  "start_time": "2026-06-30T00:00:00Z",
+  "steps_executed": [
+    {
+      "component": "synthetic",
+      "description": "Generate or verify deterministic synthetic source data",
+      "detail": {
+        "datasets_validated": 33,
+        "issues": [],
+        "rows_validated": 2142,
+        "valid": true
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "1",
+      "step_id": "verify_synthetic_sources"
+    },
+    {
+      "component": "interoperability",
+      "description": "Validate FHIR and HL7 ingestion contracts",
+      "detail": {
+        "mode": "static credential-free validation"
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "2",
+      "step_id": "validate_interoperability"
+    },
+    {
+      "component": "snowflake",
+      "description": "Validate Snowflake platform metadata",
+      "detail": {
+        "configuration_sha256": "3646cacc132034edaedfb1aa1c9becc208addf7319880f5ec169907675db52e7",
+        "errors": [],
+        "inventory_count": 174,
+        "valid": true,
+        "warnings": [
+          "Live Snowflake deployment and RBAC probes were not executed."
+        ]
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "3",
+      "step_id": "validate_snowflake_metadata"
+    },
+    {
+      "component": "dbt",
+      "description": "Parse and validate dbt models",
+      "detail": {
+        "mode": "static credential-free validation"
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "4",
+      "step_id": "parse_dbt_models"
+    },
+    {
+      "component": "dbt",
+      "description": "Validate healthcare core models",
+      "detail": {
+        "mode": "static credential-free validation"
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "5",
+      "step_id": "validate_healthcare_core"
+    },
+    {
+      "component": "dbt",
+      "description": "Validate billing and finance models",
+      "detail": {
+        "mode": "static credential-free validation"
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "6",
+      "step_id": "validate_billing_finance"
+    },
+    {
+      "component": "assurance",
+      "description": "Validate assurance and reconciliation controls",
+      "detail": {
+        "mode": "static credential-free validation"
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "7",
+      "step_id": "validate_assurance"
+    },
+    {
+      "component": "airflow",
+      "description": "Validate Airflow orchestration contracts",
+      "detail": {
+        "mode": "static credential-free validation"
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "8",
+      "step_id": "validate_airflow"
+    },
+    {
+      "component": "dataiku",
+      "description": "Execute the Dataiku local reference workflow",
+      "detail": {
+        "mode": "static credential-free validation"
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "9",
+      "step_id": "run_dataiku_reference"
+    },
+    {
+      "component": "feature_store",
+      "description": "Validate the feature-store registry",
+      "detail": {
+        "consumer_count": 2,
+        "entity_count": 5,
+        "errors": [],
+        "feature_count": 8,
+        "feature_set_count": 2,
+        "feature_view_count": 5,
+        "valid": true
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "10",
+      "step_id": "validate_feature_store"
+    },
+    {
+      "component": "feature_store",
+      "description": "Generate historical and scoring feature datasets",
+      "detail": {
+        "mode": "static credential-free validation"
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "11",
+      "step_id": "generate_feature_datasets"
+    },
+    {
+      "component": "powerbi",
+      "description": "Validate Power BI semantic metadata",
+      "detail": {
+        "errors": [],
+        "kpi_count": 4,
+        "measure_count": 17,
+        "ols_rule_count": 4,
+        "refresh_group_count": 5,
+        "relationship_count": 12,
+        "report_count": 4,
+        "security_role_count": 5,
+        "semantic_model_count": 1,
+        "table_count": 13,
+        "valid": true,
+        "visual_count": 8,
+        "warnings": [],
+        "workspace_count": 3
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "12",
+      "step_id": "validate_powerbi"
+    },
+    {
+      "component": "governance",
+      "description": "Validate governance policies",
+      "detail": {
+        "access_policy_count": 10,
+        "audit_event_count": 10,
+        "classification_count": 11,
+        "control_count": 7,
+        "domain_count": 11,
+        "errors": [],
+        "export_policy_count": 5,
+        "masking_policy_count": 5,
+        "object_policy_count": 8,
+        "persona_count": 17,
+        "purpose_count": 12,
+        "retention_policy_count": 9,
+        "row_policy_count": 5,
+        "sensitivity_count": 5,
+        "service_identity_count": 7,
+        "valid": true,
+        "warnings": []
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "13",
+      "step_id": "validate_governance"
+    },
+    {
+      "component": "deployment",
+      "description": "Evaluate deployment policy gates",
+      "detail": {
+        "controls": {
+          "apply_status": "NOT_EXECUTED",
+          "artifact_count": 5,
+          "deployment_status": "NOT_DEPLOYED",
+          "environment_count": 3,
+          "errors": [],
+          "rollback_target_count": 7,
+          "service_identity_count": 7,
+          "valid": true,
+          "warnings": [],
+          "workflow_count": 7
+        },
+        "gates": {
+          "checks": {
+            "environment_allowed": true,
+            "governance_registry_invoked": true,
+            "governance_registry_valid": true,
+            "missing_policy_mapping_fails_closed": true,
+            "purpose_allowed": true,
+            "separation_of_duties_validated": true,
+            "service_identity_allowed": true,
+            "unsupported_claims_blocked": true
+          },
+          "limitations": "Local static policy-gate evaluation; not a live deployment approval.",
+          "valid": true
+        }
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "14",
+      "step_id": "evaluate_deployment_gates"
+    },
+    {
+      "component": "recovery",
+      "description": "Validate recovery metadata",
+      "detail": {
+        "dependency_node_count": 15,
+        "errors": [],
+        "live_deployment_status": "NOT_DEPLOYED",
+        "platform_mapping_count": 8,
+        "region_count": 3,
+        "residency_policy_count": 3,
+        "scenario_count": 4,
+        "simulation_status": "LOCAL_SIMULATION_ONLY",
+        "tier_count": 5,
+        "valid": true,
+        "warnings": []
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "15",
+      "step_id": "validate_recovery"
+    },
+    {
+      "component": "operations",
+      "description": "Evaluate operational health",
+      "detail": {
+        "checks": [
+          {
+            "check_id": "chk_governance_registry_checksum",
+            "live_probe": false,
+            "service_id": "governance_registry",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_governance_policy_resolution",
+            "live_probe": false,
+            "service_id": "governance_registry",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_governance_sensitive_field_coverage",
+            "live_probe": false,
+            "service_id": "governance_registry",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_release_manifest_integrity",
+            "live_probe": false,
+            "service_id": "cicd_controls",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_deployment_manifest_integrity",
+            "live_probe": false,
+            "service_id": "cicd_controls",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_drift_report_status",
+            "live_probe": false,
+            "service_id": "cicd_controls",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_recovery_registry_valid",
+            "live_probe": false,
+            "service_id": "recovery_evidence_service",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_recovery_evidence_checksum",
+            "live_probe": false,
+            "service_id": "recovery_evidence_service",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_recovery_manifest_integrity",
+            "live_probe": false,
+            "service_id": "recovery_evidence_service",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_terraform_plan_metadata",
+            "live_probe": false,
+            "service_id": "terraform_delivery",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_drift_report_status",
+            "live_probe": false,
+            "service_id": "terraform_delivery",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_rollback_reference",
+            "live_probe": false,
+            "service_id": "terraform_delivery",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_snowflake_contract_available",
+            "live_probe": false,
+            "service_id": "snowflake_platform",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_snowflake_rbac_metadata",
+            "live_probe": false,
+            "service_id": "snowflake_platform",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_snowflake_inventory_intact",
+            "live_probe": false,
+            "service_id": "snowflake_platform",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_snowflake_no_destructive_drift",
+            "live_probe": false,
+            "service_id": "snowflake_platform",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_recovery_registry_valid",
+            "live_probe": false,
+            "service_id": "snowflake_platform",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_dbt_parse_status",
+            "live_probe": false,
+            "service_id": "dbt_staging",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_dbt_contract_coverage",
+            "live_probe": false,
+            "service_id": "dbt_staging",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_dbt_freshness_metadata",
+            "live_probe": false,
+            "service_id": "dbt_staging",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_dbt_model_graph_integrity",
+            "live_probe": false,
+            "service_id": "dbt_staging",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_dbt_artifact_checksum",
+            "live_probe": false,
+            "service_id": "dbt_staging",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_core_contract_status",
+            "live_probe": false,
+            "service_id": "healthcare_core",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_core_data_quality",
+            "live_probe": false,
+            "service_id": "healthcare_core",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_core_freshness",
+            "live_probe": false,
+            "service_id": "healthcare_core",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_billing_reconciliation",
+            "live_probe": false,
+            "service_id": "billing_finance",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_billing_quality_controls",
+            "live_probe": false,
+            "service_id": "billing_finance",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_billing_freshness",
+            "live_probe": false,
+            "service_id": "billing_finance",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_assurance_exception_inventory",
+            "live_probe": false,
+            "service_id": "assurance_controls",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_assurance_evidence_checksum",
+            "live_probe": false,
+            "service_id": "assurance_controls",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_assurance_lifecycle_metadata",
+            "live_probe": false,
+            "service_id": "assurance_controls",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_airflow_dag_import",
+            "live_probe": false,
+            "service_id": "airflow_orchestration",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_airflow_task_dependencies",
+            "live_probe": false,
+            "service_id": "airflow_orchestration",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_airflow_connected_mode_disabled",
+            "live_probe": false,
+            "service_id": "airflow_orchestration",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_airflow_run_manifest",
+            "live_probe": false,
+            "service_id": "airflow_orchestration",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_airflow_failure_callback_metadata",
+            "live_probe": false,
+            "service_id": "airflow_orchestration",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_fabric_semantic_metadata",
+            "live_probe": false,
+            "service_id": "fabric_semantic_model",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_fabric_relationship_integrity",
+            "live_probe": false,
+            "service_id": "fabric_semantic_model",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_fabric_measure_kpi_integrity",
+            "live_probe": false,
+            "service_id": "fabric_semantic_model",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_fabric_rls_ols_metadata",
+            "live_probe": false,
+            "service_id": "fabric_semantic_model",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_feature_registry_valid",
+            "live_probe": false,
+            "service_id": "feature_store",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_feature_point_in_time_metadata",
+            "live_probe": false,
+            "service_id": "feature_store",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_feature_freshness_state",
+            "live_probe": false,
+            "service_id": "feature_store",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_feature_consumer_compatibility",
+            "live_probe": false,
+            "service_id": "feature_store",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_feature_retrieval_evidence",
+            "live_probe": false,
+            "service_id": "feature_store",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_dataiku_trusted_inputs",
+            "live_probe": false,
+            "service_id": "dataiku_analytics",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_dataiku_model_approval",
+            "live_probe": false,
+            "service_id": "dataiku_analytics",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_dataiku_feature_set_version",
+            "live_probe": false,
+            "service_id": "dataiku_analytics",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_dataiku_model_card",
+            "live_probe": false,
+            "service_id": "dataiku_analytics",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_dataiku_prediction_contract",
+            "live_probe": false,
+            "service_id": "dataiku_analytics",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_powerbi_refresh_contract",
+            "live_probe": false,
+            "service_id": "powerbi_reports",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_powerbi_report_specification",
+            "live_probe": false,
+            "service_id": "powerbi_reports",
+            "state": "HEALTHY",
+            "synthetic": true
+          },
+          {
+            "check_id": "chk_powerbi_security_metadata",
+            "live_probe": false,
+            "service_id": "powerbi_reports",
+            "state": "HEALTHY",
+            "synthetic": true
+          }
+        ],
+        "failed_checks": [],
+        "generated_at": "2026-06-30T00:00:00Z",
+        "limitations": "Local deterministic health evaluation only.",
+        "live_monitoring": false,
+        "overall_state": "HEALTHY",
+        "service_states": {
+          "airflow_orchestration": "HEALTHY",
+          "assurance_controls": "HEALTHY",
+          "billing_finance": "HEALTHY",
+          "cicd_controls": "HEALTHY",
+          "dataiku_analytics": "HEALTHY",
+          "dbt_staging": "HEALTHY",
+          "fabric_semantic_model": "HEALTHY",
+          "feature_store": "HEALTHY",
+          "governance_registry": "HEALTHY",
+          "healthcare_core": "HEALTHY",
+          "powerbi_reports": "HEALTHY",
+          "recovery_evidence_service": "HEALTHY",
+          "snowflake_platform": "HEALTHY",
+          "terraform_delivery": "HEALTHY"
+        },
+        "state_precedence": [
+          "UNHEALTHY",
+          "DEGRADED",
+          "UNKNOWN",
+          "MAINTENANCE",
+          "HEALTHY",
+          "NOT_APPLICABLE"
+        ],
+        "synthetic": true
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "16",
+      "step_id": "evaluate_operations_health"
+    },
+    {
+      "component": "operations",
+      "description": "Simulate one incident",
+      "detail": {
+        "affected_services": [
+          "governance_registry",
+          "cicd_controls",
+          "recovery_evidence_service"
+        ],
+        "category": "ACCESS_CONTROL",
+        "contains_patient_payload": false,
+        "escalation_required": true,
+        "expected_severity": "SEV_1_CRITICAL",
+        "health_snapshot": {
+          "airflow_orchestration": "DEGRADED",
+          "assurance_controls": "DEGRADED",
+          "billing_finance": "DEGRADED",
+          "cicd_controls": "DEGRADED",
+          "dataiku_analytics": "DEGRADED",
+          "dbt_staging": "DEGRADED",
+          "fabric_semantic_model": "DEGRADED",
+          "feature_store": "DEGRADED",
+          "governance_registry": "UNHEALTHY",
+          "healthcare_core": "DEGRADED",
+          "powerbi_reports": "DEGRADED",
+          "recovery_evidence_service": "DEGRADED",
+          "snowflake_platform": "DEGRADED",
+          "terraform_delivery": "DEGRADED"
+        },
+        "incident_id": "INC-SYN-20260630-001",
+        "lifecycle_path": [
+          "DETECTED",
+          "TRIAGED",
+          "ASSIGNED",
+          "INVESTIGATING",
+          "MITIGATING",
+          "MONITORING"
+        ],
+        "lifecycle_transitions_valid": true,
+        "limitations": "Local simulation only; no alert delivery or ticket creation.",
+        "live_alert_created": false,
+        "route": {
+          "approval_requirement": "security_admin",
+          "audit_event": "aud_policy_change",
+          "escalation_window": "15m",
+          "incident_type": "ACCESS_CONTROL",
+          "live_integration_status": "disabled",
+          "notification_status": "disabled",
+          "primary_owner": "SECURITY_OPERATIONS",
+          "route_id": "route_access_control_critical",
+          "runbook": "rb_governance_checksum_mismatch",
+          "secondary_owner": "DATA_GOVERNANCE",
+          "severity": "SEV_1_CRITICAL"
+        },
+        "runbook": {
+          "containment": "Fail closed until policy integrity is restored.",
+          "diagnostic_steps": [
+            "Verify policy checksum mismatch source.",
+            "Confirm no sensitive payload is embedded in evidence."
+          ],
+          "escalation": "SECURITY_OPERATIONS",
+          "evidence": "operations/reference/incident_simulation.json",
+          "execution_status": "local_guidance_only",
+          "limitations": "Does not alter live access controls.",
+          "owner": "DATA_GOVERNANCE",
+          "prerequisites": [
+            "governance_reference_checksums_available"
+          ],
+          "recovery_steps": "Regenerate governance evidence from trusted registry.",
+          "rollback": "Restore last accepted governance registry version.",
+          "runbook_id": "rb_governance_checksum_mismatch",
+          "trigger": "ACCESS_CONTROL",
+          "validation": "governance_checksum_and_policy_resolution_pass"
+        },
+        "scenario_id": "governance_checksum_mismatch",
+        "severity": "SEV_1_CRITICAL",
+        "synthetic": true,
+        "ticket_created": false
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "17",
+      "step_id": "simulate_incident"
+    },
+    {
+      "component": "operations",
+      "description": "Simulate one recovery drill",
+      "detail": {
+        "affected_services": [
+          "governance_registry",
+          "cicd_controls",
+          "snowflake_platform",
+          "dbt_staging",
+          "recovery_evidence_service"
+        ],
+        "approval_required": true,
+        "automatic_execution": false,
+        "cloud_action_performed": false,
+        "drill_id": "drill_primary_region_outage",
+        "expected_status": "DRILL_READY_WITH_APPROVAL",
+        "health_snapshot": {
+          "airflow_orchestration": "DEGRADED",
+          "assurance_controls": "DEGRADED",
+          "billing_finance": "DEGRADED",
+          "cicd_controls": "HEALTHY",
+          "dataiku_analytics": "DEGRADED",
+          "dbt_staging": "DEGRADED",
+          "fabric_semantic_model": "DEGRADED",
+          "feature_store": "DEGRADED",
+          "governance_registry": "HEALTHY",
+          "healthcare_core": "DEGRADED",
+          "powerbi_reports": "DEGRADED",
+          "recovery_evidence_service": "UNHEALTHY",
+          "snowflake_platform": "UNHEALTHY",
+          "terraform_delivery": "HEALTHY"
+        },
+        "limitations": "Local recovery-drill simulation only; no cloud action performed.",
+        "live_failover_executed": false,
+        "recovery_point_age_minutes": 45,
+        "required_approvals": [
+          "security_admin",
+          "platform_owner",
+          "recovery_owner"
+        ],
+        "route": {
+          "approval_requirement": "recovery_owner",
+          "audit_event": "aud_evidence_generation",
+          "escalation_window": "15m",
+          "incident_type": "RECOVERY_READINESS",
+          "live_integration_status": "disabled",
+          "notification_status": "disabled",
+          "primary_owner": "RECOVERY_COORDINATION",
+          "route_id": "route_recovery_readiness_critical",
+          "runbook": "rb_recovery_readiness_failure",
+          "secondary_owner": "PLATFORM_ENGINEERING",
+          "severity": "SEV_1_CRITICAL"
+        },
+        "rpo_met": true,
+        "rpo_target_minutes": 60,
+        "rto_met": true,
+        "rto_target_minutes": 120,
+        "runbook": {
+          "containment": "Keep drill local and synthetic.",
+          "diagnostic_steps": [
+            "Load Milestone 16 recovery sequence.",
+            "Verify governance and deployment controls first."
+          ],
+          "escalation": "PLATFORM_ENGINEERING",
+          "evidence": "operations/reference/drill_simulation.json",
+          "execution_status": "local_simulation_only",
+          "limitations": "No live failover, failback, DNS, account or cloud action.",
+          "owner": "RECOVERY_COORDINATION",
+          "prerequisites": [
+            "manual_approval",
+            "recovery_registry_available"
+          ],
+          "recovery_steps": "Simulate recovery ordering and validate RTO/RPO metadata.",
+          "rollback": "No live rollback; simulation reset only.",
+          "runbook_id": "rb_regional_recovery_drill",
+          "trigger": "RECOVERY_READINESS",
+          "validation": "drill_status_DRILL_PASSED_or_READY_WITH_APPROVAL"
+        },
+        "scenario": "primary_region_unavailable",
+        "simulated_duration_minutes": 110,
+        "status": "DRILL_READY_WITH_APPROVAL",
+        "synthetic": true
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "18",
+      "step_id": "simulate_recovery_drill"
+    },
+    {
+      "component": "portfolio",
+      "description": "Generate final evidence",
+      "detail": {
+        "output_dir": "portfolio/reference"
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "19",
+      "step_id": "generate_final_evidence"
+    },
+    {
+      "component": "portfolio",
+      "description": "Verify all final checksums",
+      "detail": {
+        "mode": "static credential-free validation"
+      },
+      "requires_credentials": "false",
+      "simulated_or_static": "static_or_local_simulation",
+      "status": "PASSED",
+      "step": "20",
+      "step_id": "verify_final_checksums"
+    }
+  ],
+  "steps_failed": 0,
+  "steps_passed": 20,
+  "synthetic": true
+}

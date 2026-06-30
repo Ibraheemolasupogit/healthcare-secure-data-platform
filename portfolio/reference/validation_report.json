@@ -1,0 +1,51 @@
+{
+  "adr_review": {
+    "adr_count": 24,
+    "blueprint_vs_deployed_explicit": true,
+    "conflicts_detected": [],
+    "missing_from_index": [],
+    "sequential": true,
+    "valid": true
+  },
+  "architecture_validation": {
+    "lineage_summary": [
+      "synthetic source",
+      "interoperability payload",
+      "Snowflake raw contract",
+      "dbt staging",
+      "healthcare core",
+      "billing/finance",
+      "assurance",
+      "feature views",
+      "Dataiku analytical dataset",
+      "prediction output",
+      "Power BI semantic model",
+      "report specification"
+    ],
+    "narrative": "synthetic sources -> interoperability -> Snowflake -> dbt -> Airflow/Dataiku/feature store/Power BI -> governance/deployment/recovery/operations",
+    "new_major_platform_added": false,
+    "overlays": [
+      "governance",
+      "deployment",
+      "recovery",
+      "operations"
+    ],
+    "valid": true
+  },
+  "capability_count": 15,
+  "claim_validation": {
+    "checked_file_count": 240,
+    "findings": [],
+    "live_claims_allowed": false,
+    "qualified_language_allowed": true,
+    "valid": true
+  },
+  "connected_service_status": "NOT_CONNECTED",
+  "deployment_status": "NOT_DEPLOYED",
+  "errors": [],
+  "milestones_indexed": 18,
+  "ownership_domain_count": 16,
+  "release_status": "PORTFOLIO_RELEASE_READY_WITH_LIMITATIONS",
+  "technology_count": 15,
+  "valid": true
+}

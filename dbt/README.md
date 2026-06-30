@@ -68,6 +68,7 @@ contract validation and state comparison before dbt products are treated as reco
 connected recovery build is executed here.
 
 `dbt parse --profiles-dir . --no-partial-parse` validates structure without connecting to Snowflake. The placeholder profile must never be used for execution. Connected `dbt compile`, `dbt build`, `dbt source freshness` and `dbt docs generate` require a separate authorised Snowflake profile.
+
 ## Milestone 17 operations boundary
 
 Operational readiness consumes dbt parse, contract, freshness, graph, test and

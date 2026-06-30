@@ -22,6 +22,8 @@ jobs:
       - run: ruff format --check src tests
       - run: ruff check src tests
       - run: mypy src tests
+      - run: dbt deps --project-dir dbt --profiles-dir dbt
+      - run: dbt parse --project-dir dbt --profiles-dir dbt --no-partial-parse
       - run: pytest --cov --cov-report=term-missing
       - run: healthcare-platform governance validate-registry
       - run: healthcare-platform deployment validate

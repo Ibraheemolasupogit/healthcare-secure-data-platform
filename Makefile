@@ -133,5 +133,5 @@ terraform-validate:
 secrets:
 	@if command -v gitleaks >/dev/null; then gitleaks detect --no-git --redact; else echo "gitleaks not installed; CI performs the authoritative scan"; fi
 
-validate: lint type test yaml sql dbt-parse dbt-static airflow-static dataiku-static feature-store-static powerbi-static governance-static deployment-static recovery-static operations-static portfolio-static snowflake-validate interoperability-validate secrets
+validate: lint type dbt-parse test yaml sql dbt-static airflow-static dataiku-static feature-store-static powerbi-static governance-static deployment-static recovery-static operations-static portfolio-static snowflake-validate interoperability-validate secrets
 	@echo "Core credential-free validation complete. Run terraform-fmt/validate when Terraform is installed."

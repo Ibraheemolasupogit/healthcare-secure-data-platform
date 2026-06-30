@@ -33,6 +33,7 @@ Terraform apply or provision remote state.
 Milestone 16 adds symbolic recovery-region contracts and replication/failover design
 metadata only. It does not create secondary Terraform roots, remote state, failover groups
 or live regional infrastructure.
+
 ## Milestone 17 operations boundary
 
 Operational readiness treats Terraform plan metadata, drift status and rollback

@@ -22,3 +22,7 @@ to the central governance registry. Power BI does not own independent governance
 Milestone 15 deployment controls require semantic model, measure, KPI, RLS/OLS,
 sensitivity, report and accessibility validation before promotion. No Power BI service
 publication, refresh or certification is performed.
+
+Milestone 16 recovery controls restore semantic-model metadata, reports, RLS/OLS and
+sensitivity mapping before refresh is re-enabled. No Power BI service recovery is
+performed.

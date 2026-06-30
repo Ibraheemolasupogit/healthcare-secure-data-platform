@@ -1,0 +1,95 @@
+{
+  "critical_nodes": [
+    "governance_registry",
+    "deployment_controls",
+    "snowflake_platform",
+    "healthcare_core"
+  ],
+  "degraded_mode": {
+    "ml_scoring": "disabled_until_feature_and_model_validation",
+    "reporting_without_refresh": "allowed_after_policy_validation"
+  },
+  "edges": [
+    [
+      "governance_registry",
+      "deployment_controls"
+    ],
+    [
+      "deployment_controls",
+      "repository"
+    ],
+    [
+      "repository",
+      "identity_secret_prerequisites"
+    ],
+    [
+      "identity_secret_prerequisites",
+      "terraform_state_contracts"
+    ],
+    [
+      "terraform_state_contracts",
+      "snowflake_platform"
+    ],
+    [
+      "snowflake_platform",
+      "dbt_staging"
+    ],
+    [
+      "dbt_staging",
+      "healthcare_core"
+    ],
+    [
+      "healthcare_core",
+      "billing_finance"
+    ],
+    [
+      "billing_finance",
+      "assurance"
+    ],
+    [
+      "assurance",
+      "airflow"
+    ],
+    [
+      "healthcare_core",
+      "feature_store"
+    ],
+    [
+      "feature_store",
+      "dataiku"
+    ],
+    [
+      "healthcare_core",
+      "fabric_powerbi"
+    ],
+    [
+      "governance_registry",
+      "evidence_verification"
+    ],
+    [
+      "deployment_controls",
+      "evidence_verification"
+    ]
+  ],
+  "nodes": [
+    "governance_registry",
+    "deployment_controls",
+    "repository",
+    "identity_secret_prerequisites",
+    "terraform_state_contracts",
+    "snowflake_platform",
+    "dbt_staging",
+    "healthcare_core",
+    "billing_finance",
+    "assurance",
+    "airflow",
+    "feature_store",
+    "dataiku",
+    "fabric_powerbi",
+    "evidence_verification"
+  ],
+  "optional_nodes": [
+    "dataiku",
+    "fabric_powerbi"
+  ]
+}

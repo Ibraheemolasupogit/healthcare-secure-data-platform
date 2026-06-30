@@ -1,0 +1,94 @@
+{
+  "approval_required": true,
+  "automatic_failover_enabled": false,
+  "decision_reason": "Manual approval required before any live failover action.",
+  "expected_status": "RECOVERY_READY_WITH_APPROVAL",
+  "limitations": "Local deterministic simulation only; no cloud action performed.",
+  "ordered_recovery_steps": [
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "governance_registry",
+      "step": 1
+    },
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "deployment_controls",
+      "step": 2
+    },
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "repository",
+      "step": 3
+    },
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "identity_secret_prerequisites",
+      "step": 4
+    },
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "terraform_state_contracts",
+      "step": 5
+    },
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "snowflake_platform",
+      "step": 6
+    },
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "dbt_staging",
+      "step": 7
+    },
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "healthcare_core",
+      "step": 8
+    },
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "billing_finance",
+      "step": 9
+    },
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "assurance",
+      "step": 10
+    },
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "airflow",
+      "step": 11
+    },
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "feature_store",
+      "step": 12
+    },
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "dataiku",
+      "step": 13
+    },
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "fabric_powerbi",
+      "step": 14
+    },
+    {
+      "action": "validate_and_restore_metadata_only",
+      "component": "evidence_verification",
+      "step": 15
+    }
+  ],
+  "primary_region": "PRIMARY_REGION",
+  "recovery_point_age_minutes": 45,
+  "recovery_region": "RECOVERY_REGION",
+  "rpo_target_minutes": 60,
+  "rto_target_minutes": 120,
+  "scenario_id": "primary_region_unavailable",
+  "simulated_duration_minutes": 110,
+  "status": "RECOVERY_READY_WITH_APPROVAL",
+  "synthetic": true,
+  "trigger": "regional_outage"
+}

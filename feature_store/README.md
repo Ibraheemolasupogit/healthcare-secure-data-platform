@@ -24,3 +24,6 @@ lineage. Online serving remains deferred.
 Milestone 15 deployment controls require registry validation, feature-set compatibility,
 consumer compatibility, deprecation checks and exact feature-registry version continuity
 before promotion. Online-store deployment remains out of scope.
+
+Milestone 16 recovery controls restore the registry before rebuilding offline feature views
+and validating point-in-time correctness. Online-store recovery remains out of scope.

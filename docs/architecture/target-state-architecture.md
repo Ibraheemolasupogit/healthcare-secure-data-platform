@@ -130,10 +130,14 @@ evidence, dbt Slim CI, and repeatable broader platform provisioning.
 
 ## Multi-region design
 
-**Not implemented / planned (M16):** choose regions from data-residency and service constraints; classify state by recoverability; define Snowflake replication/failover, object-storage replication, key/secret dependencies and downstream reconnect behaviour. Recovery objectives, failover authority, evidence retention and return-to-primary procedures require exercised runbooks. A diagram alone is not resilience evidence.
+**Implemented locally as symbolic recovery design (M16):** regional roles, residency
+policies, recovery tiers, RTO/RPO portfolio targets, dependency graph, platform recovery
+mappings, failover criteria, failback controls, local simulations, recovery manifests and
+checksum evidence are defined. No live region, Snowflake replication, DNS change, platform
+restore or failover exercise is claimed.
 
 ## Evidence and current non-goals
 
 **Partially implemented:** Milestone 2 includes local manifests, checksums, validation reports and tests. Every future claim must link to redacted, reproducible evidence for a commit and environment.
 
-Current non-goals are live Snowflake execution, formal revenue recognition, production Airflow deployment, live Dataiku execution, production ML approval, online feature serving, live Fabric/Power BI deployment or refresh, live governance enforcement, formal compliance certification, Terraform apply, automatic production rollback, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing metadata blueprints.
+Current non-goals are live Snowflake execution, formal revenue recognition, production Airflow deployment, live Dataiku execution, production ML approval, online feature serving, live Fabric/Power BI deployment or refresh, live governance enforcement, formal compliance certification, Terraform apply, live failover, automatic production rollback, cloud deployment and multi-region execution. Those capabilities remain planned rather than implied by existing metadata blueprints.

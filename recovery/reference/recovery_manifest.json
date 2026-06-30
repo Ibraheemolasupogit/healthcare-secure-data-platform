@@ -1,0 +1,37 @@
+{
+  "actual_simulated_recovery_duration_minutes": 110,
+  "affected_services": [
+    "snowflake_platform",
+    "dbt_staging",
+    "healthcare_core",
+    "billing_finance",
+    "assurance"
+  ],
+  "approval_state": "APPROVAL_REQUIRED_NOT_REQUESTED",
+  "commit_sha": "6b09751d325d18bf5b06d6dfb4a88de6387615a6",
+  "evidence_references": [
+    "recovery/reference/recovery_validation_report.json"
+  ],
+  "failback_status": "NOT_STARTED",
+  "incident_id": "synthetic-incident-primary-region",
+  "limitations": [
+    "Synthetic local simulation only.",
+    "No live failover, replication or regional deployment was executed.",
+    "RTO/RPO values are portfolio targets, not organisational commitments."
+  ],
+  "plan_checksum": "not_created_no_live_plan",
+  "policy_registry_checksum": "aad4c4b8170f2d75d2919a98f53133c35e8b91ccd613224eeb920e009f4099e5",
+  "primary_region": "PRIMARY_REGION",
+  "recovery_id": "m16-local-recovery-simulation",
+  "recovery_region": "RECOVERY_REGION",
+  "recovery_tier": "TIER_1_CRITICAL_DATA_SERVICES",
+  "release_id": "m15-local-reference",
+  "rpo_target_minutes": 60,
+  "rto_target_minutes": 120,
+  "scenario_id": "primary_region_unavailable",
+  "source_data_checkpoint": "synthetic_reference_checkpoint",
+  "status": "RECOVERY_READY_WITH_APPROVAL",
+  "synthetic": true,
+  "target_recovery_point": "local_simulated_recovery_point",
+  "validation_results": "local_static_validation"
+}

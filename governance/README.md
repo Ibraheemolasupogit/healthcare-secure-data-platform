@@ -27,3 +27,7 @@ PYTHONPATH=src python -m healthcare_platform.cli governance verify-evidence
 
 Milestone 15 deployment controls invoke this registry as a policy gate. Deployment workflows
 must call the validator rather than copying governance policy semantics into workflow YAML.
+
+Milestone 16 recovery controls restore governance first and fail closed until policy
+checksums, versions and access-control metadata are validated. No live enforcement or
+regional policy deployment is claimed.

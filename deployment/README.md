@@ -21,3 +21,6 @@ PYTHONPATH=src python -m healthcare_platform.cli deployment generate-evidence --
 PYTHONPATH=src python -m healthcare_platform.cli deployment verify-evidence
 ```
 
+Milestone 16 recovery controls reuse M15 release manifests, deployment manifests, plan
+metadata, approval gates and rollback references. Stale plans must never be reused during
+recovery.

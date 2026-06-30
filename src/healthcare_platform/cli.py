@@ -64,6 +64,18 @@ from healthcare_platform.powerbi import (
     validate_model,
     verify_reference_outputs,
 )
+from healthcare_platform.recovery import (
+    build_recovery_evidence,
+    load_recovery_registry,
+    simulate_failover,
+    validate_recovery_registry,
+)
+from healthcare_platform.recovery import (
+    describe_scenario as describe_recovery_scenario,
+)
+from healthcare_platform.recovery import (
+    verify_evidence as verify_recovery_evidence,
+)
 from healthcare_platform.snowflake_foundation import (
     DEFAULT_CONFIG_PATH as DEFAULT_SNOWFLAKE_CONFIG_PATH,
 )
@@ -344,6 +356,32 @@ def build_parser() -> argparse.ArgumentParser:
         "verify-evidence", help="verify deployment evidence checksums"
     )
     verify_deployment.add_argument("--output-dir", type=Path, default=Path("deployment/reference"))
+    recovery = subparsers.add_parser(
+        "recovery",
+        help="validate and simulate local recovery controls",
+    )
+    recovery_commands = recovery.add_subparsers(dest="recovery_command", required=True)
+    recovery_commands.add_parser("validate-registry", help="validate recovery registry")
+    recovery_commands.add_parser("list-tiers", help="list recovery tiers")
+    recovery_commands.add_parser("list-scenarios", help="list recovery scenarios")
+    describe_recovery = recovery_commands.add_parser(
+        "describe-scenario", help="describe one recovery scenario"
+    )
+    describe_recovery.add_argument("scenario_id")
+    simulate_recovery = recovery_commands.add_parser(
+        "simulate-failover", help="run deterministic local failover simulation"
+    )
+    simulate_recovery.add_argument("--scenario-id", default="primary_region_unavailable")
+    recovery_commands.add_parser("validate-recovery", help="validate recovery manifest metadata")
+    generate_recovery = recovery_commands.add_parser(
+        "generate-evidence", help="generate deterministic local recovery evidence"
+    )
+    generate_recovery.add_argument("--output-dir", type=Path, default=Path("recovery/reference"))
+    generate_recovery.add_argument("--overwrite", action="store_true")
+    verify_recovery = recovery_commands.add_parser(
+        "verify-evidence", help="verify recovery evidence checksums"
+    )
+    verify_recovery.add_argument("--output-dir", type=Path, default=Path("recovery/reference"))
     return parser
 
 
@@ -713,6 +751,50 @@ def _deployment(args: argparse.Namespace) -> int:
     return 2
 
 
+def _recovery(args: argparse.Namespace) -> int:
+    if args.recovery_command == "validate-registry":
+        result = validate_recovery_registry()
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["valid"] else 1
+    if args.recovery_command == "list-tiers":
+        registry = load_recovery_registry()
+        for tier in registry["recovery_tiers"]:
+            print(f"{tier['tier_id']}: RTO {tier['rto_minutes']}m / RPO {tier['rpo_minutes']}m")
+        return 0
+    if args.recovery_command == "list-scenarios":
+        registry = load_recovery_registry()
+        for scenario in registry["recovery_scenarios"]:
+            print(f"{scenario['scenario_id']}: {scenario['expected_status']}")
+        return 0
+    if args.recovery_command == "describe-scenario":
+        scenario = describe_recovery_scenario(args.scenario_id)
+        if scenario is None:
+            print(f"error: unknown recovery scenario {args.scenario_id}")
+            return 1
+        print(json.dumps(scenario, indent=2, sort_keys=True))
+        return 0
+    if args.recovery_command == "simulate-failover":
+        result = simulate_failover(args.scenario_id)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] != "RECOVERY_BLOCKED" else 1
+    if args.recovery_command == "validate-recovery":
+        result = validate_recovery_registry()
+        print(json.dumps({"valid": result["valid"], "errors": result["errors"]}, indent=2))
+        return 0 if result["valid"] else 1
+    if args.recovery_command == "generate-evidence":
+        evidence = build_recovery_evidence(args.output_dir, overwrite=args.overwrite)
+        print(f"output_dir: {evidence.output_dir}")
+        print(f"validation_report: {evidence.validation_report}")
+        print(f"recovery_manifest: {evidence.recovery_manifest}")
+        print(f"checksums: {evidence.checksums}")
+        return 0
+    if args.recovery_command == "verify-evidence":
+        result = verify_recovery_evidence(args.output_dir)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["valid"] else 1
+    return 2
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the CLI."""
     args = build_parser().parse_args(argv)
@@ -753,6 +835,8 @@ def main(argv: list[str] | None = None) -> int:
             return _governance(args)
         if args.command == "deployment":
             return _deployment(args)
+        if args.command == "recovery":
+            return _recovery(args)
     except (ValueError, OSError, json.JSONDecodeError) as error:
         print(f"error: {error}")
         return 2

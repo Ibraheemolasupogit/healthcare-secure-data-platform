@@ -1,0 +1,4 @@
+policy_id,data_domain,sensitivity,allowed_region_class,prohibited_region_class,replication_allowed,backup_allowed,export_restriction,retention_policy_ref,legal_review_required,implementation_status
+res_clinical_restricted,clinical,RESTRICTED,"['PRIMARY_REGION', 'RECOVERY_REGION']",['ARCHIVAL_REGION'],controlled_recovery_only,encrypted_recovery_backup,exp_prohibited,ret_governed_healthcare_core,True,STATICALLY_VALIDATED
+res_billing_finance,finance,CONFIDENTIAL,"['PRIMARY_REGION', 'RECOVERY_REGION']",[],controlled_recovery_only,encrypted_recovery_backup,exp_restricted_detail,ret_billing_finance_records,True,STATICALLY_VALIDATED
+res_governance_audit,governance_audit,RESTRICTED,"['PRIMARY_REGION', 'RECOVERY_REGION', 'ARCHIVAL_REGION']",[],required_for_recovery_evidence,encrypted_recovery_backup,exp_prohibited,ret_audit_records,False,STATICALLY_VALIDATED

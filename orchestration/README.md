@@ -9,6 +9,10 @@ Milestone 15 deployment controls treat DAG promotion as a versioned bundle with 
 approval, rollback reference and environment-specific configuration. No scheduler
 deployment is performed.
 
+Milestone 16 recovery controls require DAG bundle checksum validation, paused-DAG default
+after recovery, metadata database recovery design and controlled catch-up review. No
+Airflow failover or scheduler restore is performed.
+
 Milestone 10 implements a local-first Apache Airflow orchestration foundation.
 
 Airflow coordinates cross-platform dependencies only. It invokes existing Python CLI and dbt contracts rather than recreating their internal logic. It owns schedules, dependencies, retries, timeouts, sensors, callbacks, backfill parameters and workflow metadata.

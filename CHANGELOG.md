@@ -45,3 +45,6 @@ All notable changes will follow Keep a Changelog conventions. The project does n
 - Milestone 15 protected CI/CD, environment promotion, infrastructure delivery and
   deployment-control foundation with GitHub Actions guardrails, release/deployment
   manifests, policy gates, drift simulation, rollback metadata, evidence outputs and ADR.
+- Milestone 16 multi-region resilience and recovery design with symbolic regions,
+  residency policies, recovery tiers, dependency graph, failover/failback controls,
+  local simulation, recovery evidence outputs, guardrails and ADR.

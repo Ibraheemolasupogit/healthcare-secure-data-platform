@@ -33,3 +33,7 @@ audit-event requirements. No live Dataiku access change is made.
 Milestone 15 deployment controls require project bundle identifiers, model approval status,
 feature-set versions, model-card completeness and output-contract validation before any
 connected promotion. No live Dataiku API call is added.
+
+Milestone 16 recovery controls document project bundle, code-environment, model registry,
+approved model, feature-set and scenario-state restoration. No live Dataiku restore is
+performed.

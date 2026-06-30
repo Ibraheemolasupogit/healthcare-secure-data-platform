@@ -1,0 +1,13 @@
+{
+  "dependency_node_count": 15,
+  "errors": [],
+  "live_deployment_status": "NOT_DEPLOYED",
+  "platform_mapping_count": 8,
+  "region_count": 3,
+  "residency_policy_count": 3,
+  "scenario_count": 4,
+  "simulation_status": "LOCAL_SIMULATION_ONLY",
+  "tier_count": 5,
+  "valid": true,
+  "warnings": []
+}

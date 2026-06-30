@@ -1,0 +1,53 @@
+[
+  {
+    "affected_services": [
+      "snowflake_platform",
+      "dbt_staging",
+      "healthcare_core",
+      "billing_finance",
+      "assurance"
+    ],
+    "dependency_overrides": {},
+    "expected_status": "RECOVERY_READY_WITH_APPROVAL",
+    "recovery_point_age_minutes": 45,
+    "scenario_id": "primary_region_unavailable",
+    "simulated_duration_minutes": 110,
+    "trigger": "regional_outage"
+  },
+  {
+    "affected_services": [
+      "governance_registry",
+      "deployment_controls"
+    ],
+    "dependency_overrides": {
+      "governance_registry": "checksum_mismatch"
+    },
+    "expected_status": "RECOVERY_BLOCKED",
+    "recovery_point_age_minutes": 10,
+    "scenario_id": "governance_checksum_mismatch",
+    "simulated_duration_minutes": 20,
+    "trigger": "policy_integrity_failure"
+  },
+  {
+    "affected_services": [
+      "snowflake_platform"
+    ],
+    "dependency_overrides": {},
+    "expected_status": "RPO_BREACH",
+    "recovery_point_age_minutes": 180,
+    "scenario_id": "stale_recovery_point",
+    "simulated_duration_minutes": 60,
+    "trigger": "replication_lag"
+  },
+  {
+    "affected_services": [
+      "fabric_powerbi"
+    ],
+    "dependency_overrides": {},
+    "expected_status": "RTO_BREACH",
+    "recovery_point_age_minutes": 120,
+    "scenario_id": "slow_recovery_validation",
+    "simulated_duration_minutes": 900,
+    "trigger": "prolonged_service_unavailability"
+  }
+]

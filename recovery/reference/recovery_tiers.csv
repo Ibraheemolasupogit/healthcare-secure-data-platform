@@ -1,0 +1,6 @@
+tier_id,services,maximum_tolerable_downtime_minutes,rto_minutes,rpo_minutes,recovery_priority,failover_approval_level,test_frequency,owner
+TIER_0_CRITICAL_CONTROL_PLANE,"['governance_registry', 'deployment_controls', 'repository', 'secrets_boundary']",60,30,15,1,security_and_platform_owner,quarterly_tabletop,platform_engineering
+TIER_1_CRITICAL_DATA_SERVICES,"['terraform_state_contracts', 'snowflake_platform', 'snowflake_foundation', 'dbt_core']",240,120,60,2,platform_data_owner,semi_annual_simulation,platform_engineering
+TIER_2_ANALYTICS_AND_ASSURANCE,"['billing_finance', 'assurance_controls', 'airflow_orchestration', 'feature_store']",480,240,120,3,data_product_owner,annual_simulation,analytics_engineering
+TIER_3_REPORTING_AND_ML,"['dataiku', 'fabric_powerbi']",1440,720,240,4,bi_and_model_owner,annual_tabletop,bi_platform_owner
+TIER_4_NON_CRITICAL_REFERENCE,"['documentation', 'portfolio_samples']",2880,1440,1440,5,repository_owner,annual_review,repository_maintainers

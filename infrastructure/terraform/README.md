@@ -29,3 +29,7 @@ Initialization downloads a provider but validation requires no Snowflake login. 
 Milestone 15 adds local release/deployment manifests, plan metadata requirements,
 environment-promotion rules, drift simulation and rollback design. It does not run
 Terraform apply or provision remote state.
+
+Milestone 16 adds symbolic recovery-region contracts and replication/failover design
+metadata only. It does not create secondary Terraform roots, remote state, failover groups
+or live regional infrastructure.

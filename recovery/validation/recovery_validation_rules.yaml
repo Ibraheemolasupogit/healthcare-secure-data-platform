@@ -1,0 +1,12 @@
+version: 1.0.0
+rules:
+  - rule_id: symbolic_regions_only
+    description: Region identifiers must be symbolic placeholders.
+  - rule_id: no_live_failover
+    description: No registry or evidence may claim live failover or live replication.
+  - rule_id: dependency_graph_acyclic
+    description: Dependency graph must be acyclic and produce a valid recovery order.
+  - rule_id: manual_approval_required
+    description: Failover and failback require manual approval.
+  - rule_id: deterministic_evidence
+    description: Local recovery evidence must be checksummed and reproducible.

@@ -63,4 +63,8 @@ Milestone 15 deployment controls require dbt parse/static checks in pull request
 manifest checksum continuity for connected promotion, and protected approval before any
 connected dbt build. No connected dbt execution is added here.
 
+Milestone 16 recovery controls require immutable commit, manifest checksum, rebuild order,
+contract validation and state comparison before dbt products are treated as recovered. No
+connected recovery build is executed here.
+
 `dbt parse --profiles-dir . --no-partial-parse` validates structure without connecting to Snowflake. The placeholder profile must never be used for execution. Connected `dbt compile`, `dbt build`, `dbt source freshness` and `dbt docs generate` require a separate authorised Snowflake profile.

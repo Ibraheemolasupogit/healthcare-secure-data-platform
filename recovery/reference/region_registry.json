@@ -1,0 +1,34 @@
+[
+  {
+    "allowed_data_classes": [
+      "PUBLIC_REFERENCE",
+      "INTERNAL_OPERATIONAL",
+      "CONFIDENTIAL",
+      "RESTRICTED"
+    ],
+    "live_status": "not_deployed",
+    "region_id": "PRIMARY_REGION",
+    "role": "primary"
+  },
+  {
+    "allowed_data_classes": [
+      "PUBLIC_REFERENCE",
+      "INTERNAL_OPERATIONAL",
+      "CONFIDENTIAL",
+      "RESTRICTED"
+    ],
+    "live_status": "not_deployed",
+    "region_id": "RECOVERY_REGION",
+    "role": "recovery"
+  },
+  {
+    "allowed_data_classes": [
+      "PUBLIC_REFERENCE",
+      "INTERNAL_OPERATIONAL",
+      "CONFIDENTIAL"
+    ],
+    "live_status": "not_deployed",
+    "region_id": "ARCHIVAL_REGION",
+    "role": "archive"
+  }
+]

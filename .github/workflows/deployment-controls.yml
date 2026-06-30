@@ -38,4 +38,7 @@ jobs:
       - run: healthcare-platform deployment detect-drift
       - run: healthcare-platform deployment generate-evidence --output-dir deployment/reference --overwrite
       - run: healthcare-platform deployment verify-evidence --output-dir deployment/reference
+      - run: healthcare-platform recovery validate-registry
+      - run: healthcare-platform recovery simulate-failover
       - run: pytest tests/unit/test_deployment_milestone15.py
+      - run: pytest tests/unit/test_recovery_milestone16.py

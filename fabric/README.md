@@ -29,3 +29,7 @@ to the central governance registry. No live tenant security configuration is per
 Milestone 15 deployment controls require workspace/artefact versioning, environment
 approval, connection rebinding evidence, refresh validation evidence and rollback
 references before any live Fabric promotion. No tenant deployment is performed.
+
+Milestone 16 recovery controls document workspace recreation, connection rebinding,
+sensitivity restoration and refresh-disabled-until-validated behaviour. No tenant recovery
+is performed.

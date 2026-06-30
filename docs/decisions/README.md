@@ -25,3 +25,4 @@ ADRs use: status/date, context, decision, consequences, alternatives, and valida
 | 0019 | Governed Fabric and Power BI consumption |
 | 0020 | Central governance policy registry |
 | 0021 | Protected CI/CD and deployment-control ownership |
+| 0022 | Active/passive recovery strategy |

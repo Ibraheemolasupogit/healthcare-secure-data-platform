@@ -1,0 +1,298 @@
+version: 1.0.0
+milestone: 16
+status: STATICALLY_VALIDATED
+live_deployment_status: NOT_DEPLOYED
+simulation_status: LOCAL_SIMULATION_ONLY
+resilience_claim_status: NOT_PRODUCTION_COMMITMENT
+regional_design:
+  strategy: active_passive_warm_standby_blueprint
+  primary_region: PRIMARY_REGION
+  recovery_region: RECOVERY_REGION
+  archival_region: ARCHIVAL_REGION
+  environment_applicability: [DEV, TEST, PROD]
+  data_residency_model: symbolic_region_classes
+  synthetic_only: true
+  automatic_failover_enabled: false
+  automatic_failback_enabled: false
+  limitations: No live regions, tenants, accounts, replication or failover are configured.
+region_classes:
+  - region_id: PRIMARY_REGION
+    role: primary
+    allowed_data_classes: [PUBLIC_REFERENCE, INTERNAL_OPERATIONAL, CONFIDENTIAL, RESTRICTED]
+    live_status: not_deployed
+  - region_id: RECOVERY_REGION
+    role: recovery
+    allowed_data_classes: [PUBLIC_REFERENCE, INTERNAL_OPERATIONAL, CONFIDENTIAL, RESTRICTED]
+    live_status: not_deployed
+  - region_id: ARCHIVAL_REGION
+    role: archive
+    allowed_data_classes: [PUBLIC_REFERENCE, INTERNAL_OPERATIONAL, CONFIDENTIAL]
+    live_status: not_deployed
+recovery_tiers:
+  - tier_id: TIER_0_CRITICAL_CONTROL_PLANE
+    services: [governance_registry, deployment_controls, repository, secrets_boundary]
+    business_impact: Recovery cannot proceed safely without control-plane integrity.
+    maximum_tolerable_downtime_minutes: 60
+    rto_minutes: 30
+    rpo_minutes: 15
+    recovery_priority: 1
+    recovery_dependencies: []
+    failover_approval_level: security_and_platform_owner
+    test_frequency: quarterly_tabletop
+    evidence_requirement: policy_and_release_checksum_validation
+    owner: platform_engineering
+  - tier_id: TIER_1_CRITICAL_DATA_SERVICES
+    services: [terraform_state_contracts, snowflake_platform, snowflake_foundation, dbt_core]
+    business_impact: Governed data products unavailable.
+    maximum_tolerable_downtime_minutes: 240
+    rto_minutes: 120
+    rpo_minutes: 60
+    recovery_priority: 2
+    recovery_dependencies: [TIER_0_CRITICAL_CONTROL_PLANE]
+    failover_approval_level: platform_data_owner
+    test_frequency: semi_annual_simulation
+    evidence_requirement: infrastructure_schema_and_row_count_validation
+    owner: platform_engineering
+  - tier_id: TIER_2_ANALYTICS_AND_ASSURANCE
+    services: [billing_finance, assurance_controls, airflow_orchestration, feature_store]
+    business_impact: Assurance and operational analytics degraded.
+    maximum_tolerable_downtime_minutes: 480
+    rto_minutes: 240
+    rpo_minutes: 120
+    recovery_priority: 3
+    recovery_dependencies: [TIER_1_CRITICAL_DATA_SERVICES]
+    failover_approval_level: data_product_owner
+    test_frequency: annual_simulation
+    evidence_requirement: reconciliation_and_feature_registry_validation
+    owner: analytics_engineering
+  - tier_id: TIER_3_REPORTING_AND_ML
+    services: [dataiku, fabric_powerbi]
+    business_impact: Reporting and model workflows unavailable or stale.
+    maximum_tolerable_downtime_minutes: 1440
+    rto_minutes: 720
+    rpo_minutes: 240
+    recovery_priority: 4
+    recovery_dependencies: [TIER_2_ANALYTICS_AND_ASSURANCE]
+    failover_approval_level: bi_and_model_owner
+    test_frequency: annual_tabletop
+    evidence_requirement: semantic_model_and_model_version_validation
+    owner: bi_platform_owner
+  - tier_id: TIER_4_NON_CRITICAL_REFERENCE
+    services: [documentation, portfolio_samples]
+    business_impact: Reference material unavailable.
+    maximum_tolerable_downtime_minutes: 2880
+    rto_minutes: 1440
+    rpo_minutes: 1440
+    recovery_priority: 5
+    recovery_dependencies: [TIER_0_CRITICAL_CONTROL_PLANE]
+    failover_approval_level: repository_owner
+    test_frequency: annual_review
+    evidence_requirement: checksum_manifest_validation
+    owner: repository_maintainers
+residency_policies:
+  - policy_id: res_clinical_restricted
+    data_domain: clinical
+    sensitivity: RESTRICTED
+    allowed_region_class: [PRIMARY_REGION, RECOVERY_REGION]
+    prohibited_region_class: [ARCHIVAL_REGION]
+    replication_allowed: controlled_recovery_only
+    backup_allowed: encrypted_recovery_backup
+    export_restriction: exp_prohibited
+    encryption_expectation: encrypted_at_rest_and_in_transit
+    approval_requirement: data_governance_and_security
+    retention_policy_ref: ret_governed_healthcare_core
+    owner: DATA_GOVERNANCE_STEWARD
+    legal_review_required: true
+    implementation_status: STATICALLY_VALIDATED
+    limitations: Synthetic portfolio rule; not legal advice.
+  - policy_id: res_billing_finance
+    data_domain: finance
+    sensitivity: CONFIDENTIAL
+    allowed_region_class: [PRIMARY_REGION, RECOVERY_REGION]
+    prohibited_region_class: []
+    replication_allowed: controlled_recovery_only
+    backup_allowed: encrypted_recovery_backup
+    export_restriction: exp_restricted_detail
+    encryption_expectation: encrypted_at_rest_and_in_transit
+    approval_requirement: finance_owner_and_security
+    retention_policy_ref: ret_billing_finance_records
+    owner: FINANCE_ANALYTICS
+    legal_review_required: true
+    implementation_status: STATICALLY_VALIDATED
+    limitations: Synthetic portfolio rule; not statutory retention policy.
+  - policy_id: res_governance_audit
+    data_domain: governance_audit
+    sensitivity: RESTRICTED
+    allowed_region_class: [PRIMARY_REGION, RECOVERY_REGION, ARCHIVAL_REGION]
+    prohibited_region_class: []
+    replication_allowed: required_for_recovery_evidence
+    backup_allowed: encrypted_recovery_backup
+    export_restriction: exp_prohibited
+    encryption_expectation: encrypted_with_access_audit
+    approval_requirement: security_admin
+    retention_policy_ref: ret_audit_records
+    owner: SECURITY_ADMIN
+    legal_review_required: false
+    implementation_status: STATICALLY_VALIDATED
+    limitations: Evidence metadata only; no live archive.
+dependency_graph:
+  nodes:
+    - governance_registry
+    - deployment_controls
+    - repository
+    - identity_secret_prerequisites
+    - terraform_state_contracts
+    - snowflake_platform
+    - dbt_staging
+    - healthcare_core
+    - billing_finance
+    - assurance
+    - airflow
+    - feature_store
+    - dataiku
+    - fabric_powerbi
+    - evidence_verification
+  edges:
+    - [governance_registry, deployment_controls]
+    - [deployment_controls, repository]
+    - [repository, identity_secret_prerequisites]
+    - [identity_secret_prerequisites, terraform_state_contracts]
+    - [terraform_state_contracts, snowflake_platform]
+    - [snowflake_platform, dbt_staging]
+    - [dbt_staging, healthcare_core]
+    - [healthcare_core, billing_finance]
+    - [billing_finance, assurance]
+    - [assurance, airflow]
+    - [healthcare_core, feature_store]
+    - [feature_store, dataiku]
+    - [healthcare_core, fabric_powerbi]
+    - [governance_registry, evidence_verification]
+    - [deployment_controls, evidence_verification]
+  critical_nodes: [governance_registry, deployment_controls, snowflake_platform, healthcare_core]
+  optional_nodes: [dataiku, fabric_powerbi]
+  degraded_mode:
+    reporting_without_refresh: allowed_after_policy_validation
+    ml_scoring: disabled_until_feature_and_model_validation
+recovery_order:
+  - governance_registry
+  - deployment_controls
+  - repository
+  - identity_secret_prerequisites
+  - terraform_state_contracts
+  - snowflake_platform
+  - dbt_staging
+  - healthcare_core
+  - billing_finance
+  - assurance
+  - airflow
+  - feature_store
+  - dataiku
+  - fabric_powerbi
+  - evidence_verification
+platform_mappings:
+  snowflake:
+    tier: TIER_1_CRITICAL_DATA_SERVICES
+    recovery_design: account_region_replication_blueprint
+    validation: role_grant_tag_schema_row_count_and_resource_monitor_checks
+    live_replication_status: not_configured
+  dbt:
+    tier: TIER_1_CRITICAL_DATA_SERVICES
+    recovery_design: immutable_git_commit_manifest_checksum_rebuild_order
+    validation: dbt_parse_contract_state_and_checksum_validation
+    live_execution_status: not_executed
+  airflow:
+    tier: TIER_2_ANALYTICS_AND_ASSURANCE
+    recovery_design: dag_bundle_metadata_database_and_paused_scheduler_recovery
+    validation: dag_import_bundle_checksum_and_controlled_catchup_review
+    live_execution_status: not_deployed
+  dataiku:
+    tier: TIER_3_REPORTING_AND_ML
+    recovery_design: project_bundle_code_environment_model_registry_metadata
+    validation: model_card_feature_set_output_contract_and_scenario_state_review
+    live_execution_status: not_restored
+  feature_store:
+    tier: TIER_2_ANALYTICS_AND_ASSURANCE
+    recovery_design: registry_restore_offline_feature_view_rebuild
+    validation: point_in_time_consumer_and_deprecation_checks
+    live_execution_status: offline_only
+  fabric_powerbi:
+    tier: TIER_3_REPORTING_AND_ML
+    recovery_design: workspace_semantic_model_report_and_connection_rebinding_blueprint
+    validation: rls_ols_sensitivity_refresh_disabled_until_validation
+    live_execution_status: not_deployed
+  governance:
+    tier: TIER_0_CRITICAL_CONTROL_PLANE
+    recovery_design: registry_restore_policy_checksum_validation_fail_closed
+    validation: no_access_until_policy_integrity_proven
+    live_execution_status: local_registry_only
+  deployment_controls:
+    tier: TIER_0_CRITICAL_CONTROL_PLANE
+    recovery_design: release_manifest_deployment_manifest_checksum_and_plan_regeneration
+    validation: stale_plans_rejected_and_approval_required
+    live_execution_status: local_metadata_only
+failover_criteria:
+  statuses:
+    - MONITORING
+    - FAILOVER_RECOMMENDED
+    - FAILOVER_APPROVED
+    - FAILOVER_IN_PROGRESS
+    - RECOVERY_VALIDATION
+    - SERVICE_RESTORED
+    - FAILOVER_REJECTED
+  automatic_failover_enabled: false
+  approval_required: true
+  required_signals:
+    - regional_outage
+    - recovery_region_readiness
+    - replication_currency
+    - governance_approval
+    - business_owner_approval
+    - security_review
+failback:
+  automatic_failback_enabled: false
+  approval_required: true
+  stability_period_hours: 24
+  primary_integrity_checks_required: true
+  data_reconciliation_required: true
+  reverse_replication_review_required: true
+  change_freeze_required: true
+  residual_risk_acceptance_required: true
+  rollback_from_failed_failback: return_to_recovery_region_and_reopen_validation
+recovery_scenarios:
+  - scenario_id: primary_region_unavailable
+    trigger: regional_outage
+    affected_services: [snowflake_platform, dbt_staging, healthcare_core, billing_finance, assurance]
+    dependency_overrides: {}
+    recovery_point_age_minutes: 45
+    simulated_duration_minutes: 110
+    expected_status: RECOVERY_READY_WITH_APPROVAL
+  - scenario_id: governance_checksum_mismatch
+    trigger: policy_integrity_failure
+    affected_services: [governance_registry, deployment_controls]
+    dependency_overrides: {governance_registry: checksum_mismatch}
+    recovery_point_age_minutes: 10
+    simulated_duration_minutes: 20
+    expected_status: RECOVERY_BLOCKED
+  - scenario_id: stale_recovery_point
+    trigger: replication_lag
+    affected_services: [snowflake_platform]
+    dependency_overrides: {}
+    recovery_point_age_minutes: 180
+    simulated_duration_minutes: 60
+    expected_status: RPO_BREACH
+  - scenario_id: slow_recovery_validation
+    trigger: prolonged_service_unavailability
+    affected_services: [fabric_powerbi]
+    dependency_overrides: {}
+    recovery_point_age_minutes: 120
+    simulated_duration_minutes: 900
+    expected_status: RTO_BREACH
+unsupported_resilience_claim_patterns:
+  - live failover completed
+  - production resilience certified
+  - disaster recovery implemented
+  - automatic failover enabled
+  - automatic failback enabled
+  - live snowflake replication configured
+  - production rto guaranteed
+  - production rpo guaranteed
